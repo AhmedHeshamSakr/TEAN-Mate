@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "TEAN Mate",
+    "description": "An AI-powered accessibility tool with a sidebar.",
+    "version": "1.0",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting",
+        "tabs",
+        "sidePanel" 
+    ],
+    "action": {
+        "default_title": "Accessibility Tools"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "side_panel": {
+        "default_path": "sidebar.html"
+    }
+  }
