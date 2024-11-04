@@ -1,3 +1,5 @@
+import { runPredict } from "./TTSmodel/predict.js";
+
 document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.accessibility-button');
@@ -5,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (ttsButton) {
         ttsButton.addEventListener('click', function() {
+            const text = "Welcome to our online bookstore! Explore a wide range of books across genres like fiction, non-fiction, mystery, and science fiction."
+            runPredict(text);
             alert('Text to Speech activated');
         });
     }
