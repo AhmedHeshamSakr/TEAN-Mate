@@ -1,8 +1,8 @@
 {
     "en_US-lessac-medium": {
         "files": {
-            "model.onnx": "voices_models/en_US-lessac-medium.onnx",
-            "model.onnx.json": "voices_models/en_US-lessac-medium.onnx.json"
+            "en_US-lessac-medium.onnx": "voices_models/en_US-lessac-medium.onnx",
+            "en_US-lessac-medium.onnx.json": "voices_models/en_US-lessac-medium.onnx.json"
         }
     }
 }

@@ -1,4 +1,6 @@
-const HF_BASE = `https://huggingface.co/wide-video/piper-voices-v1.0.1/resolve/main/`;
+// const HF_BASE = `https://huggingface.co/wide-video/piper-voices-v1.0.1/resolve/main/`;
+// const HF_BASE = `https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/`
+const HF_BASE = `voices_models/`
 
 function create(type, className, textContent) {
 	const result = document.createElement(type);
@@ -14,12 +16,12 @@ const voicesElement = "en_US-lessac-medium";
 // const speakersElement = document.querySelector("#speakers");
 // const startButton = document.querySelector("#start");
 // const workerBlob = new Blob([document.querySelector('#worker').textContent], {type:"text/javascript"});
-const workerUrl = new URL("worker.js", document.location).href;
+const workerUrl = new URL("../TTSmodel/worker.js", document.location).href;
 
 // const workerUrl = URL.createObjectURL(workerBlob);
-const piperPhonemizeJsUrl = new URL("piper_phonemize.js", document.location).href;
-const piperPhonemizeWasmUrl = new URL("piper_phonemize.wasm", document.location).href;
-const piperPhonemizeDataUrl = new URL("piper_phonemize.data", document.location).href;
+const piperPhonemizeJsUrl = new URL("../TTSmodel/piper_phonemize.js", document.location).href;
+const piperPhonemizeWasmUrl = new URL("../TTSmodel/piper_phonemize.wasm", document.location).href;
+const piperPhonemizeDataUrl = new URL("../TTSmodel/piper_phonemize.data", document.location).href;
 
 const blobs = {};
 let voices, worker;
@@ -31,6 +33,7 @@ function runPredict(inputText) {
 	// const voiceFiles = Object.keys(voices[voicesElement.value].files);
     console.log(Object.keys(voices["en_US-lessac-medium"].files));
     const voiceFiles = Object.keys(voices["en_US-lessac-medium"].files);
+	console.log(voiceFiles.find(path => path.endsWith(".onnx.json")));
 	const modelUrl = `${HF_BASE}${voiceFiles.find(path => path.endsWith(".onnx"))}`;
 	const modelConfigUrl = `${HF_BASE}${voiceFiles.find(path => path.endsWith(".onnx.json"))}`;
 	// const input = inputElement.value.trim();
@@ -100,16 +103,20 @@ function runPredict(inputText) {
 }
 
 (async () => {
-	const voicesUrl = `voices.json`;
+	const voicesUrl = `../TTSmodel/voices.json`;
 
 	// logElement.append(create("div", "init", "Initializing Voices"));
 	// logElement.append(create("div", "fetch", `fetching ${voicesUrl}`));
 	// logElement.append(create("div", "complete", "Complete"));
     console.log("Initializing Voices");
     console.log(`fetching ${voicesUrl}`);
-    console.log("Complete");
-	voices = await (await fetch(voicesUrl)).json();
-    console.log(voices);
+    try {
+        voices = await (await fetch(voicesUrl)).json();
+        console.log("Complete");
+        console.log(voices);
+    } catch (error) {
+        console.error("Error fetching voices.json:", error);
+    }
 
 	// const options = [];
 
@@ -156,7 +163,7 @@ function runPredict(inputText) {
 			}
 	}
 
-	voicesElement.value = "en_US-lessac-medium";
+	// voicesElement.value = "en_US-lessac-medium";
 	// voicesElement.onchange = updateSpeakers;
 	// updateSpeakers();
 })()

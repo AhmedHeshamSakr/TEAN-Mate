@@ -1,3 +1,5 @@
+importScripts("node_modules/onnxruntime-web/dist/ort.webgl.min.js");
+
 self.onmessage = function(event) {
 	const data = event.data;
 	if(data.kind === "init")
@@ -27,25 +29,46 @@ const getBlob = async (url, blobs) => new Promise(resolve => {
 				resolve(xhr.response);
 		}
 	}
+	xhr.onerror = () => {
+        console.error(`Network error while fetching ${url}`);
+        reject(new Error(`Network error while fetching ${url}`));
+    };
 	xhr.open("GET", url);
 	xhr.send();
 });
 
 async function init(data) {
+	console.log("Initializing worker");
 	const {input, speakerId, blobs, modelUrl, modelConfigUrl} = data;
-	const onnxruntimeBase = "https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.17.1/"
+	// const onnxruntimeBase = "https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.17.1/"
+	// const onnxruntimeBase = "dist/";
+	// const onnxruntimeBase = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.8.0/dist/";
+	const onnxruntimeBase = "node_modules/onnxruntime-web/dist/";
 
 	const piperPhonemizeJs = URL.createObjectURL(await getBlob(data.piperPhonemizeJsUrl, blobs));
 	const piperPhonemizeWasm = URL.createObjectURL(await getBlob(data.piperPhonemizeWasmUrl, blobs));
 	const piperPhonemizeData = URL.createObjectURL(await getBlob(data.piperPhonemizeDataUrl, blobs));
-	const onnxruntimeJs = URL.createObjectURL(await getBlob(`${onnxruntimeBase}ort.min.js`, blobs));
+	// const onnxruntimeJs = URL.createObjectURL(await getBlob(`${onnxruntimeBase}ort.min.js`, blobs));
+	const onnxruntimeJsUrl = `${onnxruntimeBase}ort.min.js`;
 
-	importScripts(piperPhonemizeJs, onnxruntimeJs);
+	// importScripts(piperPhonemizeJs, onnxruntimeJs);
+	importScripts(data.piperPhonemizeJsUrl, onnxruntimeJsUrl);
 	ort.env.wasm.numThreads = navigator.hardwareConcurrency;
 	ort.env.wasm.wasmPaths = onnxruntimeBase;
+	// ort.env.wasm.wasmPaths = "libs/";
+
 
 	const modelConfigBlob = await getBlob(modelConfigUrl, blobs);
-	const modelConfig = JSON.parse(await modelConfigBlob.text());
+	console.log("modelConfigBlob", modelConfigBlob);
+	let modelConfig;
+    try {
+        modelConfig = JSON.parse(await modelConfigBlob.text());
+    } catch (error) {
+        console.error("Error parsing modelConfig JSON:", error);
+        console.error("Response text:", await modelConfigBlob.text());
+        return;
+    }
+	// const modelConfig = JSON.parse(await modelConfigBlob.text());
 
 	const phonemeIds = await new Promise(async resolve => {
 		const module = await createPiperPhonemize({
@@ -72,7 +95,10 @@ async function init(data) {
 	const noiseW = modelConfig.inference.noise_w;
 
 	const modelBlob = await getBlob(modelUrl, blobs);
-	const session = await ort.InferenceSession.create(URL.createObjectURL(modelBlob));
+	console.log("modelBlob", URL.createObjectURL(modelBlob));
+	// const session = await ort.InferenceSession.create(URL.createObjectURL(modelBlob));
+	const session = await ort.InferenceSession.create(modelUrl)
+	console.log("Model loaded");
 	const feeds = {
 		input: new ort.Tensor("int64", phonemeIds, [1, phonemeIds.length]),
 		input_lengths: new ort.Tensor("int64", [phonemeIds.length]),
