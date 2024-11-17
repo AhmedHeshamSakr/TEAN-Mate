@@ -1,54 +1,101 @@
 
-let textSections = [];
+let sections = [];
 let currentIndex = 0;
 let isSpeaking = false;
+let highlightBox = null;
 
+function createHighlightBox() {
+    // Create the highlight box if it doesn't already exist
+    if (!highlightBox) {
+        highlightBox = document.createElement("div");
+        highlightBox.style.position = "absolute";
+        highlightBox.style.border = "2px solid #A33";
+        highlightBox.style.backgroundColor = "rgba(255, 0, 0, 0.03)";
+        highlightBox.style.pointerEvents = "none"; // Prevent interference with clicks
+        highlightBox.style.zIndex = "9999"; // Ensure it appears above other elements
+        highlightBox.style.borderRadius = "5px";
+        // highlightBox.style.padding = "2px";
+        document.body.appendChild(highlightBox);
+    }
+}
+
+function highlightElement(section) {
+    createHighlightBox();
+
+    // Get the element's position and size
+    const rect = section.element.getBoundingClientRect();
+
+    // Position the highlight box over the element
+    highlightBox.style.top = `${rect.top + window.scrollY}px`;
+    highlightBox.style.left = `${rect.left + window.scrollX}px`;
+    highlightBox.style.width = `${rect.width}px`;
+    highlightBox.style.height = `${rect.height}px`;
+
+    section.element.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function removeHighlightBox() {
+    if (highlightBox) {
+        highlightBox.remove();
+        highlightBox = null;
+    }
+}
 
 function extractAllTextWithTags(node) {
-    let sections = [];
+    let textSections = []; // Array of text content
+    let elementSections = []; // Array of corresponding elements
 
-    // Only process text nodes and element nodes
     if (node.nodeType === Node.TEXT_NODE) {
         const text = node.textContent.trim();
-        
+
         // Check if the text is non-empty and if the node is visible
         if (text && node.parentNode.offsetParent !== null) {
-            sections.push(text);
+            textSections.push(text);
+            elementSections.push(node.parentNode); // Store the parent element of the text
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-        // Ignore style and script tags entirely
+        // Ignore style and script tags
         if (node.tagName.toLowerCase() !== 'style' && node.tagName.toLowerCase() !== 'script') {
             for (let child of node.childNodes) {
-                sections = sections.concat(extractAllTextWithTags(child));
+                const { textSections: childTexts, elementSections: childElements } = extractAllTextWithTags(child);
+                textSections = textSections.concat(childTexts);
+                elementSections = elementSections.concat(childElements);
             }
         }
     }
 
-    return sections;
+    return { textSections, elementSections };
 }
 
 
-// Listen for messages from the sidebar or background script
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    // console.log(request.action);
     if (request.action === "extractText") {
-        // console.log("content.js received extractText");
-        loadTextSections(extractAllTextWithTags(document.body));
-        speakCurrentSection();
+        console.log("received extractText");
+        const { textSections, elementSections } = extractAllTextWithTags(document.body);
+
+        // Store the sections as an array of objects with text and element references
+        sections = textSections.map((text, index) => ({
+            text,
+            element: elementSections[index],
+        }));
+
+        currentIndex = 0; // Reset to the first section
+        speakCurrentSection(); // Start reading the text
         return true;
     }
 });
 
 
-function loadTextSections(sections) {
-    textSections = sections;
-    currentIndex = 0;
-}
-
 function speakCurrentSection() {
-    if (currentIndex >= textSections.length) return;
-    // console.log("reading section");
-    const utterance = new SpeechSynthesisUtterance(textSections[currentIndex]);
+    if (currentIndex >= sections.length) {
+        removeHighlightBox();
+        return;
+    }
+    const section = sections[currentIndex];
+    highlightElement(section);
+
+    const utterance = new SpeechSynthesisUtterance(section.text);
     utterance.onend = () => {
         isSpeaking = false;
         currentIndex++;
@@ -58,21 +105,18 @@ function speakCurrentSection() {
     window.speechSynthesis.speak(utterance);
 }
 
-// Stop and skip functions remain the same
 function stopSpeaking() {
     window.speechSynthesis.cancel();
     isSpeaking = false;
 }
 
 function skipToNext() {
-    // alert("skipped to next");
     stopSpeaking();
-    currentIndex = Math.min(currentIndex + 1, textSections.length - 1);
+    currentIndex = Math.min(currentIndex + 1, sections.length - 1);
     speakCurrentSection();
 }
 
 function skipToPrevious() {
-    // alert("skipped to previous");
     stopSpeaking();
     currentIndex = Math.max(currentIndex - 1, 0);
     speakCurrentSection();
