@@ -54,24 +54,38 @@ function extractAllTextWithTags(node) {
             elementSections.push(node.parentNode); // Store the parent element of the text
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const tagName = node.tagName.toLowerCase();
+        
         // Ignore style and script tags
-        if (node.tagName.toLowerCase() !== 'style' && node.tagName.toLowerCase() !== 'script') {
-            for (let child of node.childNodes) {
-                const { textSections: childTexts, elementSections: childElements } = extractAllTextWithTags(child);
-                textSections = textSections.concat(childTexts);
-                elementSections = elementSections.concat(childElements);
+        if (tagName === 'style' || tagName === 'script') return { textSections, elementSections };
+
+        // Handle links specifically
+        if (tagName === 'a' && node.href) {
+            const text = node.textContent.trim(); // Use text content
+            const domain = new URL(node.href).hostname.replace('www.', ''); // Extract domain
+            if (text) {
+                textSections.push(`Link text: ${text}. Link Destination: ${domain}`);
+                elementSections.push(node);
+            } else {
+                textSections.push(`Link destination: ${domain}`);
+                elementSections.push(node);
             }
+        }
+
+        // Process child nodes
+        for (let child of node.childNodes) {
+            const { textSections: childTexts, elementSections: childElements } = extractAllTextWithTags(child);
+            textSections = textSections.concat(childTexts);
+            elementSections = elementSections.concat(childElements);
         }
     }
 
     return { textSections, elementSections };
 }
 
-
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "extractText") {
-        console.log("received extractText");
+        // console.log("received extractText");
         const { textSections, elementSections } = extractAllTextWithTags(document.body);
 
         // Store the sections as an array of objects with text and element references
@@ -85,7 +99,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
 });
-
 
 function speakCurrentSection() {
     if (currentIndex >= sections.length) {
@@ -132,6 +145,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             stopSpeaking();
         } else {
             speakCurrentSection();
+        }
+    } else if (request.action === "accessLink") {
+        if (sections[currentIndex]) {
+            const section = sections[currentIndex];
+    
+            // Check if the current section is a link
+            if (section.element.tagName.toLowerCase() === 'a') {
+                const url = section.element.href;
+                if (url) {
+                    window.open(url); 
+                }
+            }
         }
     }
 });

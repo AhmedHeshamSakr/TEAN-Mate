@@ -42,6 +42,12 @@
                 "default": "Ctrl+Space"
             },
             "description": "Pause and continue reading"
+        },
+        "access-link": {
+            "suggested_key": {
+                "default": "Ctrl+Up"
+            },
+            "description": "Access current link"
         }
     }
   }

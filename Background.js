@@ -22,8 +22,9 @@ chrome.commands.onCommand.addListener((command) => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             chrome.tabs.sendMessage(tabs[0].id, { action: "toggleReading" });
         });
+    } else if (command === "access-link") {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, { action: "accessLink" });
+        });
     }
 });
-
-
-
