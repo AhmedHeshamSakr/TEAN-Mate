@@ -1,5 +1,3 @@
-importScripts("node_modules/onnxruntime-web/dist/ort.webgl.min.js");
-
 self.onmessage = function(event) {
 	const data = event.data;
 	if(data.kind === "init")
@@ -43,7 +41,7 @@ async function init(data) {
 	// const onnxruntimeBase = "https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.17.1/"
 	// const onnxruntimeBase = "dist/";
 	// const onnxruntimeBase = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.8.0/dist/";
-	const onnxruntimeBase = "node_modules/onnxruntime-web/dist/";
+	const onnxruntimeBase = "../../../node_modules/onnxruntime-web/dist/";
 
 	const piperPhonemizeJs = URL.createObjectURL(await getBlob(data.piperPhonemizeJsUrl, blobs));
 	const piperPhonemizeWasm = URL.createObjectURL(await getBlob(data.piperPhonemizeWasmUrl, blobs));

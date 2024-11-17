@@ -3,7 +3,7 @@ import { runPredict } from "./TTSmodel/predict.js";
 document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.accessibility-button');
-    const [signLanguageButton, ttsButton, sttButton, imageCaptionButton] = buttons;
+    const [ttsButton, sttButton, imageCaptionButton, signLanguageButton] = buttons;
 
     if (ttsButton) {
         ttsButton.addEventListener('click', function() {

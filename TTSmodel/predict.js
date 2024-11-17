@@ -2,13 +2,6 @@
 // const HF_BASE = `https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/`
 const HF_BASE = `voices_models/`
 
-function create(type, className, textContent) {
-	const result = document.createElement(type);
-	if(className !== undefined) result.className = className;
-	if(textContent !== undefined) result.textContent = textContent;
-	return result;
-}
-
 // const logElement = document.querySelector("#log");
 // const inputElement = document.querySelector("#input");
 // const voicesElement = document.querySelector("#voices");
@@ -51,14 +44,29 @@ function runPredict(inputText) {
 		const data = event.data;
 		switch(data.kind) {
 			case "output": {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const audioBuffer = await audioContext.decodeAudioData(await data.file.arrayBuffer());
-                const source = audioContext.createBufferSource();
-                source.buffer = audioBuffer;
+                // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // const audioBuffer = await audioContext.decodeAudioData(await data.file.arrayBuffer());
+                // const source = audioContext.createBufferSource();
+                // source.buffer = audioBuffer;
     
-                const destination = audioContext.createMediaStreamDestination();
-                source.connect(destination);
-                source.start();
+                // const destination = audioContext.createMediaStreamDestination();
+                // source.connect(destination);
+                // source.start();
+
+				var audioPlayer = document.createElement("audio");
+				audioPlayer.src = URL.createObjectURL(data.file);
+				audioPlayer.play();
+
+				// Create a Blob from the audio data
+				// const audioBlob = new Blob([await data.file.arrayBuffer()], { type: 'audio/wav' });
+				// const audioUrl = URL.createObjectURL(audioBlob);
+	
+				// // Create a download link
+				// const downloadLink = document.createElement('a');
+				// downloadLink.href = audioUrl;
+				// downloadLink.download = 'output.wav';
+				// downloadLink.textContent = 'Download audio file';
+				// document.body.appendChild(downloadLink);
 
 				// const audio = document.createElement("audio");
 				// audio.controls = true;
