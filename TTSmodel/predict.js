@@ -2,16 +2,11 @@
 // const HF_BASE = `https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/`
 const HF_BASE = `voices_models/`
 
-// const logElement = document.querySelector("#log");
-// const inputElement = document.querySelector("#input");
 // const voicesElement = document.querySelector("#voices");
 const voicesElement = "en_US-lessac-medium";
 // const speakersElement = document.querySelector("#speakers");
-// const startButton = document.querySelector("#start");
-// const workerBlob = new Blob([document.querySelector('#worker').textContent], {type:"text/javascript"});
 const workerUrl = new URL("../TTSmodel/worker.js", document.location).href;
 
-// const workerUrl = URL.createObjectURL(workerBlob);
 const piperPhonemizeJsUrl = new URL("../TTSmodel/piper_phonemize.js", document.location).href;
 const piperPhonemizeWasmUrl = new URL("../TTSmodel/piper_phonemize.wasm", document.location).href;
 const piperPhonemizeDataUrl = new URL("../TTSmodel/piper_phonemize.data", document.location).href;
@@ -19,23 +14,20 @@ const piperPhonemizeDataUrl = new URL("../TTSmodel/piper_phonemize.data", docume
 const blobs = {};
 let voices, worker;
 
-// startButton.onclick = () => {
 function runPredict(inputText) {
 	worker?.terminate();
 
 	// const voiceFiles = Object.keys(voices[voicesElement.value].files);
-    console.log(Object.keys(voices["en_US-lessac-medium"].files));
+    // console.log(Object.keys(voices["en_US-lessac-medium"].files));
     const voiceFiles = Object.keys(voices["en_US-lessac-medium"].files);
-	console.log(voiceFiles.find(path => path.endsWith(".onnx.json")));
+	// console.log(voiceFiles.find(path => path.endsWith(".onnx.json")));
 	const modelUrl = `${HF_BASE}${voiceFiles.find(path => path.endsWith(".onnx"))}`;
 	const modelConfigUrl = `${HF_BASE}${voiceFiles.find(path => path.endsWith(".onnx.json"))}`;
-	// const input = inputElement.value.trim();
     const input = inputText;
 	// const speakerId = parseInt(speakersElement.value);
     const speakerId = 0;
 
     console.log("init",JSON.stringify({input, speakerId}));
-	// logElement.append(create("div", "init", JSON.stringify({input, speakerId})));
 
 	worker = new Worker(workerUrl);
 	worker.postMessage({kind:"init", input, speakerId, blobs,
@@ -44,48 +36,20 @@ function runPredict(inputText) {
 		const data = event.data;
 		switch(data.kind) {
 			case "output": {
-                // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                // const audioBuffer = await audioContext.decodeAudioData(await data.file.arrayBuffer());
-                // const source = audioContext.createBufferSource();
-                // source.buffer = audioBuffer;
-    
-                // const destination = audioContext.createMediaStreamDestination();
-                // source.connect(destination);
-                // source.start();
-
 				var audioPlayer = document.createElement("audio");
 				audioPlayer.src = URL.createObjectURL(data.file);
 				audioPlayer.play();
 
-				// Create a Blob from the audio data
-				// const audioBlob = new Blob([await data.file.arrayBuffer()], { type: 'audio/wav' });
-				// const audioUrl = URL.createObjectURL(audioBlob);
-	
-				// // Create a download link
-				// const downloadLink = document.createElement('a');
-				// downloadLink.href = audioUrl;
-				// downloadLink.download = 'output.wav';
-				// downloadLink.textContent = 'Download audio file';
-				// document.body.appendChild(downloadLink);
-
-				// const audio = document.createElement("audio");
-				// audio.controls = true;
-				// audio.src = URL.createObjectURL(data.file);
-
                 console.log("Audio played");
-				// const div = create("div", "output");
-				// div.append(create("q", undefined, data.input), audio);
-				// logElement.append(div);
+
 				break;
 			}
 			case "stderr": {
                 console.log("stderr",data.message);
-				// logElement.append(create("div", "stderr", data.message));
 				break;
 			}
 			case "complete": {
                 console.log("complete");
-				// logElement.append(create("div", "complete", "Complete"));
 				break;
 			}
 			case "fetch": {
@@ -113,9 +77,6 @@ function runPredict(inputText) {
 (async () => {
 	const voicesUrl = `../TTSmodel/voices.json`;
 
-	// logElement.append(create("div", "init", "Initializing Voices"));
-	// logElement.append(create("div", "fetch", `fetching ${voicesUrl}`));
-	// logElement.append(create("div", "complete", "Complete"));
     console.log("Initializing Voices");
     console.log(`fetching ${voicesUrl}`);
     try {

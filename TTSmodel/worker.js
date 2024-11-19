@@ -38,22 +38,16 @@ const getBlob = async (url, blobs) => new Promise(resolve => {
 async function init(data) {
 	console.log("Initializing worker");
 	const {input, speakerId, blobs, modelUrl, modelConfigUrl} = data;
-	// const onnxruntimeBase = "https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.17.1/"
-	// const onnxruntimeBase = "dist/";
-	// const onnxruntimeBase = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.8.0/dist/";
 	const onnxruntimeBase = "../../../node_modules/onnxruntime-web/dist/";
 
 	const piperPhonemizeJs = URL.createObjectURL(await getBlob(data.piperPhonemizeJsUrl, blobs));
 	const piperPhonemizeWasm = URL.createObjectURL(await getBlob(data.piperPhonemizeWasmUrl, blobs));
 	const piperPhonemizeData = URL.createObjectURL(await getBlob(data.piperPhonemizeDataUrl, blobs));
-	// const onnxruntimeJs = URL.createObjectURL(await getBlob(`${onnxruntimeBase}ort.min.js`, blobs));
 	const onnxruntimeJsUrl = `${onnxruntimeBase}ort.min.js`;
 
-	// importScripts(piperPhonemizeJs, onnxruntimeJs);
 	importScripts(data.piperPhonemizeJsUrl, onnxruntimeJsUrl);
 	ort.env.wasm.numThreads = navigator.hardwareConcurrency;
 	ort.env.wasm.wasmPaths = onnxruntimeBase;
-	// ort.env.wasm.wasmPaths = "libs/";
 
 
 	const modelConfigBlob = await getBlob(modelConfigUrl, blobs);
@@ -66,7 +60,6 @@ async function init(data) {
         console.error("Response text:", await modelConfigBlob.text());
         return;
     }
-	// const modelConfig = JSON.parse(await modelConfigBlob.text());
 
 	const phonemeIds = await new Promise(async resolve => {
 		const module = await createPiperPhonemize({
@@ -94,7 +87,6 @@ async function init(data) {
 
 	const modelBlob = await getBlob(modelUrl, blobs);
 	console.log("modelBlob", URL.createObjectURL(modelBlob));
-	// const session = await ort.InferenceSession.create(URL.createObjectURL(modelBlob));
 	const session = await ort.InferenceSession.create(modelUrl)
 	console.log("Model loaded");
 	const feeds = {
