@@ -8,16 +8,47 @@
         "activeTab",
         "scripting",
         "tabs",
-        "sidePanel" 
+        "sidePanel",
+        "background"
     ],
     "action": {
         "default_title": "Accessibility Tools"
     },
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "Background.js"
     },
     "side_panel": {
         "default_path": "sidebar.html"
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }],
+    "commands": {
+        "skip-next": {
+            "suggested_key": {
+                "default": "Ctrl+Right"
+            },
+            "description": "Skip to next section"
+        },
+        "skip-previous": {
+            "suggested_key": {
+                "default": "Ctrl+Left"
+            },
+            "description": "Skip to previous section"
+        },
+        "toggle-reading": {
+            "suggested_key": {
+                "default": "Ctrl+Space"
+            },
+            "description": "Pause and continue reading"
+        },
+        "access-link": {
+            "suggested_key": {
+                "default": "Ctrl+Up"
+            },
+            "description": "Access current link"
+        }
     },
     "content_security_policy": {
         "extension_pages": "script-src 'self' 'wasm-unsafe-eval' ; object-src 'self'"

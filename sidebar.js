@@ -1,15 +1,24 @@
-import { runPredict } from "./TTSmodel/predict.js";
-
 document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.accessibility-button');
-    const [ttsButton, sttButton, imageCaptionButton, signLanguageButton] = buttons;
+    const [ttsButton, sttButton, signLanguageButton, imageCaptionButton] = buttons;
 
     if (ttsButton) {
         ttsButton.addEventListener('click', function() {
-            const text = "Welcome to our online bookstore! Explore a wide range of books across genres like fiction, non-fiction, mystery, and science fiction."
-            runPredict(text);
-            alert('Text to Speech activated');
+            // alert('Text to Speech activated');
+            console.log('Text to Speech button clicked');
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                // chrome.tabs.sendMessage(tabs[0].id, { action: "extractText" }, (response) => {
+                //     console.log('Response from content.js:', response);
+                //     if (response && response.sections) {
+                //         console.log("sending startReading");
+                //         chrome.runtime.sendMessage({ action: "startReading", sections: response.sections });
+                //     } else {
+                //         alert("failed to receive from content.js");
+                //     }
+                // });
+                chrome.tabs.sendMessage(tabs[0].id, { action: "extractText" });
+            });
         });
     }
 
