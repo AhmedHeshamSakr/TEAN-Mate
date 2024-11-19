@@ -15,7 +15,8 @@
         "default_title": "Accessibility Tools"
     },
     "background": {
-        "service_worker": "Background.js"
+        "service_worker": "Background.js",
+        "type": "module"
     },
     "side_panel": {
         "default_path": "sidebar.html"
@@ -53,4 +54,4 @@
     "content_security_policy": {
         "extension_pages": "script-src 'self' 'wasm-unsafe-eval' ; object-src 'self'"
     }
-  }
+}
