@@ -1,5 +1,5 @@
 import { runPredict, initializeVoices } from "./TTSmodel/predict.js";
-let voices, worker;
+let voices;
 
 async function initialize() {
     console.log("Initializing extension");
@@ -14,10 +14,10 @@ async function initialize() {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "runPredict") {
         const workerUrl = chrome.runtime.getURL("TTSmodel/worker.js");
-        worker?.terminate();
-        console.log("worker", workerUrl);
-        worker = new Worker(workerUrl);
-        runPredict(request.text, voices, request.worker).then(audioBlob => {
+        // worker?.terminate();
+        // console.log("worker", workerUrl);
+        // worker = new Worker(workerUrl);
+        runPredict(request.text, voices).then(audioBlob => {
             sendResponse({ audioBlob });
         }).catch(error => {
             console.error("Error in runPredict:", error);
