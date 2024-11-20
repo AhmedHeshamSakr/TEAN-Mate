@@ -61,10 +61,14 @@ function extractAllTextWithTags(node) {
 
         // Handle links specifically
         if (tagName === 'a' && node.href) {
-            const text = node.textContent.trim(); // Use text content
+            // const text = node.textContent.trim(); // Use text content
+            let text = Array.from(node.childNodes)
+                .filter(child => child.nodeType === Node.TEXT_NODE)
+                .map(child => child.textContent.trim())
+                .join('');
             const domain = new URL(node.href).hostname.replace('www.', ''); // Extract domain
             if (text) {
-                textSections.push(`Link text: ${text}. Link Destination: ${domain}`);
+                textSections.push(`Link text: ${text}`);
                 elementSections.push(node);
             } else {
                 textSections.push(`Link destination: ${domain}`);
