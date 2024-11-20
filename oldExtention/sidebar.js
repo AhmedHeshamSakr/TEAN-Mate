@@ -8,15 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // alert('Text to Speech activated');
             console.log('Text to Speech button clicked');
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-                // chrome.tabs.sendMessage(tabs[0].id, { action: "extractText" }, (response) => {
-                //     console.log('Response from content.js:', response);
-                //     if (response && response.sections) {
-                //         console.log("sending startReading");
-                //         chrome.runtime.sendMessage({ action: "startReading", sections: response.sections });
-                //     } else {
-                //         alert("failed to receive from content.js");
-                //     }
-                // });
                 chrome.tabs.sendMessage(tabs[0].id, { action: "extractText" });
             });
         });

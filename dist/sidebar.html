@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAN Mate</title>
+    <link rel="stylesheet" href="sidebar.css">
+
+</head>
+<body>
+    <main class="sidebar-MainContainer">
+        <h1 id="sidebar-title" class="sidebar-title"></h1>
+        <!-- Accessibility Tools Section -->
+        <h1 class="tools-title">Accessibility Tools:</h1>
+        <div class="Features-div">
+            <!-- Buttons -->
+            <div class="button-container">
+                <div>
+                    <button class="accessibility-button">
+                        <!-- <img src="icons/tts.png" alt="Text to Speech"> -->
+                        Text to Speech (TTS)
+                    </button>
+                </div>
+                <div>
+                    <button class="accessibility-button">
+                        <!-- <img src="icons/stt.png" alt="Speech to Text"> -->
+                        Speech to Text (STT)
+                    </button>
+                </div>
+                <div>
+                    <button class="accessibility-button">
+                        <!-- <img src="icons/sign-language.png" alt="Sign Language"> -->
+                        Sign Language Translator
+                    </button>
+                </div>
+                <div>
+                    <button class="accessibility-button">
+                        <!-- <img src="icons/image-caption.png" alt="Image Captioning"> -->
+                        Image Captioning
+                    </button>
+                </div>
+            </div>
+            <!-- Speech Display Area -->
+            <div id="speech-display" class="speech-display">
+                <h2>Speech to Text Output:</h2>
+                <p id="recognizedText">Start speaking to see the text here...</p>
+            </div>
+        </div>
+    </main>
+    <script src="dist/sidebar.bundle.js"></script>
+
+</body>
+</html>

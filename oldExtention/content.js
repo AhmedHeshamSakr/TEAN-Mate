@@ -1,4 +1,3 @@
-
 let sections = [];
 let currentIndex = 0;
 let isSpeaking = false;
@@ -160,5 +159,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
     }
 });
-
-
