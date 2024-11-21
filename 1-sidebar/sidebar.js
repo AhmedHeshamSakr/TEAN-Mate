@@ -1,117 +1,116 @@
-// Constants
-const ACTIONS = {
-    EXTRACT_TEXT: 'extractText',
-    STT_ACTIVATE: 'sttActivate',
-    SIGN_LANGUAGE: 'signLanguage',
-    IMAGE_CAPTION: 'imageCaption'
-  };
-  
-  // Main initialization
-  document.addEventListener('DOMContentLoaded', () => {
-    const elements = {
-      sidebar: document.querySelector('main.sidebar-MainContainer'),
-      title: document.getElementById('sidebar-title'),
-      buttons: document.querySelectorAll('.accessibility-button'),
-      speechDisplay: document.getElementById('recognizedText')
-    };
-  
-    if (!validateElements(elements)) return;
-  
-    setupSidebar(elements);
-    setupButtonHandlers(elements);
-  
-    const extractButton = document.getElementById('extractText');
-    if (extractButton) {
-      extractButton.addEventListener('click', handleTextExtraction);
-    } else {
-      console.error('Sidebar: Extract text button not found');
-    }
-  });
-  
-  // Validate all required DOM elements are present
-  function validateElements(elements) {
-    const missingElements = Object.entries(elements)
-      .filter(([, element]) => !element)
-      .map(([key]) => key);
-    
-    if (missingElements.length) {
-      console.error(`Sidebar: Missing elements - ${missingElements.join(', ')}`);
-      return false;
-    }
-    return true;
+export default class SidebarController {
+  constructor(context = 'sidebar') {
+    this.context = context;
+    this.buttons = {}; 
+    this.initialize();
   }
-  
-  // Setup sidebar functionality
-  function setupSidebar(elements) {
-    const { sidebar, title } = elements;
-  
-    try {
-      title.textContent = chrome.runtime.getManifest().name;
-    } catch {
-      title.textContent = 'TEAN Mate'; // Fallback title
+
+  // Modify initialize to be context-sensitive
+  initialize() {
+    // Only set sidebar title if in sidebar context
+    if (this.context === 'sidebar') {
+      try {
+        const titleElement = document.getElementById("sidebar-title");
+        if (titleElement) {
+          titleElement.textContent = chrome.runtime.getManifest().name;
+        }
+      } catch (error) {
+        console.warn("Could not set sidebar title:", error);
+      }
     }
-  
-    sidebar.style.display = 'block';
-  
+
+    // Setup event listeners based on context
+    if (this.context === 'sidebar') {
+      document.addEventListener("DOMContentLoaded", this.setupSidebarEventListeners.bind(this));
+    } else if (this.context === 'content') {
+      this.setupContentScriptMessageHandlers();
+    }
+  }
+
+  // Specific method for sidebar event listeners
+  setupSidebarEventListeners() {
+    const buttons = document.querySelectorAll(".accessibility-button");
+    if (!buttons.length) {
+      console.warn("No accessibility buttons found!");
+      return;
+    }
+
+    // More robust button assignment
+    this.buttons.tts = buttons[0];
+    this.buttons.stt = buttons[1];
+    this.buttons.signLanguage = buttons[2];
+    this.buttons.imageCaption = buttons[3];
+
+    this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
+    this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
+    this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
+    this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
+  }
+
+  // Method to setup message handlers for content script
+  setupContentScriptMessageHandlers() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action === 'toggleSidebar') {
-        const isVisible = sidebar.style.display !== 'none';
-        sidebar.style.display = isVisible ? 'none' : 'block';
-        sendResponse({ success: true, isVisible: !isVisible });
+      switch(request.action) {
+        case 'toggleTTS':
+          this.handleTTS();
+          break;
+        case 'toggleSTT':
+          this.handleSTT();
+          break;
+        case 'toggleSignLanguage':
+          this.handleSignLanguage();
+          break;
+        case 'toggleImageCaption':
+          this.handleImageCaption();
+          break;
       }
     });
   }
-  
-  // Setup button click handlers
-  function setupButtonHandlers(elements) {
-    const { buttons, speechDisplay } = elements;
-  
-    buttons.forEach((button, index) => {
-      const action = Object.values(ACTIONS)[index];
-      if (!action) return;
-  
-      button.addEventListener('click', () => handleButtonClick(button, action, speechDisplay));
-    });
-  }
-  
-  // Handle individual button clicks
-  async function handleButtonClick(button, action, speechDisplay) {
-    button.disabled = true;
-  
-    try {
-      console.log(`Button clicked: ${action}`);
-      if (action === ACTIONS.EXTRACT_TEXT) {
-        await handleTextExtraction();
-      } else {
-        speechDisplay.textContent = `${action} is now active`;
-        console.log(`${action} feature activated`);
-      }
-    } catch (error) {
-      console.error(`Error handling ${action}:`, error);
-    } finally {
-      button.disabled = false;
+
+  // Existing methods remain the same
+  addButtonListener(button, handler) {
+    if (!button) {
+      console.warn("Button not found, skipping event binding.");
+      return;
     }
+    button.addEventListener("click", handler);
   }
-  
-  // Handle text extraction
-  async function handleTextExtraction() {
-    try {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab?.id) throw new Error('No active tab found');
-  
-      const response = await new Promise((resolve, reject) => {
-        chrome.tabs.sendMessage(tab.id, { action: ACTIONS.EXTRACT_TEXT }, (response) => {
-          if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
-          else resolve(response);
-        });
-  
-        setTimeout(() => reject(new Error('Message send timeout')), 5000);
-      });
-  
-      if (!response?.success) throw new Error('Text extraction failed');
-      console.log('Text extraction successful');
-    } catch (error) {
-      console.error('Text extraction error:', error);
-    }ß
+
+  handleTTS() {
+    console.log("Text-to-Speech button clicked");
+    this.sendMessageToActiveTab({ action: "extractText" });
   }
-  
+
+  handleSTT() {
+    console.log("Speech-to-Text button clicked");
+    this.sendMessageToActiveTab({ action: "startSpeechRecognition" });
+  }
+
+  handleSignLanguage() {
+    console.log("Sign Language Translator button clicked");
+    this.sendMessageToActiveTab({ action: "translateSignLanguage" });
+  }
+
+  handleImageCaption() {
+    console.log("Image Captioning button clicked");
+    this.sendMessageToActiveTab({ action: "generateImageCaption" });
+  }
+
+  sendMessageToActiveTab(message) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        try {
+          chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
+            if (chrome.runtime.lastError) {
+              console.error("Message sending error:", chrome.runtime.lastError);
+            }
+          });
+        } catch (error) {
+          console.error("Message sending exception:", error);
+        }
+      } else {
+        console.warn("No active tab found");
+      }
+    });
+  }
+}

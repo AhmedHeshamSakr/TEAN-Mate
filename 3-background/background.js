@@ -1,39 +1,50 @@
-// Constants for keyboard commands
-const KEYBOARD_COMMANDS = {
-  'skip-next': 'skipToNext',
-  'skip-previous': 'skipToPrevious',
-  'toggle-reading': 'toggleReading',
-  'access-link': 'accessLink'
-};
+class BackgroundHandler {
+  constructor() {
+      this.commands = {
+          "skip-next": "skipToNext",
+          "skip-previous": "skipToPrevious",
+          "toggle-reading": "toggleReading",
+          "access-link": "accessLink",
+      };
 
-// Extension installation handler
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Extension installed successfully');
-});
-
-// Extension icon click handler
-chrome.action.onClicked.addListener(() => {
-  console.log('Action icon clicked');
-  // You might want to add logic here to toggle the sidebar
-  // For example:
-  // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-  //   chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleSidebar' });
-  // });
-});
-
-// Keyboard command handler
-chrome.commands.onCommand.addListener(async (command) => {
-  try {
-    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
-    if (!activeTab?.id || !KEYBOARD_COMMANDS[command]) {
-      return;
-    }
-
-    await chrome.tabs.sendMessage(activeTab.id, { 
-      action: KEYBOARD_COMMANDS[command] 
-    });
-  } catch (error) {
-    console.error('Error handling keyboard command:', error);
+      this.initialize();
   }
-});
+
+  initialize() {
+      chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
+      chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
+      chrome.commands.onCommand.addListener(this.onCommand.bind(this));
+  }
+
+  onInstalled() {
+      // Placeholder for installation logic, if needed in the future
+      console.log("Extension installed");
+  }
+
+  onActionClicked() {
+      // Placeholder for action click logic, if needed in the future
+      console.log("Action icon clicked");
+  }
+
+  onCommand(command) {
+      const action = this.commands[command];
+      if (action) {
+          this.sendMessageToActiveTab({ action });
+      } else {
+          console.warn(`Unknown command: ${command}`);
+      }
+  }
+
+  sendMessageToActiveTab(message) {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs.length > 0) {
+              chrome.tabs.sendMessage(tabs[0].id, message);
+          } else {
+              console.warn("No active tab found");
+          }
+      });
+  }
+}
+
+// Instantiate the BackgroundHandler
+new BackgroundHandler();

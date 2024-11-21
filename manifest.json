@@ -31,16 +31,7 @@
         "css": ["sidebar.css"]
       }
     ],
-    "web_accessible_resources": [
-      {
-        "resources": [
-          "sidebar.html",
-          "dist/sidebar.bundle.js",
-          "icons/*"
-        ],
-        "matches": ["<all_urls>"]
-      }
-    ],
+   
 
     "content_security_policy": {
       "extension_pages": "script-src 'self' http://localhost:8080; object-src 'self'"

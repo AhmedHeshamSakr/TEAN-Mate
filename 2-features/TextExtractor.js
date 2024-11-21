@@ -1,5 +1,5 @@
 export default class TextExtractor {
-    static extractAllTextWithTags(node) {
+    extractAllTextWithTags(node) {
         let textSections = [];
         let elementSections = [];
 
@@ -14,19 +14,17 @@ export default class TextExtractor {
             if (tagName === "style" || tagName === "script") return { textSections, elementSections };
 
             if (tagName === "a" && node.href) {
-                const text = node.textContent.trim();
+                const text = Array.from(node.childNodes)
+                    .filter(child => child.nodeType === Node.TEXT_NODE)
+                    .map(child => child.textContent.trim())
+                    .join("");
                 const domain = new URL(node.href).hostname.replace("www.", "");
-                if (text) {
-                    textSections.push(`Link text: ${text}. Link Destination: ${domain}`);
-                    elementSections.push(node);
-                } else {
-                    textSections.push(`Link destination: ${domain}`);
-                    elementSections.push(node);
-                }
+                textSections.push(text ? `Link text: ${text}` : `Link destination: ${domain}`);
+                elementSections.push(node);
             }
 
             for (let child of node.childNodes) {
-                const { textSections: childTexts, elementSections: childElements } = TextExtractor.extractAllTextWithTags(child);
+                const { textSections: childTexts, elementSections: childElements } = this.extractAllTextWithTags(child);
                 textSections = textSections.concat(childTexts);
                 elementSections = elementSections.concat(childElements);
             }
