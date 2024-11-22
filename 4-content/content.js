@@ -1,7 +1,7 @@
-import HighlightBox from "../2-features/HighlightBox.js";
-import TextExtractor  from "../2-features/TextExtractor.js";
-import  SpeechHandler  from "../2-features/SpeechHandler.js";
-import  LinkHandler  from "../2-features/LinkHandler.js";
+import HighlightBox from "../2-features/TTS/HighlightBox.js";
+import TextExtractor  from "../2-features/TTS/TextExtractor.js";
+import  SpeechHandler  from "../2-features/TTS/SpeechHandler.js";
+import  LinkHandler  from "../2-features/TTS/LinkHandler.js";
 
 class ContentHandler {
     constructor() {
