@@ -2,9 +2,7 @@ import HighlightBox from "../2-features/HighlightBox.js";
 import TextExtractor  from "../2-features/TextExtractor.js";
 import  SpeechHandler  from "../2-features/SpeechHandler.js";
 import  LinkHandler  from "../2-features/LinkHandler.js";
-import SidebarController from "../1-sidebar/sidebar.js";
 
-new SidebarController('content');
 class ContentHandler {
     constructor() {
         this.sections = [];
@@ -14,7 +12,6 @@ class ContentHandler {
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
-
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     }
 

@@ -1,116 +1,82 @@
-export default class SidebarController {
-  constructor(context = 'sidebar') {
-    this.context = context;
-    this.buttons = {}; 
-    this.initialize();
+class SidebarController {
+  constructor() {
+      this.buttons = {}; // Store button references for easy access
+      this.initialize(); // Set up event listeners and initial state
   }
 
-  // Modify initialize to be context-sensitive
+  // Initialize sidebar
   initialize() {
-    // Only set sidebar title if in sidebar context
-    if (this.context === 'sidebar') {
-      try {
-        const titleElement = document.getElementById("sidebar-title");
-        if (titleElement) {
-          titleElement.textContent = chrome.runtime.getManifest().name;
-        }
-      } catch (error) {
-        console.warn("Could not set sidebar title:", error);
-      }
-    }
+      // Set sidebar title using the extension's name
+      document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 
-    // Setup event listeners based on context
-    if (this.context === 'sidebar') {
-      document.addEventListener("DOMContentLoaded", this.setupSidebarEventListeners.bind(this));
-    } else if (this.context === 'content') {
-      this.setupContentScriptMessageHandlers();
-    }
+      // Wait for DOM to load before attaching event listeners
+      document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
   }
 
-  // Specific method for sidebar event listeners
-  setupSidebarEventListeners() {
+  // Set up event listeners for all buttons
+  setupEventListeners() {
     const buttons = document.querySelectorAll(".accessibility-button");
     if (!buttons.length) {
       console.warn("No accessibility buttons found!");
       return;
     }
-
+    
     // More robust button assignment
     this.buttons.tts = buttons[0];
     this.buttons.stt = buttons[1];
     this.buttons.signLanguage = buttons[2];
     this.buttons.imageCaption = buttons[3];
-
+  
+    // Rest of the method remains the same
     this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
     this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
     this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
     this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
   }
-
-  // Method to setup message handlers for content script
-  setupContentScriptMessageHandlers() {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      switch(request.action) {
-        case 'toggleTTS':
-          this.handleTTS();
-          break;
-        case 'toggleSTT':
-          this.handleSTT();
-          break;
-        case 'toggleSignLanguage':
-          this.handleSignLanguage();
-          break;
-        case 'toggleImageCaption':
-          this.handleImageCaption();
-          break;
-      }
-    });
-  }
-
-  // Existing methods remain the same
+  // Add an event listener to a button, with error handling
   addButtonListener(button, handler) {
-    if (!button) {
-      console.warn("Button not found, skipping event binding.");
-      return;
-    }
-    button.addEventListener("click", handler);
-  }
-
-  handleTTS() {
-    console.log("Text-to-Speech button clicked");
-    this.sendMessageToActiveTab({ action: "extractText" });
-  }
-
-  handleSTT() {
-    console.log("Speech-to-Text button clicked");
-    this.sendMessageToActiveTab({ action: "startSpeechRecognition" });
-  }
-
-  handleSignLanguage() {
-    console.log("Sign Language Translator button clicked");
-    this.sendMessageToActiveTab({ action: "translateSignLanguage" });
-  }
-
-  handleImageCaption() {
-    console.log("Image Captioning button clicked");
-    this.sendMessageToActiveTab({ action: "generateImageCaption" });
-  }
-
-  sendMessageToActiveTab(message) {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
-        try {
-          chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
-            if (chrome.runtime.lastError) {
-              console.error("Message sending error:", chrome.runtime.lastError);
-            }
-          });
-        } catch (error) {
-          console.error("Message sending exception:", error);
-        }
-      } else {
-        console.warn("No active tab found");
+      if (!button) {
+          console.warn("Button not found, skipping event binding.");
+          return;
       }
-    });
+      button.addEventListener("click", handler);
+  }
+
+  // Handle Text-to-Speech button click
+  handleTTS() {
+      console.log("Text-to-Speech button clicked");
+      this.sendMessageToActiveTab({ action: "extractText" });
+  }
+
+  // Handle Speech-to-Text button click
+  handleSTT() {
+      console.log("Speech-to-Text button clicked");
+      alert("Speech to Text activated"); // Placeholder for STT functionality
+  }
+
+  // Handle Sign Language Translator button click
+  handleSignLanguage() {
+      console.log("Sign Language Translator button clicked");
+      alert("Sign Language Translator activated"); // Placeholder for sign language functionality
+  }
+
+  // Handle Image Captioning button click
+  handleImageCaption() {
+      console.log("Image Captioning button clicked");
+      alert("Image Captioning activated"); // Placeholder for image captioning functionality
+  }
+
+  // Send a message to the active tab
+  sendMessageToActiveTab(message) {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs.length > 0) {
+              chrome.tabs.sendMessage(tabs[0].id, message);
+          } else {
+              console.warn("No active tab found");
+          }
+      });
   }
 }
+
+// Instantiate the SidebarController
+new SidebarController();
