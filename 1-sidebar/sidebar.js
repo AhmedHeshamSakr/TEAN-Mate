@@ -27,12 +27,13 @@ class SidebarController {
     this.buttons.signLanguage = buttons[2];
     this.buttons.imageCaption = buttons[3];
   
-    // Rest of the method remains the same
     this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
     this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
     this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
     this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
   }
+
+  
   // Add an event listener to a button, with error handling
   addButtonListener(button, handler) {
       if (!button) {

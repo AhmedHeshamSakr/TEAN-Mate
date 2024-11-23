@@ -32,6 +32,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.26.0"
+    "@babel/runtime-corejs3": "^7.26.0",
+    "artyom.js": "^1.0.6"
   }
 }

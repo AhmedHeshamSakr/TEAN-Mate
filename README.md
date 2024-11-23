@@ -90,7 +90,7 @@ npm run dev
      ```
    - Add JavaScript in `1-sidebar/sidebar.js`:
      ```javascript
-     import { NewFeatureHandler } from '@features/NewFeatureHandler';
+     import  NewFeatureHandler from '2-features/NewFeatureHandler';
      
      // Feature UI logic
      ```
@@ -140,10 +140,10 @@ npm run dev
 npm run build
 ```
 
-3. **Testing**
+3. **Start Dev**
 ```bash
 # Run tests
-npm test
+npm Start
 ```
 
 ### Common Development Tasks
@@ -244,10 +244,10 @@ npm test
    npm run build
    ```
 
-3. **Testing**
+<!-- 3. **Testing**
    ```bash
    npm test
-   ```
+   ``` -->
 
 The `dist` folder will contain the built extension ready for loading into Edge.
 

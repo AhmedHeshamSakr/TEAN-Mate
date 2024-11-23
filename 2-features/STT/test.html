@@ -1,0 +1,145 @@
+<script src="node_modules/artyom.js/build/artyom.window.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artyom Voice Assistant</title>
+    <script src="node_modules/artyom.js/build/artyom.window.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #recognizedText {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            height: 50px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Artyom Voice Assistant</h1>
+    <button id="start">Start Listening</button>
+    <h3>Recognized Speech:</h3>
+    <div id="recognizedText"></div>
+
+    <script>
+        class ArtyomAssistant {
+            constructor() {
+                this.artyom = new Artyom();
+                this.isListening = false;
+                this.selectedVoice = null; // Default voice
+                this.setupCommands();
+                this.setupUI();
+                this.loadVoices();
+            }
+
+            loadVoices() {
+                const voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    // Select a voice (e.g., English Female)
+                    this.selectedVoice = voices.find(voice => voice.lang === "en_US" && voice.name.includes("Female"));
+                }
+
+                // Fallback to default if the specific voice isn't available
+                if (!this.selectedVoice) {
+                    this.selectedVoice = voices[0]; // First available voice
+                }
+            }
+
+            setupCommands() {
+                this.artyom.addCommands([
+                    {
+                        indexes: ["hello", "hi", "hey"],
+                        action: () => {
+                            this.artyom.say("Hello! How can I assist you today?", {
+                                voice: this.selectedVoice?.voiceURI,
+                            });
+                        }
+                    },
+                    {
+                        indexes: ["what time is it", "tell me the time"],
+                        action: () => {
+                            const now = new Date();
+                            const time = now.toLocaleTimeString();
+                            this.artyom.say(`The current time is ${time}`, {
+                                voice: this.selectedVoice?.voiceURI,
+                            });
+                        }
+                    }
+                ]);
+
+                this.artyom.redirectRecognizedTextOutput((recognized, isFinal) => {
+                    const recognizedTextDiv = document.getElementById("recognizedText");
+                    if (isFinal) {
+                        recognizedTextDiv.textContent = "Final recognized text: " + recognized;
+                    } else {
+                        recognizedTextDiv.textContent = recognized;
+                    }
+                });
+            }
+
+            setupUI() {
+                const startButton = document.getElementById("start");
+                startButton.addEventListener("click", () => this.toggleListening(startButton));
+            }
+
+            startListening() {
+                this.artyom.fatality();
+                setTimeout(() => {
+                    this.artyom.initialize({
+                        lang: "en_US",
+                        continuous: true,
+                        listen: true,
+                        debug: true,
+                        speed: 1,
+                        loadVoices: true,
+                        voice: this.selectedVoice?.voiceURI, // Use the selected voice
+                    }).then(() => {
+                        console.log("Artyom is ready to listen!");
+                        this.artyom.say("Voice assistant activated!", {
+                            voice: this.selectedVoice?.voiceURI,
+                        });
+                        this.isListening = true;
+                        document.getElementById("start").textContent = "Stop Listening";
+                    }).catch(err => {
+                        console.error("Initialization error:", err);
+                        alert("Artyom initialization failed. Please check your settings.");
+                    });
+                }, 250);
+            }
+
+            stopListening() {
+                this.artyom.fatality();
+                console.log("Artyom has stopped listening.");
+                this.artyom.say("Voice assistant deactivated!", {
+                    voice: this.selectedVoice?.voiceURI,
+                });
+                this.isListening = false;
+                document.getElementById("start").textContent = "Start Listening";
+            }
+
+            toggleListening(button) {
+                if (this.isListening) {
+                    this.stopListening();
+                } else {
+                    this.startListening();
+                }
+            }
+        }
+
+        // Instantiate the assistant
+        const assistant = new ArtyomAssistant();
+
+        // Ensure voices are loaded
+        speechSynthesis.onvoiceschanged = () => {
+            assistant.loadVoices();
+        };
+
+    </script>
+</body>
+</html>

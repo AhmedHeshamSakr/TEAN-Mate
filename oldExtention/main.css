@@ -101,26 +101,6 @@ h2 {
     display: inline-block;
 }
 
-.speech-display {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.speech-display h2 {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #333;
-}
-
-#speech-output {
-    font-size: 14px;
-    color: #555;
-}
-
-
 /* Footer Button
 .footer-button {
     text-align: center;
