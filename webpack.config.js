@@ -38,6 +38,25 @@ export default {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        use: {
+            loader: 'file-loader',
+        },
+      },
+      {
+        test: /\.(onnx|json)$/,
+        use: [
+          {
+              loader: 'file-loader',
+              options: {
+                  name: '[name].[hash].[ext]', // Output file name
+                  outputPath: 'assets/', // Output folder
+              },
+          },
+        ],
       }
     ]
   },
@@ -68,6 +87,30 @@ export default {
         {
           from: 'manifest.json',
           to: 'manifest.json'
+        },
+        {
+          from: '2-features/TTS/voices.json',
+          to: 'TTS/voices.json'
+        },
+        {
+          from: '2-features/TTS/piper_phonemize.js',
+          to: 'TTS/piper_phonemize.js'
+        },
+        {
+          from: '2-features/TTS/voices_models',
+          to: 'TTS/voices_models'
+        },
+        {
+          from: '2-features/TTS/piper_phonemize.wasm',
+          to: 'TTS/piper_phonemize.wasm'
+        },
+        {
+          from: '2-features/TTS/piper_phonemize.data',
+          to: 'TTS/piper_phonemize.data'
+        },
+        {
+          from: 'node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm',
+          to: 'ort-wasm-simd-threaded.wasm'
         }
       ]
     })

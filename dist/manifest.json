@@ -36,14 +36,16 @@
         "resources": [
           "sidebar.html",
           "sidebar.bundle.js",
-          "icons/*"
+          "icons/*",
+          "TTS/*",
+          "*.wasm"
         ],
         "matches": ["<all_urls>"]
       }
    ],
 
     "content_security_policy": {
-      "extension_pages": "script-src 'self' http://localhost:8080; object-src 'self'"
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:8080; object-src 'self'"
     },
     "commands": {
       "skip-next": {

@@ -4993,13 +4993,12 @@ var SidebarController = /*#__PURE__*/function () {
       this.buttons.stt = buttons[1];
       this.buttons.signLanguage = buttons[2];
       this.buttons.imageCaption = buttons[3];
-
-      // Rest of the method remains the same
       this.addButtonListener(this.buttons.tts, _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context2 = this.handleTTS).call(_context2, this));
       this.addButtonListener(this.buttons.stt, _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context3 = this.handleSTT).call(_context3, this));
       this.addButtonListener(this.buttons.signLanguage, _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context4 = this.handleSignLanguage).call(_context4, this));
       this.addButtonListener(this.buttons.imageCaption, _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context5 = this.handleImageCaption).call(_context5, this));
     }
+
     // Add an event listener to a button, with error handling
   }, {
     key: "addButtonListener",

@@ -1,3 +1,5 @@
+import { initializeVoices } from "../2-features/TTS/initializeVoices.js";
+
 class BackgroundHandler {
   constructor() {
       this.commands = {
@@ -14,6 +16,20 @@ class BackgroundHandler {
       chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
       chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
       chrome.commands.onCommand.addListener(this.onCommand.bind(this));
+      chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
+
+      // Initialize the TTS voices
+      this.initializeVoices();
+  }
+
+  async initializeVoices() {
+        try {
+            const voices = await initializeVoices();
+            chrome.storage.local.set({ voices });
+            console.log("Voices initialized:", voices);
+        } catch (error) {
+            console.error("Failed to initialize voices:", error);
+        }
   }
 
   onInstalled() {
@@ -33,6 +49,15 @@ class BackgroundHandler {
       } else {
           console.warn(`Unknown command: ${command}`);
       }
+  }
+
+  onMessage(request, sender, sendResponse) {
+        if (request.action === "getVoices") {
+            chrome.storage.local.get("voices", (result) => {
+                sendResponse({ voices: result.voices });
+            });
+            return true;
+        }
   }
 
   sendMessageToActiveTab(message) {
