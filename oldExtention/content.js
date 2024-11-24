@@ -1,4 +1,3 @@
-// import { runPredict } from "TTSmodel/predict";
 
 let sections = [];
 let currentIndex = 0;
@@ -90,7 +89,7 @@ function extractAllTextWithTags(node) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "extractText") {
-
+        // console.log("received extractText");
         const { textSections, elementSections } = extractAllTextWithTags(document.body);
 
         // Store the sections as an array of objects with text and element references
@@ -101,12 +100,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         currentIndex = 0; // Reset to the first section
         speakCurrentSection(); // Start reading the text
-        sendResponse({ success: true });
         return true;
     }
 });
 
-async function speakCurrentSection() {
+function speakCurrentSection() {
     if (currentIndex >= sections.length) {
         removeHighlightBox();
         return;
@@ -114,56 +112,18 @@ async function speakCurrentSection() {
     const section = sections[currentIndex];
     highlightElement(section);
 
-    // const utterance = new SpeechSynthesisUtterance(section.text);
-    // utterance.onend = () => {
-    //     isSpeaking = false;
-    //     currentIndex++;
-    //     speakCurrentSection();
-    // };
-
-    // // Call the runPredict function with the section text
-    // const audioBlob = await runPredict(section.text);
-    // const audioPlayer = document.createElement("audio");
-    // audioPlayer.src = URL.createObjectURL(audioBlob);
-    // audioPlayer.play();
-    // // Add oneded event handler to proceed to the next section
-    // audioPlayer.onended = () => {
-    //     isSpeaking = false;
-    //     currentIndex++;
-    //     speakCurrentSection();
-    // };
-    // isSpeaking = true;
-
-
-    chrome.runtime.sendMessage({ action: "runPredict", text: section.text }, async (response) => {
-        if (response.error) {
-            console.error(response.error);
-            return;
-        }
-        const audioBlob = response.audioBlob;
-        const audioPlayer = document.createElement("audio");
-        audioPlayer.src = URL.createObjectURL(audioBlob);
-        audioPlayer.play();
-    
-        // Add oneded event handler to proceed to the next section
-        audioPlayer.onended = () => {
-            isSpeaking = false;
-            currentIndex++;
-            speakCurrentSection();
-        };
-        isSpeaking = true;
-    });
-
-    // window.speechSynthesis.speak(utterance);
-
+    const utterance = new SpeechSynthesisUtterance(section.text);
+    utterance.onend = () => {
+        isSpeaking = false;
+        currentIndex++;
+        speakCurrentSection();
+    };
+    isSpeaking = true;
+    window.speechSynthesis.speak(utterance);
 }
 
 function stopSpeaking() {
-    // window.speechSynthesis.cancel();
-    if (audioPlayer) {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-    }
+    window.speechSynthesis.cancel();
     isSpeaking = false;
 }
 
