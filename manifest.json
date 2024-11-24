@@ -24,51 +24,37 @@
     "side_panel": {
       "default_path": "sidebar.html"
     },
-    "content_scripts": [
-      {
+    "content_scripts": [{
         "matches": ["<all_urls>"],
-        "js": ["content.bundle.js"],
-        "css": ["sidebar.css"]
-      }
-    ],
-   "web_accessible_resources": [
-      {
-        "resources": [
-          "sidebar.html",
-          "sidebar.bundle.js",
-          "icons/*"
-        ],
-        "matches": ["<all_urls>"]
-      }
-   ],
-
-    "content_security_policy": {
-      "extension_pages": "script-src 'self' http://localhost:8080; object-src 'self'"
-    },
+        "js": ["content.js"]
+    }],
     "commands": {
-      "skip-next": {
-        "suggested_key": {
-          "default": "Ctrl+Right"
+        "skip-next": {
+            "suggested_key": {
+                "default": "Ctrl+Right"
+            },
+            "description": "Skip to next section"
         },
-        "description": "Skip to next section"
-      },
-      "skip-previous": {
-        "suggested_key": {
-          "default": "Ctrl+Left"
+        "skip-previous": {
+            "suggested_key": {
+                "default": "Ctrl+Left"
+            },
+            "description": "Skip to previous section"
         },
-        "description": "Skip to previous section"
-      },
-      "toggle-reading": {
-        "suggested_key": {
-          "default": "Ctrl+Space"
+        "toggle-reading": {
+            "suggested_key": {
+                "default": "Ctrl+Space"
+            },
+            "description": "Pause and continue reading"
         },
-        "description": "Pause and continue reading"
-      },
-      "access-link": {
-        "suggested_key": {
-          "default": "Ctrl+Up"
-        },
-        "description": "Access current link"
-      }
+        "access-link": {
+            "suggested_key": {
+                "default": "Ctrl+Up"
+            },
+            "description": "Access current link"
+        }
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' 'wasm-unsafe-eval' ; object-src 'self'"
     }
-  }
+}
