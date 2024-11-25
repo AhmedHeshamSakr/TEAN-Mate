@@ -4,5 +4,11 @@
             "en_US-lessac-medium.onnx": "voices_models/en_US-lessac-medium.onnx",
             "en_US-lessac-medium.onnx.json": "voices_models/en_US-lessac-medium.onnx.json"
         }
+    },
+    "ar_JO-kareem-medium": {
+        "files": {
+            "ar_JO-kareem-medium.onnx": "voices_models/ar_JO-kareem-medium.onnx",
+            "ar_JO-kareem-medium.onnx.json": "voices_models/ar_JO-kareem-medium.onnx.json"
+        }
     }
 }

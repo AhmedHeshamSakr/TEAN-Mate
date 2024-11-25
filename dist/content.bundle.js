@@ -13228,6 +13228,8 @@ var PiperTTS = /*#__PURE__*/function () {
     this.voices = null;
     this.abortController = null;
     this.session = null;
+    // this.voicesElement = "en_US-lessac-medium";
+    this.voicesElement = "ar_JO-kareem-medium";
   }
   return (0,_babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(PiperTTS, [{
     key: "setVoices",
@@ -13498,17 +13500,17 @@ var PiperTTS = /*#__PURE__*/function () {
     value: function () {
       var _runPredict = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee5(inputText, signal) {
         var _context5, _context6;
-        var HF_BASE, voicesElement, piperPhonemizeJsUrl, piperPhonemizeWasmUrl, piperPhonemizeDataUrl, voiceFiles, modelUrl, modelConfigUrl, input, speakerId, data;
+        var HF_BASE, piperPhonemizeJsUrl, piperPhonemizeWasmUrl, piperPhonemizeDataUrl, voiceFiles, modelUrl, modelConfigUrl, input, speakerId, data;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee5$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               this.abortController = new AbortController();
               HF_BASE = "/TTS/voices_models/";
-              voicesElement = "en_US-lessac-medium";
+              ;
               piperPhonemizeJsUrl = chrome.runtime.getURL("TTS/piper_phonemize.js");
               piperPhonemizeWasmUrl = chrome.runtime.getURL("TTS/piper_phonemize.wasm");
               piperPhonemizeDataUrl = chrome.runtime.getURL("TTS/piper_phonemize.data");
-              voiceFiles = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_6__(this.voices[voicesElement].files);
+              voiceFiles = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_6__(this.voices[this.voicesElement].files);
               modelUrl = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_7__(_context5 = "".concat(chrome.runtime.getURL(HF_BASE))).call(_context5, _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_8__(voiceFiles).call(voiceFiles, function (path) {
                 return _babel_runtime_corejs3_core_js_stable_instance_ends_with__WEBPACK_IMPORTED_MODULE_4__(path).call(path, ".onnx");
               }));

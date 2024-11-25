@@ -7,6 +7,8 @@ class PiperTTS {
         this.voices = null;
         this.abortController = null;
         this.session = null;
+        // this.voicesElement = "en_US-lessac-medium";
+        this.voicesElement = "ar_JO-kareem-medium";
     }
 
     setVoices(voices) {
@@ -164,13 +166,12 @@ class PiperTTS {
 
     async runPredict(inputText, signal) {
         this.abortController = new AbortController();
-        const HF_BASE = `/TTS/voices_models/`;
-        const voicesElement = "en_US-lessac-medium";
+        const HF_BASE = `/TTS/voices_models/`;;
         const piperPhonemizeJsUrl = chrome.runtime.getURL("TTS/piper_phonemize.js");
         const piperPhonemizeWasmUrl = chrome.runtime.getURL("TTS/piper_phonemize.wasm");
         const piperPhonemizeDataUrl = chrome.runtime.getURL("TTS/piper_phonemize.data");
 
-        const voiceFiles = Object.keys(this.voices[voicesElement].files);
+        const voiceFiles = Object.keys(this.voices[this.voicesElement].files);
         const modelUrl = `${chrome.runtime.getURL(HF_BASE)}${voiceFiles.find(path => path.endsWith(".onnx"))}`;
         const modelConfigUrl = `${chrome.runtime.getURL(HF_BASE)}${voiceFiles.find(path => path.endsWith(".onnx.json"))}`;
         const input = inputText;
