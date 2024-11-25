@@ -13289,9 +13289,7 @@ var PiperTTS = /*#__PURE__*/function () {
             case 3:
               _context2.prev = 3;
               _context2.next = 6;
-              return fetch(url, {
-                signal: this.abortController.signal
-              });
+              return fetch(url);
             case 6:
               response = _context2.sent;
               if (response.ok) {
@@ -13325,7 +13323,7 @@ var PiperTTS = /*#__PURE__*/function () {
   }, {
     key: "init",
     value: function () {
-      var _init = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee4(data) {
+      var _init = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee4(data, signal) {
         var input, speakerId, modelUrl, modelConfigUrl, onnxruntimeBase, modelConfigBlob, modelConfig, phonemeIds, sampleRate, numChannels, noiseScale, lengthScale, noiseW, session, feeds, _yield$session$run, pcm, PCM2WAV, file;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
@@ -13388,7 +13386,13 @@ var PiperTTS = /*#__PURE__*/function () {
               _context4.t3.error.call(_context4.t3, "Response text:", _context4.t4);
               return _context4.abrupt("return");
             case 25:
-              _context4.next = 27;
+              if (!signal.aborted) {
+                _context4.next = 27;
+                break;
+              }
+              throw new Error("Prediction aborted");
+            case 27:
+              _context4.next = 29;
               return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_3__(/*#__PURE__*/function () {
                 var _ref = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee3(resolve) {
                   var module;
@@ -13423,26 +13427,38 @@ var PiperTTS = /*#__PURE__*/function () {
                     }
                   }, _callee3);
                 }));
-                return function (_x3) {
+                return function (_x4) {
                   return _ref.apply(this, arguments);
                 };
               }());
-            case 27:
+            case 29:
               phonemeIds = _context4.sent;
+              if (!signal.aborted) {
+                _context4.next = 32;
+                break;
+              }
+              throw new Error("Prediction aborted");
+            case 32:
               sampleRate = modelConfig.audio.sample_rate;
               numChannels = 1;
               noiseScale = modelConfig.inference.noise_scale;
               lengthScale = modelConfig.inference.length_scale;
               noiseW = modelConfig.inference.noise_w;
               if (this.session) {
-                _context4.next = 37;
+                _context4.next = 41;
                 break;
               }
-              _context4.next = 36;
+              _context4.next = 40;
               return onnxruntime_web__WEBPACK_IMPORTED_MODULE_10__.InferenceSession.create(modelUrl);
-            case 36:
+            case 40:
               this.session = _context4.sent;
-            case 37:
+            case 41:
+              if (!signal.aborted) {
+                _context4.next = 43;
+                break;
+              }
+              throw new Error("Prediction aborted");
+            case 43:
               session = this.session;
               console.log("Model loaded");
               feeds = {
@@ -13451,22 +13467,28 @@ var PiperTTS = /*#__PURE__*/function () {
                 scales: new onnxruntime_web__WEBPACK_IMPORTED_MODULE_10__.Tensor("float32", [noiseScale, lengthScale, noiseW])
               };
               if (_babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_6__(modelConfig.speaker_id_map).length) feeds.sid = new onnxruntime_web__WEBPACK_IMPORTED_MODULE_10__.Tensor("int64", [speakerId]);
-              _context4.next = 43;
+              _context4.next = 49;
               return session.run(feeds);
-            case 43:
+            case 49:
               _yield$session$run = _context4.sent;
               pcm = _yield$session$run.output.data;
+              if (!signal.aborted) {
+                _context4.next = 53;
+                break;
+              }
+              throw new Error("Prediction aborted");
+            case 53:
               file = new Blob([PCM2WAV(pcm)], {
                 type: "audio/x-wav"
               });
               return _context4.abrupt("return", file);
-            case 47:
+            case 55:
             case "end":
               return _context4.stop();
           }
         }, _callee4, this, [[8, 16]]);
       }));
-      function init(_x2) {
+      function init(_x2, _x3) {
         return _init.apply(this, arguments);
       }
       return init;
@@ -13474,7 +13496,7 @@ var PiperTTS = /*#__PURE__*/function () {
   }, {
     key: "runPredict",
     value: function () {
-      var _runPredict = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee5(inputText) {
+      var _runPredict = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee5(inputText, signal) {
         var _context5, _context6;
         var HF_BASE, voicesElement, piperPhonemizeJsUrl, piperPhonemizeWasmUrl, piperPhonemizeDataUrl, voiceFiles, modelUrl, modelConfigUrl, input, speakerId, data;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee5$(_context7) {
@@ -13509,17 +13531,20 @@ var PiperTTS = /*#__PURE__*/function () {
                 modelUrl: modelUrl,
                 modelConfigUrl: modelConfigUrl
               };
-              _context7.next = 15;
-              return this.init(data);
+              if (!signal.aborted) {
+                _context7.next = 15;
+                break;
+              }
+              throw new Error("Prediction aborted");
             case 15:
-              return _context7.abrupt("return", _context7.sent);
+              return _context7.abrupt("return", this.init(data, signal));
             case 16:
             case "end":
               return _context7.stop();
           }
         }, _callee5, this);
       }));
-      function runPredict(_x4) {
+      function runPredict(_x5, _x6) {
         return _runPredict.apply(this, arguments);
       }
       return runPredict;
@@ -13581,6 +13606,8 @@ var SpeechHandler = /*#__PURE__*/function () {
     (0,_babel_runtime_corejs3_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, SpeechHandler);
     this.isSpeaking = false;
     this.piperTTS = new _PiperTTS_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+    this.currentAudio = null;
+    this.abortController = null;
     chrome.runtime.sendMessage({
       action: "getVoices"
     }, function (response) {
@@ -13597,36 +13624,56 @@ var SpeechHandler = /*#__PURE__*/function () {
     value: function () {
       var _speak = (0,_babel_runtime_corejs3_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee(text, onEnd) {
         var _this2 = this;
-        var audioBlob, audioUrl, audio;
+        var signal, audioBlob, audioUrl;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return this.piperTTS.runPredict(text);
-            case 3:
+              if (this.abortController) {
+                console.log("Abort previous request");
+                this.abortController.abort();
+              }
+              this.abortController = new AbortController();
+              signal = this.abortController.signal;
+              _context.prev = 3;
+              if (!(this.currentAudio == null)) {
+                _context.next = 10;
+                break;
+              }
+              _context.next = 7;
+              return this.piperTTS.runPredict(text, signal);
+            case 7:
               audioBlob = _context.sent;
               audioUrl = _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_4__.createObjectURL(audioBlob);
-              audio = new Audio(audioUrl);
-              audio.onended = function () {
+              this.currentAudio = new Audio(audioUrl);
+            case 10:
+              if (!this.isSpeaking) {
+                this.isSpeaking = true;
+                console.log("Playing audio");
+                this.currentAudio.play();
+              }
+              this.currentAudio.onended = function () {
                 _this2.isSpeaking = false;
+                _this2.currentAudio = null;
+                console.log("Audio Ended");
                 if (onEnd) onEnd();
               };
-              this.isSpeaking = true;
-              this.currentAudio = audio;
-              console.log("Playing audio");
-              audio.play();
-              _context.next = 16;
+              _context.next = 19;
               break;
-            case 13:
-              _context.prev = 13;
-              _context.t0 = _context["catch"](0);
-              console.error("Error in speak:", _context.t0);
-            case 16:
+            case 14:
+              _context.prev = 14;
+              _context.t0 = _context["catch"](3);
+              if (signal.aborted) {
+                console.log("Request aborted");
+              } else {
+                console.error("Error in speak:", _context.t0);
+              }
+              this.isSpeaking = false;
+              this.abortController = null;
+            case 19:
             case "end":
               return _context.stop();
           }
-        }, _callee, this, [[0, 13]]);
+        }, _callee, this, [[3, 14]]);
       }));
       function speak(_x, _x2) {
         return _speak.apply(this, arguments);
@@ -13646,7 +13693,10 @@ var SpeechHandler = /*#__PURE__*/function () {
                 this.currentAudio = null;
               }
               this.isSpeaking = false;
-              this.piperTTS.abort();
+              if (this.abortController) {
+                this.abortController.abort();
+                this.abortController = null;
+              }
             case 3:
             case "end":
               return _context2.stop();
