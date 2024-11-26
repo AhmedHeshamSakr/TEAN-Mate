@@ -1,6 +1,701 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/ansi-html-community/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/ansi-html-community/index.js ***!
+  \***************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = ansiHTML
+
+// Reference to https://github.com/sindresorhus/ansi-regex
+var _regANSI = /(?:(?:\u001b\[)|\u009b)(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])|\u001b[A-M]/
+
+var _defColors = {
+  reset: ['fff', '000'], // [FOREGROUD_COLOR, BACKGROUND_COLOR]
+  black: '000',
+  red: 'ff0000',
+  green: '209805',
+  yellow: 'e8bf03',
+  blue: '0000ff',
+  magenta: 'ff00ff',
+  cyan: '00ffee',
+  lightgrey: 'f0f0f0',
+  darkgrey: '888'
+}
+var _styles = {
+  30: 'black',
+  31: 'red',
+  32: 'green',
+  33: 'yellow',
+  34: 'blue',
+  35: 'magenta',
+  36: 'cyan',
+  37: 'lightgrey'
+}
+var _openTags = {
+  '1': 'font-weight:bold', // bold
+  '2': 'opacity:0.5', // dim
+  '3': '<i>', // italic
+  '4': '<u>', // underscore
+  '8': 'display:none', // hidden
+  '9': '<del>' // delete
+}
+var _closeTags = {
+  '23': '</i>', // reset italic
+  '24': '</u>', // reset underscore
+  '29': '</del>' // reset delete
+}
+
+;[0, 21, 22, 27, 28, 39, 49].forEach(function (n) {
+  _closeTags[n] = '</span>'
+})
+
+/**
+ * Converts text with ANSI color codes to HTML markup.
+ * @param {String} text
+ * @returns {*}
+ */
+function ansiHTML (text) {
+  // Returns the text if the string has no ANSI escape code.
+  if (!_regANSI.test(text)) {
+    return text
+  }
+
+  // Cache opened sequence.
+  var ansiCodes = []
+  // Replace with markup.
+  var ret = text.replace(/\033\[(\d+)m/g, function (match, seq) {
+    var ot = _openTags[seq]
+    if (ot) {
+      // If current sequence has been opened, close it.
+      if (!!~ansiCodes.indexOf(seq)) { // eslint-disable-line no-extra-boolean-cast
+        ansiCodes.pop()
+        return '</span>'
+      }
+      // Open tag.
+      ansiCodes.push(seq)
+      return ot[0] === '<' ? ot : '<span style="' + ot + ';">'
+    }
+
+    var ct = _closeTags[seq]
+    if (ct) {
+      // Pop sequence
+      ansiCodes.pop()
+      return ct
+    }
+    return ''
+  })
+
+  // Make sure tags are closed.
+  var l = ansiCodes.length
+  ;(l > 0) && (ret += Array(l + 1).join('</span>'))
+
+  return ret
+}
+
+/**
+ * Customize colors.
+ * @param {Object} colors reference to _defColors
+ */
+ansiHTML.setColors = function (colors) {
+  if (typeof colors !== 'object') {
+    throw new Error('`colors` parameter must be an Object.')
+  }
+
+  var _finalColors = {}
+  for (var key in _defColors) {
+    var hex = colors.hasOwnProperty(key) ? colors[key] : null
+    if (!hex) {
+      _finalColors[key] = _defColors[key]
+      continue
+    }
+    if ('reset' === key) {
+      if (typeof hex === 'string') {
+        hex = [hex]
+      }
+      if (!Array.isArray(hex) || hex.length === 0 || hex.some(function (h) {
+        return typeof h !== 'string'
+      })) {
+        throw new Error('The value of `' + key + '` property must be an Array and each item could only be a hex string, e.g.: FF0000')
+      }
+      var defHexColor = _defColors[key]
+      if (!hex[0]) {
+        hex[0] = defHexColor[0]
+      }
+      if (hex.length === 1 || !hex[1]) {
+        hex = [hex[0]]
+        hex.push(defHexColor[1])
+      }
+
+      hex = hex.slice(0, 2)
+    } else if (typeof hex !== 'string') {
+      throw new Error('The value of `' + key + '` property must be a hex string, e.g.: FF0000')
+    }
+    _finalColors[key] = hex
+  }
+  _setTags(_finalColors)
+}
+
+/**
+ * Reset colors.
+ */
+ansiHTML.reset = function () {
+  _setTags(_defColors)
+}
+
+/**
+ * Expose tags, including open and close.
+ * @type {Object}
+ */
+ansiHTML.tags = {}
+
+if (Object.defineProperty) {
+  Object.defineProperty(ansiHTML.tags, 'open', {
+    get: function () { return _openTags }
+  })
+  Object.defineProperty(ansiHTML.tags, 'close', {
+    get: function () { return _closeTags }
+  })
+} else {
+  ansiHTML.tags.open = _openTags
+  ansiHTML.tags.close = _closeTags
+}
+
+function _setTags (colors) {
+  // reset all
+  _openTags['0'] = 'font-weight:normal;opacity:1;color:#' + colors.reset[0] + ';background:#' + colors.reset[1]
+  // inverse
+  _openTags['7'] = 'color:#' + colors.reset[1] + ';background:#' + colors.reset[0]
+  // dark grey
+  _openTags['90'] = 'color:#' + colors.darkgrey
+
+  for (var code in _styles) {
+    var color = _styles[code]
+    var oriColor = colors[color] || '000'
+    _openTags[code] = 'color:#' + oriColor
+    code = parseInt(code)
+    _openTags[(code + 10).toString()] = 'background:#' + oriColor
+  }
+}
+
+ansiHTML.reset()
+
+
+/***/ }),
+
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var R = typeof Reflect === 'object' ? Reflect : null
+var ReflectApply = R && typeof R.apply === 'function'
+  ? R.apply
+  : function ReflectApply(target, receiver, args) {
+    return Function.prototype.apply.call(target, receiver, args);
+  }
+
+var ReflectOwnKeys
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target)
+      .concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+}
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+module.exports = EventEmitter;
+module.exports.once = once;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+var defaultMaxListeners = 10;
+
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function() {
+    return defaultMaxListeners;
+  },
+  set: function(arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function() {
+
+  if (this._events === undefined ||
+      this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+};
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+  this._maxListeners = n;
+  return this;
+};
+
+function _getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return _getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+  var doError = (type === 'error');
+
+  var events = this._events;
+  if (events !== undefined)
+    doError = (doError && events.error === undefined);
+  else if (!doError)
+    return false;
+
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    var er;
+    if (args.length > 0)
+      er = args[0];
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    }
+    // At least give some kind of context to the user
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+
+  if (handler === undefined)
+    return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+
+  checkListener(listener);
+
+  events = target._events;
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type,
+                  listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+        prepend ? [listener, existing] : [existing, listener];
+      // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    m = _getMaxListeners(target);
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true;
+      // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+      var w = new Error('Possible EventEmitter memory leak detected. ' +
+                          existing.length + ' ' + String(type) + ' listeners ' +
+                          'added. Use emitter.setMaxListeners() to ' +
+                          'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0)
+      return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      checkListener(listener);
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
+
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
+
+      checkListener(listener);
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      list = events[type];
+      if (list === undefined)
+        return this;
+
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          this._events = Object.create(null);
+        else {
+          delete events[type];
+          if (events.removeListener)
+            this.emit('removeListener', type, list.listener || listener);
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          return this;
+
+        if (position === 0)
+          list.shift();
+        else {
+          spliceOne(list, position);
+        }
+
+        if (list.length === 1)
+          events[type] = list[0];
+
+        if (events.removeListener !== undefined)
+          this.emit('removeListener', type, originalListener || listener);
+      }
+
+      return this;
+    };
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var listeners, events, i;
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      // not listening for removeListener, no need to emit
+      if (events.removeListener === undefined) {
+        if (arguments.length === 0) {
+          this._events = Object.create(null);
+          this._eventsCount = 0;
+        } else if (events[type] !== undefined) {
+          if (--this._eventsCount === 0)
+            this._events = Object.create(null);
+          else
+            delete events[type];
+        }
+        return this;
+      }
+
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = Object.keys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = Object.create(null);
+        this._eventsCount = 0;
+        return this;
+      }
+
+      listeners = events[type];
+
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners !== undefined) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this.removeListener(type, listeners[i]);
+        }
+      }
+
+      return this;
+    };
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+
+  if (events === undefined)
+    return [];
+
+  var evlistener = events[type];
+  if (evlistener === undefined)
+    return [];
+
+  if (typeof evlistener === 'function')
+    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+
+  return unwrap ?
+    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    copy[i] = arr[i];
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++)
+    list[index] = list[index + 1];
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+function once(emitter, name) {
+  return new Promise(function (resolve, reject) {
+    function errorListener(err) {
+      emitter.removeListener(name, resolver);
+      reject(err);
+    }
+
+    function resolver() {
+      if (typeof emitter.removeListener === 'function') {
+        emitter.removeListener('error', errorListener);
+      }
+      resolve([].slice.call(arguments));
+    };
+
+    eventTargetAgnosticAddListener(emitter, name, resolver, { once: true });
+    if (name !== 'error') {
+      addErrorHandlerIfEventEmitter(emitter, errorListener, { once: true });
+    }
+  });
+}
+
+function addErrorHandlerIfEventEmitter(emitter, handler, flags) {
+  if (typeof emitter.on === 'function') {
+    eventTargetAgnosticAddListener(emitter, 'error', handler, flags);
+  }
+}
+
+function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
+  if (typeof emitter.on === 'function') {
+    if (flags.once) {
+      emitter.once(name, listener);
+    } else {
+      emitter.on(name, listener);
+    }
+  } else if (typeof emitter.addEventListener === 'function') {
+    // EventTarget does not have `error` event semantics like Node
+    // EventEmitters, we do not listen for `error` events here.
+    emitter.addEventListener(name, function wrapListener(arg) {
+      // IE does not have builtin `{ once: true }` support so we
+      // have to do it manually.
+      if (flags.once) {
+        emitter.removeEventListener(name, wrapListener);
+      }
+      listener(arg);
+    });
+  } else {
+    throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type ' + typeof emitter);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm":
 /*!***********************************************************************!*\
   !*** ./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm ***!
@@ -13,6 +708,2803 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "50be9f91026bda8b3ca415814bd2ba3f.wasm");
+
+/***/ }),
+
+/***/ "./node_modules/html-entities/lib/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/html-entities/lib/index.js ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+var __assign=this&&this.__assign||function(){__assign=Object.assign||function(t){for(var s,i=1,n=arguments.length;i<n;i++){s=arguments[i];for(var p in s)if(Object.prototype.hasOwnProperty.call(s,p))t[p]=s[p]}return t};return __assign.apply(this,arguments)};Object.defineProperty(exports, "__esModule", ({value:true}));var named_references_1=__webpack_require__(/*! ./named-references */ "./node_modules/html-entities/lib/named-references.js");var numeric_unicode_map_1=__webpack_require__(/*! ./numeric-unicode-map */ "./node_modules/html-entities/lib/numeric-unicode-map.js");var surrogate_pairs_1=__webpack_require__(/*! ./surrogate-pairs */ "./node_modules/html-entities/lib/surrogate-pairs.js");var allNamedReferences=__assign(__assign({},named_references_1.namedReferences),{all:named_references_1.namedReferences.html5});function replaceUsingRegExp(macroText,macroRegExp,macroReplacer){macroRegExp.lastIndex=0;var replaceMatch=macroRegExp.exec(macroText);var replaceResult;if(replaceMatch){replaceResult="";var replaceLastIndex=0;do{if(replaceLastIndex!==replaceMatch.index){replaceResult+=macroText.substring(replaceLastIndex,replaceMatch.index)}var replaceInput=replaceMatch[0];replaceResult+=macroReplacer(replaceInput);replaceLastIndex=replaceMatch.index+replaceInput.length}while(replaceMatch=macroRegExp.exec(macroText));if(replaceLastIndex!==macroText.length){replaceResult+=macroText.substring(replaceLastIndex)}}else{replaceResult=macroText}return replaceResult}var encodeRegExps={specialChars:/[<>'"&]/g,nonAscii:/[<>'"&\u0080-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/g,nonAsciiPrintable:/[<>'"&\x01-\x08\x11-\x15\x17-\x1F\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/g,nonAsciiPrintableOnly:/[\x01-\x08\x11-\x15\x17-\x1F\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/g,extensive:/[\x01-\x0c\x0e-\x1f\x21-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7d\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/g};var defaultEncodeOptions={mode:"specialChars",level:"all",numeric:"decimal"};function encode(text,_a){var _b=_a===void 0?defaultEncodeOptions:_a,_c=_b.mode,mode=_c===void 0?"specialChars":_c,_d=_b.numeric,numeric=_d===void 0?"decimal":_d,_e=_b.level,level=_e===void 0?"all":_e;if(!text){return""}var encodeRegExp=encodeRegExps[mode];var references=allNamedReferences[level].characters;var isHex=numeric==="hexadecimal";return replaceUsingRegExp(text,encodeRegExp,(function(input){var result=references[input];if(!result){var code=input.length>1?surrogate_pairs_1.getCodePoint(input,0):input.charCodeAt(0);result=(isHex?"&#x"+code.toString(16):"&#"+code)+";"}return result}))}exports.encode=encode;var defaultDecodeOptions={scope:"body",level:"all"};var strict=/&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);/g;var attribute=/&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+)[;=]?/g;var baseDecodeRegExps={xml:{strict:strict,attribute:attribute,body:named_references_1.bodyRegExps.xml},html4:{strict:strict,attribute:attribute,body:named_references_1.bodyRegExps.html4},html5:{strict:strict,attribute:attribute,body:named_references_1.bodyRegExps.html5}};var decodeRegExps=__assign(__assign({},baseDecodeRegExps),{all:baseDecodeRegExps.html5});var fromCharCode=String.fromCharCode;var outOfBoundsChar=fromCharCode(65533);var defaultDecodeEntityOptions={level:"all"};function getDecodedEntity(entity,references,isAttribute,isStrict){var decodeResult=entity;var decodeEntityLastChar=entity[entity.length-1];if(isAttribute&&decodeEntityLastChar==="="){decodeResult=entity}else if(isStrict&&decodeEntityLastChar!==";"){decodeResult=entity}else{var decodeResultByReference=references[entity];if(decodeResultByReference){decodeResult=decodeResultByReference}else if(entity[0]==="&"&&entity[1]==="#"){var decodeSecondChar=entity[2];var decodeCode=decodeSecondChar=="x"||decodeSecondChar=="X"?parseInt(entity.substr(3),16):parseInt(entity.substr(2));decodeResult=decodeCode>=1114111?outOfBoundsChar:decodeCode>65535?surrogate_pairs_1.fromCodePoint(decodeCode):fromCharCode(numeric_unicode_map_1.numericUnicodeMap[decodeCode]||decodeCode)}}return decodeResult}function decodeEntity(entity,_a){var _b=(_a===void 0?defaultDecodeEntityOptions:_a).level,level=_b===void 0?"all":_b;if(!entity){return""}return getDecodedEntity(entity,allNamedReferences[level].entities,false,false)}exports.decodeEntity=decodeEntity;function decode(text,_a){var _b=_a===void 0?defaultDecodeOptions:_a,_c=_b.level,level=_c===void 0?"all":_c,_d=_b.scope,scope=_d===void 0?level==="xml"?"strict":"body":_d;if(!text){return""}var decodeRegExp=decodeRegExps[level][scope];var references=allNamedReferences[level].entities;var isAttribute=scope==="attribute";var isStrict=scope==="strict";return replaceUsingRegExp(text,decodeRegExp,(function(entity){return getDecodedEntity(entity,references,isAttribute,isStrict)}))}exports.decode=decode;
+//# sourceMappingURL=./index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/html-entities/lib/named-references.js":
+/*!************************************************************!*\
+  !*** ./node_modules/html-entities/lib/named-references.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", ({value:true}));exports.bodyRegExps={xml:/&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html4:/&notin;|&(?:nbsp|iexcl|cent|pound|curren|yen|brvbar|sect|uml|copy|ordf|laquo|not|shy|reg|macr|deg|plusmn|sup2|sup3|acute|micro|para|middot|cedil|sup1|ordm|raquo|frac14|frac12|frac34|iquest|Agrave|Aacute|Acirc|Atilde|Auml|Aring|AElig|Ccedil|Egrave|Eacute|Ecirc|Euml|Igrave|Iacute|Icirc|Iuml|ETH|Ntilde|Ograve|Oacute|Ocirc|Otilde|Ouml|times|Oslash|Ugrave|Uacute|Ucirc|Uuml|Yacute|THORN|szlig|agrave|aacute|acirc|atilde|auml|aring|aelig|ccedil|egrave|eacute|ecirc|euml|igrave|iacute|icirc|iuml|eth|ntilde|ograve|oacute|ocirc|otilde|ouml|divide|oslash|ugrave|uacute|ucirc|uuml|yacute|thorn|yuml|quot|amp|lt|gt|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html5:/&centerdot;|&copysr;|&divideontimes;|&gtcc;|&gtcir;|&gtdot;|&gtlPar;|&gtquest;|&gtrapprox;|&gtrarr;|&gtrdot;|&gtreqless;|&gtreqqless;|&gtrless;|&gtrsim;|&ltcc;|&ltcir;|&ltdot;|&lthree;|&ltimes;|&ltlarr;|&ltquest;|&ltrPar;|&ltri;|&ltrie;|&ltrif;|&notin;|&notinE;|&notindot;|&notinva;|&notinvb;|&notinvc;|&notni;|&notniva;|&notnivb;|&notnivc;|&parallel;|&timesb;|&timesbar;|&timesd;|&(?:AElig|AMP|Aacute|Acirc|Agrave|Aring|Atilde|Auml|COPY|Ccedil|ETH|Eacute|Ecirc|Egrave|Euml|GT|Iacute|Icirc|Igrave|Iuml|LT|Ntilde|Oacute|Ocirc|Ograve|Oslash|Otilde|Ouml|QUOT|REG|THORN|Uacute|Ucirc|Ugrave|Uuml|Yacute|aacute|acirc|acute|aelig|agrave|amp|aring|atilde|auml|brvbar|ccedil|cedil|cent|copy|curren|deg|divide|eacute|ecirc|egrave|eth|euml|frac12|frac14|frac34|gt|iacute|icirc|iexcl|igrave|iquest|iuml|laquo|lt|macr|micro|middot|nbsp|not|ntilde|oacute|ocirc|ograve|ordf|ordm|oslash|otilde|ouml|para|plusmn|pound|quot|raquo|reg|sect|shy|sup1|sup2|sup3|szlig|thorn|times|uacute|ucirc|ugrave|uml|uuml|yacute|yen|yuml|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g};exports.namedReferences={xml:{entities:{"&lt;":"<","&gt;":">","&quot;":'"',"&apos;":"'","&amp;":"&"},characters:{"<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;","&":"&amp;"}},html4:{entities:{"&apos;":"'","&nbsp":" ","&nbsp;":" ","&iexcl":"¡","&iexcl;":"¡","&cent":"¢","&cent;":"¢","&pound":"£","&pound;":"£","&curren":"¤","&curren;":"¤","&yen":"¥","&yen;":"¥","&brvbar":"¦","&brvbar;":"¦","&sect":"§","&sect;":"§","&uml":"¨","&uml;":"¨","&copy":"©","&copy;":"©","&ordf":"ª","&ordf;":"ª","&laquo":"«","&laquo;":"«","&not":"¬","&not;":"¬","&shy":"­","&shy;":"­","&reg":"®","&reg;":"®","&macr":"¯","&macr;":"¯","&deg":"°","&deg;":"°","&plusmn":"±","&plusmn;":"±","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&acute":"´","&acute;":"´","&micro":"µ","&micro;":"µ","&para":"¶","&para;":"¶","&middot":"·","&middot;":"·","&cedil":"¸","&cedil;":"¸","&sup1":"¹","&sup1;":"¹","&ordm":"º","&ordm;":"º","&raquo":"»","&raquo;":"»","&frac14":"¼","&frac14;":"¼","&frac12":"½","&frac12;":"½","&frac34":"¾","&frac34;":"¾","&iquest":"¿","&iquest;":"¿","&Agrave":"À","&Agrave;":"À","&Aacute":"Á","&Aacute;":"Á","&Acirc":"Â","&Acirc;":"Â","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Aring":"Å","&Aring;":"Å","&AElig":"Æ","&AElig;":"Æ","&Ccedil":"Ç","&Ccedil;":"Ç","&Egrave":"È","&Egrave;":"È","&Eacute":"É","&Eacute;":"É","&Ecirc":"Ê","&Ecirc;":"Ê","&Euml":"Ë","&Euml;":"Ë","&Igrave":"Ì","&Igrave;":"Ì","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Iuml":"Ï","&Iuml;":"Ï","&ETH":"Ð","&ETH;":"Ð","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Ograve":"Ò","&Ograve;":"Ò","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Otilde":"Õ","&Otilde;":"Õ","&Ouml":"Ö","&Ouml;":"Ö","&times":"×","&times;":"×","&Oslash":"Ø","&Oslash;":"Ø","&Ugrave":"Ù","&Ugrave;":"Ù","&Uacute":"Ú","&Uacute;":"Ú","&Ucirc":"Û","&Ucirc;":"Û","&Uuml":"Ü","&Uuml;":"Ü","&Yacute":"Ý","&Yacute;":"Ý","&THORN":"Þ","&THORN;":"Þ","&szlig":"ß","&szlig;":"ß","&agrave":"à","&agrave;":"à","&aacute":"á","&aacute;":"á","&acirc":"â","&acirc;":"â","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&aring":"å","&aring;":"å","&aelig":"æ","&aelig;":"æ","&ccedil":"ç","&ccedil;":"ç","&egrave":"è","&egrave;":"è","&eacute":"é","&eacute;":"é","&ecirc":"ê","&ecirc;":"ê","&euml":"ë","&euml;":"ë","&igrave":"ì","&igrave;":"ì","&iacute":"í","&iacute;":"í","&icirc":"î","&icirc;":"î","&iuml":"ï","&iuml;":"ï","&eth":"ð","&eth;":"ð","&ntilde":"ñ","&ntilde;":"ñ","&ograve":"ò","&ograve;":"ò","&oacute":"ó","&oacute;":"ó","&ocirc":"ô","&ocirc;":"ô","&otilde":"õ","&otilde;":"õ","&ouml":"ö","&ouml;":"ö","&divide":"÷","&divide;":"÷","&oslash":"ø","&oslash;":"ø","&ugrave":"ù","&ugrave;":"ù","&uacute":"ú","&uacute;":"ú","&ucirc":"û","&ucirc;":"û","&uuml":"ü","&uuml;":"ü","&yacute":"ý","&yacute;":"ý","&thorn":"þ","&thorn;":"þ","&yuml":"ÿ","&yuml;":"ÿ","&quot":'"',"&quot;":'"',"&amp":"&","&amp;":"&","&lt":"<","&lt;":"<","&gt":">","&gt;":">","&OElig;":"Œ","&oelig;":"œ","&Scaron;":"Š","&scaron;":"š","&Yuml;":"Ÿ","&circ;":"ˆ","&tilde;":"˜","&ensp;":" ","&emsp;":" ","&thinsp;":" ","&zwnj;":"‌","&zwj;":"‍","&lrm;":"‎","&rlm;":"‏","&ndash;":"–","&mdash;":"—","&lsquo;":"‘","&rsquo;":"’","&sbquo;":"‚","&ldquo;":"“","&rdquo;":"”","&bdquo;":"„","&dagger;":"†","&Dagger;":"‡","&permil;":"‰","&lsaquo;":"‹","&rsaquo;":"›","&euro;":"€","&fnof;":"ƒ","&Alpha;":"Α","&Beta;":"Β","&Gamma;":"Γ","&Delta;":"Δ","&Epsilon;":"Ε","&Zeta;":"Ζ","&Eta;":"Η","&Theta;":"Θ","&Iota;":"Ι","&Kappa;":"Κ","&Lambda;":"Λ","&Mu;":"Μ","&Nu;":"Ν","&Xi;":"Ξ","&Omicron;":"Ο","&Pi;":"Π","&Rho;":"Ρ","&Sigma;":"Σ","&Tau;":"Τ","&Upsilon;":"Υ","&Phi;":"Φ","&Chi;":"Χ","&Psi;":"Ψ","&Omega;":"Ω","&alpha;":"α","&beta;":"β","&gamma;":"γ","&delta;":"δ","&epsilon;":"ε","&zeta;":"ζ","&eta;":"η","&theta;":"θ","&iota;":"ι","&kappa;":"κ","&lambda;":"λ","&mu;":"μ","&nu;":"ν","&xi;":"ξ","&omicron;":"ο","&pi;":"π","&rho;":"ρ","&sigmaf;":"ς","&sigma;":"σ","&tau;":"τ","&upsilon;":"υ","&phi;":"φ","&chi;":"χ","&psi;":"ψ","&omega;":"ω","&thetasym;":"ϑ","&upsih;":"ϒ","&piv;":"ϖ","&bull;":"•","&hellip;":"…","&prime;":"′","&Prime;":"″","&oline;":"‾","&frasl;":"⁄","&weierp;":"℘","&image;":"ℑ","&real;":"ℜ","&trade;":"™","&alefsym;":"ℵ","&larr;":"←","&uarr;":"↑","&rarr;":"→","&darr;":"↓","&harr;":"↔","&crarr;":"↵","&lArr;":"⇐","&uArr;":"⇑","&rArr;":"⇒","&dArr;":"⇓","&hArr;":"⇔","&forall;":"∀","&part;":"∂","&exist;":"∃","&empty;":"∅","&nabla;":"∇","&isin;":"∈","&notin;":"∉","&ni;":"∋","&prod;":"∏","&sum;":"∑","&minus;":"−","&lowast;":"∗","&radic;":"√","&prop;":"∝","&infin;":"∞","&ang;":"∠","&and;":"∧","&or;":"∨","&cap;":"∩","&cup;":"∪","&int;":"∫","&there4;":"∴","&sim;":"∼","&cong;":"≅","&asymp;":"≈","&ne;":"≠","&equiv;":"≡","&le;":"≤","&ge;":"≥","&sub;":"⊂","&sup;":"⊃","&nsub;":"⊄","&sube;":"⊆","&supe;":"⊇","&oplus;":"⊕","&otimes;":"⊗","&perp;":"⊥","&sdot;":"⋅","&lceil;":"⌈","&rceil;":"⌉","&lfloor;":"⌊","&rfloor;":"⌋","&lang;":"〈","&rang;":"〉","&loz;":"◊","&spades;":"♠","&clubs;":"♣","&hearts;":"♥","&diams;":"♦"},characters:{"'":"&apos;"," ":"&nbsp;","¡":"&iexcl;","¢":"&cent;","£":"&pound;","¤":"&curren;","¥":"&yen;","¦":"&brvbar;","§":"&sect;","¨":"&uml;","©":"&copy;","ª":"&ordf;","«":"&laquo;","¬":"&not;","­":"&shy;","®":"&reg;","¯":"&macr;","°":"&deg;","±":"&plusmn;","²":"&sup2;","³":"&sup3;","´":"&acute;","µ":"&micro;","¶":"&para;","·":"&middot;","¸":"&cedil;","¹":"&sup1;","º":"&ordm;","»":"&raquo;","¼":"&frac14;","½":"&frac12;","¾":"&frac34;","¿":"&iquest;","À":"&Agrave;","Á":"&Aacute;","Â":"&Acirc;","Ã":"&Atilde;","Ä":"&Auml;","Å":"&Aring;","Æ":"&AElig;","Ç":"&Ccedil;","È":"&Egrave;","É":"&Eacute;","Ê":"&Ecirc;","Ë":"&Euml;","Ì":"&Igrave;","Í":"&Iacute;","Î":"&Icirc;","Ï":"&Iuml;","Ð":"&ETH;","Ñ":"&Ntilde;","Ò":"&Ograve;","Ó":"&Oacute;","Ô":"&Ocirc;","Õ":"&Otilde;","Ö":"&Ouml;","×":"&times;","Ø":"&Oslash;","Ù":"&Ugrave;","Ú":"&Uacute;","Û":"&Ucirc;","Ü":"&Uuml;","Ý":"&Yacute;","Þ":"&THORN;","ß":"&szlig;","à":"&agrave;","á":"&aacute;","â":"&acirc;","ã":"&atilde;","ä":"&auml;","å":"&aring;","æ":"&aelig;","ç":"&ccedil;","è":"&egrave;","é":"&eacute;","ê":"&ecirc;","ë":"&euml;","ì":"&igrave;","í":"&iacute;","î":"&icirc;","ï":"&iuml;","ð":"&eth;","ñ":"&ntilde;","ò":"&ograve;","ó":"&oacute;","ô":"&ocirc;","õ":"&otilde;","ö":"&ouml;","÷":"&divide;","ø":"&oslash;","ù":"&ugrave;","ú":"&uacute;","û":"&ucirc;","ü":"&uuml;","ý":"&yacute;","þ":"&thorn;","ÿ":"&yuml;",'"':"&quot;","&":"&amp;","<":"&lt;",">":"&gt;","Œ":"&OElig;","œ":"&oelig;","Š":"&Scaron;","š":"&scaron;","Ÿ":"&Yuml;","ˆ":"&circ;","˜":"&tilde;"," ":"&ensp;"," ":"&emsp;"," ":"&thinsp;","‌":"&zwnj;","‍":"&zwj;","‎":"&lrm;","‏":"&rlm;","–":"&ndash;","—":"&mdash;","‘":"&lsquo;","’":"&rsquo;","‚":"&sbquo;","“":"&ldquo;","”":"&rdquo;","„":"&bdquo;","†":"&dagger;","‡":"&Dagger;","‰":"&permil;","‹":"&lsaquo;","›":"&rsaquo;","€":"&euro;","ƒ":"&fnof;","Α":"&Alpha;","Β":"&Beta;","Γ":"&Gamma;","Δ":"&Delta;","Ε":"&Epsilon;","Ζ":"&Zeta;","Η":"&Eta;","Θ":"&Theta;","Ι":"&Iota;","Κ":"&Kappa;","Λ":"&Lambda;","Μ":"&Mu;","Ν":"&Nu;","Ξ":"&Xi;","Ο":"&Omicron;","Π":"&Pi;","Ρ":"&Rho;","Σ":"&Sigma;","Τ":"&Tau;","Υ":"&Upsilon;","Φ":"&Phi;","Χ":"&Chi;","Ψ":"&Psi;","Ω":"&Omega;","α":"&alpha;","β":"&beta;","γ":"&gamma;","δ":"&delta;","ε":"&epsilon;","ζ":"&zeta;","η":"&eta;","θ":"&theta;","ι":"&iota;","κ":"&kappa;","λ":"&lambda;","μ":"&mu;","ν":"&nu;","ξ":"&xi;","ο":"&omicron;","π":"&pi;","ρ":"&rho;","ς":"&sigmaf;","σ":"&sigma;","τ":"&tau;","υ":"&upsilon;","φ":"&phi;","χ":"&chi;","ψ":"&psi;","ω":"&omega;","ϑ":"&thetasym;","ϒ":"&upsih;","ϖ":"&piv;","•":"&bull;","…":"&hellip;","′":"&prime;","″":"&Prime;","‾":"&oline;","⁄":"&frasl;","℘":"&weierp;","ℑ":"&image;","ℜ":"&real;","™":"&trade;","ℵ":"&alefsym;","←":"&larr;","↑":"&uarr;","→":"&rarr;","↓":"&darr;","↔":"&harr;","↵":"&crarr;","⇐":"&lArr;","⇑":"&uArr;","⇒":"&rArr;","⇓":"&dArr;","⇔":"&hArr;","∀":"&forall;","∂":"&part;","∃":"&exist;","∅":"&empty;","∇":"&nabla;","∈":"&isin;","∉":"&notin;","∋":"&ni;","∏":"&prod;","∑":"&sum;","−":"&minus;","∗":"&lowast;","√":"&radic;","∝":"&prop;","∞":"&infin;","∠":"&ang;","∧":"&and;","∨":"&or;","∩":"&cap;","∪":"&cup;","∫":"&int;","∴":"&there4;","∼":"&sim;","≅":"&cong;","≈":"&asymp;","≠":"&ne;","≡":"&equiv;","≤":"&le;","≥":"&ge;","⊂":"&sub;","⊃":"&sup;","⊄":"&nsub;","⊆":"&sube;","⊇":"&supe;","⊕":"&oplus;","⊗":"&otimes;","⊥":"&perp;","⋅":"&sdot;","⌈":"&lceil;","⌉":"&rceil;","⌊":"&lfloor;","⌋":"&rfloor;","〈":"&lang;","〉":"&rang;","◊":"&loz;","♠":"&spades;","♣":"&clubs;","♥":"&hearts;","♦":"&diams;"}},html5:{entities:{"&AElig":"Æ","&AElig;":"Æ","&AMP":"&","&AMP;":"&","&Aacute":"Á","&Aacute;":"Á","&Abreve;":"Ă","&Acirc":"Â","&Acirc;":"Â","&Acy;":"А","&Afr;":"𝔄","&Agrave":"À","&Agrave;":"À","&Alpha;":"Α","&Amacr;":"Ā","&And;":"⩓","&Aogon;":"Ą","&Aopf;":"𝔸","&ApplyFunction;":"⁡","&Aring":"Å","&Aring;":"Å","&Ascr;":"𝒜","&Assign;":"≔","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Backslash;":"∖","&Barv;":"⫧","&Barwed;":"⌆","&Bcy;":"Б","&Because;":"∵","&Bernoullis;":"ℬ","&Beta;":"Β","&Bfr;":"𝔅","&Bopf;":"𝔹","&Breve;":"˘","&Bscr;":"ℬ","&Bumpeq;":"≎","&CHcy;":"Ч","&COPY":"©","&COPY;":"©","&Cacute;":"Ć","&Cap;":"⋒","&CapitalDifferentialD;":"ⅅ","&Cayleys;":"ℭ","&Ccaron;":"Č","&Ccedil":"Ç","&Ccedil;":"Ç","&Ccirc;":"Ĉ","&Cconint;":"∰","&Cdot;":"Ċ","&Cedilla;":"¸","&CenterDot;":"·","&Cfr;":"ℭ","&Chi;":"Χ","&CircleDot;":"⊙","&CircleMinus;":"⊖","&CirclePlus;":"⊕","&CircleTimes;":"⊗","&ClockwiseContourIntegral;":"∲","&CloseCurlyDoubleQuote;":"”","&CloseCurlyQuote;":"’","&Colon;":"∷","&Colone;":"⩴","&Congruent;":"≡","&Conint;":"∯","&ContourIntegral;":"∮","&Copf;":"ℂ","&Coproduct;":"∐","&CounterClockwiseContourIntegral;":"∳","&Cross;":"⨯","&Cscr;":"𝒞","&Cup;":"⋓","&CupCap;":"≍","&DD;":"ⅅ","&DDotrahd;":"⤑","&DJcy;":"Ђ","&DScy;":"Ѕ","&DZcy;":"Џ","&Dagger;":"‡","&Darr;":"↡","&Dashv;":"⫤","&Dcaron;":"Ď","&Dcy;":"Д","&Del;":"∇","&Delta;":"Δ","&Dfr;":"𝔇","&DiacriticalAcute;":"´","&DiacriticalDot;":"˙","&DiacriticalDoubleAcute;":"˝","&DiacriticalGrave;":"`","&DiacriticalTilde;":"˜","&Diamond;":"⋄","&DifferentialD;":"ⅆ","&Dopf;":"𝔻","&Dot;":"¨","&DotDot;":"⃜","&DotEqual;":"≐","&DoubleContourIntegral;":"∯","&DoubleDot;":"¨","&DoubleDownArrow;":"⇓","&DoubleLeftArrow;":"⇐","&DoubleLeftRightArrow;":"⇔","&DoubleLeftTee;":"⫤","&DoubleLongLeftArrow;":"⟸","&DoubleLongLeftRightArrow;":"⟺","&DoubleLongRightArrow;":"⟹","&DoubleRightArrow;":"⇒","&DoubleRightTee;":"⊨","&DoubleUpArrow;":"⇑","&DoubleUpDownArrow;":"⇕","&DoubleVerticalBar;":"∥","&DownArrow;":"↓","&DownArrowBar;":"⤓","&DownArrowUpArrow;":"⇵","&DownBreve;":"̑","&DownLeftRightVector;":"⥐","&DownLeftTeeVector;":"⥞","&DownLeftVector;":"↽","&DownLeftVectorBar;":"⥖","&DownRightTeeVector;":"⥟","&DownRightVector;":"⇁","&DownRightVectorBar;":"⥗","&DownTee;":"⊤","&DownTeeArrow;":"↧","&Downarrow;":"⇓","&Dscr;":"𝒟","&Dstrok;":"Đ","&ENG;":"Ŋ","&ETH":"Ð","&ETH;":"Ð","&Eacute":"É","&Eacute;":"É","&Ecaron;":"Ě","&Ecirc":"Ê","&Ecirc;":"Ê","&Ecy;":"Э","&Edot;":"Ė","&Efr;":"𝔈","&Egrave":"È","&Egrave;":"È","&Element;":"∈","&Emacr;":"Ē","&EmptySmallSquare;":"◻","&EmptyVerySmallSquare;":"▫","&Eogon;":"Ę","&Eopf;":"𝔼","&Epsilon;":"Ε","&Equal;":"⩵","&EqualTilde;":"≂","&Equilibrium;":"⇌","&Escr;":"ℰ","&Esim;":"⩳","&Eta;":"Η","&Euml":"Ë","&Euml;":"Ë","&Exists;":"∃","&ExponentialE;":"ⅇ","&Fcy;":"Ф","&Ffr;":"𝔉","&FilledSmallSquare;":"◼","&FilledVerySmallSquare;":"▪","&Fopf;":"𝔽","&ForAll;":"∀","&Fouriertrf;":"ℱ","&Fscr;":"ℱ","&GJcy;":"Ѓ","&GT":">","&GT;":">","&Gamma;":"Γ","&Gammad;":"Ϝ","&Gbreve;":"Ğ","&Gcedil;":"Ģ","&Gcirc;":"Ĝ","&Gcy;":"Г","&Gdot;":"Ġ","&Gfr;":"𝔊","&Gg;":"⋙","&Gopf;":"𝔾","&GreaterEqual;":"≥","&GreaterEqualLess;":"⋛","&GreaterFullEqual;":"≧","&GreaterGreater;":"⪢","&GreaterLess;":"≷","&GreaterSlantEqual;":"⩾","&GreaterTilde;":"≳","&Gscr;":"𝒢","&Gt;":"≫","&HARDcy;":"Ъ","&Hacek;":"ˇ","&Hat;":"^","&Hcirc;":"Ĥ","&Hfr;":"ℌ","&HilbertSpace;":"ℋ","&Hopf;":"ℍ","&HorizontalLine;":"─","&Hscr;":"ℋ","&Hstrok;":"Ħ","&HumpDownHump;":"≎","&HumpEqual;":"≏","&IEcy;":"Е","&IJlig;":"Ĳ","&IOcy;":"Ё","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Icy;":"И","&Idot;":"İ","&Ifr;":"ℑ","&Igrave":"Ì","&Igrave;":"Ì","&Im;":"ℑ","&Imacr;":"Ī","&ImaginaryI;":"ⅈ","&Implies;":"⇒","&Int;":"∬","&Integral;":"∫","&Intersection;":"⋂","&InvisibleComma;":"⁣","&InvisibleTimes;":"⁢","&Iogon;":"Į","&Iopf;":"𝕀","&Iota;":"Ι","&Iscr;":"ℐ","&Itilde;":"Ĩ","&Iukcy;":"І","&Iuml":"Ï","&Iuml;":"Ï","&Jcirc;":"Ĵ","&Jcy;":"Й","&Jfr;":"𝔍","&Jopf;":"𝕁","&Jscr;":"𝒥","&Jsercy;":"Ј","&Jukcy;":"Є","&KHcy;":"Х","&KJcy;":"Ќ","&Kappa;":"Κ","&Kcedil;":"Ķ","&Kcy;":"К","&Kfr;":"𝔎","&Kopf;":"𝕂","&Kscr;":"𝒦","&LJcy;":"Љ","&LT":"<","&LT;":"<","&Lacute;":"Ĺ","&Lambda;":"Λ","&Lang;":"⟪","&Laplacetrf;":"ℒ","&Larr;":"↞","&Lcaron;":"Ľ","&Lcedil;":"Ļ","&Lcy;":"Л","&LeftAngleBracket;":"⟨","&LeftArrow;":"←","&LeftArrowBar;":"⇤","&LeftArrowRightArrow;":"⇆","&LeftCeiling;":"⌈","&LeftDoubleBracket;":"⟦","&LeftDownTeeVector;":"⥡","&LeftDownVector;":"⇃","&LeftDownVectorBar;":"⥙","&LeftFloor;":"⌊","&LeftRightArrow;":"↔","&LeftRightVector;":"⥎","&LeftTee;":"⊣","&LeftTeeArrow;":"↤","&LeftTeeVector;":"⥚","&LeftTriangle;":"⊲","&LeftTriangleBar;":"⧏","&LeftTriangleEqual;":"⊴","&LeftUpDownVector;":"⥑","&LeftUpTeeVector;":"⥠","&LeftUpVector;":"↿","&LeftUpVectorBar;":"⥘","&LeftVector;":"↼","&LeftVectorBar;":"⥒","&Leftarrow;":"⇐","&Leftrightarrow;":"⇔","&LessEqualGreater;":"⋚","&LessFullEqual;":"≦","&LessGreater;":"≶","&LessLess;":"⪡","&LessSlantEqual;":"⩽","&LessTilde;":"≲","&Lfr;":"𝔏","&Ll;":"⋘","&Lleftarrow;":"⇚","&Lmidot;":"Ŀ","&LongLeftArrow;":"⟵","&LongLeftRightArrow;":"⟷","&LongRightArrow;":"⟶","&Longleftarrow;":"⟸","&Longleftrightarrow;":"⟺","&Longrightarrow;":"⟹","&Lopf;":"𝕃","&LowerLeftArrow;":"↙","&LowerRightArrow;":"↘","&Lscr;":"ℒ","&Lsh;":"↰","&Lstrok;":"Ł","&Lt;":"≪","&Map;":"⤅","&Mcy;":"М","&MediumSpace;":" ","&Mellintrf;":"ℳ","&Mfr;":"𝔐","&MinusPlus;":"∓","&Mopf;":"𝕄","&Mscr;":"ℳ","&Mu;":"Μ","&NJcy;":"Њ","&Nacute;":"Ń","&Ncaron;":"Ň","&Ncedil;":"Ņ","&Ncy;":"Н","&NegativeMediumSpace;":"​","&NegativeThickSpace;":"​","&NegativeThinSpace;":"​","&NegativeVeryThinSpace;":"​","&NestedGreaterGreater;":"≫","&NestedLessLess;":"≪","&NewLine;":"\n","&Nfr;":"𝔑","&NoBreak;":"⁠","&NonBreakingSpace;":" ","&Nopf;":"ℕ","&Not;":"⫬","&NotCongruent;":"≢","&NotCupCap;":"≭","&NotDoubleVerticalBar;":"∦","&NotElement;":"∉","&NotEqual;":"≠","&NotEqualTilde;":"≂̸","&NotExists;":"∄","&NotGreater;":"≯","&NotGreaterEqual;":"≱","&NotGreaterFullEqual;":"≧̸","&NotGreaterGreater;":"≫̸","&NotGreaterLess;":"≹","&NotGreaterSlantEqual;":"⩾̸","&NotGreaterTilde;":"≵","&NotHumpDownHump;":"≎̸","&NotHumpEqual;":"≏̸","&NotLeftTriangle;":"⋪","&NotLeftTriangleBar;":"⧏̸","&NotLeftTriangleEqual;":"⋬","&NotLess;":"≮","&NotLessEqual;":"≰","&NotLessGreater;":"≸","&NotLessLess;":"≪̸","&NotLessSlantEqual;":"⩽̸","&NotLessTilde;":"≴","&NotNestedGreaterGreater;":"⪢̸","&NotNestedLessLess;":"⪡̸","&NotPrecedes;":"⊀","&NotPrecedesEqual;":"⪯̸","&NotPrecedesSlantEqual;":"⋠","&NotReverseElement;":"∌","&NotRightTriangle;":"⋫","&NotRightTriangleBar;":"⧐̸","&NotRightTriangleEqual;":"⋭","&NotSquareSubset;":"⊏̸","&NotSquareSubsetEqual;":"⋢","&NotSquareSuperset;":"⊐̸","&NotSquareSupersetEqual;":"⋣","&NotSubset;":"⊂⃒","&NotSubsetEqual;":"⊈","&NotSucceeds;":"⊁","&NotSucceedsEqual;":"⪰̸","&NotSucceedsSlantEqual;":"⋡","&NotSucceedsTilde;":"≿̸","&NotSuperset;":"⊃⃒","&NotSupersetEqual;":"⊉","&NotTilde;":"≁","&NotTildeEqual;":"≄","&NotTildeFullEqual;":"≇","&NotTildeTilde;":"≉","&NotVerticalBar;":"∤","&Nscr;":"𝒩","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Nu;":"Ν","&OElig;":"Œ","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Ocy;":"О","&Odblac;":"Ő","&Ofr;":"𝔒","&Ograve":"Ò","&Ograve;":"Ò","&Omacr;":"Ō","&Omega;":"Ω","&Omicron;":"Ο","&Oopf;":"𝕆","&OpenCurlyDoubleQuote;":"“","&OpenCurlyQuote;":"‘","&Or;":"⩔","&Oscr;":"𝒪","&Oslash":"Ø","&Oslash;":"Ø","&Otilde":"Õ","&Otilde;":"Õ","&Otimes;":"⨷","&Ouml":"Ö","&Ouml;":"Ö","&OverBar;":"‾","&OverBrace;":"⏞","&OverBracket;":"⎴","&OverParenthesis;":"⏜","&PartialD;":"∂","&Pcy;":"П","&Pfr;":"𝔓","&Phi;":"Φ","&Pi;":"Π","&PlusMinus;":"±","&Poincareplane;":"ℌ","&Popf;":"ℙ","&Pr;":"⪻","&Precedes;":"≺","&PrecedesEqual;":"⪯","&PrecedesSlantEqual;":"≼","&PrecedesTilde;":"≾","&Prime;":"″","&Product;":"∏","&Proportion;":"∷","&Proportional;":"∝","&Pscr;":"𝒫","&Psi;":"Ψ","&QUOT":'"',"&QUOT;":'"',"&Qfr;":"𝔔","&Qopf;":"ℚ","&Qscr;":"𝒬","&RBarr;":"⤐","&REG":"®","&REG;":"®","&Racute;":"Ŕ","&Rang;":"⟫","&Rarr;":"↠","&Rarrtl;":"⤖","&Rcaron;":"Ř","&Rcedil;":"Ŗ","&Rcy;":"Р","&Re;":"ℜ","&ReverseElement;":"∋","&ReverseEquilibrium;":"⇋","&ReverseUpEquilibrium;":"⥯","&Rfr;":"ℜ","&Rho;":"Ρ","&RightAngleBracket;":"⟩","&RightArrow;":"→","&RightArrowBar;":"⇥","&RightArrowLeftArrow;":"⇄","&RightCeiling;":"⌉","&RightDoubleBracket;":"⟧","&RightDownTeeVector;":"⥝","&RightDownVector;":"⇂","&RightDownVectorBar;":"⥕","&RightFloor;":"⌋","&RightTee;":"⊢","&RightTeeArrow;":"↦","&RightTeeVector;":"⥛","&RightTriangle;":"⊳","&RightTriangleBar;":"⧐","&RightTriangleEqual;":"⊵","&RightUpDownVector;":"⥏","&RightUpTeeVector;":"⥜","&RightUpVector;":"↾","&RightUpVectorBar;":"⥔","&RightVector;":"⇀","&RightVectorBar;":"⥓","&Rightarrow;":"⇒","&Ropf;":"ℝ","&RoundImplies;":"⥰","&Rrightarrow;":"⇛","&Rscr;":"ℛ","&Rsh;":"↱","&RuleDelayed;":"⧴","&SHCHcy;":"Щ","&SHcy;":"Ш","&SOFTcy;":"Ь","&Sacute;":"Ś","&Sc;":"⪼","&Scaron;":"Š","&Scedil;":"Ş","&Scirc;":"Ŝ","&Scy;":"С","&Sfr;":"𝔖","&ShortDownArrow;":"↓","&ShortLeftArrow;":"←","&ShortRightArrow;":"→","&ShortUpArrow;":"↑","&Sigma;":"Σ","&SmallCircle;":"∘","&Sopf;":"𝕊","&Sqrt;":"√","&Square;":"□","&SquareIntersection;":"⊓","&SquareSubset;":"⊏","&SquareSubsetEqual;":"⊑","&SquareSuperset;":"⊐","&SquareSupersetEqual;":"⊒","&SquareUnion;":"⊔","&Sscr;":"𝒮","&Star;":"⋆","&Sub;":"⋐","&Subset;":"⋐","&SubsetEqual;":"⊆","&Succeeds;":"≻","&SucceedsEqual;":"⪰","&SucceedsSlantEqual;":"≽","&SucceedsTilde;":"≿","&SuchThat;":"∋","&Sum;":"∑","&Sup;":"⋑","&Superset;":"⊃","&SupersetEqual;":"⊇","&Supset;":"⋑","&THORN":"Þ","&THORN;":"Þ","&TRADE;":"™","&TSHcy;":"Ћ","&TScy;":"Ц","&Tab;":"\t","&Tau;":"Τ","&Tcaron;":"Ť","&Tcedil;":"Ţ","&Tcy;":"Т","&Tfr;":"𝔗","&Therefore;":"∴","&Theta;":"Θ","&ThickSpace;":"  ","&ThinSpace;":" ","&Tilde;":"∼","&TildeEqual;":"≃","&TildeFullEqual;":"≅","&TildeTilde;":"≈","&Topf;":"𝕋","&TripleDot;":"⃛","&Tscr;":"𝒯","&Tstrok;":"Ŧ","&Uacute":"Ú","&Uacute;":"Ú","&Uarr;":"↟","&Uarrocir;":"⥉","&Ubrcy;":"Ў","&Ubreve;":"Ŭ","&Ucirc":"Û","&Ucirc;":"Û","&Ucy;":"У","&Udblac;":"Ű","&Ufr;":"𝔘","&Ugrave":"Ù","&Ugrave;":"Ù","&Umacr;":"Ū","&UnderBar;":"_","&UnderBrace;":"⏟","&UnderBracket;":"⎵","&UnderParenthesis;":"⏝","&Union;":"⋃","&UnionPlus;":"⊎","&Uogon;":"Ų","&Uopf;":"𝕌","&UpArrow;":"↑","&UpArrowBar;":"⤒","&UpArrowDownArrow;":"⇅","&UpDownArrow;":"↕","&UpEquilibrium;":"⥮","&UpTee;":"⊥","&UpTeeArrow;":"↥","&Uparrow;":"⇑","&Updownarrow;":"⇕","&UpperLeftArrow;":"↖","&UpperRightArrow;":"↗","&Upsi;":"ϒ","&Upsilon;":"Υ","&Uring;":"Ů","&Uscr;":"𝒰","&Utilde;":"Ũ","&Uuml":"Ü","&Uuml;":"Ü","&VDash;":"⊫","&Vbar;":"⫫","&Vcy;":"В","&Vdash;":"⊩","&Vdashl;":"⫦","&Vee;":"⋁","&Verbar;":"‖","&Vert;":"‖","&VerticalBar;":"∣","&VerticalLine;":"|","&VerticalSeparator;":"❘","&VerticalTilde;":"≀","&VeryThinSpace;":" ","&Vfr;":"𝔙","&Vopf;":"𝕍","&Vscr;":"𝒱","&Vvdash;":"⊪","&Wcirc;":"Ŵ","&Wedge;":"⋀","&Wfr;":"𝔚","&Wopf;":"𝕎","&Wscr;":"𝒲","&Xfr;":"𝔛","&Xi;":"Ξ","&Xopf;":"𝕏","&Xscr;":"𝒳","&YAcy;":"Я","&YIcy;":"Ї","&YUcy;":"Ю","&Yacute":"Ý","&Yacute;":"Ý","&Ycirc;":"Ŷ","&Ycy;":"Ы","&Yfr;":"𝔜","&Yopf;":"𝕐","&Yscr;":"𝒴","&Yuml;":"Ÿ","&ZHcy;":"Ж","&Zacute;":"Ź","&Zcaron;":"Ž","&Zcy;":"З","&Zdot;":"Ż","&ZeroWidthSpace;":"​","&Zeta;":"Ζ","&Zfr;":"ℨ","&Zopf;":"ℤ","&Zscr;":"𝒵","&aacute":"á","&aacute;":"á","&abreve;":"ă","&ac;":"∾","&acE;":"∾̳","&acd;":"∿","&acirc":"â","&acirc;":"â","&acute":"´","&acute;":"´","&acy;":"а","&aelig":"æ","&aelig;":"æ","&af;":"⁡","&afr;":"𝔞","&agrave":"à","&agrave;":"à","&alefsym;":"ℵ","&aleph;":"ℵ","&alpha;":"α","&amacr;":"ā","&amalg;":"⨿","&amp":"&","&amp;":"&","&and;":"∧","&andand;":"⩕","&andd;":"⩜","&andslope;":"⩘","&andv;":"⩚","&ang;":"∠","&ange;":"⦤","&angle;":"∠","&angmsd;":"∡","&angmsdaa;":"⦨","&angmsdab;":"⦩","&angmsdac;":"⦪","&angmsdad;":"⦫","&angmsdae;":"⦬","&angmsdaf;":"⦭","&angmsdag;":"⦮","&angmsdah;":"⦯","&angrt;":"∟","&angrtvb;":"⊾","&angrtvbd;":"⦝","&angsph;":"∢","&angst;":"Å","&angzarr;":"⍼","&aogon;":"ą","&aopf;":"𝕒","&ap;":"≈","&apE;":"⩰","&apacir;":"⩯","&ape;":"≊","&apid;":"≋","&apos;":"'","&approx;":"≈","&approxeq;":"≊","&aring":"å","&aring;":"å","&ascr;":"𝒶","&ast;":"*","&asymp;":"≈","&asympeq;":"≍","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&awconint;":"∳","&awint;":"⨑","&bNot;":"⫭","&backcong;":"≌","&backepsilon;":"϶","&backprime;":"‵","&backsim;":"∽","&backsimeq;":"⋍","&barvee;":"⊽","&barwed;":"⌅","&barwedge;":"⌅","&bbrk;":"⎵","&bbrktbrk;":"⎶","&bcong;":"≌","&bcy;":"б","&bdquo;":"„","&becaus;":"∵","&because;":"∵","&bemptyv;":"⦰","&bepsi;":"϶","&bernou;":"ℬ","&beta;":"β","&beth;":"ℶ","&between;":"≬","&bfr;":"𝔟","&bigcap;":"⋂","&bigcirc;":"◯","&bigcup;":"⋃","&bigodot;":"⨀","&bigoplus;":"⨁","&bigotimes;":"⨂","&bigsqcup;":"⨆","&bigstar;":"★","&bigtriangledown;":"▽","&bigtriangleup;":"△","&biguplus;":"⨄","&bigvee;":"⋁","&bigwedge;":"⋀","&bkarow;":"⤍","&blacklozenge;":"⧫","&blacksquare;":"▪","&blacktriangle;":"▴","&blacktriangledown;":"▾","&blacktriangleleft;":"◂","&blacktriangleright;":"▸","&blank;":"␣","&blk12;":"▒","&blk14;":"░","&blk34;":"▓","&block;":"█","&bne;":"=⃥","&bnequiv;":"≡⃥","&bnot;":"⌐","&bopf;":"𝕓","&bot;":"⊥","&bottom;":"⊥","&bowtie;":"⋈","&boxDL;":"╗","&boxDR;":"╔","&boxDl;":"╖","&boxDr;":"╓","&boxH;":"═","&boxHD;":"╦","&boxHU;":"╩","&boxHd;":"╤","&boxHu;":"╧","&boxUL;":"╝","&boxUR;":"╚","&boxUl;":"╜","&boxUr;":"╙","&boxV;":"║","&boxVH;":"╬","&boxVL;":"╣","&boxVR;":"╠","&boxVh;":"╫","&boxVl;":"╢","&boxVr;":"╟","&boxbox;":"⧉","&boxdL;":"╕","&boxdR;":"╒","&boxdl;":"┐","&boxdr;":"┌","&boxh;":"─","&boxhD;":"╥","&boxhU;":"╨","&boxhd;":"┬","&boxhu;":"┴","&boxminus;":"⊟","&boxplus;":"⊞","&boxtimes;":"⊠","&boxuL;":"╛","&boxuR;":"╘","&boxul;":"┘","&boxur;":"└","&boxv;":"│","&boxvH;":"╪","&boxvL;":"╡","&boxvR;":"╞","&boxvh;":"┼","&boxvl;":"┤","&boxvr;":"├","&bprime;":"‵","&breve;":"˘","&brvbar":"¦","&brvbar;":"¦","&bscr;":"𝒷","&bsemi;":"⁏","&bsim;":"∽","&bsime;":"⋍","&bsol;":"\\","&bsolb;":"⧅","&bsolhsub;":"⟈","&bull;":"•","&bullet;":"•","&bump;":"≎","&bumpE;":"⪮","&bumpe;":"≏","&bumpeq;":"≏","&cacute;":"ć","&cap;":"∩","&capand;":"⩄","&capbrcup;":"⩉","&capcap;":"⩋","&capcup;":"⩇","&capdot;":"⩀","&caps;":"∩︀","&caret;":"⁁","&caron;":"ˇ","&ccaps;":"⩍","&ccaron;":"č","&ccedil":"ç","&ccedil;":"ç","&ccirc;":"ĉ","&ccups;":"⩌","&ccupssm;":"⩐","&cdot;":"ċ","&cedil":"¸","&cedil;":"¸","&cemptyv;":"⦲","&cent":"¢","&cent;":"¢","&centerdot;":"·","&cfr;":"𝔠","&chcy;":"ч","&check;":"✓","&checkmark;":"✓","&chi;":"χ","&cir;":"○","&cirE;":"⧃","&circ;":"ˆ","&circeq;":"≗","&circlearrowleft;":"↺","&circlearrowright;":"↻","&circledR;":"®","&circledS;":"Ⓢ","&circledast;":"⊛","&circledcirc;":"⊚","&circleddash;":"⊝","&cire;":"≗","&cirfnint;":"⨐","&cirmid;":"⫯","&cirscir;":"⧂","&clubs;":"♣","&clubsuit;":"♣","&colon;":":","&colone;":"≔","&coloneq;":"≔","&comma;":",","&commat;":"@","&comp;":"∁","&compfn;":"∘","&complement;":"∁","&complexes;":"ℂ","&cong;":"≅","&congdot;":"⩭","&conint;":"∮","&copf;":"𝕔","&coprod;":"∐","&copy":"©","&copy;":"©","&copysr;":"℗","&crarr;":"↵","&cross;":"✗","&cscr;":"𝒸","&csub;":"⫏","&csube;":"⫑","&csup;":"⫐","&csupe;":"⫒","&ctdot;":"⋯","&cudarrl;":"⤸","&cudarrr;":"⤵","&cuepr;":"⋞","&cuesc;":"⋟","&cularr;":"↶","&cularrp;":"⤽","&cup;":"∪","&cupbrcap;":"⩈","&cupcap;":"⩆","&cupcup;":"⩊","&cupdot;":"⊍","&cupor;":"⩅","&cups;":"∪︀","&curarr;":"↷","&curarrm;":"⤼","&curlyeqprec;":"⋞","&curlyeqsucc;":"⋟","&curlyvee;":"⋎","&curlywedge;":"⋏","&curren":"¤","&curren;":"¤","&curvearrowleft;":"↶","&curvearrowright;":"↷","&cuvee;":"⋎","&cuwed;":"⋏","&cwconint;":"∲","&cwint;":"∱","&cylcty;":"⌭","&dArr;":"⇓","&dHar;":"⥥","&dagger;":"†","&daleth;":"ℸ","&darr;":"↓","&dash;":"‐","&dashv;":"⊣","&dbkarow;":"⤏","&dblac;":"˝","&dcaron;":"ď","&dcy;":"д","&dd;":"ⅆ","&ddagger;":"‡","&ddarr;":"⇊","&ddotseq;":"⩷","&deg":"°","&deg;":"°","&delta;":"δ","&demptyv;":"⦱","&dfisht;":"⥿","&dfr;":"𝔡","&dharl;":"⇃","&dharr;":"⇂","&diam;":"⋄","&diamond;":"⋄","&diamondsuit;":"♦","&diams;":"♦","&die;":"¨","&digamma;":"ϝ","&disin;":"⋲","&div;":"÷","&divide":"÷","&divide;":"÷","&divideontimes;":"⋇","&divonx;":"⋇","&djcy;":"ђ","&dlcorn;":"⌞","&dlcrop;":"⌍","&dollar;":"$","&dopf;":"𝕕","&dot;":"˙","&doteq;":"≐","&doteqdot;":"≑","&dotminus;":"∸","&dotplus;":"∔","&dotsquare;":"⊡","&doublebarwedge;":"⌆","&downarrow;":"↓","&downdownarrows;":"⇊","&downharpoonleft;":"⇃","&downharpoonright;":"⇂","&drbkarow;":"⤐","&drcorn;":"⌟","&drcrop;":"⌌","&dscr;":"𝒹","&dscy;":"ѕ","&dsol;":"⧶","&dstrok;":"đ","&dtdot;":"⋱","&dtri;":"▿","&dtrif;":"▾","&duarr;":"⇵","&duhar;":"⥯","&dwangle;":"⦦","&dzcy;":"џ","&dzigrarr;":"⟿","&eDDot;":"⩷","&eDot;":"≑","&eacute":"é","&eacute;":"é","&easter;":"⩮","&ecaron;":"ě","&ecir;":"≖","&ecirc":"ê","&ecirc;":"ê","&ecolon;":"≕","&ecy;":"э","&edot;":"ė","&ee;":"ⅇ","&efDot;":"≒","&efr;":"𝔢","&eg;":"⪚","&egrave":"è","&egrave;":"è","&egs;":"⪖","&egsdot;":"⪘","&el;":"⪙","&elinters;":"⏧","&ell;":"ℓ","&els;":"⪕","&elsdot;":"⪗","&emacr;":"ē","&empty;":"∅","&emptyset;":"∅","&emptyv;":"∅","&emsp13;":" ","&emsp14;":" ","&emsp;":" ","&eng;":"ŋ","&ensp;":" ","&eogon;":"ę","&eopf;":"𝕖","&epar;":"⋕","&eparsl;":"⧣","&eplus;":"⩱","&epsi;":"ε","&epsilon;":"ε","&epsiv;":"ϵ","&eqcirc;":"≖","&eqcolon;":"≕","&eqsim;":"≂","&eqslantgtr;":"⪖","&eqslantless;":"⪕","&equals;":"=","&equest;":"≟","&equiv;":"≡","&equivDD;":"⩸","&eqvparsl;":"⧥","&erDot;":"≓","&erarr;":"⥱","&escr;":"ℯ","&esdot;":"≐","&esim;":"≂","&eta;":"η","&eth":"ð","&eth;":"ð","&euml":"ë","&euml;":"ë","&euro;":"€","&excl;":"!","&exist;":"∃","&expectation;":"ℰ","&exponentiale;":"ⅇ","&fallingdotseq;":"≒","&fcy;":"ф","&female;":"♀","&ffilig;":"ﬃ","&fflig;":"ﬀ","&ffllig;":"ﬄ","&ffr;":"𝔣","&filig;":"ﬁ","&fjlig;":"fj","&flat;":"♭","&fllig;":"ﬂ","&fltns;":"▱","&fnof;":"ƒ","&fopf;":"𝕗","&forall;":"∀","&fork;":"⋔","&forkv;":"⫙","&fpartint;":"⨍","&frac12":"½","&frac12;":"½","&frac13;":"⅓","&frac14":"¼","&frac14;":"¼","&frac15;":"⅕","&frac16;":"⅙","&frac18;":"⅛","&frac23;":"⅔","&frac25;":"⅖","&frac34":"¾","&frac34;":"¾","&frac35;":"⅗","&frac38;":"⅜","&frac45;":"⅘","&frac56;":"⅚","&frac58;":"⅝","&frac78;":"⅞","&frasl;":"⁄","&frown;":"⌢","&fscr;":"𝒻","&gE;":"≧","&gEl;":"⪌","&gacute;":"ǵ","&gamma;":"γ","&gammad;":"ϝ","&gap;":"⪆","&gbreve;":"ğ","&gcirc;":"ĝ","&gcy;":"г","&gdot;":"ġ","&ge;":"≥","&gel;":"⋛","&geq;":"≥","&geqq;":"≧","&geqslant;":"⩾","&ges;":"⩾","&gescc;":"⪩","&gesdot;":"⪀","&gesdoto;":"⪂","&gesdotol;":"⪄","&gesl;":"⋛︀","&gesles;":"⪔","&gfr;":"𝔤","&gg;":"≫","&ggg;":"⋙","&gimel;":"ℷ","&gjcy;":"ѓ","&gl;":"≷","&glE;":"⪒","&gla;":"⪥","&glj;":"⪤","&gnE;":"≩","&gnap;":"⪊","&gnapprox;":"⪊","&gne;":"⪈","&gneq;":"⪈","&gneqq;":"≩","&gnsim;":"⋧","&gopf;":"𝕘","&grave;":"`","&gscr;":"ℊ","&gsim;":"≳","&gsime;":"⪎","&gsiml;":"⪐","&gt":">","&gt;":">","&gtcc;":"⪧","&gtcir;":"⩺","&gtdot;":"⋗","&gtlPar;":"⦕","&gtquest;":"⩼","&gtrapprox;":"⪆","&gtrarr;":"⥸","&gtrdot;":"⋗","&gtreqless;":"⋛","&gtreqqless;":"⪌","&gtrless;":"≷","&gtrsim;":"≳","&gvertneqq;":"≩︀","&gvnE;":"≩︀","&hArr;":"⇔","&hairsp;":" ","&half;":"½","&hamilt;":"ℋ","&hardcy;":"ъ","&harr;":"↔","&harrcir;":"⥈","&harrw;":"↭","&hbar;":"ℏ","&hcirc;":"ĥ","&hearts;":"♥","&heartsuit;":"♥","&hellip;":"…","&hercon;":"⊹","&hfr;":"𝔥","&hksearow;":"⤥","&hkswarow;":"⤦","&hoarr;":"⇿","&homtht;":"∻","&hookleftarrow;":"↩","&hookrightarrow;":"↪","&hopf;":"𝕙","&horbar;":"―","&hscr;":"𝒽","&hslash;":"ℏ","&hstrok;":"ħ","&hybull;":"⁃","&hyphen;":"‐","&iacute":"í","&iacute;":"í","&ic;":"⁣","&icirc":"î","&icirc;":"î","&icy;":"и","&iecy;":"е","&iexcl":"¡","&iexcl;":"¡","&iff;":"⇔","&ifr;":"𝔦","&igrave":"ì","&igrave;":"ì","&ii;":"ⅈ","&iiiint;":"⨌","&iiint;":"∭","&iinfin;":"⧜","&iiota;":"℩","&ijlig;":"ĳ","&imacr;":"ī","&image;":"ℑ","&imagline;":"ℐ","&imagpart;":"ℑ","&imath;":"ı","&imof;":"⊷","&imped;":"Ƶ","&in;":"∈","&incare;":"℅","&infin;":"∞","&infintie;":"⧝","&inodot;":"ı","&int;":"∫","&intcal;":"⊺","&integers;":"ℤ","&intercal;":"⊺","&intlarhk;":"⨗","&intprod;":"⨼","&iocy;":"ё","&iogon;":"į","&iopf;":"𝕚","&iota;":"ι","&iprod;":"⨼","&iquest":"¿","&iquest;":"¿","&iscr;":"𝒾","&isin;":"∈","&isinE;":"⋹","&isindot;":"⋵","&isins;":"⋴","&isinsv;":"⋳","&isinv;":"∈","&it;":"⁢","&itilde;":"ĩ","&iukcy;":"і","&iuml":"ï","&iuml;":"ï","&jcirc;":"ĵ","&jcy;":"й","&jfr;":"𝔧","&jmath;":"ȷ","&jopf;":"𝕛","&jscr;":"𝒿","&jsercy;":"ј","&jukcy;":"є","&kappa;":"κ","&kappav;":"ϰ","&kcedil;":"ķ","&kcy;":"к","&kfr;":"𝔨","&kgreen;":"ĸ","&khcy;":"х","&kjcy;":"ќ","&kopf;":"𝕜","&kscr;":"𝓀","&lAarr;":"⇚","&lArr;":"⇐","&lAtail;":"⤛","&lBarr;":"⤎","&lE;":"≦","&lEg;":"⪋","&lHar;":"⥢","&lacute;":"ĺ","&laemptyv;":"⦴","&lagran;":"ℒ","&lambda;":"λ","&lang;":"⟨","&langd;":"⦑","&langle;":"⟨","&lap;":"⪅","&laquo":"«","&laquo;":"«","&larr;":"←","&larrb;":"⇤","&larrbfs;":"⤟","&larrfs;":"⤝","&larrhk;":"↩","&larrlp;":"↫","&larrpl;":"⤹","&larrsim;":"⥳","&larrtl;":"↢","&lat;":"⪫","&latail;":"⤙","&late;":"⪭","&lates;":"⪭︀","&lbarr;":"⤌","&lbbrk;":"❲","&lbrace;":"{","&lbrack;":"[","&lbrke;":"⦋","&lbrksld;":"⦏","&lbrkslu;":"⦍","&lcaron;":"ľ","&lcedil;":"ļ","&lceil;":"⌈","&lcub;":"{","&lcy;":"л","&ldca;":"⤶","&ldquo;":"“","&ldquor;":"„","&ldrdhar;":"⥧","&ldrushar;":"⥋","&ldsh;":"↲","&le;":"≤","&leftarrow;":"←","&leftarrowtail;":"↢","&leftharpoondown;":"↽","&leftharpoonup;":"↼","&leftleftarrows;":"⇇","&leftrightarrow;":"↔","&leftrightarrows;":"⇆","&leftrightharpoons;":"⇋","&leftrightsquigarrow;":"↭","&leftthreetimes;":"⋋","&leg;":"⋚","&leq;":"≤","&leqq;":"≦","&leqslant;":"⩽","&les;":"⩽","&lescc;":"⪨","&lesdot;":"⩿","&lesdoto;":"⪁","&lesdotor;":"⪃","&lesg;":"⋚︀","&lesges;":"⪓","&lessapprox;":"⪅","&lessdot;":"⋖","&lesseqgtr;":"⋚","&lesseqqgtr;":"⪋","&lessgtr;":"≶","&lesssim;":"≲","&lfisht;":"⥼","&lfloor;":"⌊","&lfr;":"𝔩","&lg;":"≶","&lgE;":"⪑","&lhard;":"↽","&lharu;":"↼","&lharul;":"⥪","&lhblk;":"▄","&ljcy;":"љ","&ll;":"≪","&llarr;":"⇇","&llcorner;":"⌞","&llhard;":"⥫","&lltri;":"◺","&lmidot;":"ŀ","&lmoust;":"⎰","&lmoustache;":"⎰","&lnE;":"≨","&lnap;":"⪉","&lnapprox;":"⪉","&lne;":"⪇","&lneq;":"⪇","&lneqq;":"≨","&lnsim;":"⋦","&loang;":"⟬","&loarr;":"⇽","&lobrk;":"⟦","&longleftarrow;":"⟵","&longleftrightarrow;":"⟷","&longmapsto;":"⟼","&longrightarrow;":"⟶","&looparrowleft;":"↫","&looparrowright;":"↬","&lopar;":"⦅","&lopf;":"𝕝","&loplus;":"⨭","&lotimes;":"⨴","&lowast;":"∗","&lowbar;":"_","&loz;":"◊","&lozenge;":"◊","&lozf;":"⧫","&lpar;":"(","&lparlt;":"⦓","&lrarr;":"⇆","&lrcorner;":"⌟","&lrhar;":"⇋","&lrhard;":"⥭","&lrm;":"‎","&lrtri;":"⊿","&lsaquo;":"‹","&lscr;":"𝓁","&lsh;":"↰","&lsim;":"≲","&lsime;":"⪍","&lsimg;":"⪏","&lsqb;":"[","&lsquo;":"‘","&lsquor;":"‚","&lstrok;":"ł","&lt":"<","&lt;":"<","&ltcc;":"⪦","&ltcir;":"⩹","&ltdot;":"⋖","&lthree;":"⋋","&ltimes;":"⋉","&ltlarr;":"⥶","&ltquest;":"⩻","&ltrPar;":"⦖","&ltri;":"◃","&ltrie;":"⊴","&ltrif;":"◂","&lurdshar;":"⥊","&luruhar;":"⥦","&lvertneqq;":"≨︀","&lvnE;":"≨︀","&mDDot;":"∺","&macr":"¯","&macr;":"¯","&male;":"♂","&malt;":"✠","&maltese;":"✠","&map;":"↦","&mapsto;":"↦","&mapstodown;":"↧","&mapstoleft;":"↤","&mapstoup;":"↥","&marker;":"▮","&mcomma;":"⨩","&mcy;":"м","&mdash;":"—","&measuredangle;":"∡","&mfr;":"𝔪","&mho;":"℧","&micro":"µ","&micro;":"µ","&mid;":"∣","&midast;":"*","&midcir;":"⫰","&middot":"·","&middot;":"·","&minus;":"−","&minusb;":"⊟","&minusd;":"∸","&minusdu;":"⨪","&mlcp;":"⫛","&mldr;":"…","&mnplus;":"∓","&models;":"⊧","&mopf;":"𝕞","&mp;":"∓","&mscr;":"𝓂","&mstpos;":"∾","&mu;":"μ","&multimap;":"⊸","&mumap;":"⊸","&nGg;":"⋙̸","&nGt;":"≫⃒","&nGtv;":"≫̸","&nLeftarrow;":"⇍","&nLeftrightarrow;":"⇎","&nLl;":"⋘̸","&nLt;":"≪⃒","&nLtv;":"≪̸","&nRightarrow;":"⇏","&nVDash;":"⊯","&nVdash;":"⊮","&nabla;":"∇","&nacute;":"ń","&nang;":"∠⃒","&nap;":"≉","&napE;":"⩰̸","&napid;":"≋̸","&napos;":"ŉ","&napprox;":"≉","&natur;":"♮","&natural;":"♮","&naturals;":"ℕ","&nbsp":" ","&nbsp;":" ","&nbump;":"≎̸","&nbumpe;":"≏̸","&ncap;":"⩃","&ncaron;":"ň","&ncedil;":"ņ","&ncong;":"≇","&ncongdot;":"⩭̸","&ncup;":"⩂","&ncy;":"н","&ndash;":"–","&ne;":"≠","&neArr;":"⇗","&nearhk;":"⤤","&nearr;":"↗","&nearrow;":"↗","&nedot;":"≐̸","&nequiv;":"≢","&nesear;":"⤨","&nesim;":"≂̸","&nexist;":"∄","&nexists;":"∄","&nfr;":"𝔫","&ngE;":"≧̸","&nge;":"≱","&ngeq;":"≱","&ngeqq;":"≧̸","&ngeqslant;":"⩾̸","&nges;":"⩾̸","&ngsim;":"≵","&ngt;":"≯","&ngtr;":"≯","&nhArr;":"⇎","&nharr;":"↮","&nhpar;":"⫲","&ni;":"∋","&nis;":"⋼","&nisd;":"⋺","&niv;":"∋","&njcy;":"њ","&nlArr;":"⇍","&nlE;":"≦̸","&nlarr;":"↚","&nldr;":"‥","&nle;":"≰","&nleftarrow;":"↚","&nleftrightarrow;":"↮","&nleq;":"≰","&nleqq;":"≦̸","&nleqslant;":"⩽̸","&nles;":"⩽̸","&nless;":"≮","&nlsim;":"≴","&nlt;":"≮","&nltri;":"⋪","&nltrie;":"⋬","&nmid;":"∤","&nopf;":"𝕟","&not":"¬","&not;":"¬","&notin;":"∉","&notinE;":"⋹̸","&notindot;":"⋵̸","&notinva;":"∉","&notinvb;":"⋷","&notinvc;":"⋶","&notni;":"∌","&notniva;":"∌","&notnivb;":"⋾","&notnivc;":"⋽","&npar;":"∦","&nparallel;":"∦","&nparsl;":"⫽⃥","&npart;":"∂̸","&npolint;":"⨔","&npr;":"⊀","&nprcue;":"⋠","&npre;":"⪯̸","&nprec;":"⊀","&npreceq;":"⪯̸","&nrArr;":"⇏","&nrarr;":"↛","&nrarrc;":"⤳̸","&nrarrw;":"↝̸","&nrightarrow;":"↛","&nrtri;":"⋫","&nrtrie;":"⋭","&nsc;":"⊁","&nsccue;":"⋡","&nsce;":"⪰̸","&nscr;":"𝓃","&nshortmid;":"∤","&nshortparallel;":"∦","&nsim;":"≁","&nsime;":"≄","&nsimeq;":"≄","&nsmid;":"∤","&nspar;":"∦","&nsqsube;":"⋢","&nsqsupe;":"⋣","&nsub;":"⊄","&nsubE;":"⫅̸","&nsube;":"⊈","&nsubset;":"⊂⃒","&nsubseteq;":"⊈","&nsubseteqq;":"⫅̸","&nsucc;":"⊁","&nsucceq;":"⪰̸","&nsup;":"⊅","&nsupE;":"⫆̸","&nsupe;":"⊉","&nsupset;":"⊃⃒","&nsupseteq;":"⊉","&nsupseteqq;":"⫆̸","&ntgl;":"≹","&ntilde":"ñ","&ntilde;":"ñ","&ntlg;":"≸","&ntriangleleft;":"⋪","&ntrianglelefteq;":"⋬","&ntriangleright;":"⋫","&ntrianglerighteq;":"⋭","&nu;":"ν","&num;":"#","&numero;":"№","&numsp;":" ","&nvDash;":"⊭","&nvHarr;":"⤄","&nvap;":"≍⃒","&nvdash;":"⊬","&nvge;":"≥⃒","&nvgt;":">⃒","&nvinfin;":"⧞","&nvlArr;":"⤂","&nvle;":"≤⃒","&nvlt;":"<⃒","&nvltrie;":"⊴⃒","&nvrArr;":"⤃","&nvrtrie;":"⊵⃒","&nvsim;":"∼⃒","&nwArr;":"⇖","&nwarhk;":"⤣","&nwarr;":"↖","&nwarrow;":"↖","&nwnear;":"⤧","&oS;":"Ⓢ","&oacute":"ó","&oacute;":"ó","&oast;":"⊛","&ocir;":"⊚","&ocirc":"ô","&ocirc;":"ô","&ocy;":"о","&odash;":"⊝","&odblac;":"ő","&odiv;":"⨸","&odot;":"⊙","&odsold;":"⦼","&oelig;":"œ","&ofcir;":"⦿","&ofr;":"𝔬","&ogon;":"˛","&ograve":"ò","&ograve;":"ò","&ogt;":"⧁","&ohbar;":"⦵","&ohm;":"Ω","&oint;":"∮","&olarr;":"↺","&olcir;":"⦾","&olcross;":"⦻","&oline;":"‾","&olt;":"⧀","&omacr;":"ō","&omega;":"ω","&omicron;":"ο","&omid;":"⦶","&ominus;":"⊖","&oopf;":"𝕠","&opar;":"⦷","&operp;":"⦹","&oplus;":"⊕","&or;":"∨","&orarr;":"↻","&ord;":"⩝","&order;":"ℴ","&orderof;":"ℴ","&ordf":"ª","&ordf;":"ª","&ordm":"º","&ordm;":"º","&origof;":"⊶","&oror;":"⩖","&orslope;":"⩗","&orv;":"⩛","&oscr;":"ℴ","&oslash":"ø","&oslash;":"ø","&osol;":"⊘","&otilde":"õ","&otilde;":"õ","&otimes;":"⊗","&otimesas;":"⨶","&ouml":"ö","&ouml;":"ö","&ovbar;":"⌽","&par;":"∥","&para":"¶","&para;":"¶","&parallel;":"∥","&parsim;":"⫳","&parsl;":"⫽","&part;":"∂","&pcy;":"п","&percnt;":"%","&period;":".","&permil;":"‰","&perp;":"⊥","&pertenk;":"‱","&pfr;":"𝔭","&phi;":"φ","&phiv;":"ϕ","&phmmat;":"ℳ","&phone;":"☎","&pi;":"π","&pitchfork;":"⋔","&piv;":"ϖ","&planck;":"ℏ","&planckh;":"ℎ","&plankv;":"ℏ","&plus;":"+","&plusacir;":"⨣","&plusb;":"⊞","&pluscir;":"⨢","&plusdo;":"∔","&plusdu;":"⨥","&pluse;":"⩲","&plusmn":"±","&plusmn;":"±","&plussim;":"⨦","&plustwo;":"⨧","&pm;":"±","&pointint;":"⨕","&popf;":"𝕡","&pound":"£","&pound;":"£","&pr;":"≺","&prE;":"⪳","&prap;":"⪷","&prcue;":"≼","&pre;":"⪯","&prec;":"≺","&precapprox;":"⪷","&preccurlyeq;":"≼","&preceq;":"⪯","&precnapprox;":"⪹","&precneqq;":"⪵","&precnsim;":"⋨","&precsim;":"≾","&prime;":"′","&primes;":"ℙ","&prnE;":"⪵","&prnap;":"⪹","&prnsim;":"⋨","&prod;":"∏","&profalar;":"⌮","&profline;":"⌒","&profsurf;":"⌓","&prop;":"∝","&propto;":"∝","&prsim;":"≾","&prurel;":"⊰","&pscr;":"𝓅","&psi;":"ψ","&puncsp;":" ","&qfr;":"𝔮","&qint;":"⨌","&qopf;":"𝕢","&qprime;":"⁗","&qscr;":"𝓆","&quaternions;":"ℍ","&quatint;":"⨖","&quest;":"?","&questeq;":"≟","&quot":'"',"&quot;":'"',"&rAarr;":"⇛","&rArr;":"⇒","&rAtail;":"⤜","&rBarr;":"⤏","&rHar;":"⥤","&race;":"∽̱","&racute;":"ŕ","&radic;":"√","&raemptyv;":"⦳","&rang;":"⟩","&rangd;":"⦒","&range;":"⦥","&rangle;":"⟩","&raquo":"»","&raquo;":"»","&rarr;":"→","&rarrap;":"⥵","&rarrb;":"⇥","&rarrbfs;":"⤠","&rarrc;":"⤳","&rarrfs;":"⤞","&rarrhk;":"↪","&rarrlp;":"↬","&rarrpl;":"⥅","&rarrsim;":"⥴","&rarrtl;":"↣","&rarrw;":"↝","&ratail;":"⤚","&ratio;":"∶","&rationals;":"ℚ","&rbarr;":"⤍","&rbbrk;":"❳","&rbrace;":"}","&rbrack;":"]","&rbrke;":"⦌","&rbrksld;":"⦎","&rbrkslu;":"⦐","&rcaron;":"ř","&rcedil;":"ŗ","&rceil;":"⌉","&rcub;":"}","&rcy;":"р","&rdca;":"⤷","&rdldhar;":"⥩","&rdquo;":"”","&rdquor;":"”","&rdsh;":"↳","&real;":"ℜ","&realine;":"ℛ","&realpart;":"ℜ","&reals;":"ℝ","&rect;":"▭","&reg":"®","&reg;":"®","&rfisht;":"⥽","&rfloor;":"⌋","&rfr;":"𝔯","&rhard;":"⇁","&rharu;":"⇀","&rharul;":"⥬","&rho;":"ρ","&rhov;":"ϱ","&rightarrow;":"→","&rightarrowtail;":"↣","&rightharpoondown;":"⇁","&rightharpoonup;":"⇀","&rightleftarrows;":"⇄","&rightleftharpoons;":"⇌","&rightrightarrows;":"⇉","&rightsquigarrow;":"↝","&rightthreetimes;":"⋌","&ring;":"˚","&risingdotseq;":"≓","&rlarr;":"⇄","&rlhar;":"⇌","&rlm;":"‏","&rmoust;":"⎱","&rmoustache;":"⎱","&rnmid;":"⫮","&roang;":"⟭","&roarr;":"⇾","&robrk;":"⟧","&ropar;":"⦆","&ropf;":"𝕣","&roplus;":"⨮","&rotimes;":"⨵","&rpar;":")","&rpargt;":"⦔","&rppolint;":"⨒","&rrarr;":"⇉","&rsaquo;":"›","&rscr;":"𝓇","&rsh;":"↱","&rsqb;":"]","&rsquo;":"’","&rsquor;":"’","&rthree;":"⋌","&rtimes;":"⋊","&rtri;":"▹","&rtrie;":"⊵","&rtrif;":"▸","&rtriltri;":"⧎","&ruluhar;":"⥨","&rx;":"℞","&sacute;":"ś","&sbquo;":"‚","&sc;":"≻","&scE;":"⪴","&scap;":"⪸","&scaron;":"š","&sccue;":"≽","&sce;":"⪰","&scedil;":"ş","&scirc;":"ŝ","&scnE;":"⪶","&scnap;":"⪺","&scnsim;":"⋩","&scpolint;":"⨓","&scsim;":"≿","&scy;":"с","&sdot;":"⋅","&sdotb;":"⊡","&sdote;":"⩦","&seArr;":"⇘","&searhk;":"⤥","&searr;":"↘","&searrow;":"↘","&sect":"§","&sect;":"§","&semi;":";","&seswar;":"⤩","&setminus;":"∖","&setmn;":"∖","&sext;":"✶","&sfr;":"𝔰","&sfrown;":"⌢","&sharp;":"♯","&shchcy;":"щ","&shcy;":"ш","&shortmid;":"∣","&shortparallel;":"∥","&shy":"­","&shy;":"­","&sigma;":"σ","&sigmaf;":"ς","&sigmav;":"ς","&sim;":"∼","&simdot;":"⩪","&sime;":"≃","&simeq;":"≃","&simg;":"⪞","&simgE;":"⪠","&siml;":"⪝","&simlE;":"⪟","&simne;":"≆","&simplus;":"⨤","&simrarr;":"⥲","&slarr;":"←","&smallsetminus;":"∖","&smashp;":"⨳","&smeparsl;":"⧤","&smid;":"∣","&smile;":"⌣","&smt;":"⪪","&smte;":"⪬","&smtes;":"⪬︀","&softcy;":"ь","&sol;":"/","&solb;":"⧄","&solbar;":"⌿","&sopf;":"𝕤","&spades;":"♠","&spadesuit;":"♠","&spar;":"∥","&sqcap;":"⊓","&sqcaps;":"⊓︀","&sqcup;":"⊔","&sqcups;":"⊔︀","&sqsub;":"⊏","&sqsube;":"⊑","&sqsubset;":"⊏","&sqsubseteq;":"⊑","&sqsup;":"⊐","&sqsupe;":"⊒","&sqsupset;":"⊐","&sqsupseteq;":"⊒","&squ;":"□","&square;":"□","&squarf;":"▪","&squf;":"▪","&srarr;":"→","&sscr;":"𝓈","&ssetmn;":"∖","&ssmile;":"⌣","&sstarf;":"⋆","&star;":"☆","&starf;":"★","&straightepsilon;":"ϵ","&straightphi;":"ϕ","&strns;":"¯","&sub;":"⊂","&subE;":"⫅","&subdot;":"⪽","&sube;":"⊆","&subedot;":"⫃","&submult;":"⫁","&subnE;":"⫋","&subne;":"⊊","&subplus;":"⪿","&subrarr;":"⥹","&subset;":"⊂","&subseteq;":"⊆","&subseteqq;":"⫅","&subsetneq;":"⊊","&subsetneqq;":"⫋","&subsim;":"⫇","&subsub;":"⫕","&subsup;":"⫓","&succ;":"≻","&succapprox;":"⪸","&succcurlyeq;":"≽","&succeq;":"⪰","&succnapprox;":"⪺","&succneqq;":"⪶","&succnsim;":"⋩","&succsim;":"≿","&sum;":"∑","&sung;":"♪","&sup1":"¹","&sup1;":"¹","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&sup;":"⊃","&supE;":"⫆","&supdot;":"⪾","&supdsub;":"⫘","&supe;":"⊇","&supedot;":"⫄","&suphsol;":"⟉","&suphsub;":"⫗","&suplarr;":"⥻","&supmult;":"⫂","&supnE;":"⫌","&supne;":"⊋","&supplus;":"⫀","&supset;":"⊃","&supseteq;":"⊇","&supseteqq;":"⫆","&supsetneq;":"⊋","&supsetneqq;":"⫌","&supsim;":"⫈","&supsub;":"⫔","&supsup;":"⫖","&swArr;":"⇙","&swarhk;":"⤦","&swarr;":"↙","&swarrow;":"↙","&swnwar;":"⤪","&szlig":"ß","&szlig;":"ß","&target;":"⌖","&tau;":"τ","&tbrk;":"⎴","&tcaron;":"ť","&tcedil;":"ţ","&tcy;":"т","&tdot;":"⃛","&telrec;":"⌕","&tfr;":"𝔱","&there4;":"∴","&therefore;":"∴","&theta;":"θ","&thetasym;":"ϑ","&thetav;":"ϑ","&thickapprox;":"≈","&thicksim;":"∼","&thinsp;":" ","&thkap;":"≈","&thksim;":"∼","&thorn":"þ","&thorn;":"þ","&tilde;":"˜","&times":"×","&times;":"×","&timesb;":"⊠","&timesbar;":"⨱","&timesd;":"⨰","&tint;":"∭","&toea;":"⤨","&top;":"⊤","&topbot;":"⌶","&topcir;":"⫱","&topf;":"𝕥","&topfork;":"⫚","&tosa;":"⤩","&tprime;":"‴","&trade;":"™","&triangle;":"▵","&triangledown;":"▿","&triangleleft;":"◃","&trianglelefteq;":"⊴","&triangleq;":"≜","&triangleright;":"▹","&trianglerighteq;":"⊵","&tridot;":"◬","&trie;":"≜","&triminus;":"⨺","&triplus;":"⨹","&trisb;":"⧍","&tritime;":"⨻","&trpezium;":"⏢","&tscr;":"𝓉","&tscy;":"ц","&tshcy;":"ћ","&tstrok;":"ŧ","&twixt;":"≬","&twoheadleftarrow;":"↞","&twoheadrightarrow;":"↠","&uArr;":"⇑","&uHar;":"⥣","&uacute":"ú","&uacute;":"ú","&uarr;":"↑","&ubrcy;":"ў","&ubreve;":"ŭ","&ucirc":"û","&ucirc;":"û","&ucy;":"у","&udarr;":"⇅","&udblac;":"ű","&udhar;":"⥮","&ufisht;":"⥾","&ufr;":"𝔲","&ugrave":"ù","&ugrave;":"ù","&uharl;":"↿","&uharr;":"↾","&uhblk;":"▀","&ulcorn;":"⌜","&ulcorner;":"⌜","&ulcrop;":"⌏","&ultri;":"◸","&umacr;":"ū","&uml":"¨","&uml;":"¨","&uogon;":"ų","&uopf;":"𝕦","&uparrow;":"↑","&updownarrow;":"↕","&upharpoonleft;":"↿","&upharpoonright;":"↾","&uplus;":"⊎","&upsi;":"υ","&upsih;":"ϒ","&upsilon;":"υ","&upuparrows;":"⇈","&urcorn;":"⌝","&urcorner;":"⌝","&urcrop;":"⌎","&uring;":"ů","&urtri;":"◹","&uscr;":"𝓊","&utdot;":"⋰","&utilde;":"ũ","&utri;":"▵","&utrif;":"▴","&uuarr;":"⇈","&uuml":"ü","&uuml;":"ü","&uwangle;":"⦧","&vArr;":"⇕","&vBar;":"⫨","&vBarv;":"⫩","&vDash;":"⊨","&vangrt;":"⦜","&varepsilon;":"ϵ","&varkappa;":"ϰ","&varnothing;":"∅","&varphi;":"ϕ","&varpi;":"ϖ","&varpropto;":"∝","&varr;":"↕","&varrho;":"ϱ","&varsigma;":"ς","&varsubsetneq;":"⊊︀","&varsubsetneqq;":"⫋︀","&varsupsetneq;":"⊋︀","&varsupsetneqq;":"⫌︀","&vartheta;":"ϑ","&vartriangleleft;":"⊲","&vartriangleright;":"⊳","&vcy;":"в","&vdash;":"⊢","&vee;":"∨","&veebar;":"⊻","&veeeq;":"≚","&vellip;":"⋮","&verbar;":"|","&vert;":"|","&vfr;":"𝔳","&vltri;":"⊲","&vnsub;":"⊂⃒","&vnsup;":"⊃⃒","&vopf;":"𝕧","&vprop;":"∝","&vrtri;":"⊳","&vscr;":"𝓋","&vsubnE;":"⫋︀","&vsubne;":"⊊︀","&vsupnE;":"⫌︀","&vsupne;":"⊋︀","&vzigzag;":"⦚","&wcirc;":"ŵ","&wedbar;":"⩟","&wedge;":"∧","&wedgeq;":"≙","&weierp;":"℘","&wfr;":"𝔴","&wopf;":"𝕨","&wp;":"℘","&wr;":"≀","&wreath;":"≀","&wscr;":"𝓌","&xcap;":"⋂","&xcirc;":"◯","&xcup;":"⋃","&xdtri;":"▽","&xfr;":"𝔵","&xhArr;":"⟺","&xharr;":"⟷","&xi;":"ξ","&xlArr;":"⟸","&xlarr;":"⟵","&xmap;":"⟼","&xnis;":"⋻","&xodot;":"⨀","&xopf;":"𝕩","&xoplus;":"⨁","&xotime;":"⨂","&xrArr;":"⟹","&xrarr;":"⟶","&xscr;":"𝓍","&xsqcup;":"⨆","&xuplus;":"⨄","&xutri;":"△","&xvee;":"⋁","&xwedge;":"⋀","&yacute":"ý","&yacute;":"ý","&yacy;":"я","&ycirc;":"ŷ","&ycy;":"ы","&yen":"¥","&yen;":"¥","&yfr;":"𝔶","&yicy;":"ї","&yopf;":"𝕪","&yscr;":"𝓎","&yucy;":"ю","&yuml":"ÿ","&yuml;":"ÿ","&zacute;":"ź","&zcaron;":"ž","&zcy;":"з","&zdot;":"ż","&zeetrf;":"ℨ","&zeta;":"ζ","&zfr;":"𝔷","&zhcy;":"ж","&zigrarr;":"⇝","&zopf;":"𝕫","&zscr;":"𝓏","&zwj;":"‍","&zwnj;":"‌"},characters:{"Æ":"&AElig;","&":"&amp;","Á":"&Aacute;","Ă":"&Abreve;","Â":"&Acirc;","А":"&Acy;","𝔄":"&Afr;","À":"&Agrave;","Α":"&Alpha;","Ā":"&Amacr;","⩓":"&And;","Ą":"&Aogon;","𝔸":"&Aopf;","⁡":"&af;","Å":"&angst;","𝒜":"&Ascr;","≔":"&coloneq;","Ã":"&Atilde;","Ä":"&Auml;","∖":"&ssetmn;","⫧":"&Barv;","⌆":"&doublebarwedge;","Б":"&Bcy;","∵":"&because;","ℬ":"&bernou;","Β":"&Beta;","𝔅":"&Bfr;","𝔹":"&Bopf;","˘":"&breve;","≎":"&bump;","Ч":"&CHcy;","©":"&copy;","Ć":"&Cacute;","⋒":"&Cap;","ⅅ":"&DD;","ℭ":"&Cfr;","Č":"&Ccaron;","Ç":"&Ccedil;","Ĉ":"&Ccirc;","∰":"&Cconint;","Ċ":"&Cdot;","¸":"&cedil;","·":"&middot;","Χ":"&Chi;","⊙":"&odot;","⊖":"&ominus;","⊕":"&oplus;","⊗":"&otimes;","∲":"&cwconint;","”":"&rdquor;","’":"&rsquor;","∷":"&Proportion;","⩴":"&Colone;","≡":"&equiv;","∯":"&DoubleContourIntegral;","∮":"&oint;","ℂ":"&complexes;","∐":"&coprod;","∳":"&awconint;","⨯":"&Cross;","𝒞":"&Cscr;","⋓":"&Cup;","≍":"&asympeq;","⤑":"&DDotrahd;","Ђ":"&DJcy;","Ѕ":"&DScy;","Џ":"&DZcy;","‡":"&ddagger;","↡":"&Darr;","⫤":"&DoubleLeftTee;","Ď":"&Dcaron;","Д":"&Dcy;","∇":"&nabla;","Δ":"&Delta;","𝔇":"&Dfr;","´":"&acute;","˙":"&dot;","˝":"&dblac;","`":"&grave;","˜":"&tilde;","⋄":"&diamond;","ⅆ":"&dd;","𝔻":"&Dopf;","¨":"&uml;","⃜":"&DotDot;","≐":"&esdot;","⇓":"&dArr;","⇐":"&lArr;","⇔":"&iff;","⟸":"&xlArr;","⟺":"&xhArr;","⟹":"&xrArr;","⇒":"&rArr;","⊨":"&vDash;","⇑":"&uArr;","⇕":"&vArr;","∥":"&spar;","↓":"&downarrow;","⤓":"&DownArrowBar;","⇵":"&duarr;","̑":"&DownBreve;","⥐":"&DownLeftRightVector;","⥞":"&DownLeftTeeVector;","↽":"&lhard;","⥖":"&DownLeftVectorBar;","⥟":"&DownRightTeeVector;","⇁":"&rightharpoondown;","⥗":"&DownRightVectorBar;","⊤":"&top;","↧":"&mapstodown;","𝒟":"&Dscr;","Đ":"&Dstrok;","Ŋ":"&ENG;","Ð":"&ETH;","É":"&Eacute;","Ě":"&Ecaron;","Ê":"&Ecirc;","Э":"&Ecy;","Ė":"&Edot;","𝔈":"&Efr;","È":"&Egrave;","∈":"&isinv;","Ē":"&Emacr;","◻":"&EmptySmallSquare;","▫":"&EmptyVerySmallSquare;","Ę":"&Eogon;","𝔼":"&Eopf;","Ε":"&Epsilon;","⩵":"&Equal;","≂":"&esim;","⇌":"&rlhar;","ℰ":"&expectation;","⩳":"&Esim;","Η":"&Eta;","Ë":"&Euml;","∃":"&exist;","ⅇ":"&exponentiale;","Ф":"&Fcy;","𝔉":"&Ffr;","◼":"&FilledSmallSquare;","▪":"&squf;","𝔽":"&Fopf;","∀":"&forall;","ℱ":"&Fscr;","Ѓ":"&GJcy;",">":"&gt;","Γ":"&Gamma;","Ϝ":"&Gammad;","Ğ":"&Gbreve;","Ģ":"&Gcedil;","Ĝ":"&Gcirc;","Г":"&Gcy;","Ġ":"&Gdot;","𝔊":"&Gfr;","⋙":"&ggg;","𝔾":"&Gopf;","≥":"&geq;","⋛":"&gtreqless;","≧":"&geqq;","⪢":"&GreaterGreater;","≷":"&gtrless;","⩾":"&ges;","≳":"&gtrsim;","𝒢":"&Gscr;","≫":"&gg;","Ъ":"&HARDcy;","ˇ":"&caron;","^":"&Hat;","Ĥ":"&Hcirc;","ℌ":"&Poincareplane;","ℋ":"&hamilt;","ℍ":"&quaternions;","─":"&boxh;","Ħ":"&Hstrok;","≏":"&bumpeq;","Е":"&IEcy;","Ĳ":"&IJlig;","Ё":"&IOcy;","Í":"&Iacute;","Î":"&Icirc;","И":"&Icy;","İ":"&Idot;","ℑ":"&imagpart;","Ì":"&Igrave;","Ī":"&Imacr;","ⅈ":"&ii;","∬":"&Int;","∫":"&int;","⋂":"&xcap;","⁣":"&ic;","⁢":"&it;","Į":"&Iogon;","𝕀":"&Iopf;","Ι":"&Iota;","ℐ":"&imagline;","Ĩ":"&Itilde;","І":"&Iukcy;","Ï":"&Iuml;","Ĵ":"&Jcirc;","Й":"&Jcy;","𝔍":"&Jfr;","𝕁":"&Jopf;","𝒥":"&Jscr;","Ј":"&Jsercy;","Є":"&Jukcy;","Х":"&KHcy;","Ќ":"&KJcy;","Κ":"&Kappa;","Ķ":"&Kcedil;","К":"&Kcy;","𝔎":"&Kfr;","𝕂":"&Kopf;","𝒦":"&Kscr;","Љ":"&LJcy;","<":"&lt;","Ĺ":"&Lacute;","Λ":"&Lambda;","⟪":"&Lang;","ℒ":"&lagran;","↞":"&twoheadleftarrow;","Ľ":"&Lcaron;","Ļ":"&Lcedil;","Л":"&Lcy;","⟨":"&langle;","←":"&slarr;","⇤":"&larrb;","⇆":"&lrarr;","⌈":"&lceil;","⟦":"&lobrk;","⥡":"&LeftDownTeeVector;","⇃":"&downharpoonleft;","⥙":"&LeftDownVectorBar;","⌊":"&lfloor;","↔":"&leftrightarrow;","⥎":"&LeftRightVector;","⊣":"&dashv;","↤":"&mapstoleft;","⥚":"&LeftTeeVector;","⊲":"&vltri;","⧏":"&LeftTriangleBar;","⊴":"&trianglelefteq;","⥑":"&LeftUpDownVector;","⥠":"&LeftUpTeeVector;","↿":"&upharpoonleft;","⥘":"&LeftUpVectorBar;","↼":"&lharu;","⥒":"&LeftVectorBar;","⋚":"&lesseqgtr;","≦":"&leqq;","≶":"&lg;","⪡":"&LessLess;","⩽":"&les;","≲":"&lsim;","𝔏":"&Lfr;","⋘":"&Ll;","⇚":"&lAarr;","Ŀ":"&Lmidot;","⟵":"&xlarr;","⟷":"&xharr;","⟶":"&xrarr;","𝕃":"&Lopf;","↙":"&swarrow;","↘":"&searrow;","↰":"&lsh;","Ł":"&Lstrok;","≪":"&ll;","⤅":"&Map;","М":"&Mcy;"," ":"&MediumSpace;","ℳ":"&phmmat;","𝔐":"&Mfr;","∓":"&mp;","𝕄":"&Mopf;","Μ":"&Mu;","Њ":"&NJcy;","Ń":"&Nacute;","Ň":"&Ncaron;","Ņ":"&Ncedil;","Н":"&Ncy;","​":"&ZeroWidthSpace;","\n":"&NewLine;","𝔑":"&Nfr;","⁠":"&NoBreak;"," ":"&nbsp;","ℕ":"&naturals;","⫬":"&Not;","≢":"&nequiv;","≭":"&NotCupCap;","∦":"&nspar;","∉":"&notinva;","≠":"&ne;","≂̸":"&nesim;","∄":"&nexists;","≯":"&ngtr;","≱":"&ngeq;","≧̸":"&ngeqq;","≫̸":"&nGtv;","≹":"&ntgl;","⩾̸":"&nges;","≵":"&ngsim;","≎̸":"&nbump;","≏̸":"&nbumpe;","⋪":"&ntriangleleft;","⧏̸":"&NotLeftTriangleBar;","⋬":"&ntrianglelefteq;","≮":"&nlt;","≰":"&nleq;","≸":"&ntlg;","≪̸":"&nLtv;","⩽̸":"&nles;","≴":"&nlsim;","⪢̸":"&NotNestedGreaterGreater;","⪡̸":"&NotNestedLessLess;","⊀":"&nprec;","⪯̸":"&npreceq;","⋠":"&nprcue;","∌":"&notniva;","⋫":"&ntriangleright;","⧐̸":"&NotRightTriangleBar;","⋭":"&ntrianglerighteq;","⊏̸":"&NotSquareSubset;","⋢":"&nsqsube;","⊐̸":"&NotSquareSuperset;","⋣":"&nsqsupe;","⊂⃒":"&vnsub;","⊈":"&nsubseteq;","⊁":"&nsucc;","⪰̸":"&nsucceq;","⋡":"&nsccue;","≿̸":"&NotSucceedsTilde;","⊃⃒":"&vnsup;","⊉":"&nsupseteq;","≁":"&nsim;","≄":"&nsimeq;","≇":"&ncong;","≉":"&napprox;","∤":"&nsmid;","𝒩":"&Nscr;","Ñ":"&Ntilde;","Ν":"&Nu;","Œ":"&OElig;","Ó":"&Oacute;","Ô":"&Ocirc;","О":"&Ocy;","Ő":"&Odblac;","𝔒":"&Ofr;","Ò":"&Ograve;","Ō":"&Omacr;","Ω":"&ohm;","Ο":"&Omicron;","𝕆":"&Oopf;","“":"&ldquo;","‘":"&lsquo;","⩔":"&Or;","𝒪":"&Oscr;","Ø":"&Oslash;","Õ":"&Otilde;","⨷":"&Otimes;","Ö":"&Ouml;","‾":"&oline;","⏞":"&OverBrace;","⎴":"&tbrk;","⏜":"&OverParenthesis;","∂":"&part;","П":"&Pcy;","𝔓":"&Pfr;","Φ":"&Phi;","Π":"&Pi;","±":"&pm;","ℙ":"&primes;","⪻":"&Pr;","≺":"&prec;","⪯":"&preceq;","≼":"&preccurlyeq;","≾":"&prsim;","″":"&Prime;","∏":"&prod;","∝":"&vprop;","𝒫":"&Pscr;","Ψ":"&Psi;",'"':"&quot;","𝔔":"&Qfr;","ℚ":"&rationals;","𝒬":"&Qscr;","⤐":"&drbkarow;","®":"&reg;","Ŕ":"&Racute;","⟫":"&Rang;","↠":"&twoheadrightarrow;","⤖":"&Rarrtl;","Ř":"&Rcaron;","Ŗ":"&Rcedil;","Р":"&Rcy;","ℜ":"&realpart;","∋":"&niv;","⇋":"&lrhar;","⥯":"&duhar;","Ρ":"&Rho;","⟩":"&rangle;","→":"&srarr;","⇥":"&rarrb;","⇄":"&rlarr;","⌉":"&rceil;","⟧":"&robrk;","⥝":"&RightDownTeeVector;","⇂":"&downharpoonright;","⥕":"&RightDownVectorBar;","⌋":"&rfloor;","⊢":"&vdash;","↦":"&mapsto;","⥛":"&RightTeeVector;","⊳":"&vrtri;","⧐":"&RightTriangleBar;","⊵":"&trianglerighteq;","⥏":"&RightUpDownVector;","⥜":"&RightUpTeeVector;","↾":"&upharpoonright;","⥔":"&RightUpVectorBar;","⇀":"&rightharpoonup;","⥓":"&RightVectorBar;","ℝ":"&reals;","⥰":"&RoundImplies;","⇛":"&rAarr;","ℛ":"&realine;","↱":"&rsh;","⧴":"&RuleDelayed;","Щ":"&SHCHcy;","Ш":"&SHcy;","Ь":"&SOFTcy;","Ś":"&Sacute;","⪼":"&Sc;","Š":"&Scaron;","Ş":"&Scedil;","Ŝ":"&Scirc;","С":"&Scy;","𝔖":"&Sfr;","↑":"&uparrow;","Σ":"&Sigma;","∘":"&compfn;","𝕊":"&Sopf;","√":"&radic;","□":"&square;","⊓":"&sqcap;","⊏":"&sqsubset;","⊑":"&sqsubseteq;","⊐":"&sqsupset;","⊒":"&sqsupseteq;","⊔":"&sqcup;","𝒮":"&Sscr;","⋆":"&sstarf;","⋐":"&Subset;","⊆":"&subseteq;","≻":"&succ;","⪰":"&succeq;","≽":"&succcurlyeq;","≿":"&succsim;","∑":"&sum;","⋑":"&Supset;","⊃":"&supset;","⊇":"&supseteq;","Þ":"&THORN;","™":"&trade;","Ћ":"&TSHcy;","Ц":"&TScy;","\t":"&Tab;","Τ":"&Tau;","Ť":"&Tcaron;","Ţ":"&Tcedil;","Т":"&Tcy;","𝔗":"&Tfr;","∴":"&therefore;","Θ":"&Theta;","  ":"&ThickSpace;"," ":"&thinsp;","∼":"&thksim;","≃":"&simeq;","≅":"&cong;","≈":"&thkap;","𝕋":"&Topf;","⃛":"&tdot;","𝒯":"&Tscr;","Ŧ":"&Tstrok;","Ú":"&Uacute;","↟":"&Uarr;","⥉":"&Uarrocir;","Ў":"&Ubrcy;","Ŭ":"&Ubreve;","Û":"&Ucirc;","У":"&Ucy;","Ű":"&Udblac;","𝔘":"&Ufr;","Ù":"&Ugrave;","Ū":"&Umacr;",_:"&lowbar;","⏟":"&UnderBrace;","⎵":"&bbrk;","⏝":"&UnderParenthesis;","⋃":"&xcup;","⊎":"&uplus;","Ų":"&Uogon;","𝕌":"&Uopf;","⤒":"&UpArrowBar;","⇅":"&udarr;","↕":"&varr;","⥮":"&udhar;","⊥":"&perp;","↥":"&mapstoup;","↖":"&nwarrow;","↗":"&nearrow;","ϒ":"&upsih;","Υ":"&Upsilon;","Ů":"&Uring;","𝒰":"&Uscr;","Ũ":"&Utilde;","Ü":"&Uuml;","⊫":"&VDash;","⫫":"&Vbar;","В":"&Vcy;","⊩":"&Vdash;","⫦":"&Vdashl;","⋁":"&xvee;","‖":"&Vert;","∣":"&smid;","|":"&vert;","❘":"&VerticalSeparator;","≀":"&wreath;"," ":"&hairsp;","𝔙":"&Vfr;","𝕍":"&Vopf;","𝒱":"&Vscr;","⊪":"&Vvdash;","Ŵ":"&Wcirc;","⋀":"&xwedge;","𝔚":"&Wfr;","𝕎":"&Wopf;","𝒲":"&Wscr;","𝔛":"&Xfr;","Ξ":"&Xi;","𝕏":"&Xopf;","𝒳":"&Xscr;","Я":"&YAcy;","Ї":"&YIcy;","Ю":"&YUcy;","Ý":"&Yacute;","Ŷ":"&Ycirc;","Ы":"&Ycy;","𝔜":"&Yfr;","𝕐":"&Yopf;","𝒴":"&Yscr;","Ÿ":"&Yuml;","Ж":"&ZHcy;","Ź":"&Zacute;","Ž":"&Zcaron;","З":"&Zcy;","Ż":"&Zdot;","Ζ":"&Zeta;","ℨ":"&zeetrf;","ℤ":"&integers;","𝒵":"&Zscr;","á":"&aacute;","ă":"&abreve;","∾":"&mstpos;","∾̳":"&acE;","∿":"&acd;","â":"&acirc;","а":"&acy;","æ":"&aelig;","𝔞":"&afr;","à":"&agrave;","ℵ":"&aleph;","α":"&alpha;","ā":"&amacr;","⨿":"&amalg;","∧":"&wedge;","⩕":"&andand;","⩜":"&andd;","⩘":"&andslope;","⩚":"&andv;","∠":"&angle;","⦤":"&ange;","∡":"&measuredangle;","⦨":"&angmsdaa;","⦩":"&angmsdab;","⦪":"&angmsdac;","⦫":"&angmsdad;","⦬":"&angmsdae;","⦭":"&angmsdaf;","⦮":"&angmsdag;","⦯":"&angmsdah;","∟":"&angrt;","⊾":"&angrtvb;","⦝":"&angrtvbd;","∢":"&angsph;","⍼":"&angzarr;","ą":"&aogon;","𝕒":"&aopf;","⩰":"&apE;","⩯":"&apacir;","≊":"&approxeq;","≋":"&apid;","'":"&apos;","å":"&aring;","𝒶":"&ascr;","*":"&midast;","ã":"&atilde;","ä":"&auml;","⨑":"&awint;","⫭":"&bNot;","≌":"&bcong;","϶":"&bepsi;","‵":"&bprime;","∽":"&bsim;","⋍":"&bsime;","⊽":"&barvee;","⌅":"&barwedge;","⎶":"&bbrktbrk;","б":"&bcy;","„":"&ldquor;","⦰":"&bemptyv;","β":"&beta;","ℶ":"&beth;","≬":"&twixt;","𝔟":"&bfr;","◯":"&xcirc;","⨀":"&xodot;","⨁":"&xoplus;","⨂":"&xotime;","⨆":"&xsqcup;","★":"&starf;","▽":"&xdtri;","△":"&xutri;","⨄":"&xuplus;","⤍":"&rbarr;","⧫":"&lozf;","▴":"&utrif;","▾":"&dtrif;","◂":"&ltrif;","▸":"&rtrif;","␣":"&blank;","▒":"&blk12;","░":"&blk14;","▓":"&blk34;","█":"&block;","=⃥":"&bne;","≡⃥":"&bnequiv;","⌐":"&bnot;","𝕓":"&bopf;","⋈":"&bowtie;","╗":"&boxDL;","╔":"&boxDR;","╖":"&boxDl;","╓":"&boxDr;","═":"&boxH;","╦":"&boxHD;","╩":"&boxHU;","╤":"&boxHd;","╧":"&boxHu;","╝":"&boxUL;","╚":"&boxUR;","╜":"&boxUl;","╙":"&boxUr;","║":"&boxV;","╬":"&boxVH;","╣":"&boxVL;","╠":"&boxVR;","╫":"&boxVh;","╢":"&boxVl;","╟":"&boxVr;","⧉":"&boxbox;","╕":"&boxdL;","╒":"&boxdR;","┐":"&boxdl;","┌":"&boxdr;","╥":"&boxhD;","╨":"&boxhU;","┬":"&boxhd;","┴":"&boxhu;","⊟":"&minusb;","⊞":"&plusb;","⊠":"&timesb;","╛":"&boxuL;","╘":"&boxuR;","┘":"&boxul;","└":"&boxur;","│":"&boxv;","╪":"&boxvH;","╡":"&boxvL;","╞":"&boxvR;","┼":"&boxvh;","┤":"&boxvl;","├":"&boxvr;","¦":"&brvbar;","𝒷":"&bscr;","⁏":"&bsemi;","\\":"&bsol;","⧅":"&bsolb;","⟈":"&bsolhsub;","•":"&bullet;","⪮":"&bumpE;","ć":"&cacute;","∩":"&cap;","⩄":"&capand;","⩉":"&capbrcup;","⩋":"&capcap;","⩇":"&capcup;","⩀":"&capdot;","∩︀":"&caps;","⁁":"&caret;","⩍":"&ccaps;","č":"&ccaron;","ç":"&ccedil;","ĉ":"&ccirc;","⩌":"&ccups;","⩐":"&ccupssm;","ċ":"&cdot;","⦲":"&cemptyv;","¢":"&cent;","𝔠":"&cfr;","ч":"&chcy;","✓":"&checkmark;","χ":"&chi;","○":"&cir;","⧃":"&cirE;","ˆ":"&circ;","≗":"&cire;","↺":"&olarr;","↻":"&orarr;","Ⓢ":"&oS;","⊛":"&oast;","⊚":"&ocir;","⊝":"&odash;","⨐":"&cirfnint;","⫯":"&cirmid;","⧂":"&cirscir;","♣":"&clubsuit;",":":"&colon;",",":"&comma;","@":"&commat;","∁":"&complement;","⩭":"&congdot;","𝕔":"&copf;","℗":"&copysr;","↵":"&crarr;","✗":"&cross;","𝒸":"&cscr;","⫏":"&csub;","⫑":"&csube;","⫐":"&csup;","⫒":"&csupe;","⋯":"&ctdot;","⤸":"&cudarrl;","⤵":"&cudarrr;","⋞":"&curlyeqprec;","⋟":"&curlyeqsucc;","↶":"&curvearrowleft;","⤽":"&cularrp;","∪":"&cup;","⩈":"&cupbrcap;","⩆":"&cupcap;","⩊":"&cupcup;","⊍":"&cupdot;","⩅":"&cupor;","∪︀":"&cups;","↷":"&curvearrowright;","⤼":"&curarrm;","⋎":"&cuvee;","⋏":"&cuwed;","¤":"&curren;","∱":"&cwint;","⌭":"&cylcty;","⥥":"&dHar;","†":"&dagger;","ℸ":"&daleth;","‐":"&hyphen;","⤏":"&rBarr;","ď":"&dcaron;","д":"&dcy;","⇊":"&downdownarrows;","⩷":"&eDDot;","°":"&deg;","δ":"&delta;","⦱":"&demptyv;","⥿":"&dfisht;","𝔡":"&dfr;","♦":"&diams;","ϝ":"&gammad;","⋲":"&disin;","÷":"&divide;","⋇":"&divonx;","ђ":"&djcy;","⌞":"&llcorner;","⌍":"&dlcrop;",$:"&dollar;","𝕕":"&dopf;","≑":"&eDot;","∸":"&minusd;","∔":"&plusdo;","⊡":"&sdotb;","⌟":"&lrcorner;","⌌":"&drcrop;","𝒹":"&dscr;","ѕ":"&dscy;","⧶":"&dsol;","đ":"&dstrok;","⋱":"&dtdot;","▿":"&triangledown;","⦦":"&dwangle;","џ":"&dzcy;","⟿":"&dzigrarr;","é":"&eacute;","⩮":"&easter;","ě":"&ecaron;","≖":"&eqcirc;","ê":"&ecirc;","≕":"&eqcolon;","э":"&ecy;","ė":"&edot;","≒":"&fallingdotseq;","𝔢":"&efr;","⪚":"&eg;","è":"&egrave;","⪖":"&eqslantgtr;","⪘":"&egsdot;","⪙":"&el;","⏧":"&elinters;","ℓ":"&ell;","⪕":"&eqslantless;","⪗":"&elsdot;","ē":"&emacr;","∅":"&varnothing;"," ":"&emsp13;"," ":"&emsp14;"," ":"&emsp;","ŋ":"&eng;"," ":"&ensp;","ę":"&eogon;","𝕖":"&eopf;","⋕":"&epar;","⧣":"&eparsl;","⩱":"&eplus;","ε":"&epsilon;","ϵ":"&varepsilon;","=":"&equals;","≟":"&questeq;","⩸":"&equivDD;","⧥":"&eqvparsl;","≓":"&risingdotseq;","⥱":"&erarr;","ℯ":"&escr;","η":"&eta;","ð":"&eth;","ë":"&euml;","€":"&euro;","!":"&excl;","ф":"&fcy;","♀":"&female;","ﬃ":"&ffilig;","ﬀ":"&fflig;","ﬄ":"&ffllig;","𝔣":"&ffr;","ﬁ":"&filig;",fj:"&fjlig;","♭":"&flat;","ﬂ":"&fllig;","▱":"&fltns;","ƒ":"&fnof;","𝕗":"&fopf;","⋔":"&pitchfork;","⫙":"&forkv;","⨍":"&fpartint;","½":"&half;","⅓":"&frac13;","¼":"&frac14;","⅕":"&frac15;","⅙":"&frac16;","⅛":"&frac18;","⅔":"&frac23;","⅖":"&frac25;","¾":"&frac34;","⅗":"&frac35;","⅜":"&frac38;","⅘":"&frac45;","⅚":"&frac56;","⅝":"&frac58;","⅞":"&frac78;","⁄":"&frasl;","⌢":"&sfrown;","𝒻":"&fscr;","⪌":"&gtreqqless;","ǵ":"&gacute;","γ":"&gamma;","⪆":"&gtrapprox;","ğ":"&gbreve;","ĝ":"&gcirc;","г":"&gcy;","ġ":"&gdot;","⪩":"&gescc;","⪀":"&gesdot;","⪂":"&gesdoto;","⪄":"&gesdotol;","⋛︀":"&gesl;","⪔":"&gesles;","𝔤":"&gfr;","ℷ":"&gimel;","ѓ":"&gjcy;","⪒":"&glE;","⪥":"&gla;","⪤":"&glj;","≩":"&gneqq;","⪊":"&gnapprox;","⪈":"&gneq;","⋧":"&gnsim;","𝕘":"&gopf;","ℊ":"&gscr;","⪎":"&gsime;","⪐":"&gsiml;","⪧":"&gtcc;","⩺":"&gtcir;","⋗":"&gtrdot;","⦕":"&gtlPar;","⩼":"&gtquest;","⥸":"&gtrarr;","≩︀":"&gvnE;","ъ":"&hardcy;","⥈":"&harrcir;","↭":"&leftrightsquigarrow;","ℏ":"&plankv;","ĥ":"&hcirc;","♥":"&heartsuit;","…":"&mldr;","⊹":"&hercon;","𝔥":"&hfr;","⤥":"&searhk;","⤦":"&swarhk;","⇿":"&hoarr;","∻":"&homtht;","↩":"&larrhk;","↪":"&rarrhk;","𝕙":"&hopf;","―":"&horbar;","𝒽":"&hscr;","ħ":"&hstrok;","⁃":"&hybull;","í":"&iacute;","î":"&icirc;","и":"&icy;","е":"&iecy;","¡":"&iexcl;","𝔦":"&ifr;","ì":"&igrave;","⨌":"&qint;","∭":"&tint;","⧜":"&iinfin;","℩":"&iiota;","ĳ":"&ijlig;","ī":"&imacr;","ı":"&inodot;","⊷":"&imof;","Ƶ":"&imped;","℅":"&incare;","∞":"&infin;","⧝":"&infintie;","⊺":"&intercal;","⨗":"&intlarhk;","⨼":"&iprod;","ё":"&iocy;","į":"&iogon;","𝕚":"&iopf;","ι":"&iota;","¿":"&iquest;","𝒾":"&iscr;","⋹":"&isinE;","⋵":"&isindot;","⋴":"&isins;","⋳":"&isinsv;","ĩ":"&itilde;","і":"&iukcy;","ï":"&iuml;","ĵ":"&jcirc;","й":"&jcy;","𝔧":"&jfr;","ȷ":"&jmath;","𝕛":"&jopf;","𝒿":"&jscr;","ј":"&jsercy;","є":"&jukcy;","κ":"&kappa;","ϰ":"&varkappa;","ķ":"&kcedil;","к":"&kcy;","𝔨":"&kfr;","ĸ":"&kgreen;","х":"&khcy;","ќ":"&kjcy;","𝕜":"&kopf;","𝓀":"&kscr;","⤛":"&lAtail;","⤎":"&lBarr;","⪋":"&lesseqqgtr;","⥢":"&lHar;","ĺ":"&lacute;","⦴":"&laemptyv;","λ":"&lambda;","⦑":"&langd;","⪅":"&lessapprox;","«":"&laquo;","⤟":"&larrbfs;","⤝":"&larrfs;","↫":"&looparrowleft;","⤹":"&larrpl;","⥳":"&larrsim;","↢":"&leftarrowtail;","⪫":"&lat;","⤙":"&latail;","⪭":"&late;","⪭︀":"&lates;","⤌":"&lbarr;","❲":"&lbbrk;","{":"&lcub;","[":"&lsqb;","⦋":"&lbrke;","⦏":"&lbrksld;","⦍":"&lbrkslu;","ľ":"&lcaron;","ļ":"&lcedil;","л":"&lcy;","⤶":"&ldca;","⥧":"&ldrdhar;","⥋":"&ldrushar;","↲":"&ldsh;","≤":"&leq;","⇇":"&llarr;","⋋":"&lthree;","⪨":"&lescc;","⩿":"&lesdot;","⪁":"&lesdoto;","⪃":"&lesdotor;","⋚︀":"&lesg;","⪓":"&lesges;","⋖":"&ltdot;","⥼":"&lfisht;","𝔩":"&lfr;","⪑":"&lgE;","⥪":"&lharul;","▄":"&lhblk;","љ":"&ljcy;","⥫":"&llhard;","◺":"&lltri;","ŀ":"&lmidot;","⎰":"&lmoustache;","≨":"&lneqq;","⪉":"&lnapprox;","⪇":"&lneq;","⋦":"&lnsim;","⟬":"&loang;","⇽":"&loarr;","⟼":"&xmap;","↬":"&rarrlp;","⦅":"&lopar;","𝕝":"&lopf;","⨭":"&loplus;","⨴":"&lotimes;","∗":"&lowast;","◊":"&lozenge;","(":"&lpar;","⦓":"&lparlt;","⥭":"&lrhard;","‎":"&lrm;","⊿":"&lrtri;","‹":"&lsaquo;","𝓁":"&lscr;","⪍":"&lsime;","⪏":"&lsimg;","‚":"&sbquo;","ł":"&lstrok;","⪦":"&ltcc;","⩹":"&ltcir;","⋉":"&ltimes;","⥶":"&ltlarr;","⩻":"&ltquest;","⦖":"&ltrPar;","◃":"&triangleleft;","⥊":"&lurdshar;","⥦":"&luruhar;","≨︀":"&lvnE;","∺":"&mDDot;","¯":"&strns;","♂":"&male;","✠":"&maltese;","▮":"&marker;","⨩":"&mcomma;","м":"&mcy;","—":"&mdash;","𝔪":"&mfr;","℧":"&mho;","µ":"&micro;","⫰":"&midcir;","−":"&minus;","⨪":"&minusdu;","⫛":"&mlcp;","⊧":"&models;","𝕞":"&mopf;","𝓂":"&mscr;","μ":"&mu;","⊸":"&mumap;","⋙̸":"&nGg;","≫⃒":"&nGt;","⇍":"&nlArr;","⇎":"&nhArr;","⋘̸":"&nLl;","≪⃒":"&nLt;","⇏":"&nrArr;","⊯":"&nVDash;","⊮":"&nVdash;","ń":"&nacute;","∠⃒":"&nang;","⩰̸":"&napE;","≋̸":"&napid;","ŉ":"&napos;","♮":"&natural;","⩃":"&ncap;","ň":"&ncaron;","ņ":"&ncedil;","⩭̸":"&ncongdot;","⩂":"&ncup;","н":"&ncy;","–":"&ndash;","⇗":"&neArr;","⤤":"&nearhk;","≐̸":"&nedot;","⤨":"&toea;","𝔫":"&nfr;","↮":"&nleftrightarrow;","⫲":"&nhpar;","⋼":"&nis;","⋺":"&nisd;","њ":"&njcy;","≦̸":"&nleqq;","↚":"&nleftarrow;","‥":"&nldr;","𝕟":"&nopf;","¬":"&not;","⋹̸":"&notinE;","⋵̸":"&notindot;","⋷":"&notinvb;","⋶":"&notinvc;","⋾":"&notnivb;","⋽":"&notnivc;","⫽⃥":"&nparsl;","∂̸":"&npart;","⨔":"&npolint;","↛":"&nrightarrow;","⤳̸":"&nrarrc;","↝̸":"&nrarrw;","𝓃":"&nscr;","⊄":"&nsub;","⫅̸":"&nsubseteqq;","⊅":"&nsup;","⫆̸":"&nsupseteqq;","ñ":"&ntilde;","ν":"&nu;","#":"&num;","№":"&numero;"," ":"&numsp;","⊭":"&nvDash;","⤄":"&nvHarr;","≍⃒":"&nvap;","⊬":"&nvdash;","≥⃒":"&nvge;",">⃒":"&nvgt;","⧞":"&nvinfin;","⤂":"&nvlArr;","≤⃒":"&nvle;","<⃒":"&nvlt;","⊴⃒":"&nvltrie;","⤃":"&nvrArr;","⊵⃒":"&nvrtrie;","∼⃒":"&nvsim;","⇖":"&nwArr;","⤣":"&nwarhk;","⤧":"&nwnear;","ó":"&oacute;","ô":"&ocirc;","о":"&ocy;","ő":"&odblac;","⨸":"&odiv;","⦼":"&odsold;","œ":"&oelig;","⦿":"&ofcir;","𝔬":"&ofr;","˛":"&ogon;","ò":"&ograve;","⧁":"&ogt;","⦵":"&ohbar;","⦾":"&olcir;","⦻":"&olcross;","⧀":"&olt;","ō":"&omacr;","ω":"&omega;","ο":"&omicron;","⦶":"&omid;","𝕠":"&oopf;","⦷":"&opar;","⦹":"&operp;","∨":"&vee;","⩝":"&ord;","ℴ":"&oscr;","ª":"&ordf;","º":"&ordm;","⊶":"&origof;","⩖":"&oror;","⩗":"&orslope;","⩛":"&orv;","ø":"&oslash;","⊘":"&osol;","õ":"&otilde;","⨶":"&otimesas;","ö":"&ouml;","⌽":"&ovbar;","¶":"&para;","⫳":"&parsim;","⫽":"&parsl;","п":"&pcy;","%":"&percnt;",".":"&period;","‰":"&permil;","‱":"&pertenk;","𝔭":"&pfr;","φ":"&phi;","ϕ":"&varphi;","☎":"&phone;","π":"&pi;","ϖ":"&varpi;","ℎ":"&planckh;","+":"&plus;","⨣":"&plusacir;","⨢":"&pluscir;","⨥":"&plusdu;","⩲":"&pluse;","⨦":"&plussim;","⨧":"&plustwo;","⨕":"&pointint;","𝕡":"&popf;","£":"&pound;","⪳":"&prE;","⪷":"&precapprox;","⪹":"&prnap;","⪵":"&prnE;","⋨":"&prnsim;","′":"&prime;","⌮":"&profalar;","⌒":"&profline;","⌓":"&profsurf;","⊰":"&prurel;","𝓅":"&pscr;","ψ":"&psi;"," ":"&puncsp;","𝔮":"&qfr;","𝕢":"&qopf;","⁗":"&qprime;","𝓆":"&qscr;","⨖":"&quatint;","?":"&quest;","⤜":"&rAtail;","⥤":"&rHar;","∽̱":"&race;","ŕ":"&racute;","⦳":"&raemptyv;","⦒":"&rangd;","⦥":"&range;","»":"&raquo;","⥵":"&rarrap;","⤠":"&rarrbfs;","⤳":"&rarrc;","⤞":"&rarrfs;","⥅":"&rarrpl;","⥴":"&rarrsim;","↣":"&rightarrowtail;","↝":"&rightsquigarrow;","⤚":"&ratail;","∶":"&ratio;","❳":"&rbbrk;","}":"&rcub;","]":"&rsqb;","⦌":"&rbrke;","⦎":"&rbrksld;","⦐":"&rbrkslu;","ř":"&rcaron;","ŗ":"&rcedil;","р":"&rcy;","⤷":"&rdca;","⥩":"&rdldhar;","↳":"&rdsh;","▭":"&rect;","⥽":"&rfisht;","𝔯":"&rfr;","⥬":"&rharul;","ρ":"&rho;","ϱ":"&varrho;","⇉":"&rrarr;","⋌":"&rthree;","˚":"&ring;","‏":"&rlm;","⎱":"&rmoustache;","⫮":"&rnmid;","⟭":"&roang;","⇾":"&roarr;","⦆":"&ropar;","𝕣":"&ropf;","⨮":"&roplus;","⨵":"&rotimes;",")":"&rpar;","⦔":"&rpargt;","⨒":"&rppolint;","›":"&rsaquo;","𝓇":"&rscr;","⋊":"&rtimes;","▹":"&triangleright;","⧎":"&rtriltri;","⥨":"&ruluhar;","℞":"&rx;","ś":"&sacute;","⪴":"&scE;","⪸":"&succapprox;","š":"&scaron;","ş":"&scedil;","ŝ":"&scirc;","⪶":"&succneqq;","⪺":"&succnapprox;","⋩":"&succnsim;","⨓":"&scpolint;","с":"&scy;","⋅":"&sdot;","⩦":"&sdote;","⇘":"&seArr;","§":"&sect;",";":"&semi;","⤩":"&tosa;","✶":"&sext;","𝔰":"&sfr;","♯":"&sharp;","щ":"&shchcy;","ш":"&shcy;","­":"&shy;","σ":"&sigma;","ς":"&varsigma;","⩪":"&simdot;","⪞":"&simg;","⪠":"&simgE;","⪝":"&siml;","⪟":"&simlE;","≆":"&simne;","⨤":"&simplus;","⥲":"&simrarr;","⨳":"&smashp;","⧤":"&smeparsl;","⌣":"&ssmile;","⪪":"&smt;","⪬":"&smte;","⪬︀":"&smtes;","ь":"&softcy;","/":"&sol;","⧄":"&solb;","⌿":"&solbar;","𝕤":"&sopf;","♠":"&spadesuit;","⊓︀":"&sqcaps;","⊔︀":"&sqcups;","𝓈":"&sscr;","☆":"&star;","⊂":"&subset;","⫅":"&subseteqq;","⪽":"&subdot;","⫃":"&subedot;","⫁":"&submult;","⫋":"&subsetneqq;","⊊":"&subsetneq;","⪿":"&subplus;","⥹":"&subrarr;","⫇":"&subsim;","⫕":"&subsub;","⫓":"&subsup;","♪":"&sung;","¹":"&sup1;","²":"&sup2;","³":"&sup3;","⫆":"&supseteqq;","⪾":"&supdot;","⫘":"&supdsub;","⫄":"&supedot;","⟉":"&suphsol;","⫗":"&suphsub;","⥻":"&suplarr;","⫂":"&supmult;","⫌":"&supsetneqq;","⊋":"&supsetneq;","⫀":"&supplus;","⫈":"&supsim;","⫔":"&supsub;","⫖":"&supsup;","⇙":"&swArr;","⤪":"&swnwar;","ß":"&szlig;","⌖":"&target;","τ":"&tau;","ť":"&tcaron;","ţ":"&tcedil;","т":"&tcy;","⌕":"&telrec;","𝔱":"&tfr;","θ":"&theta;","ϑ":"&vartheta;","þ":"&thorn;","×":"&times;","⨱":"&timesbar;","⨰":"&timesd;","⌶":"&topbot;","⫱":"&topcir;","𝕥":"&topf;","⫚":"&topfork;","‴":"&tprime;","▵":"&utri;","≜":"&trie;","◬":"&tridot;","⨺":"&triminus;","⨹":"&triplus;","⧍":"&trisb;","⨻":"&tritime;","⏢":"&trpezium;","𝓉":"&tscr;","ц":"&tscy;","ћ":"&tshcy;","ŧ":"&tstrok;","⥣":"&uHar;","ú":"&uacute;","ў":"&ubrcy;","ŭ":"&ubreve;","û":"&ucirc;","у":"&ucy;","ű":"&udblac;","⥾":"&ufisht;","𝔲":"&ufr;","ù":"&ugrave;","▀":"&uhblk;","⌜":"&ulcorner;","⌏":"&ulcrop;","◸":"&ultri;","ū":"&umacr;","ų":"&uogon;","𝕦":"&uopf;","υ":"&upsilon;","⇈":"&uuarr;","⌝":"&urcorner;","⌎":"&urcrop;","ů":"&uring;","◹":"&urtri;","𝓊":"&uscr;","⋰":"&utdot;","ũ":"&utilde;","ü":"&uuml;","⦧":"&uwangle;","⫨":"&vBar;","⫩":"&vBarv;","⦜":"&vangrt;","⊊︀":"&vsubne;","⫋︀":"&vsubnE;","⊋︀":"&vsupne;","⫌︀":"&vsupnE;","в":"&vcy;","⊻":"&veebar;","≚":"&veeeq;","⋮":"&vellip;","𝔳":"&vfr;","𝕧":"&vopf;","𝓋":"&vscr;","⦚":"&vzigzag;","ŵ":"&wcirc;","⩟":"&wedbar;","≙":"&wedgeq;","℘":"&wp;","𝔴":"&wfr;","𝕨":"&wopf;","𝓌":"&wscr;","𝔵":"&xfr;","ξ":"&xi;","⋻":"&xnis;","𝕩":"&xopf;","𝓍":"&xscr;","ý":"&yacute;","я":"&yacy;","ŷ":"&ycirc;","ы":"&ycy;","¥":"&yen;","𝔶":"&yfr;","ї":"&yicy;","𝕪":"&yopf;","𝓎":"&yscr;","ю":"&yucy;","ÿ":"&yuml;","ź":"&zacute;","ž":"&zcaron;","з":"&zcy;","ż":"&zdot;","ζ":"&zeta;","𝔷":"&zfr;","ж":"&zhcy;","⇝":"&zigrarr;","𝕫":"&zopf;","𝓏":"&zscr;","‍":"&zwj;","‌":"&zwnj;"}}};
+//# sourceMappingURL=./named-references.js.map
+
+/***/ }),
+
+/***/ "./node_modules/html-entities/lib/numeric-unicode-map.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/html-entities/lib/numeric-unicode-map.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", ({value:true}));exports.numericUnicodeMap={0:65533,128:8364,130:8218,131:402,132:8222,133:8230,134:8224,135:8225,136:710,137:8240,138:352,139:8249,140:338,142:381,145:8216,146:8217,147:8220,148:8221,149:8226,150:8211,151:8212,152:732,153:8482,154:353,155:8250,156:339,158:382,159:376};
+//# sourceMappingURL=./numeric-unicode-map.js.map
+
+/***/ }),
+
+/***/ "./node_modules/html-entities/lib/surrogate-pairs.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/html-entities/lib/surrogate-pairs.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", ({value:true}));exports.fromCodePoint=String.fromCodePoint||function(astralCodePoint){return String.fromCharCode(Math.floor((astralCodePoint-65536)/1024)+55296,(astralCodePoint-65536)%1024+56320)};exports.getCodePoint=String.prototype.codePointAt?function(input,position){return input.codePointAt(position)}:function(input,position){return(input.charCodeAt(position)-55296)*1024+input.charCodeAt(position+1)-56320+65536};exports.highSurrogateFrom=55296;exports.highSurrogateTo=56319;
+//# sourceMappingURL=./surrogate-pairs.js.map
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/clients/WebSocketClient.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/clients/WebSocketClient.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ WebSocketClient)
+/* harmony export */ });
+/* harmony import */ var _utils_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+var WebSocketClient = /*#__PURE__*/function () {
+  /**
+   * @param {string} url
+   */
+  function WebSocketClient(url) {
+    _classCallCheck(this, WebSocketClient);
+    this.client = new WebSocket(url);
+    this.client.onerror = function (error) {
+      _utils_log_js__WEBPACK_IMPORTED_MODULE_0__.log.error(error);
+    };
+  }
+
+  /**
+   * @param {(...args: any[]) => void} f
+   */
+  return _createClass(WebSocketClient, [{
+    key: "onOpen",
+    value: function onOpen(f) {
+      this.client.onopen = f;
+    }
+
+    /**
+     * @param {(...args: any[]) => void} f
+     */
+  }, {
+    key: "onClose",
+    value: function onClose(f) {
+      this.client.onclose = f;
+    }
+
+    // call f with the message string as the first argument
+    /**
+     * @param {(...args: any[]) => void} f
+     */
+  }, {
+    key: "onMessage",
+    value: function onMessage(f) {
+      this.client.onmessage = function (e) {
+        f(e.data);
+      };
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8080&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8080&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true ***!
+  \*************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+var __resourceQuery = "?protocol=ws%3A&hostname=localhost&port=8080&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webpack/hot/log.js */ "./node_modules/webpack/hot/log.js");
+/* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_stripAnsi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/stripAnsi.js */ "./node_modules/webpack-dev-server/client/utils/stripAnsi.js");
+/* harmony import */ var _utils_parseURL_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/parseURL.js */ "./node_modules/webpack-dev-server/client/utils/parseURL.js");
+/* harmony import */ var _socket_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./socket.js */ "./node_modules/webpack-dev-server/client/socket.js");
+/* harmony import */ var _overlay_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./overlay.js */ "./node_modules/webpack-dev-server/client/overlay.js");
+/* harmony import */ var _utils_log_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
+/* harmony import */ var _utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/sendMessage.js */ "./node_modules/webpack-dev-server/client/utils/sendMessage.js");
+/* harmony import */ var _utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/reloadApp.js */ "./node_modules/webpack-dev-server/client/utils/reloadApp.js");
+/* harmony import */ var _utils_createSocketURL_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/createSocketURL.js */ "./node_modules/webpack-dev-server/client/utils/createSocketURL.js");
+/* harmony import */ var _progress_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./progress.js */ "./node_modules/webpack-dev-server/client/progress.js");
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* global __resourceQuery, __webpack_hash__ */
+/// <reference types="webpack/module" />
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @typedef {Object} OverlayOptions
+ * @property {boolean | (error: Error) => boolean} [warnings]
+ * @property {boolean | (error: Error) => boolean} [errors]
+ * @property {boolean | (error: Error) => boolean} [runtimeErrors]
+ * @property {string} [trustedTypesPolicyName]
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {boolean} hot
+ * @property {boolean} liveReload
+ * @property {boolean} progress
+ * @property {boolean | OverlayOptions} overlay
+ * @property {string} [logging]
+ * @property {number} [reconnect]
+ */
+
+/**
+ * @typedef {Object} Status
+ * @property {boolean} isUnloading
+ * @property {string} currentHash
+ * @property {string} [previousHash]
+ */
+
+/**
+ * @param {boolean | { warnings?: boolean | string; errors?: boolean | string; runtimeErrors?: boolean | string; }} overlayOptions
+ */
+var decodeOverlayOptions = function decodeOverlayOptions(overlayOptions) {
+  if (typeof overlayOptions === "object") {
+    ["warnings", "errors", "runtimeErrors"].forEach(function (property) {
+      if (typeof overlayOptions[property] === "string") {
+        var overlayFilterFunctionString = decodeURIComponent(overlayOptions[property]);
+
+        // eslint-disable-next-line no-new-func
+        var overlayFilterFunction = new Function("message", "var callback = ".concat(overlayFilterFunctionString, "\n        return callback(message)"));
+        overlayOptions[property] = overlayFilterFunction;
+      }
+    });
+  }
+};
+
+/**
+ * @type {Status}
+ */
+var status = {
+  isUnloading: false,
+  // eslint-disable-next-line camelcase
+  currentHash: __webpack_require__.h()
+};
+
+/** @type {Options} */
+var options = {
+  hot: false,
+  liveReload: false,
+  progress: false,
+  overlay: false
+};
+var parsedResourceQuery = (0,_utils_parseURL_js__WEBPACK_IMPORTED_MODULE_2__["default"])(__resourceQuery);
+var enabledFeatures = {
+  "Hot Module Replacement": false,
+  "Live Reloading": false,
+  Progress: false,
+  Overlay: false
+};
+if (parsedResourceQuery.hot === "true") {
+  options.hot = true;
+  enabledFeatures["Hot Module Replacement"] = true;
+}
+if (parsedResourceQuery["live-reload"] === "true") {
+  options.liveReload = true;
+  enabledFeatures["Live Reloading"] = true;
+}
+if (parsedResourceQuery.progress === "true") {
+  options.progress = true;
+  enabledFeatures.Progress = true;
+}
+if (parsedResourceQuery.overlay) {
+  try {
+    options.overlay = JSON.parse(parsedResourceQuery.overlay);
+  } catch (e) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error("Error parsing overlay options from resource query:", e);
+  }
+
+  // Fill in default "true" params for partially-specified objects.
+  if (typeof options.overlay === "object") {
+    options.overlay = _objectSpread({
+      errors: true,
+      warnings: true,
+      runtimeErrors: true
+    }, options.overlay);
+    decodeOverlayOptions(options.overlay);
+  }
+  enabledFeatures.Overlay = true;
+}
+if (parsedResourceQuery.logging) {
+  options.logging = parsedResourceQuery.logging;
+}
+if (typeof parsedResourceQuery.reconnect !== "undefined") {
+  options.reconnect = Number(parsedResourceQuery.reconnect);
+}
+
+/**
+ * @param {string} level
+ */
+function setAllLogLevel(level) {
+  // This is needed because the HMR logger operate separately from dev server logger
+  webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0___default().setLogLevel(level === "verbose" || level === "log" ? "info" : level);
+  (0,_utils_log_js__WEBPACK_IMPORTED_MODULE_5__.setLogLevel)(level);
+}
+if (options.logging) {
+  setAllLogLevel(options.logging);
+}
+(0,_utils_log_js__WEBPACK_IMPORTED_MODULE_5__.logEnabledFeatures)(enabledFeatures);
+self.addEventListener("beforeunload", function () {
+  status.isUnloading = true;
+});
+var overlay = typeof window !== "undefined" ? (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.createOverlay)(typeof options.overlay === "object" ? {
+  trustedTypesPolicyName: options.overlay.trustedTypesPolicyName,
+  catchRuntimeError: options.overlay.runtimeErrors
+} : {
+  trustedTypesPolicyName: false,
+  catchRuntimeError: options.overlay
+}) : {
+  send: function send() {}
+};
+var onSocketMessage = {
+  hot: function hot() {
+    if (parsedResourceQuery.hot === "false") {
+      return;
+    }
+    options.hot = true;
+  },
+  liveReload: function liveReload() {
+    if (parsedResourceQuery["live-reload"] === "false") {
+      return;
+    }
+    options.liveReload = true;
+  },
+  invalid: function invalid() {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("App updated. Recompiling...");
+
+    // Fixes #1042. overlay doesn't clear if errors are fixed but warnings remain.
+    if (options.overlay) {
+      overlay.send({
+        type: "DISMISS"
+      });
+    }
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Invalid");
+  },
+  /**
+   * @param {string} hash
+   */
+  hash: function hash(_hash) {
+    status.previousHash = status.currentHash;
+    status.currentHash = _hash;
+  },
+  logging: setAllLogLevel,
+  /**
+   * @param {boolean} value
+   */
+  overlay: function overlay(value) {
+    if (typeof document === "undefined") {
+      return;
+    }
+    options.overlay = value;
+    decodeOverlayOptions(options.overlay);
+  },
+  /**
+   * @param {number} value
+   */
+  reconnect: function reconnect(value) {
+    if (parsedResourceQuery.reconnect === "false") {
+      return;
+    }
+    options.reconnect = value;
+  },
+  /**
+   * @param {boolean} value
+   */
+  progress: function progress(value) {
+    options.progress = value;
+  },
+  /**
+   * @param {{ pluginName?: string, percent: number, msg: string }} data
+   */
+  "progress-update": function progressUpdate(data) {
+    if (options.progress) {
+      _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("".concat(data.pluginName ? "[".concat(data.pluginName, "] ") : "").concat(data.percent, "% - ").concat(data.msg, "."));
+    }
+    if ((0,_progress_js__WEBPACK_IMPORTED_MODULE_9__.isProgressSupported)()) {
+      if (typeof options.progress === "string") {
+        var progress = document.querySelector("wds-progress");
+        if (!progress) {
+          (0,_progress_js__WEBPACK_IMPORTED_MODULE_9__.defineProgressElement)();
+          progress = document.createElement("wds-progress");
+          document.body.appendChild(progress);
+        }
+        progress.setAttribute("progress", data.percent);
+        progress.setAttribute("type", options.progress);
+      }
+    }
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Progress", data);
+  },
+  "still-ok": function stillOk() {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Nothing changed.");
+    if (options.overlay) {
+      overlay.send({
+        type: "DISMISS"
+      });
+    }
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("StillOk");
+  },
+  ok: function ok() {
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Ok");
+    if (options.overlay) {
+      overlay.send({
+        type: "DISMISS"
+      });
+    }
+    (0,_utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__["default"])(options, status);
+  },
+  /**
+   * @param {string} file
+   */
+  "static-changed": function staticChanged(file) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("".concat(file ? "\"".concat(file, "\"") : "Content", " from static directory was changed. Reloading..."));
+    self.location.reload();
+  },
+  /**
+   * @param {Error[]} warnings
+   * @param {any} params
+   */
+  warnings: function warnings(_warnings, params) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.warn("Warnings while compiling.");
+    var printableWarnings = _warnings.map(function (error) {
+      var _formatProblem = (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.formatProblem)("warning", error),
+        header = _formatProblem.header,
+        body = _formatProblem.body;
+      return "".concat(header, "\n").concat((0,_utils_stripAnsi_js__WEBPACK_IMPORTED_MODULE_1__["default"])(body));
+    });
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Warnings", printableWarnings);
+    for (var i = 0; i < printableWarnings.length; i++) {
+      _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.warn(printableWarnings[i]);
+    }
+    var overlayWarningsSetting = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.warnings;
+    if (overlayWarningsSetting) {
+      var warningsToDisplay = typeof overlayWarningsSetting === "function" ? _warnings.filter(overlayWarningsSetting) : _warnings;
+      if (warningsToDisplay.length) {
+        overlay.send({
+          type: "BUILD_ERROR",
+          level: "warning",
+          messages: _warnings
+        });
+      }
+    }
+    if (params && params.preventReloading) {
+      return;
+    }
+    (0,_utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__["default"])(options, status);
+  },
+  /**
+   * @param {Error[]} errors
+   */
+  errors: function errors(_errors) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error("Errors while compiling. Reload prevented.");
+    var printableErrors = _errors.map(function (error) {
+      var _formatProblem2 = (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.formatProblem)("error", error),
+        header = _formatProblem2.header,
+        body = _formatProblem2.body;
+      return "".concat(header, "\n").concat((0,_utils_stripAnsi_js__WEBPACK_IMPORTED_MODULE_1__["default"])(body));
+    });
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Errors", printableErrors);
+    for (var i = 0; i < printableErrors.length; i++) {
+      _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error(printableErrors[i]);
+    }
+    var overlayErrorsSettings = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.errors;
+    if (overlayErrorsSettings) {
+      var errorsToDisplay = typeof overlayErrorsSettings === "function" ? _errors.filter(overlayErrorsSettings) : _errors;
+      if (errorsToDisplay.length) {
+        overlay.send({
+          type: "BUILD_ERROR",
+          level: "error",
+          messages: _errors
+        });
+      }
+    }
+  },
+  /**
+   * @param {Error} error
+   */
+  error: function error(_error) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error(_error);
+  },
+  close: function close() {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Disconnected!");
+    if (options.overlay) {
+      overlay.send({
+        type: "DISMISS"
+      });
+    }
+    (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Close");
+  }
+};
+var socketURL = (0,_utils_createSocketURL_js__WEBPACK_IMPORTED_MODULE_8__["default"])(parsedResourceQuery);
+(0,_socket_js__WEBPACK_IMPORTED_MODULE_3__["default"])(socketURL, onSocketMessage, options.reconnect);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/modules/logger/index.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/modules/logger/index.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./client-src/modules/logger/tapable.js":
+/*!**********************************************!*\
+  !*** ./client-src/modules/logger/tapable.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, __nested_webpack_exports__, __nested_webpack_require_372__) {
+
+__nested_webpack_require_372__.r(__nested_webpack_exports__);
+/* harmony export */ __nested_webpack_require_372__.d(__nested_webpack_exports__, {
+/* harmony export */   SyncBailHook: function() { return /* binding */ SyncBailHook; }
+/* harmony export */ });
+function SyncBailHook() {
+  return {
+    call: function call() {}
+  };
+}
+
+/**
+ * Client stub for tapable SyncBailHook
+ */
+// eslint-disable-next-line import/prefer-default-export
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack/lib/logging/Logger.js":
+/*!****************************************************!*\
+  !*** ./node_modules/webpack/lib/logging/Logger.js ***!
+  \****************************************************/
+/***/ (function(module) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+
+
+function _toConsumableArray(r) {
+  return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return _arrayLikeToArray(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+  }
+}
+function _iterableToArray(r) {
+  if ("undefined" != typeof (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }) && null != r[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).iterator] || null != r["@@iterator"]) return Array.from(r);
+}
+function _arrayWithoutHoles(r) {
+  if (Array.isArray(r)) return _arrayLikeToArray(r);
+}
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+function _classCallCheck(a, n) {
+  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties(e, r) {
+  for (var t = 0; t < r.length; t++) {
+    var o = r[t];
+    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
+  }
+}
+function _createClass(e, r, t) {
+  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+    writable: !1
+  }), e;
+}
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+var LogType = Object.freeze({
+  error: (/** @type {"error"} */"error"),
+  // message, c style arguments
+  warn: (/** @type {"warn"} */"warn"),
+  // message, c style arguments
+  info: (/** @type {"info"} */"info"),
+  // message, c style arguments
+  log: (/** @type {"log"} */"log"),
+  // message, c style arguments
+  debug: (/** @type {"debug"} */"debug"),
+  // message, c style arguments
+
+  trace: (/** @type {"trace"} */"trace"),
+  // no arguments
+
+  group: (/** @type {"group"} */"group"),
+  // [label]
+  groupCollapsed: (/** @type {"groupCollapsed"} */"groupCollapsed"),
+  // [label]
+  groupEnd: (/** @type {"groupEnd"} */"groupEnd"),
+  // [label]
+
+  profile: (/** @type {"profile"} */"profile"),
+  // [profileName]
+  profileEnd: (/** @type {"profileEnd"} */"profileEnd"),
+  // [profileName]
+
+  time: (/** @type {"time"} */"time"),
+  // name, time as [seconds, nanoseconds]
+
+  clear: (/** @type {"clear"} */"clear"),
+  // no arguments
+  status: (/** @type {"status"} */"status") // message, arguments
+});
+module.exports.LogType = LogType;
+
+/** @typedef {typeof LogType[keyof typeof LogType]} LogTypeEnum */
+
+var LOG_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger raw log method");
+var TIMERS_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger times");
+var TIMERS_AGGREGATES_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger aggregated times");
+var WebpackLogger = /*#__PURE__*/function () {
+  /**
+   * @param {function(LogTypeEnum, any[]=): void} log log function
+   * @param {function(string | function(): string): WebpackLogger} getChildLogger function to create child logger
+   */
+  function WebpackLogger(log, getChildLogger) {
+    _classCallCheck(this, WebpackLogger);
+    this[LOG_SYMBOL] = log;
+    this.getChildLogger = getChildLogger;
+  }
+
+  /**
+   * @param {...any} args args
+   */
+  return _createClass(WebpackLogger, [{
+    key: "error",
+    value: function error() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      this[LOG_SYMBOL](LogType.error, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "warn",
+    value: function warn() {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+      this[LOG_SYMBOL](LogType.warn, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "info",
+    value: function info() {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      this[LOG_SYMBOL](LogType.info, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "log",
+    value: function log() {
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+      this[LOG_SYMBOL](LogType.log, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "debug",
+    value: function debug() {
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+      this[LOG_SYMBOL](LogType.debug, args);
+    }
+
+    /**
+     * @param {any} assertion assertion
+     * @param {...any} args args
+     */
+  }, {
+    key: "assert",
+    value: function assert(assertion) {
+      if (!assertion) {
+        for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+          args[_key6 - 1] = arguments[_key6];
+        }
+        this[LOG_SYMBOL](LogType.error, args);
+      }
+    }
+  }, {
+    key: "trace",
+    value: function trace() {
+      this[LOG_SYMBOL](LogType.trace, ["Trace"]);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this[LOG_SYMBOL](LogType.clear);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "status",
+    value: function status() {
+      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        args[_key7] = arguments[_key7];
+      }
+      this[LOG_SYMBOL](LogType.status, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "group",
+    value: function group() {
+      for (var _len8 = arguments.length, args = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
+        args[_key8] = arguments[_key8];
+      }
+      this[LOG_SYMBOL](LogType.group, args);
+    }
+
+    /**
+     * @param {...any} args args
+     */
+  }, {
+    key: "groupCollapsed",
+    value: function groupCollapsed() {
+      for (var _len9 = arguments.length, args = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
+        args[_key9] = arguments[_key9];
+      }
+      this[LOG_SYMBOL](LogType.groupCollapsed, args);
+    }
+  }, {
+    key: "groupEnd",
+    value: function groupEnd() {
+      this[LOG_SYMBOL](LogType.groupEnd);
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "profile",
+    value: function profile(label) {
+      this[LOG_SYMBOL](LogType.profile, [label]);
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "profileEnd",
+    value: function profileEnd(label) {
+      this[LOG_SYMBOL](LogType.profileEnd, [label]);
+    }
+
+    /**
+     * @param {string} label label
+     */
+  }, {
+    key: "time",
+    value: function time(label) {
+      /** @type {Map<string | undefined, [number, number]>} */
+      this[TIMERS_SYMBOL] = this[TIMERS_SYMBOL] || new Map();
+      this[TIMERS_SYMBOL].set(label, process.hrtime());
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "timeLog",
+    value: function timeLog(label) {
+      var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
+      if (!prev) {
+        throw new Error("No such label '".concat(label, "' for WebpackLogger.timeLog()"));
+      }
+      var time = process.hrtime(prev);
+      this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "timeEnd",
+    value: function timeEnd(label) {
+      var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
+      if (!prev) {
+        throw new Error("No such label '".concat(label, "' for WebpackLogger.timeEnd()"));
+      }
+      var time = process.hrtime(prev);
+      /** @type {Map<string | undefined, [number, number]>} */
+      this[TIMERS_SYMBOL].delete(label);
+      this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "timeAggregate",
+    value: function timeAggregate(label) {
+      var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
+      if (!prev) {
+        throw new Error("No such label '".concat(label, "' for WebpackLogger.timeAggregate()"));
+      }
+      var time = process.hrtime(prev);
+      /** @type {Map<string | undefined, [number, number]>} */
+      this[TIMERS_SYMBOL].delete(label);
+      /** @type {Map<string | undefined, [number, number]>} */
+      this[TIMERS_AGGREGATES_SYMBOL] = this[TIMERS_AGGREGATES_SYMBOL] || new Map();
+      var current = this[TIMERS_AGGREGATES_SYMBOL].get(label);
+      if (current !== undefined) {
+        if (time[1] + current[1] > 1e9) {
+          time[0] += current[0] + 1;
+          time[1] = time[1] - 1e9 + current[1];
+        } else {
+          time[0] += current[0];
+          time[1] += current[1];
+        }
+      }
+      this[TIMERS_AGGREGATES_SYMBOL].set(label, time);
+    }
+
+    /**
+     * @param {string=} label label
+     */
+  }, {
+    key: "timeAggregateEnd",
+    value: function timeAggregateEnd(label) {
+      if (this[TIMERS_AGGREGATES_SYMBOL] === undefined) return;
+      var time = this[TIMERS_AGGREGATES_SYMBOL].get(label);
+      if (time === undefined) return;
+      this[TIMERS_AGGREGATES_SYMBOL].delete(label);
+      this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
+    }
+  }]);
+}();
+module.exports.Logger = WebpackLogger;
+
+/***/ }),
+
+/***/ "./node_modules/webpack/lib/logging/createConsoleLogger.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/webpack/lib/logging/createConsoleLogger.js ***!
+  \*****************************************************************/
+/***/ (function(module, __unused_webpack_exports, __nested_webpack_require_12045__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+
+
+function _slicedToArray(r, e) {
+  return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
+}
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }) && r[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+function _arrayWithHoles(r) {
+  if (Array.isArray(r)) return r;
+}
+function _toConsumableArray(r) {
+  return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return _arrayLikeToArray(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+  }
+}
+function _iterableToArray(r) {
+  if ("undefined" != typeof (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }) && null != r[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).iterator] || null != r["@@iterator"]) return Array.from(r);
+}
+function _arrayWithoutHoles(r) {
+  if (Array.isArray(r)) return _arrayLikeToArray(r);
+}
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+var _require = __nested_webpack_require_12045__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
+  LogType = _require.LogType;
+
+/** @typedef {import("../../declarations/WebpackOptions").FilterItemTypes} FilterItemTypes */
+/** @typedef {import("../../declarations/WebpackOptions").FilterTypes} FilterTypes */
+/** @typedef {import("./Logger").LogTypeEnum} LogTypeEnum */
+
+/** @typedef {function(string): boolean} FilterFunction */
+/** @typedef {function(string, LogTypeEnum, any[]=): void} LoggingFunction */
+
+/**
+ * @typedef {object} LoggerConsole
+ * @property {function(): void} clear
+ * @property {function(): void} trace
+ * @property {(...args: any[]) => void} info
+ * @property {(...args: any[]) => void} log
+ * @property {(...args: any[]) => void} warn
+ * @property {(...args: any[]) => void} error
+ * @property {(...args: any[]) => void=} debug
+ * @property {(...args: any[]) => void=} group
+ * @property {(...args: any[]) => void=} groupCollapsed
+ * @property {(...args: any[]) => void=} groupEnd
+ * @property {(...args: any[]) => void=} status
+ * @property {(...args: any[]) => void=} profile
+ * @property {(...args: any[]) => void=} profileEnd
+ * @property {(...args: any[]) => void=} logTime
+ */
+
+/**
+ * @typedef {object} LoggerOptions
+ * @property {false|true|"none"|"error"|"warn"|"info"|"log"|"verbose"} level loglevel
+ * @property {FilterTypes|boolean} debug filter for debug logging
+ * @property {LoggerConsole} console the console to log to
+ */
+
+/**
+ * @param {FilterItemTypes} item an input item
+ * @returns {FilterFunction | undefined} filter function
+ */
+var filterToFunction = function filterToFunction(item) {
+  if (typeof item === "string") {
+    var regExp = new RegExp("[\\\\/]".concat(item.replace(/[-[\]{}()*+?.\\^$|]/g, "\\$&"), "([\\\\/]|$|!|\\?)"));
+    return function (ident) {
+      return regExp.test(ident);
+    };
+  }
+  if (item && typeof item === "object" && typeof item.test === "function") {
+    return function (ident) {
+      return item.test(ident);
+    };
+  }
+  if (typeof item === "function") {
+    return item;
+  }
+  if (typeof item === "boolean") {
+    return function () {
+      return item;
+    };
+  }
+};
+
+/**
+ * @enum {number}
+ */
+var LogLevel = {
+  none: 6,
+  false: 6,
+  error: 5,
+  warn: 4,
+  info: 3,
+  log: 2,
+  true: 2,
+  verbose: 1
+};
+
+/**
+ * @param {LoggerOptions} options options object
+ * @returns {LoggingFunction} logging function
+ */
+module.exports = function (_ref) {
+  var _ref$level = _ref.level,
+    level = _ref$level === void 0 ? "info" : _ref$level,
+    _ref$debug = _ref.debug,
+    debug = _ref$debug === void 0 ? false : _ref$debug,
+    console = _ref.console;
+  var debugFilters = /** @type {FilterFunction[]} */
+
+  typeof debug === "boolean" ? [function () {
+    return debug;
+  }] : /** @type {FilterItemTypes[]} */[].concat(debug).map(filterToFunction);
+  /** @type {number} */
+  var loglevel = LogLevel["".concat(level)] || 0;
+
+  /**
+   * @param {string} name name of the logger
+   * @param {LogTypeEnum} type type of the log entry
+   * @param {any[]=} args arguments of the log entry
+   * @returns {void}
+   */
+  var logger = function logger(name, type, args) {
+    var labeledArgs = function labeledArgs() {
+      if (Array.isArray(args)) {
+        if (args.length > 0 && typeof args[0] === "string") {
+          return ["[".concat(name, "] ").concat(args[0])].concat(_toConsumableArray(args.slice(1)));
+        }
+        return ["[".concat(name, "]")].concat(_toConsumableArray(args));
+      }
+      return [];
+    };
+    var debug = debugFilters.some(function (f) {
+      return f(name);
+    });
+    switch (type) {
+      case LogType.debug:
+        if (!debug) return;
+        if (typeof console.debug === "function") {
+          console.debug.apply(console, _toConsumableArray(labeledArgs()));
+        } else {
+          console.log.apply(console, _toConsumableArray(labeledArgs()));
+        }
+        break;
+      case LogType.log:
+        if (!debug && loglevel > LogLevel.log) return;
+        console.log.apply(console, _toConsumableArray(labeledArgs()));
+        break;
+      case LogType.info:
+        if (!debug && loglevel > LogLevel.info) return;
+        console.info.apply(console, _toConsumableArray(labeledArgs()));
+        break;
+      case LogType.warn:
+        if (!debug && loglevel > LogLevel.warn) return;
+        console.warn.apply(console, _toConsumableArray(labeledArgs()));
+        break;
+      case LogType.error:
+        if (!debug && loglevel > LogLevel.error) return;
+        console.error.apply(console, _toConsumableArray(labeledArgs()));
+        break;
+      case LogType.trace:
+        if (!debug) return;
+        console.trace();
+        break;
+      case LogType.groupCollapsed:
+        if (!debug && loglevel > LogLevel.log) return;
+        if (!debug && loglevel > LogLevel.verbose) {
+          if (typeof console.groupCollapsed === "function") {
+            console.groupCollapsed.apply(console, _toConsumableArray(labeledArgs()));
+          } else {
+            console.log.apply(console, _toConsumableArray(labeledArgs()));
+          }
+          break;
+        }
+      // falls through
+      case LogType.group:
+        if (!debug && loglevel > LogLevel.log) return;
+        if (typeof console.group === "function") {
+          console.group.apply(console, _toConsumableArray(labeledArgs()));
+        } else {
+          console.log.apply(console, _toConsumableArray(labeledArgs()));
+        }
+        break;
+      case LogType.groupEnd:
+        if (!debug && loglevel > LogLevel.log) return;
+        if (typeof console.groupEnd === "function") {
+          console.groupEnd();
+        }
+        break;
+      case LogType.time:
+        {
+          if (!debug && loglevel > LogLevel.log) return;
+          var _args = _slicedToArray(/** @type {[string, number, number]} */
+            args, 3),
+            label = _args[0],
+            start = _args[1],
+            end = _args[2];
+          var ms = start * 1000 + end / 1000000;
+          var msg = "[".concat(name, "] ").concat(label, ": ").concat(ms, " ms");
+          if (typeof console.logTime === "function") {
+            console.logTime(msg);
+          } else {
+            console.log(msg);
+          }
+          break;
+        }
+      case LogType.profile:
+        if (typeof console.profile === "function") {
+          console.profile.apply(console, _toConsumableArray(labeledArgs()));
+        }
+        break;
+      case LogType.profileEnd:
+        if (typeof console.profileEnd === "function") {
+          console.profileEnd.apply(console, _toConsumableArray(labeledArgs()));
+        }
+        break;
+      case LogType.clear:
+        if (!debug && loglevel > LogLevel.log) return;
+        if (typeof console.clear === "function") {
+          console.clear();
+        }
+        break;
+      case LogType.status:
+        if (!debug && loglevel > LogLevel.info) return;
+        if (typeof console.status === "function") {
+          if (!args || args.length === 0) {
+            console.status();
+          } else {
+            console.status.apply(console, _toConsumableArray(labeledArgs()));
+          }
+        } else if (args && args.length !== 0) {
+          console.info.apply(console, _toConsumableArray(labeledArgs()));
+        }
+        break;
+      default:
+        throw new Error("Unexpected LogType ".concat(type));
+    }
+  };
+  return logger;
+};
+
+/***/ }),
+
+/***/ "./node_modules/webpack/lib/logging/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/webpack/lib/logging/runtime.js ***!
+  \*****************************************************/
+/***/ (function(module, __unused_webpack_exports, __nested_webpack_require_22264__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+
+
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+var _require = __nested_webpack_require_22264__(/*! tapable */ "./client-src/modules/logger/tapable.js"),
+  SyncBailHook = _require.SyncBailHook;
+var _require2 = __nested_webpack_require_22264__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
+  Logger = _require2.Logger;
+var createConsoleLogger = __nested_webpack_require_22264__(/*! ./createConsoleLogger */ "./node_modules/webpack/lib/logging/createConsoleLogger.js");
+
+/** @type {createConsoleLogger.LoggerOptions} */
+var currentDefaultLoggerOptions = {
+  level: "info",
+  debug: false,
+  console: console
+};
+var currentDefaultLogger = createConsoleLogger(currentDefaultLoggerOptions);
+
+/**
+ * @param {string} name name of the logger
+ * @returns {Logger} a logger
+ */
+module.exports.getLogger = function (name) {
+  return new Logger(function (type, args) {
+    if (module.exports.hooks.log.call(name, type, args) === undefined) {
+      currentDefaultLogger(name, type, args);
+    }
+  }, function (childName) {
+    return module.exports.getLogger("".concat(name, "/").concat(childName));
+  });
+};
+
+/**
+ * @param {createConsoleLogger.LoggerOptions} options new options, merge with old options
+ * @returns {void}
+ */
+module.exports.configureDefaultLogger = function (options) {
+  _extends(currentDefaultLoggerOptions, options);
+  currentDefaultLogger = createConsoleLogger(currentDefaultLoggerOptions);
+};
+module.exports.hooks = {
+  log: new SyncBailHook(["origin", "type", "args"])
+};
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __nested_webpack_require_24341__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __nested_webpack_require_24341__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nested_webpack_require_24341__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nested_webpack_require_24341__.o(definition, key) && !__nested_webpack_require_24341__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__nested_webpack_require_24341__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__nested_webpack_require_24341__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+var __nested_webpack_exports__ = {};
+/*!********************************************!*\
+  !*** ./client-src/modules/logger/index.js ***!
+  \********************************************/
+__nested_webpack_require_24341__.r(__nested_webpack_exports__);
+/* harmony export */ __nested_webpack_require_24341__.d(__nested_webpack_exports__, {
+/* harmony export */   "default": function() { return /* reexport default export from named module */ webpack_lib_logging_runtime_js__WEBPACK_IMPORTED_MODULE_0__; }
+/* harmony export */ });
+/* harmony import */ var webpack_lib_logging_runtime_js__WEBPACK_IMPORTED_MODULE_0__ = __nested_webpack_require_24341__(/*! webpack/lib/logging/runtime.js */ "./node_modules/webpack/lib/logging/runtime.js");
+
+var __webpack_export_target__ = exports;
+for(var i in __nested_webpack_exports__) __webpack_export_target__[i] = __nested_webpack_exports__[i];
+if(__nested_webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
+/******/ })()
+;
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createOverlay: () => (/* binding */ createOverlay),
+/* harmony export */   formatProblem: () => (/* binding */ formatProblem)
+/* harmony export */ });
+/* harmony import */ var ansi_html_community__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ansi-html-community */ "./node_modules/ansi-html-community/index.js");
+/* harmony import */ var ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(ansi_html_community__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! html-entities */ "./node_modules/html-entities/lib/index.js");
+/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(html_entities__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./overlay/runtime-error.js */ "./node_modules/webpack-dev-server/client/overlay/runtime-error.js");
+/* harmony import */ var _overlay_state_machine_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./overlay/state-machine.js */ "./node_modules/webpack-dev-server/client/overlay/state-machine.js");
+/* harmony import */ var _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./overlay/styles.js */ "./node_modules/webpack-dev-server/client/overlay/styles.js");
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+// The error overlay is inspired (and mostly copied) from Create React App (https://github.com/facebookincubator/create-react-app)
+// They, in turn, got inspired by webpack-hot-middleware (https://github.com/glenjamin/webpack-hot-middleware).
+
+
+
+
+
+
+var colors = {
+  reset: ["transparent", "transparent"],
+  black: "181818",
+  red: "E36049",
+  green: "B3CB74",
+  yellow: "FFD080",
+  blue: "7CAFC2",
+  magenta: "7FACCA",
+  cyan: "C3C2EF",
+  lightgrey: "EBE7E3",
+  darkgrey: "6D7891"
+};
+ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default().setColors(colors);
+
+/**
+ * @param {string} type
+ * @param {string  | { file?: string, moduleName?: string, loc?: string, message?: string; stack?: string[] }} item
+ * @returns {{ header: string, body: string }}
+ */
+function formatProblem(type, item) {
+  var header = type === "warning" ? "WARNING" : "ERROR";
+  var body = "";
+  if (typeof item === "string") {
+    body += item;
+  } else {
+    var file = item.file || "";
+    // eslint-disable-next-line no-nested-ternary
+    var moduleName = item.moduleName ? item.moduleName.indexOf("!") !== -1 ? "".concat(item.moduleName.replace(/^(\s|\S)*!/, ""), " (").concat(item.moduleName, ")") : "".concat(item.moduleName) : "";
+    var loc = item.loc;
+    header += "".concat(moduleName || file ? " in ".concat(moduleName ? "".concat(moduleName).concat(file ? " (".concat(file, ")") : "") : file).concat(loc ? " ".concat(loc) : "") : "");
+    body += item.message || "";
+  }
+  if (Array.isArray(item.stack)) {
+    item.stack.forEach(function (stack) {
+      if (typeof stack === "string") {
+        body += "\r\n".concat(stack);
+      }
+    });
+  }
+  return {
+    header: header,
+    body: body
+  };
+}
+
+/**
+ * @typedef {Object} CreateOverlayOptions
+ * @property {string | null} trustedTypesPolicyName
+ * @property {boolean | (error: Error) => void} [catchRuntimeError]
+ */
+
+/**
+ *
+ * @param {CreateOverlayOptions} options
+ */
+var createOverlay = function createOverlay(options) {
+  /** @type {HTMLIFrameElement | null | undefined} */
+  var iframeContainerElement;
+  /** @type {HTMLDivElement | null | undefined} */
+  var containerElement;
+  /** @type {HTMLDivElement | null | undefined} */
+  var headerElement;
+  /** @type {Array<(element: HTMLDivElement) => void>} */
+  var onLoadQueue = [];
+  /** @type {TrustedTypePolicy | undefined} */
+  var overlayTrustedTypesPolicy;
+
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {CSSStyleDeclaration} style
+   */
+  function applyStyle(element, style) {
+    Object.keys(style).forEach(function (prop) {
+      element.style[prop] = style[prop];
+    });
+  }
+
+  /**
+   * @param {string | null} trustedTypesPolicyName
+   */
+  function createContainer(trustedTypesPolicyName) {
+    // Enable Trusted Types if they are available in the current browser.
+    if (window.trustedTypes) {
+      overlayTrustedTypesPolicy = window.trustedTypes.createPolicy(trustedTypesPolicyName || "webpack-dev-server#overlay", {
+        createHTML: function createHTML(value) {
+          return value;
+        }
+      });
+    }
+    iframeContainerElement = document.createElement("iframe");
+    iframeContainerElement.id = "webpack-dev-server-client-overlay";
+    iframeContainerElement.src = "about:blank";
+    applyStyle(iframeContainerElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.iframeStyle);
+    iframeContainerElement.onload = function () {
+      var contentElement = /** @type {Document} */
+      (/** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument).createElement("div");
+      containerElement = /** @type {Document} */
+      (/** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument).createElement("div");
+      contentElement.id = "webpack-dev-server-client-overlay-div";
+      applyStyle(contentElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.containerStyle);
+      headerElement = document.createElement("div");
+      headerElement.innerText = "Compiled with problems:";
+      applyStyle(headerElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.headerStyle);
+      var closeButtonElement = document.createElement("button");
+      applyStyle(closeButtonElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.dismissButtonStyle);
+      closeButtonElement.innerText = "×";
+      closeButtonElement.ariaLabel = "Dismiss";
+      closeButtonElement.addEventListener("click", function () {
+        // eslint-disable-next-line no-use-before-define
+        overlayService.send({
+          type: "DISMISS"
+        });
+      });
+      contentElement.appendChild(headerElement);
+      contentElement.appendChild(closeButtonElement);
+      contentElement.appendChild(containerElement);
+
+      /** @type {Document} */
+      (/** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument).body.appendChild(contentElement);
+      onLoadQueue.forEach(function (onLoad) {
+        onLoad(/** @type {HTMLDivElement} */contentElement);
+      });
+      onLoadQueue = [];
+
+      /** @type {HTMLIFrameElement} */
+      iframeContainerElement.onload = null;
+    };
+    document.body.appendChild(iframeContainerElement);
+  }
+
+  /**
+   * @param {(element: HTMLDivElement) => void} callback
+   * @param {string | null} trustedTypesPolicyName
+   */
+  function ensureOverlayExists(callback, trustedTypesPolicyName) {
+    if (containerElement) {
+      containerElement.innerHTML = overlayTrustedTypesPolicy ? overlayTrustedTypesPolicy.createHTML("") : "";
+      // Everything is ready, call the callback right away.
+      callback(containerElement);
+      return;
+    }
+    onLoadQueue.push(callback);
+    if (iframeContainerElement) {
+      return;
+    }
+    createContainer(trustedTypesPolicyName);
+  }
+
+  // Successful compilation.
+  function hide() {
+    if (!iframeContainerElement) {
+      return;
+    }
+
+    // Clean up and reset internal state.
+    document.body.removeChild(iframeContainerElement);
+    iframeContainerElement = null;
+    containerElement = null;
+  }
+
+  // Compilation with errors (e.g. syntax error or missing modules).
+  /**
+   * @param {string} type
+   * @param {Array<string  | { moduleIdentifier?: string, moduleName?: string, loc?: string, message?: string }>} messages
+   * @param {string | null} trustedTypesPolicyName
+   * @param {'build' | 'runtime'} messageSource
+   */
+  function show(type, messages, trustedTypesPolicyName, messageSource) {
+    ensureOverlayExists(function () {
+      headerElement.innerText = messageSource === "runtime" ? "Uncaught runtime errors:" : "Compiled with problems:";
+      messages.forEach(function (message) {
+        var entryElement = document.createElement("div");
+        var msgStyle = type === "warning" ? _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgStyles.warning : _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgStyles.error;
+        applyStyle(entryElement, _objectSpread(_objectSpread({}, msgStyle), {}, {
+          padding: "1rem 1rem 1.5rem 1rem"
+        }));
+        var typeElement = document.createElement("div");
+        var _formatProblem = formatProblem(type, message),
+          header = _formatProblem.header,
+          body = _formatProblem.body;
+        typeElement.innerText = header;
+        applyStyle(typeElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgTypeStyle);
+        if (message.moduleIdentifier) {
+          applyStyle(typeElement, {
+            cursor: "pointer"
+          });
+          // element.dataset not supported in IE
+          typeElement.setAttribute("data-can-open", true);
+          typeElement.addEventListener("click", function () {
+            fetch("/webpack-dev-server/open-editor?fileName=".concat(message.moduleIdentifier));
+          });
+        }
+
+        // Make it look similar to our terminal.
+        var text = ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default()((0,html_entities__WEBPACK_IMPORTED_MODULE_4__.encode)(body));
+        var messageTextNode = document.createElement("div");
+        applyStyle(messageTextNode, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgTextStyle);
+        messageTextNode.innerHTML = overlayTrustedTypesPolicy ? overlayTrustedTypesPolicy.createHTML(text) : text;
+        entryElement.appendChild(typeElement);
+        entryElement.appendChild(messageTextNode);
+
+        /** @type {HTMLDivElement} */
+        containerElement.appendChild(entryElement);
+      });
+    }, trustedTypesPolicyName);
+  }
+  var overlayService = (0,_overlay_state_machine_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    showOverlay: function showOverlay(_ref) {
+      var _ref$level = _ref.level,
+        level = _ref$level === void 0 ? "error" : _ref$level,
+        messages = _ref.messages,
+        messageSource = _ref.messageSource;
+      return show(level, messages, options.trustedTypesPolicyName, messageSource);
+    },
+    hideOverlay: hide
+  });
+  if (options.catchRuntimeError) {
+    /**
+     * @param {Error | undefined} error
+     * @param {string} fallbackMessage
+     */
+    var handleError = function handleError(error, fallbackMessage) {
+      var errorObject = error instanceof Error ? error : new Error(error || fallbackMessage);
+      var shouldDisplay = typeof options.catchRuntimeError === "function" ? options.catchRuntimeError(errorObject) : true;
+      if (shouldDisplay) {
+        overlayService.send({
+          type: "RUNTIME_ERROR",
+          messages: [{
+            message: errorObject.message,
+            stack: (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.parseErrorToStacks)(errorObject)
+          }]
+        });
+      }
+    };
+    (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.listenToRuntimeError)(function (errorEvent) {
+      // error property may be empty in older browser like IE
+      var error = errorEvent.error,
+        message = errorEvent.message;
+      if (!error && !message) {
+        return;
+      }
+      handleError(error, message);
+    });
+    (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.listenToUnhandledRejection)(function (promiseRejectionEvent) {
+      var reason = promiseRejectionEvent.reason;
+      handleError(reason, "Unknown promise rejection reason");
+    });
+  }
+  return overlayService;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/fsm.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/fsm.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/**
+ * @typedef {Object} StateDefinitions
+ * @property {{[event: string]: { target: string; actions?: Array<string> }}} [on]
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {{[state: string]: StateDefinitions}} states
+ * @property {object} context;
+ * @property {string} initial
+ */
+
+/**
+ * @typedef {Object} Implementation
+ * @property {{[actionName: string]: (ctx: object, event: any) => object}} actions
+ */
+
+/**
+ * A simplified `createMachine` from `@xstate/fsm` with the following differences:
+ *
+ *  - the returned machine is technically a "service". No `interpret(machine).start()` is needed.
+ *  - the state definition only support `on` and target must be declared with { target: 'nextState', actions: [] } explicitly.
+ *  - event passed to `send` must be an object with `type` property.
+ *  - actions implementation will be [assign action](https://xstate.js.org/docs/guides/context.html#assign-action) if you return any value.
+ *  Do not return anything if you just want to invoke side effect.
+ *
+ * The goal of this custom function is to avoid installing the entire `'xstate/fsm'` package, while enabling modeling using
+ * state machine. You can copy the first parameter into the editor at https://stately.ai/viz to visualize the state machine.
+ *
+ * @param {Options} options
+ * @param {Implementation} implementation
+ */
+function createMachine(_ref, _ref2) {
+  var states = _ref.states,
+    context = _ref.context,
+    initial = _ref.initial;
+  var actions = _ref2.actions;
+  var currentState = initial;
+  var currentContext = context;
+  return {
+    send: function send(event) {
+      var currentStateOn = states[currentState].on;
+      var transitionConfig = currentStateOn && currentStateOn[event.type];
+      if (transitionConfig) {
+        currentState = transitionConfig.target;
+        if (transitionConfig.actions) {
+          transitionConfig.actions.forEach(function (actName) {
+            var actionImpl = actions[actName];
+            var nextContextValue = actionImpl && actionImpl(currentContext, event);
+            if (nextContextValue) {
+              currentContext = _objectSpread(_objectSpread({}, currentContext), nextContextValue);
+            }
+          });
+        }
+      }
+    }
+  };
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createMachine);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/runtime-error.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/runtime-error.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   listenToRuntimeError: () => (/* binding */ listenToRuntimeError),
+/* harmony export */   listenToUnhandledRejection: () => (/* binding */ listenToUnhandledRejection),
+/* harmony export */   parseErrorToStacks: () => (/* binding */ parseErrorToStacks)
+/* harmony export */ });
+/**
+ *
+ * @param {Error} error
+ */
+function parseErrorToStacks(error) {
+  if (!error || !(error instanceof Error)) {
+    throw new Error("parseErrorToStacks expects Error object");
+  }
+  if (typeof error.stack === "string") {
+    return error.stack.split("\n").filter(function (stack) {
+      return stack !== "Error: ".concat(error.message);
+    });
+  }
+}
+
+/**
+ * @callback ErrorCallback
+ * @param {ErrorEvent} error
+ * @returns {void}
+ */
+
+/**
+ * @param {ErrorCallback} callback
+ */
+function listenToRuntimeError(callback) {
+  window.addEventListener("error", callback);
+  return function cleanup() {
+    window.removeEventListener("error", callback);
+  };
+}
+
+/**
+ * @callback UnhandledRejectionCallback
+ * @param {PromiseRejectionEvent} rejectionEvent
+ * @returns {void}
+ */
+
+/**
+ * @param {UnhandledRejectionCallback} callback
+ */
+function listenToUnhandledRejection(callback) {
+  window.addEventListener("unhandledrejection", callback);
+  return function cleanup() {
+    window.removeEventListener("unhandledrejection", callback);
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/state-machine.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/state-machine.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _fsm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fsm.js */ "./node_modules/webpack-dev-server/client/overlay/fsm.js");
+
+
+/**
+ * @typedef {Object} ShowOverlayData
+ * @property {'warning' | 'error'} level
+ * @property {Array<string  | { moduleIdentifier?: string, moduleName?: string, loc?: string, message?: string }>} messages
+ * @property {'build' | 'runtime'} messageSource
+ */
+
+/**
+ * @typedef {Object} CreateOverlayMachineOptions
+ * @property {(data: ShowOverlayData) => void} showOverlay
+ * @property {() => void} hideOverlay
+ */
+
+/**
+ * @param {CreateOverlayMachineOptions} options
+ */
+var createOverlayMachine = function createOverlayMachine(options) {
+  var hideOverlay = options.hideOverlay,
+    showOverlay = options.showOverlay;
+  var overlayMachine = (0,_fsm_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    initial: "hidden",
+    context: {
+      level: "error",
+      messages: [],
+      messageSource: "build"
+    },
+    states: {
+      hidden: {
+        on: {
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["setMessages", "showOverlay"]
+          },
+          RUNTIME_ERROR: {
+            target: "displayRuntimeError",
+            actions: ["setMessages", "showOverlay"]
+          }
+        }
+      },
+      displayBuildError: {
+        on: {
+          DISMISS: {
+            target: "hidden",
+            actions: ["dismissMessages", "hideOverlay"]
+          },
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["appendMessages", "showOverlay"]
+          }
+        }
+      },
+      displayRuntimeError: {
+        on: {
+          DISMISS: {
+            target: "hidden",
+            actions: ["dismissMessages", "hideOverlay"]
+          },
+          RUNTIME_ERROR: {
+            target: "displayRuntimeError",
+            actions: ["appendMessages", "showOverlay"]
+          },
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["setMessages", "showOverlay"]
+          }
+        }
+      }
+    }
+  }, {
+    actions: {
+      dismissMessages: function dismissMessages() {
+        return {
+          messages: [],
+          level: "error",
+          messageSource: "build"
+        };
+      },
+      appendMessages: function appendMessages(context, event) {
+        return {
+          messages: context.messages.concat(event.messages),
+          level: event.level || context.level,
+          messageSource: event.type === "RUNTIME_ERROR" ? "runtime" : "build"
+        };
+      },
+      setMessages: function setMessages(context, event) {
+        return {
+          messages: event.messages,
+          level: event.level || context.level,
+          messageSource: event.type === "RUNTIME_ERROR" ? "runtime" : "build"
+        };
+      },
+      hideOverlay: hideOverlay,
+      showOverlay: showOverlay
+    }
+  });
+  return overlayMachine;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createOverlayMachine);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/styles.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/styles.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   containerStyle: () => (/* binding */ containerStyle),
+/* harmony export */   dismissButtonStyle: () => (/* binding */ dismissButtonStyle),
+/* harmony export */   headerStyle: () => (/* binding */ headerStyle),
+/* harmony export */   iframeStyle: () => (/* binding */ iframeStyle),
+/* harmony export */   msgStyles: () => (/* binding */ msgStyles),
+/* harmony export */   msgTextStyle: () => (/* binding */ msgTextStyle),
+/* harmony export */   msgTypeStyle: () => (/* binding */ msgTypeStyle)
+/* harmony export */ });
+// styles are inspired by `react-error-overlay`
+
+var msgStyles = {
+  error: {
+    backgroundColor: "rgba(206, 17, 38, 0.1)",
+    color: "#fccfcf"
+  },
+  warning: {
+    backgroundColor: "rgba(251, 245, 180, 0.1)",
+    color: "#fbf5b4"
+  }
+};
+var iframeStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  width: "100vw",
+  height: "100vh",
+  border: "none",
+  "z-index": 9999999999
+};
+var containerStyle = {
+  position: "fixed",
+  boxSizing: "border-box",
+  left: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  width: "100vw",
+  height: "100vh",
+  fontSize: "large",
+  padding: "2rem 2rem 4rem 2rem",
+  lineHeight: "1.2",
+  whiteSpace: "pre-wrap",
+  overflow: "auto",
+  backgroundColor: "rgba(0, 0, 0, 0.9)",
+  color: "white"
+};
+var headerStyle = {
+  color: "#e83b46",
+  fontSize: "2em",
+  whiteSpace: "pre-wrap",
+  fontFamily: "sans-serif",
+  margin: "0 2rem 2rem 0",
+  flex: "0 0 auto",
+  maxHeight: "50%",
+  overflow: "auto"
+};
+var dismissButtonStyle = {
+  color: "#ffffff",
+  lineHeight: "1rem",
+  fontSize: "1.5rem",
+  padding: "1rem",
+  cursor: "pointer",
+  position: "absolute",
+  right: 0,
+  top: 0,
+  backgroundColor: "transparent",
+  border: "none"
+};
+var msgTypeStyle = {
+  color: "#e83b46",
+  fontSize: "1.2em",
+  marginBottom: "1rem",
+  fontFamily: "sans-serif"
+};
+var msgTextStyle = {
+  lineHeight: "1.5",
+  fontSize: "1rem",
+  fontFamily: "Menlo, Consolas, monospace"
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/progress.js":
+/*!************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/progress.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   defineProgressElement: () => (/* binding */ defineProgressElement),
+/* harmony export */   isProgressSupported: () => (/* binding */ isProgressSupported)
+/* harmony export */ });
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == typeof e || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _wrapNativeSuper(t) { var r = "function" == typeof Map ? new Map() : void 0; return _wrapNativeSuper = function _wrapNativeSuper(t) { if (null === t || !_isNativeFunction(t)) return t; if ("function" != typeof t) throw new TypeError("Super expression must either be null or a function"); if (void 0 !== r) { if (r.has(t)) return r.get(t); r.set(t, Wrapper); } function Wrapper() { return _construct(t, arguments, _getPrototypeOf(this).constructor); } return Wrapper.prototype = Object.create(t.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf(Wrapper, t); }, _wrapNativeSuper(t); }
+function _construct(t, e, r) { if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments); var o = [null]; o.push.apply(o, e); var p = new (t.bind.apply(t, o))(); return r && _setPrototypeOf(p, r.prototype), p; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _isNativeFunction(t) { try { return -1 !== Function.toString.call(t).indexOf("[native code]"); } catch (n) { return "function" == typeof t; } }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _classPrivateMethodInitSpec(e, a) { _checkPrivateRedeclaration(e, a), a.add(e); }
+function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
+function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
+function isProgressSupported() {
+  return "customElements" in self && !!HTMLElement.prototype.attachShadow;
+}
+function defineProgressElement() {
+  var _WebpackDevServerProgress;
+  if (customElements.get("wds-progress")) {
+    return;
+  }
+  var _WebpackDevServerProgress_brand = /*#__PURE__*/new WeakSet();
+  var WebpackDevServerProgress = /*#__PURE__*/function (_HTMLElement) {
+    function WebpackDevServerProgress() {
+      var _this;
+      _classCallCheck(this, WebpackDevServerProgress);
+      _this = _callSuper(this, WebpackDevServerProgress);
+      _classPrivateMethodInitSpec(_this, _WebpackDevServerProgress_brand);
+      _this.attachShadow({
+        mode: "open"
+      });
+      _this.maxDashOffset = -219.99078369140625;
+      _this.animationTimer = null;
+      return _this;
+    }
+    _inherits(WebpackDevServerProgress, _HTMLElement);
+    return _createClass(WebpackDevServerProgress, [{
+      key: "connectedCallback",
+      value: function connectedCallback() {
+        _assertClassBrand(_WebpackDevServerProgress_brand, this, _reset).call(this);
+      }
+    }, {
+      key: "attributeChangedCallback",
+      value: function attributeChangedCallback(name, oldValue, newValue) {
+        if (name === "progress") {
+          _assertClassBrand(_WebpackDevServerProgress_brand, this, _update).call(this, Number(newValue));
+        } else if (name === "type") {
+          _assertClassBrand(_WebpackDevServerProgress_brand, this, _reset).call(this);
+        }
+      }
+    }], [{
+      key: "observedAttributes",
+      get: function get() {
+        return ["progress", "type"];
+      }
+    }]);
+  }(/*#__PURE__*/_wrapNativeSuper(HTMLElement));
+  _WebpackDevServerProgress = WebpackDevServerProgress;
+  function _reset() {
+    var _this$getAttribute, _Number;
+    clearTimeout(this.animationTimer);
+    this.animationTimer = null;
+    var typeAttr = (_this$getAttribute = this.getAttribute("type")) === null || _this$getAttribute === void 0 ? void 0 : _this$getAttribute.toLowerCase();
+    this.type = typeAttr === "circular" ? "circular" : "linear";
+    var innerHTML = this.type === "circular" ? _circularTemplate.call(_WebpackDevServerProgress) : _linearTemplate.call(_WebpackDevServerProgress);
+    this.shadowRoot.innerHTML = innerHTML;
+    this.initialProgress = (_Number = Number(this.getAttribute("progress"))) !== null && _Number !== void 0 ? _Number : 0;
+    _assertClassBrand(_WebpackDevServerProgress_brand, this, _update).call(this, this.initialProgress);
+  }
+  function _circularTemplate() {
+    return "\n        <style>\n        :host {\n            width: 200px;\n            height: 200px;\n            position: fixed;\n            right: 5%;\n            top: 5%;\n            transition: opacity .25s ease-in-out;\n            z-index: 2147483645;\n        }\n\n        circle {\n            fill: #282d35;\n        }\n\n        path {\n            fill: rgba(0, 0, 0, 0);\n            stroke: rgb(186, 223, 172);\n            stroke-dasharray: 219.99078369140625;\n            stroke-dashoffset: -219.99078369140625;\n            stroke-width: 10;\n            transform: rotate(90deg) translate(0px, -80px);\n        }\n\n        text {\n            font-family: 'Open Sans', sans-serif;\n            font-size: 18px;\n            fill: #ffffff;\n            dominant-baseline: middle;\n            text-anchor: middle;\n        }\n\n        tspan#percent-super {\n            fill: #bdc3c7;\n            font-size: 0.45em;\n            baseline-shift: 10%;\n        }\n\n        @keyframes fade {\n            0% { opacity: 1; transform: scale(1); }\n            100% { opacity: 0; transform: scale(0); }\n        }\n\n        .disappear {\n            animation: fade 0.3s;\n            animation-fill-mode: forwards;\n            animation-delay: 0.5s;\n        }\n\n        .hidden {\n            display: none;\n        }\n        </style>\n        <svg id=\"progress\" class=\"hidden noselect\" viewBox=\"0 0 80 80\">\n        <circle cx=\"50%\" cy=\"50%\" r=\"35\"></circle>\n        <path d=\"M5,40a35,35 0 1,0 70,0a35,35 0 1,0 -70,0\"></path>\n        <text x=\"50%\" y=\"51%\">\n            <tspan id=\"percent-value\">0</tspan>\n            <tspan id=\"percent-super\">%</tspan>\n        </text>\n        </svg>\n      ";
+  }
+  function _linearTemplate() {
+    return "\n        <style>\n        :host {\n            position: fixed;\n            top: 0;\n            left: 0;\n            height: 4px;\n            width: 100vw;\n            z-index: 2147483645;\n        }\n\n        #bar {\n            width: 0%;\n            height: 4px;\n            background-color: rgb(186, 223, 172);\n        }\n\n        @keyframes fade {\n            0% { opacity: 1; }\n            100% { opacity: 0; }\n        }\n\n        .disappear {\n            animation: fade 0.3s;\n            animation-fill-mode: forwards;\n            animation-delay: 0.5s;\n        }\n\n        .hidden {\n            display: none;\n        }\n        </style>\n        <div id=\"progress\"></div>\n        ";
+  }
+  function _update(percent) {
+    var element = this.shadowRoot.querySelector("#progress");
+    if (this.type === "circular") {
+      var path = this.shadowRoot.querySelector("path");
+      var value = this.shadowRoot.querySelector("#percent-value");
+      var offset = (100 - percent) / 100 * this.maxDashOffset;
+      path.style.strokeDashoffset = offset;
+      value.textContent = percent;
+    } else {
+      element.style.width = "".concat(percent, "%");
+    }
+    if (percent >= 100) {
+      _assertClassBrand(_WebpackDevServerProgress_brand, this, _hide).call(this);
+    } else if (percent > 0) {
+      _assertClassBrand(_WebpackDevServerProgress_brand, this, _show).call(this);
+    }
+  }
+  function _show() {
+    var element = this.shadowRoot.querySelector("#progress");
+    element.classList.remove("hidden");
+  }
+  function _hide() {
+    var _this2 = this;
+    var element = this.shadowRoot.querySelector("#progress");
+    if (this.type === "circular") {
+      element.classList.add("disappear");
+      element.addEventListener("animationend", function () {
+        element.classList.add("hidden");
+        _assertClassBrand(_WebpackDevServerProgress_brand, _this2, _update).call(_this2, 0);
+      }, {
+        once: true
+      });
+    } else if (this.type === "linear") {
+      element.classList.add("disappear");
+      this.animationTimer = setTimeout(function () {
+        element.classList.remove("disappear");
+        element.classList.add("hidden");
+        element.style.width = "0%";
+        _this2.animationTimer = null;
+      }, 800);
+    }
+  }
+  customElements.define("wds-progress", WebpackDevServerProgress);
+}
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/socket.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/socket.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   client: () => (/* binding */ client),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _clients_WebSocketClient_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clients/WebSocketClient.js */ "./node_modules/webpack-dev-server/client/clients/WebSocketClient.js");
+/* harmony import */ var _utils_log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
+/* provided dependency */ var __webpack_dev_server_client__ = __webpack_require__(/*! ./node_modules/webpack-dev-server/client/clients/WebSocketClient.js */ "./node_modules/webpack-dev-server/client/clients/WebSocketClient.js");
+/* global __webpack_dev_server_client__ */
+
+
+
+
+// this WebsocketClient is here as a default fallback, in case the client is not injected
+/* eslint-disable camelcase */
+var Client =
+// eslint-disable-next-line no-nested-ternary
+typeof __webpack_dev_server_client__ !== "undefined" ? typeof __webpack_dev_server_client__.default !== "undefined" ? __webpack_dev_server_client__.default : __webpack_dev_server_client__ : _clients_WebSocketClient_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+/* eslint-enable camelcase */
+
+var retries = 0;
+var maxRetries = 10;
+
+// Initialized client is exported so external consumers can utilize the same instance
+// It is mutable to enforce singleton
+// eslint-disable-next-line import/no-mutable-exports
+var client = null;
+
+/**
+ * @param {string} url
+ * @param {{ [handler: string]: (data?: any, params?: any) => any }} handlers
+ * @param {number} [reconnect]
+ */
+var socket = function initSocket(url, handlers, reconnect) {
+  client = new Client(url);
+  client.onOpen(function () {
+    retries = 0;
+    if (typeof reconnect !== "undefined") {
+      maxRetries = reconnect;
+    }
+  });
+  client.onClose(function () {
+    if (retries === 0) {
+      handlers.close();
+    }
+
+    // Try to reconnect.
+    client = null;
+
+    // After 10 retries stop trying, to prevent logspam.
+    if (retries < maxRetries) {
+      // Exponentially increase timeout to reconnect.
+      // Respectfully copied from the package `got`.
+      // eslint-disable-next-line no-restricted-properties
+      var retryInMs = 1000 * Math.pow(2, retries) + Math.random() * 100;
+      retries += 1;
+      _utils_log_js__WEBPACK_IMPORTED_MODULE_1__.log.info("Trying to reconnect...");
+      setTimeout(function () {
+        socket(url, handlers, reconnect);
+      }, retryInMs);
+    }
+  });
+  client.onMessage(
+  /**
+   * @param {any} data
+   */
+  function (data) {
+    var message = JSON.parse(data);
+    if (handlers[message.type]) {
+      handlers[message.type](message.data, message.params);
+    }
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (socket);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/createSocketURL.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/createSocketURL.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * @param {{ protocol?: string, auth?: string, hostname?: string, port?: string, pathname?: string, search?: string, hash?: string, slashes?: boolean }} objURL
+ * @returns {string}
+ */
+function format(objURL) {
+  var protocol = objURL.protocol || "";
+  if (protocol && protocol.substr(-1) !== ":") {
+    protocol += ":";
+  }
+  var auth = objURL.auth || "";
+  if (auth) {
+    auth = encodeURIComponent(auth);
+    auth = auth.replace(/%3A/i, ":");
+    auth += "@";
+  }
+  var host = "";
+  if (objURL.hostname) {
+    host = auth + (objURL.hostname.indexOf(":") === -1 ? objURL.hostname : "[".concat(objURL.hostname, "]"));
+    if (objURL.port) {
+      host += ":".concat(objURL.port);
+    }
+  }
+  var pathname = objURL.pathname || "";
+  if (objURL.slashes) {
+    host = "//".concat(host || "");
+    if (pathname && pathname.charAt(0) !== "/") {
+      pathname = "/".concat(pathname);
+    }
+  } else if (!host) {
+    host = "";
+  }
+  var search = objURL.search || "";
+  if (search && search.charAt(0) !== "?") {
+    search = "?".concat(search);
+  }
+  var hash = objURL.hash || "";
+  if (hash && hash.charAt(0) !== "#") {
+    hash = "#".concat(hash);
+  }
+  pathname = pathname.replace(/[?#]/g,
+  /**
+   * @param {string} match
+   * @returns {string}
+   */
+  function (match) {
+    return encodeURIComponent(match);
+  });
+  search = search.replace("#", "%23");
+  return "".concat(protocol).concat(host).concat(pathname).concat(search).concat(hash);
+}
+
+/**
+ * @param {URL & { fromCurrentScript?: boolean }} parsedURL
+ * @returns {string}
+ */
+function createSocketURL(parsedURL) {
+  var hostname = parsedURL.hostname;
+
+  // Node.js module parses it as `::`
+  // `new URL(urlString, [baseURLString])` parses it as '[::]'
+  var isInAddrAny = hostname === "0.0.0.0" || hostname === "::" || hostname === "[::]";
+
+  // why do we need this check?
+  // hostname n/a for file protocol (example, when using electron, ionic)
+  // see: https://github.com/webpack/webpack-dev-server/pull/384
+  if (isInAddrAny && self.location.hostname && self.location.protocol.indexOf("http") === 0) {
+    hostname = self.location.hostname;
+  }
+  var socketURLProtocol = parsedURL.protocol || self.location.protocol;
+
+  // When https is used in the app, secure web sockets are always necessary because the browser doesn't accept non-secure web sockets.
+  if (socketURLProtocol === "auto:" || hostname && isInAddrAny && self.location.protocol === "https:") {
+    socketURLProtocol = self.location.protocol;
+  }
+  socketURLProtocol = socketURLProtocol.replace(/^(?:http|.+-extension|file)/i, "ws");
+  var socketURLAuth = "";
+
+  // `new URL(urlString, [baseURLstring])` doesn't have `auth` property
+  // Parse authentication credentials in case we need them
+  if (parsedURL.username) {
+    socketURLAuth = parsedURL.username;
+
+    // Since HTTP basic authentication does not allow empty username,
+    // we only include password if the username is not empty.
+    if (parsedURL.password) {
+      // Result: <username>:<password>
+      socketURLAuth = socketURLAuth.concat(":", parsedURL.password);
+    }
+  }
+
+  // In case the host is a raw IPv6 address, it can be enclosed in
+  // the brackets as the brackets are needed in the final URL string.
+  // Need to remove those as url.format blindly adds its own set of brackets
+  // if the host string contains colons. That would lead to non-working
+  // double brackets (e.g. [[::]]) host
+  //
+  // All of these web socket url params are optionally passed in through resourceQuery,
+  // so we need to fall back to the default if they are not provided
+  var socketURLHostname = (hostname || self.location.hostname || "localhost").replace(/^\[(.*)\]$/, "$1");
+  var socketURLPort = parsedURL.port;
+  if (!socketURLPort || socketURLPort === "0") {
+    socketURLPort = self.location.port;
+  }
+
+  // If path is provided it'll be passed in via the resourceQuery as a
+  // query param so it has to be parsed out of the querystring in order for the
+  // client to open the socket to the correct location.
+  var socketURLPathname = "/ws";
+  if (parsedURL.pathname && !parsedURL.fromCurrentScript) {
+    socketURLPathname = parsedURL.pathname;
+  }
+  return format({
+    protocol: socketURLProtocol,
+    auth: socketURLAuth,
+    hostname: socketURLHostname,
+    port: socketURLPort,
+    pathname: socketURLPathname,
+    slashes: true
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createSocketURL);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/getCurrentScriptSource.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/getCurrentScriptSource.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * @returns {string}
+ */
+function getCurrentScriptSource() {
+  // `document.currentScript` is the most accurate way to find the current script,
+  // but is not supported in all browsers.
+  if (document.currentScript) {
+    return document.currentScript.getAttribute("src");
+  }
+
+  // Fallback to getting all scripts running in the document.
+  var scriptElements = document.scripts || [];
+  var scriptElementsWithSrc = Array.prototype.filter.call(scriptElements, function (element) {
+    return element.getAttribute("src");
+  });
+  if (scriptElementsWithSrc.length > 0) {
+    var currentScript = scriptElementsWithSrc[scriptElementsWithSrc.length - 1];
+    return currentScript.getAttribute("src");
+  }
+
+  // Fail as there was no script to use.
+  throw new Error("[webpack-dev-server] Failed to get current script source.");
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getCurrentScriptSource);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/log.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/log.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   log: () => (/* binding */ log),
+/* harmony export */   logEnabledFeatures: () => (/* binding */ logEnabledFeatures),
+/* harmony export */   setLogLevel: () => (/* binding */ setLogLevel)
+/* harmony export */ });
+/* harmony import */ var _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/logger/index.js */ "./node_modules/webpack-dev-server/client/modules/logger/index.js");
+/* harmony import */ var _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0__);
+
+var name = "webpack-dev-server";
+// default level is set on the client side, so it does not need
+// to be set by the CLI or API
+var defaultLevel = "info";
+
+// options new options, merge with old options
+/**
+ * @param {false | true | "none" | "error" | "warn" | "info" | "log" | "verbose"} level
+ * @returns {void}
+ */
+function setLogLevel(level) {
+  _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default().configureDefaultLogger({
+    level: level
+  });
+}
+setLogLevel(defaultLevel);
+var log = _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default().getLogger(name);
+var logEnabledFeatures = function logEnabledFeatures(features) {
+  var enabledFeatures = Object.keys(features);
+  if (!features || enabledFeatures.length === 0) {
+    return;
+  }
+  var logString = "Server started:";
+
+  // Server started: Hot Module Replacement enabled, Live Reloading enabled, Overlay disabled.
+  for (var i = 0; i < enabledFeatures.length; i++) {
+    var key = enabledFeatures[i];
+    logString += " ".concat(key, " ").concat(features[key] ? "enabled" : "disabled", ",");
+  }
+  // replace last comma with a period
+  logString = logString.slice(0, -1).concat(".");
+  log.info(logString);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/parseURL.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/parseURL.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _getCurrentScriptSource_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getCurrentScriptSource.js */ "./node_modules/webpack-dev-server/client/utils/getCurrentScriptSource.js");
+
+
+/**
+ * @param {string} resourceQuery
+ * @returns {{ [key: string]: string | boolean }}
+ */
+function parseURL(resourceQuery) {
+  /** @type {{ [key: string]: string }} */
+  var options = {};
+  if (typeof resourceQuery === "string" && resourceQuery !== "") {
+    var searchParams = resourceQuery.slice(1).split("&");
+    for (var i = 0; i < searchParams.length; i++) {
+      var pair = searchParams[i].split("=");
+      options[pair[0]] = decodeURIComponent(pair[1]);
+    }
+  } else {
+    // Else, get the url from the <script> this file was called with.
+    var scriptSource = (0,_getCurrentScriptSource_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    var scriptSourceURL;
+    try {
+      // The placeholder `baseURL` with `window.location.href`,
+      // is to allow parsing of path-relative or protocol-relative URLs,
+      // and will have no effect if `scriptSource` is a fully valid URL.
+      scriptSourceURL = new URL(scriptSource, self.location.href);
+    } catch (error) {
+      // URL parsing failed, do nothing.
+      // We will still proceed to see if we can recover using `resourceQuery`
+    }
+    if (scriptSourceURL) {
+      options = scriptSourceURL;
+      options.fromCurrentScript = true;
+    }
+  }
+  return options;
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (parseURL);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/reloadApp.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/reloadApp.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var webpack_hot_emitter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webpack/hot/emitter.js */ "./node_modules/webpack/hot/emitter.js");
+/* harmony import */ var webpack_hot_emitter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webpack_hot_emitter_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
+
+
+
+/** @typedef {import("../index").Options} Options
+/** @typedef {import("../index").Status} Status
+
+/**
+ * @param {Options} options
+ * @param {Status} status
+ */
+function reloadApp(_ref, status) {
+  var hot = _ref.hot,
+    liveReload = _ref.liveReload;
+  if (status.isUnloading) {
+    return;
+  }
+  var currentHash = status.currentHash,
+    previousHash = status.previousHash;
+  var isInitial = currentHash.indexOf(/** @type {string} */previousHash) >= 0;
+  if (isInitial) {
+    return;
+  }
+
+  /**
+   * @param {Window} rootWindow
+   * @param {number} intervalId
+   */
+  function applyReload(rootWindow, intervalId) {
+    clearInterval(intervalId);
+    _log_js__WEBPACK_IMPORTED_MODULE_1__.log.info("App updated. Reloading...");
+    rootWindow.location.reload();
+  }
+  var search = self.location.search.toLowerCase();
+  var allowToHot = search.indexOf("webpack-dev-server-hot=false") === -1;
+  var allowToLiveReload = search.indexOf("webpack-dev-server-live-reload=false") === -1;
+  if (hot && allowToHot) {
+    _log_js__WEBPACK_IMPORTED_MODULE_1__.log.info("App hot update...");
+    webpack_hot_emitter_js__WEBPACK_IMPORTED_MODULE_0___default().emit("webpackHotUpdate", status.currentHash);
+    if (typeof self !== "undefined" && self.window) {
+      // broadcast update to window
+      self.postMessage("webpackHotUpdate".concat(status.currentHash), "*");
+    }
+  }
+  // allow refreshing the page only if liveReload isn't disabled
+  else if (liveReload && allowToLiveReload) {
+    var rootWindow = self;
+
+    // use parent window for reload (in case we're in an iframe with no valid src)
+    var intervalId = self.setInterval(function () {
+      if (rootWindow.location.protocol !== "about:") {
+        // reload immediately if protocol is valid
+        applyReload(rootWindow, intervalId);
+      } else {
+        rootWindow = rootWindow.parent;
+        if (rootWindow.parent === rootWindow) {
+          // if parent equals current window we've reached the root which would continue forever, so trigger a reload anyways
+          applyReload(rootWindow, intervalId);
+        }
+      }
+    });
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reloadApp);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/sendMessage.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/sendMessage.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* global __resourceQuery WorkerGlobalScope */
+
+// Send messages to the outside, so plugins can consume it.
+/**
+ * @param {string} type
+ * @param {any} [data]
+ */
+function sendMsg(type, data) {
+  if (typeof self !== "undefined" && (typeof WorkerGlobalScope === "undefined" || !(self instanceof WorkerGlobalScope))) {
+    self.postMessage({
+      type: "webpack".concat(type),
+      data: data
+    }, "*");
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sendMsg);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/utils/stripAnsi.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/utils/stripAnsi.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var ansiRegex = new RegExp(["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"].join("|"), "g");
+
+/**
+ *
+ * Strip [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) from a string.
+ * Adapted from code originally released by Sindre Sorhus
+ * Licensed the MIT License
+ *
+ * @param {string} string
+ * @return {string}
+ */
+function stripAnsi(string) {
+  if (typeof string !== "string") {
+    throw new TypeError("Expected a `string`, got `".concat(typeof string, "`"));
+  }
+  return string.replace(ansiRegex, "");
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (stripAnsi);
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/dev-server.js":
+/*!************************************************!*\
+  !*** ./node_modules/webpack/hot/dev-server.js ***!
+  \************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+/* globals __webpack_hash__ */
+if (true) {
+	/** @type {undefined|string} */
+	var lastHash;
+	var upToDate = function upToDate() {
+		return /** @type {string} */ (lastHash).indexOf(__webpack_require__.h()) >= 0;
+	};
+	var log = __webpack_require__(/*! ./log */ "./node_modules/webpack/hot/log.js");
+	var check = function check() {
+		module.hot
+			.check(true)
+			.then(function (updatedModules) {
+				if (!updatedModules) {
+					log(
+						"warning",
+						"[HMR] Cannot find update. " +
+							(typeof window !== "undefined"
+								? "Need to do a full reload!"
+								: "Please reload manually!")
+					);
+					log(
+						"warning",
+						"[HMR] (Probably because of restarting the webpack-dev-server)"
+					);
+					if (typeof window !== "undefined") {
+						window.location.reload();
+					}
+					return;
+				}
+
+				if (!upToDate()) {
+					check();
+				}
+
+				__webpack_require__(/*! ./log-apply-result */ "./node_modules/webpack/hot/log-apply-result.js")(updatedModules, updatedModules);
+
+				if (upToDate()) {
+					log("info", "[HMR] App is up to date.");
+				}
+			})
+			.catch(function (err) {
+				var status = module.hot.status();
+				if (["abort", "fail"].indexOf(status) >= 0) {
+					log(
+						"warning",
+						"[HMR] Cannot apply update. " +
+							(typeof window !== "undefined"
+								? "Need to do a full reload!"
+								: "Please reload manually!")
+					);
+					log("warning", "[HMR] " + log.formatError(err));
+					if (typeof window !== "undefined") {
+						window.location.reload();
+					}
+				} else {
+					log("warning", "[HMR] Update failed: " + log.formatError(err));
+				}
+			});
+	};
+	var hotEmitter = __webpack_require__(/*! ./emitter */ "./node_modules/webpack/hot/emitter.js");
+	hotEmitter.on("webpackHotUpdate", function (currentHash) {
+		lastHash = currentHash;
+		if (!upToDate() && module.hot.status() === "idle") {
+			log("info", "[HMR] Checking for updates on the server...");
+			check();
+		}
+	});
+	log("info", "[HMR] Waiting for update signal from WDS...");
+} else {}
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/emitter.js":
+/*!*********************************************!*\
+  !*** ./node_modules/webpack/hot/emitter.js ***!
+  \*********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var EventEmitter = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+module.exports = new EventEmitter();
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/log-apply-result.js":
+/*!******************************************************!*\
+  !*** ./node_modules/webpack/hot/log-apply-result.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+/**
+ * @param {(string | number)[]} updatedModules updated modules
+ * @param {(string | number)[] | null} renewedModules renewed modules
+ */
+module.exports = function (updatedModules, renewedModules) {
+	var unacceptedModules = updatedModules.filter(function (moduleId) {
+		return renewedModules && renewedModules.indexOf(moduleId) < 0;
+	});
+	var log = __webpack_require__(/*! ./log */ "./node_modules/webpack/hot/log.js");
+
+	if (unacceptedModules.length > 0) {
+		log(
+			"warning",
+			"[HMR] The following modules couldn't be hot updated: (They would need a full reload!)"
+		);
+		unacceptedModules.forEach(function (moduleId) {
+			log("warning", "[HMR]  - " + moduleId);
+		});
+	}
+
+	if (!renewedModules || renewedModules.length === 0) {
+		log("info", "[HMR] Nothing hot updated.");
+	} else {
+		log("info", "[HMR] Updated modules:");
+		renewedModules.forEach(function (moduleId) {
+			if (typeof moduleId === "string" && moduleId.indexOf("!") !== -1) {
+				var parts = moduleId.split("!");
+				log.groupCollapsed("info", "[HMR]  - " + parts.pop());
+				log("info", "[HMR]  - " + moduleId);
+				log.groupEnd("info");
+			} else {
+				log("info", "[HMR]  - " + moduleId);
+			}
+		});
+		var numberIds = renewedModules.every(function (moduleId) {
+			return typeof moduleId === "number";
+		});
+		if (numberIds)
+			log(
+				"info",
+				'[HMR] Consider using the optimization.moduleIds: "named" for module names.'
+			);
+	}
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack/hot/log.js":
+/*!*****************************************!*\
+  !*** ./node_modules/webpack/hot/log.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+/** @typedef {"info" | "warning" | "error"} LogLevel */
+
+/** @type {LogLevel} */
+var logLevel = "info";
+
+function dummy() {}
+
+/**
+ * @param {LogLevel} level log level
+ * @returns {boolean} true, if should log
+ */
+function shouldLog(level) {
+	var shouldLog =
+		(logLevel === "info" && level === "info") ||
+		(["info", "warning"].indexOf(logLevel) >= 0 && level === "warning") ||
+		(["info", "warning", "error"].indexOf(logLevel) >= 0 && level === "error");
+	return shouldLog;
+}
+
+/**
+ * @param {(msg?: string) => void} logFn log function
+ * @returns {(level: LogLevel, msg?: string) => void} function that logs when log level is sufficient
+ */
+function logGroup(logFn) {
+	return function (level, msg) {
+		if (shouldLog(level)) {
+			logFn(msg);
+		}
+	};
+}
+
+/**
+ * @param {LogLevel} level log level
+ * @param {string|Error} msg message
+ */
+module.exports = function (level, msg) {
+	if (shouldLog(level)) {
+		if (level === "info") {
+			console.log(msg);
+		} else if (level === "warning") {
+			console.warn(msg);
+		} else if (level === "error") {
+			console.error(msg);
+		}
+	}
+};
+
+var group = console.group || dummy;
+var groupCollapsed = console.groupCollapsed || dummy;
+var groupEnd = console.groupEnd || dummy;
+
+module.exports.group = logGroup(group);
+
+module.exports.groupCollapsed = logGroup(groupCollapsed);
+
+module.exports.groupEnd = logGroup(groupEnd);
+
+/**
+ * @param {LogLevel} level log level
+ */
+module.exports.setLogLevel = function (level) {
+	logLevel = level;
+};
+
+/**
+ * @param {Error} err error
+ * @returns {string} formatted error
+ */
+module.exports.formatError = function (err) {
+	var message = err.message;
+	var stack = err.stack;
+	if (!stack) {
+		return message;
+	} else if (stack.indexOf(message) < 0) {
+		return message + "\n" + stack;
+	}
+	return stack;
+};
+
 
 /***/ }),
 
@@ -19676,6 +23168,93 @@ if ((typeof exports === "undefined" ? "undefined" : (0,_babel_runtime_corejs3_he
 
 /***/ }),
 
+/***/ "./4-content/content.js":
+/*!******************************!*\
+  !*** ./4-content/content.js ***!
+  \******************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs3_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
+
+
+
+
+
+
+
+
+var ContentHandler = /*#__PURE__*/function () {
+  function ContentHandler() {
+    var _context;
+    (0,_babel_runtime_corejs3_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ContentHandler);
+    this.sections = [];
+    this.currentIndex = 0;
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+    chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context = this.handleMessage).call(_context, this));
+  }
+  return (0,_babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ContentHandler, [{
+    key: "speakCurrentSection",
+    value: function speakCurrentSection() {
+      var _this = this;
+      if (this.currentIndex >= this.sections.length) {
+        this.highlightBox.remove();
+        return;
+      }
+      var section = this.sections[this.currentIndex];
+      this.highlightBox.highlight(section);
+      this.speechHandler.speak(section.text, function () {
+        _this.currentIndex++;
+        _this.speakCurrentSection();
+      });
+    }
+  }, {
+    key: "handleMessage",
+    value: function handleMessage(request) {
+      if (request.action === "extractText") {
+        var _this$textExtractor$e = this.textExtractor.extractAllTextWithTags(document.body),
+          textSections = _this$textExtractor$e.textSections,
+          elementSections = _this$textExtractor$e.elementSections;
+        this.sections = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_3__(textSections).call(textSections, function (text, index) {
+          return {
+            text: text,
+            element: elementSections[index]
+          };
+        });
+        this.currentIndex = 0;
+        this.speakCurrentSection();
+      } else if (request.action === "skipToNext") {
+        this.speechHandler.stop();
+        this.currentIndex = Math.min(this.currentIndex + 1, this.sections.length - 1);
+        this.speakCurrentSection();
+      } else if (request.action === "skipToPrevious") {
+        this.speechHandler.stop();
+        this.currentIndex = Math.max(this.currentIndex - 1, 0);
+        this.speakCurrentSection();
+      } else if (request.action === "toggleReading") {
+        this.speechHandler.isSpeaking ? this.speechHandler.stop() : this.speakCurrentSection();
+      } else if (request.action === "accessLink") {
+        var section = this.sections[this.currentIndex];
+        this.linkHandler.accessLink(section.element);
+      }
+    }
+  }]);
+}(); // Instantiate the content handler
+new ContentHandler();
+
+/***/ }),
+
 /***/ "./node_modules/onnxruntime-web/dist/ort.bundle.min.mjs":
 /*!**************************************************************!*\
   !*** ./node_modules/onnxruntime-web/dist/ort.bundle.min.mjs ***!
@@ -21496,10 +25075,10 @@ ${e}
 `);let o=this.glContext.compileShader(e,this.glContext.gl.FRAGMENT_SHADER),t=this.glContext.createProgram(this.vertexShader,o);return this.glContext.deleteShader(o),t}bindOutput(e){let o=e.width,t=e.height;tt.verbose("ProrgramManager",`Binding output texture to Framebuffer: w/h=${o}/${t}, shape=${e.shape}, type=${e.tensor.type}`),this.glContext.attachFramebuffer(e.texture,o,t)}bindAttributes(e){let o=e.position,t=e.textureCoord;this.glContext.setVertexAttributes(o,t),this.attributesBound=!0}bindUniforms(e,o,t){let r=this.glContext.gl,n=0;for(let{name:s,type:a,location:u,arrayLength:l}of e){let f=o.find(p=>p.name===s)?.data;if(a!=="sampler2D"&&!f)throw new Error(`variable '${s}' does not have data defined in program info`);switch(a){case"sampler2D":this.bindTexture(t[n],u,n),n++;break;case"float":l?r.uniform1fv(u,f):r.uniform1f(u,f);break;case"int":l?r.uniform1iv(u,f):r.uniform1i(u,f);break;default:throw new Error(`Uniform not implemented: ${a}`)}}}bindTexture(e,o,t){this.glContext.bindTextureToUniform(e.texture,t,o)}getAttribLocations(e){return{position:this.getAttribLocation(e,"position"),textureCoord:this.getAttribLocation(e,"textureCoord")}}getUniformLocations(e,o,t){let r=[];if(o)for(let n of o)r.push({name:n,type:"sampler2D",location:this.getUniformLocation(e,n)});if(t)for(let n of t)r.push({...n,location:this.getUniformLocation(e,n.name)});return r}getUniformLocation(e,o){let r=this.glContext.gl.getUniformLocation(e,o);if(r===null)throw new Error(`Uniform ${o} not found.`);return r}getAttribLocation(e,o){return this.glContext.gl.getAttribLocation(e,o)}}});var Kn,xp=O(()=>{"use strict";Ut();Fr();Kn=class{constructor(e,o,t,r){this.glContext=e;this.layoutStrategy=o;this.profiler=t;this.config=r;this.pendingRead=new Map;r.reuseTextures&&(this.inUseTextures=new Map,this.idleTextures=new Map,this.textureLookup=new Map)}createTextureFromLayout(e,o,t,r){let n=this.toEncoderType(e),s=this.glContext.getEncoder(n,o.channels||1,r);if(o.isPacked&&r===1)throw new Error("not implemented");let a=o.width,u=o.height,l,f;if(this.config.reuseTextures){l=`${a}x${u}_${s.format}_${s.internalFormat}_${s.textureType}`,f=this.inUseTextures.get(l),f||(f=[],this.inUseTextures.set(l,f));let d=this.idleTextures.get(l);if(d&&d.length>0){let y=d.pop();return f.push(y),r===1&&this.glContext.updateTexture(y,a,u,s,this.toTextureData(e,t)),y}}tt.verbose("TextureManager",`Creating new texture of size ${o.width}x${o.height}`);let p=this.glContext.allocateTexture(a,u,s,this.toTextureData(e,t));return this.config.reuseTextures&&(f.push(p),this.textureLookup.set(p,l)),p}readTexture(e,o,t){return t||(t=1),this.profiler.event("backend","TextureManager.readTexture",()=>{let r=e.shape.reduce((s,a)=>s*a)*t,n=this.glContext.readTexture(e.texture,e.width,e.height,r,this.toEncoderType(o),t);return this.toTensorData(o,n)})}async readTextureAsync(e,o,t){let r=e.tensor.dataId;if(t||(t=1),this.pendingRead.has(r)){let n=this.pendingRead.get(r);return new Promise(s=>n?.push(s))}return this.profiler.event("backend","TextureManager.readTextureAsync",async()=>{this.pendingRead.set(r,[]);let n=e.shape.reduce((l,f)=>l*f)*t;await this.glContext.createAndWaitForFence();let s=this.glContext.readTexture(e.texture,e.width,e.height,n,this.toEncoderType(o),t),a=this.toTensorData(o,s),u=this.pendingRead.get(r);return this.pendingRead.delete(r),u?.forEach(l=>l(a)),a})}readUint8TextureAsFloat(e){return this.profiler.event("backend","TextureManager.readUint8TextureAsFloat",()=>{let o=e.shape.reduce((r,n)=>r*n),t=this.glContext.readTexture(e.texture,e.width,e.height,o*4,"byte",4);return new Float32Array(t.buffer,t.byteOffset,o)})}releaseTexture(e,o){let t;if(this.config.reuseTextures&&(t=this.textureLookup.get(e.texture),t)){o&&this.textureLookup.delete(t);let r=this.inUseTextures.get(t);if(r){let n=r.indexOf(e.texture);if(n!==-1){r.splice(n,1);let s=this.idleTextures.get(t);s||(s=[],this.idleTextures.set(t,s)),s.push(e.texture)}}}(!t||o)&&(tt.verbose("TextureManager",`Deleting texture of size ${e.width}x${e.height}`),this.glContext.deleteTexture(e.texture))}toTensorData(e,o){switch(e){case"int16":return o instanceof Int16Array?o:Int16Array.from(o);case"int32":return o instanceof Int32Array?o:Int32Array.from(o);case"int8":return o instanceof Int8Array?o:Int8Array.from(o);case"uint16":return o instanceof Uint16Array?o:Uint16Array.from(o);case"uint32":return o instanceof Uint32Array?o:Uint32Array.from(o);case"uint8":case"bool":return o instanceof Uint8Array?o:Uint8Array.from(o);case"float32":return o instanceof Float32Array?o:Float32Array.from(o);case"float64":return o instanceof Float64Array?o:Float64Array.from(o);default:throw new Error(`TensorData type ${e} is not supported`)}}toTextureData(e,o){if(o)return o instanceof Float32Array?o:new Float32Array(o)}toEncoderType(e){return"float"}clearActiveTextures(){this.glContext.clearActiveTextures()}}});var Jn,Tp=O(()=>{"use strict";Ut();Bs();cl();ap();yp();Ni();xp();Jn=class{constructor(e,o){this.backend=e;this.context=o;this.layoutStrategy=new Un(e.glContext.maxTextureSize),this.programManager=new Xn(this.context.profiler,e.glContext,this.layoutStrategy),this.textureManager=new Kn(e.glContext,this.layoutStrategy,this.context.profiler,{reuseTextures:e.textureCacheMode==="full"}),this.packedTextureDataCache=new Map,this.unpackedTextureDataCache=new Map,this.pack=e.pack,this.pack2unpackMap=new Map,this.unpack2packMap=new Map}createInferenceHandler(){return new Dn(this)}onGraphInitialized(e){let o=e.getValues().filter(t=>t.from===-1&&t.tensor).map(t=>t.tensor.dataId);this.initializers=new Set(o)}isInitializer(e){return this.initializers?this.initializers.has(e):!1}addInitializer(e){this.initializers.add(e)}getTextureData(e,o){return o?this.packedTextureDataCache.get(e):this.unpackedTextureDataCache.get(e)}setTextureData(e,o,t=!1){tt.verbose("WebGLSessionHandler","Storing Texture data in cache"),t?this.packedTextureDataCache.set(e,o):this.unpackedTextureDataCache.set(e,o)}dispose(){this.programManager.dispose(),this.textureManager.clearActiveTextures(),this.packedTextureDataCache.forEach(e=>this.textureManager.releaseTexture(e,!0)),this.packedTextureDataCache=new Map,this.unpackedTextureDataCache.forEach(e=>this.textureManager.releaseTexture(e,!0)),this.unpackedTextureDataCache=new Map}resolve(e,o,t){let r=ks(e,o,ip);return{impl:r.opImpl,context:r.opInit?r.opInit(e,t):e}}}});function bg(i){let e=0;for(;e<i.length&&i[e]();++e);return e-1}var Mr,wp=O(()=>{"use strict";Yt();Fr();Fr();pe();Mr=class{constructor(e,o){this.frameBufferBound=!1;this.itemsToPoll=[];this.gl=e,this.version=o,this.getExtensions(),this.vertexbuffer=this.createVertexbuffer(),this.framebuffer=this.createFramebuffer(),this.queryVitalParameters()}allocateTexture(e,o,t,r){let n=this.gl,s=n.createTexture();n.bindTexture(n.TEXTURE_2D,s),n.texParameteri(n.TEXTURE_2D,n.TEXTURE_MIN_FILTER,n.NEAREST),n.texParameteri(n.TEXTURE_2D,n.TEXTURE_MAG_FILTER,n.NEAREST),n.texParameteri(n.TEXTURE_2D,n.TEXTURE_WRAP_S,n.CLAMP_TO_EDGE),n.texParameteri(n.TEXTURE_2D,n.TEXTURE_WRAP_T,n.CLAMP_TO_EDGE);let a=r?t.encode(r,e*o):null;return n.texImage2D(n.TEXTURE_2D,0,t.internalFormat,e,o,0,t.format,t.textureType,a),this.checkError(),s}updateTexture(e,o,t,r,n){let s=this.gl;s.bindTexture(s.TEXTURE_2D,e);let a=r.encode(n,o*t);s.texSubImage2D(s.TEXTURE_2D,0,0,0,o,t,r.format,r.textureType,a),this.checkError()}attachFramebuffer(e,o,t){let r=this.gl;r.bindTexture(r.TEXTURE_2D,e),r.bindFramebuffer(r.FRAMEBUFFER,this.framebuffer),r.framebufferTexture2D(r.FRAMEBUFFER,r.COLOR_ATTACHMENT0,r.TEXTURE_2D,e,0),this.checkError(),r.viewport(0,0,o,t),r.scissor(0,0,o,t)}readTexture(e,o,t,r,n,s){let a=this.gl;s||(s=1),this.frameBufferBound||this.attachFramebuffer(e,o,t);let u=this.getEncoder(n,s),l=u.allocate(o*t);return a.bindTexture(a.TEXTURE_2D,e),a.framebufferTexture2D(a.FRAMEBUFFER,a.COLOR_ATTACHMENT0,a.TEXTURE_2D,e,0),a.readPixels(0,0,o,t,a.RGBA,u.textureType,l),this.checkError(),u.decode(l,r)}isFramebufferReady(){return!0}getActiveTexture(){let e=this.gl;return`TEXTURE${e.getParameter(this.gl.ACTIVE_TEXTURE)-e.TEXTURE0}`}getTextureBinding(){return this.gl.getParameter(this.gl.TEXTURE_BINDING_2D)}getFramebufferBinding(){return this.gl.getParameter(this.gl.FRAMEBUFFER_BINDING)}setVertexAttributes(e,o){let t=this.gl;t.vertexAttribPointer(e,3,t.FLOAT,!1,20,0),t.enableVertexAttribArray(e),o!==-1&&(t.vertexAttribPointer(o,2,t.FLOAT,!1,20,12),t.enableVertexAttribArray(o)),this.checkError()}createProgram(e,o){let t=this.gl,r=t.createProgram();return t.attachShader(r,e),t.attachShader(r,o),t.linkProgram(r),r}compileShader(e,o){let t=this.gl,r=t.createShader(o);if(!r)throw new Error(`createShader() returned null with type ${o}`);if(t.shaderSource(r,e),t.compileShader(r),t.getShaderParameter(r,t.COMPILE_STATUS)===!1)throw new Error(`Failed to compile shader: ${t.getShaderInfoLog(r)}
 Shader source:
 ${e}`);return r}deleteShader(e){this.gl.deleteShader(e)}bindTextureToUniform(e,o,t){let r=this.gl;r.activeTexture(r.TEXTURE0+o),this.checkError(),r.bindTexture(r.TEXTURE_2D,e),this.checkError(),r.uniform1i(t,o),this.checkError()}draw(){this.gl.drawArrays(this.gl.TRIANGLE_STRIP,0,4),this.checkError()}checkError(){if(z.debug){let e=this.gl,o=e.getError(),t="";switch(o){case e.NO_ERROR:return;case e.INVALID_ENUM:t="INVALID_ENUM";break;case e.INVALID_VALUE:t="INVALID_VALUE";break;case e.INVALID_OPERATION:t="INVALID_OPERATION";break;case e.INVALID_FRAMEBUFFER_OPERATION:t="INVALID_FRAMEBUFFER_OPERATION";break;case e.OUT_OF_MEMORY:t="OUT_OF_MEMORY";break;case e.CONTEXT_LOST_WEBGL:t="CONTEXT_LOST_WEBGL";break;default:t=`Unknown WebGL Error: ${o.toString(16)}`}throw new Error(t)}}deleteTexture(e){this.gl.deleteTexture(e)}deleteProgram(e){this.gl.deleteProgram(e)}getEncoder(e,o,t=0){if(this.version===2)return new Pn(this.gl,o);switch(e){case"float":return t===1||this.isRenderFloat32Supported?new Br(this.gl,o):new Br(this.gl,o,this.textureHalfFloatExtension.HALF_FLOAT_OES);case"int":throw new Error("not implemented");case"byte":return new En(this.gl,o);default:throw new Error(`Invalid dataType: ${e}`)}}clearActiveTextures(){let e=this.gl;for(let o=0;o<this.maxTextureImageUnits;++o)e.activeTexture(e.TEXTURE0+o),e.bindTexture(e.TEXTURE_2D,null)}dispose(){if(this.disposed)return;let e=this.gl;e.bindFramebuffer(e.FRAMEBUFFER,null),e.deleteFramebuffer(this.framebuffer),e.bindBuffer(e.ARRAY_BUFFER,null),e.deleteBuffer(this.vertexbuffer),e.bindBuffer(e.ELEMENT_ARRAY_BUFFER,null),e.finish(),this.disposed=!0}createDefaultGeometry(){return new Float32Array([-1,1,0,0,1,-1,-1,0,0,0,1,1,0,1,1,1,-1,0,1,0])}createVertexbuffer(){let e=this.gl,o=e.createBuffer();if(!o)throw new Error("createBuffer() returned null");let t=this.createDefaultGeometry();return e.bindBuffer(e.ARRAY_BUFFER,o),e.bufferData(e.ARRAY_BUFFER,t,e.STATIC_DRAW),this.checkError(),o}createFramebuffer(){let e=this.gl.createFramebuffer();if(!e)throw new Error("createFramebuffer returned null");return e}queryVitalParameters(){let e=this.gl;if(this.isFloatTextureAttachableToFrameBuffer=this.checkFloatTextureAttachableToFrameBuffer(),this.isRenderFloat32Supported=this.checkRenderFloat32(),this.isFloat32DownloadSupported=this.checkFloat32Download(),this.version===1&&!this.textureHalfFloatExtension&&!this.isRenderFloat32Supported)throw new Error("both float32 and float16 TextureType are not supported");this.isBlendSupported=!this.isRenderFloat32Supported||this.checkFloat32Blend(),this.maxTextureSize=e.getParameter(e.MAX_TEXTURE_SIZE),this.maxTextureImageUnits=e.getParameter(e.MAX_TEXTURE_IMAGE_UNITS),this.version}getExtensions(){this.version===2?(this.colorBufferFloatExtension=this.gl.getExtension("EXT_color_buffer_float"),this.disjointTimerQueryWebgl2Extension=this.gl.getExtension("EXT_disjoint_timer_query_webgl2")):(this.textureFloatExtension=this.gl.getExtension("OES_texture_float"),this.textureHalfFloatExtension=this.gl.getExtension("OES_texture_half_float"))}checkFloatTextureAttachableToFrameBuffer(){let e=this.gl,o=e.createTexture();e.bindTexture(e.TEXTURE_2D,o);let t=this.version===2?e.RGBA32F:e.RGBA;e.texImage2D(e.TEXTURE_2D,0,t,1,1,0,e.RGBA,e.FLOAT,null);let r=e.createFramebuffer();e.bindFramebuffer(e.FRAMEBUFFER,r),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,o,0);let n=e.checkFramebufferStatus(e.FRAMEBUFFER)===e.FRAMEBUFFER_COMPLETE;return e.bindTexture(e.TEXTURE_2D,null),e.bindFramebuffer(e.FRAMEBUFFER,null),e.deleteTexture(o),e.deleteFramebuffer(r),n}checkRenderFloat32(){if(this.version===2){if(!this.colorBufferFloatExtension)return!1}else if(!this.textureFloatExtension)return!1;return this.isFloatTextureAttachableToFrameBuffer}checkFloat32Download(){if(this.version===2){if(!this.colorBufferFloatExtension)return!1}else if(!this.textureFloatExtension||!this.gl.getExtension("WEBGL_color_buffer_float"))return!1;return this.isFloatTextureAttachableToFrameBuffer}checkFloat32Blend(){let e=this.gl,o,t,r,n,s;try{o=e.createTexture(),t=e.createFramebuffer(),e.bindTexture(e.TEXTURE_2D,o);let a=this.version===2?e.RGBA32F:e.RGBA;return e.texImage2D(e.TEXTURE_2D,0,a,1,1,0,e.RGBA,e.FLOAT,null),e.bindFramebuffer(e.FRAMEBUFFER,t),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,o,0),e.enable(e.BLEND),r=e.createShader(e.VERTEX_SHADER),!r||(e.shaderSource(r,"void main(){}"),e.compileShader(r),n=e.createShader(e.FRAGMENT_SHADER),!n)||(e.shaderSource(n,"precision highp float;void main(){gl_FragColor=vec4(0.5);}"),e.compileShader(n),s=e.createProgram(),!s)?!1:(e.attachShader(s,r),e.attachShader(s,n),e.linkProgram(s),e.useProgram(s),e.drawArrays(e.POINTS,0,1),e.getError()===e.NO_ERROR)}finally{e.disable(e.BLEND),s&&e.deleteProgram(s),r&&e.deleteShader(r),n&&e.deleteShader(n),t&&(e.bindFramebuffer(e.FRAMEBUFFER,null),e.deleteFramebuffer(t)),o&&(e.bindTexture(e.TEXTURE_2D,null),e.deleteTexture(o))}}beginTimer(){if(this.version===2&&this.disjointTimerQueryWebgl2Extension){let e=this.gl,o=this.disjointTimerQueryWebgl2Extension,t=e.createQuery();return e.beginQuery(o.TIME_ELAPSED_EXT,t),t}else throw new Error("WebGL1 profiling currently not supported.")}endTimer(){if(this.version===2&&this.disjointTimerQueryWebgl2Extension){let e=this.gl,o=this.disjointTimerQueryWebgl2Extension;e.endQuery(o.TIME_ELAPSED_EXT);return}else throw new Error("WebGL1 profiling currently not supported")}isTimerResultAvailable(e){let o=!1,t=!1;if(this.version===2&&this.disjointTimerQueryWebgl2Extension){let r=this.gl,n=this.disjointTimerQueryWebgl2Extension;o=r.getQueryParameter(e,r.QUERY_RESULT_AVAILABLE),t=r.getParameter(n.GPU_DISJOINT_EXT)}else throw new Error("WebGL1 profiling currently not supported");return o&&!t}getTimerResult(e){let o=0;if(this.version===2){let t=this.gl;o=t.getQueryParameter(e,t.QUERY_RESULT),t.deleteQuery(e)}else throw new Error("WebGL1 profiling currently not supported");return o/1e6}async waitForQueryAndGetTime(e){return await li(()=>this.isTimerResultAvailable(e)),this.getTimerResult(e)}async createAndWaitForFence(){let e=this.createFence(this.gl);return this.pollFence(e)}createFence(e){let o,t=e,r=t.fenceSync(t.SYNC_GPU_COMMANDS_COMPLETE,0);return e.flush(),r===null?o=()=>!0:o=()=>{let n=t.clientWaitSync(r,0,0);return n===t.ALREADY_SIGNALED||n===t.CONDITION_SATISFIED},{query:r,isFencePassed:o}}async pollFence(e){return new Promise(o=>{this.addItemToPoll(()=>e.isFencePassed(),()=>o())})}pollItems(){let e=bg(this.itemsToPoll.map(o=>o.isDoneFn));for(let o=0;o<=e;++o){let{resolveFn:t}=this.itemsToPoll[o];t()}this.itemsToPoll=this.itemsToPoll.slice(e+1)}async addItemToPoll(e,o){this.itemsToPoll.push({isDoneFn:e,resolveFn:o}),!(this.itemsToPoll.length>1)&&await li(()=>(this.pollItems(),this.itemsToPoll.length===0))}}});function Gi(i){let e;if((!i||i==="webgl2")&&"webgl2"in mr?e=mr.webgl2:(!i||i==="webgl")&&"webgl"in mr&&(e=mr.webgl),!e)try{let t=yg();e=vp(t,i)}catch{let r=gg();e=vp(r,i)}i=i||e.version===1?"webgl":"webgl2";let o=e.gl;return mr[i]=e,o.isContextLost()?(delete mr[i],Gi(i)):(o.disable(o.DEPTH_TEST),o.disable(o.STENCIL_TEST),o.disable(o.BLEND),o.disable(o.DITHER),o.disable(o.POLYGON_OFFSET_FILL),o.disable(o.SAMPLE_COVERAGE),o.enable(o.SCISSOR_TEST),o.enable(o.CULL_FACE),o.cullFace(o.BACK),e)}function vp(i,e){let o={alpha:!1,depth:!1,antialias:!1,stencil:!1,preserveDrawingBuffer:!1,premultipliedAlpha:!1,failIfMajorPerformanceCaveat:!1},t,r=o;if((!e||e==="webgl2")&&(t=i.getContext("webgl2",r),t))try{return new Mr(t,2)}catch(n){tt.warning("GlContextFactory",`failed to create WebGLContext using contextId 'webgl2'. Error: ${n}`)}if((!e||e==="webgl")&&(t=i.getContext("webgl",r)||i.getContext("experimental-webgl",r),t))try{return new Mr(t,1)}catch(n){tt.warning("GlContextFactory",`failed to create WebGLContext using contextId 'webgl' or 'experimental-webgl'. Error: ${n}`)}throw new Error("WebGL is not supported")}function gg(){if(typeof document>"u")throw new TypeError("failed to create canvas: document is not supported");let i=document.createElement("canvas");return i.width=1,i.height=1,i}function yg(){if(typeof OffscreenCanvas>"u")throw new TypeError("failed to create offscreen canvas: OffscreenCanvas is not supported");return new OffscreenCanvas(1,1)}var mr,Ip=O(()=>{"use strict";Ut();wp();mr={}});var Yn,_p=O(()=>{"use strict";Yt();Ut();Tp();Ip();Yn=class{get contextId(){return z.webgl.contextId}set contextId(e){z.webgl.contextId=e}get matmulMaxBatchSize(){return z.webgl.matmulMaxBatchSize}set matmulMaxBatchSize(e){z.webgl.matmulMaxBatchSize=e}get textureCacheMode(){return z.webgl.textureCacheMode}set textureCacheMode(e){z.webgl.textureCacheMode=e}get pack(){return z.webgl.pack}set pack(e){z.webgl.pack=e}get async(){return z.webgl.async}set async(e){z.webgl.async=e}initialize(){try{return this.glContext=Gi(this.contextId),typeof this.matmulMaxBatchSize!="number"&&(this.matmulMaxBatchSize=16),typeof this.textureCacheMode!="string"&&(this.textureCacheMode="full"),typeof this.pack!="boolean"&&(this.pack=!1),typeof this.async!="boolean"&&(this.async=!1),tt.setWithEnv(z),z.webgl.context||Object.defineProperty(z.webgl,"context",{value:this.glContext.gl}),tt.verbose("WebGLBackend",`Created WebGLContext: ${typeof this.glContext} with matmulMaxBatchSize: ${this.matmulMaxBatchSize}; textureCacheMode: ${this.textureCacheMode}; pack: ${this.pack}; async: ${this.async}.`),!0}catch(e){return tt.warning("WebGLBackend",`Unable to initialize WebGLBackend. ${e}`),!1}}createSessionHandler(e){return new Jn(this,e)}dispose(){this.glContext.dispose()}}});async function Mi(i){if(i){let e=typeof i=="string"?[i]:i;for(let o of e){let t=Op.get(o);if(t)return t;let r=await Tg(o);if(r)return r}}else return Mi(["webgl"]);throw new Error("no available backend to use")}async function Tg(i){let e=xg;if(typeof e[i]<"u"&&wg(e[i])){let o=e[i],t=o.initialize();if(typeof t=="object"&&"then"in t&&(t=await t),t)return Op.set(i,o),o}}function wg(i){let e=i;return"initialize"in e&&typeof e.initialize=="function"&&"createSessionHandler"in e&&typeof e.createSessionHandler=="function"&&"dispose"in e&&typeof e.dispose=="function"}var Op,xg,Sp=O(()=>{"use strict";_p();Op=new Map,xg={webgl:new Yn}});var Ui,Zn,Ap=O(()=>{"use strict";Ut();Ui=class{constructor(e,o){this.op=e;this.node=o}},Zn=class{constructor(e,o,t){this.graph=e;this.profiler=t;this.initialize(o)}initialize(e){this.profiler.event("session","ExecutionPlan.initialize",()=>{let o=this.graph.getNodes();if(o.length!==e.length)throw new Error("The size of nodes and OPs do not match.");this._ops=e.map((t,r)=>new Ui(t,o[r])),this.reset(),this._starter=[],this._ops.forEach((t,r)=>{let n=!0;for(let s of t.node.inputs)if(!this._values[s]&&this.graph.getInputIndices().indexOf(s)===-1){n=!1;break}n&&this._starter.push(r)})})}reset(){this._values=this.graph.getValues().map(e=>e.tensor)}async execute(e,o){return this.profiler.event("session","ExecutionPlan.execute",async()=>{this.reset();let t=e.createInferenceHandler(),r=this.graph.getInputIndices();if(o.length!==r.length)throw new Error(`number of input tensors don't match the number of inputs to the model: actual: ${o.length} expected: ${r.length}`);o.forEach((f,p)=>{let d=r[p];this._values[d]=f});let n=this._starter.slice(0),s=this.graph.getValues(),a=this.graph.getNodes(),u=0;for(;u<n.length;){let f=n[u++],p=this._ops[f],d=p.node.inputs.map(S=>this._values[S]);if(d.indexOf(void 0)!==-1)throw new Error(`unresolved input detected: op: ${p.node}`);let y=d;tt.verbose("ExecPlan",`Running op:${p.node.name} (${y.map((S,L)=>`'${p.node.inputs[L]}': ${S.type}[${S.dims.join(",")}]`).join(", ")})`);let T=await this.profiler.event("node",p.node.name,async()=>p.op.impl(t,y,p.op.context));if(T.length!==p.node.outputs.length)throw new Error("the size of output does not match model definition.");T.forEach((S,L)=>{let P=p.node.outputs[L];if(this._values[P])throw new Error(`output [${P}] already has value: op:${p.node.name}`);this._values[P]=S});let v=new Set;T.forEach((S,L)=>{let P=p.node.outputs[L];for(let A of s[P].to){let M=a[A],V=!0;for(let lt of M.inputs)if(!this._values[lt]){V=!1;break}V&&v.add(A)}}),n.push(...v)}let l=[];for(let f=0;f<this.graph.getOutputIndices().length;f++){let p=this.graph.getOutputIndices()[f],d=this._values[p];if(d===void 0)throw new Error(`required output [${p}] does not have value`);p===0?await d.getData():d.data,l.push(d)}return tt.verbose("ExecPlan","disposing of inferenceHandler"),t.dispose(),l})}}});var q,Xt,Ur,Pp=O(()=>{"use strict";Pr();q=rr(sr());We();Y();Xt=F.experimental.fbs,Ur=class i{constructor(e){if(this._attributes=new Map,e!=null){for(let o of e)o instanceof q.onnx.AttributeProto?this._attributes.set(o.name,[i.getValue(o),i.getType(o)]):o instanceof Xt.Attribute&&this._attributes.set(o.name(),[i.getValue(o),i.getType(o)]);if(this._attributes.size<e.length)throw new Error("duplicated attribute names")}}set(e,o,t){this._attributes.set(e,[t,o])}delete(e){this._attributes.delete(e)}getFloat(e,o){return this.get(e,"float",o)}getInt(e,o){return this.get(e,"int",o)}getString(e,o){return this.get(e,"string",o)}getTensor(e,o){return this.get(e,"tensor",o)}getFloats(e,o){return this.get(e,"floats",o)}getInts(e,o){return this.get(e,"ints",o)}getStrings(e,o){return this.get(e,"strings",o)}getTensors(e,o){return this.get(e,"tensors",o)}get(e,o,t){let r=this._attributes.get(e);if(r===void 0){if(t!==void 0)return t;throw new Error(`required attribute not found: ${e}`)}if(r[1]!==o)throw new Error(`type mismatch: expected ${o} but got ${r[1]}`);return r[0]}static getType(e){let o=e instanceof q.onnx.AttributeProto?e.type:e.type();switch(o){case q.onnx.AttributeProto.AttributeType.FLOAT:return"float";case q.onnx.AttributeProto.AttributeType.INT:return"int";case q.onnx.AttributeProto.AttributeType.STRING:return"string";case q.onnx.AttributeProto.AttributeType.TENSOR:return"tensor";case q.onnx.AttributeProto.AttributeType.FLOATS:return"floats";case q.onnx.AttributeProto.AttributeType.INTS:return"ints";case q.onnx.AttributeProto.AttributeType.STRINGS:return"strings";case q.onnx.AttributeProto.AttributeType.TENSORS:return"tensors";default:throw new Error(`attribute type is not supported yet: ${q.onnx.AttributeProto.AttributeType[o]}`)}}static getValue(e){let o=e instanceof q.onnx.AttributeProto?e.type:e.type();if(o===q.onnx.AttributeProto.AttributeType.GRAPH||o===q.onnx.AttributeProto.AttributeType.GRAPHS)throw new Error("graph attribute is not supported yet");let t=this.getValueNoCheck(e);if(o===q.onnx.AttributeProto.AttributeType.INT&&Rt.isLong(t))return Rt.longToNumber(t);if(o===q.onnx.AttributeProto.AttributeType.INTS){let r=t,n=new Array(r.length);for(let s=0;s<r.length;s++){let a=r[s];n[s]=Rt.longToNumber(a)}return n}if(o===q.onnx.AttributeProto.AttributeType.TENSOR)return e instanceof q.onnx.AttributeProto?bt.fromProto(t):bt.fromOrtTensor(t);if(o===q.onnx.AttributeProto.AttributeType.TENSORS){if(e instanceof q.onnx.AttributeProto)return t.map(n=>bt.fromProto(n));if(e instanceof Xt.Attribute)return t.map(n=>bt.fromOrtTensor(n))}return o===q.onnx.AttributeProto.AttributeType.STRING&&e instanceof q.onnx.AttributeProto?kr(t):o===q.onnx.AttributeProto.AttributeType.STRINGS&&e instanceof q.onnx.AttributeProto?t.map(kr):t}static getValueNoCheck(e){return e instanceof q.onnx.AttributeProto?this.getValueNoCheckFromOnnxFormat(e):this.getValueNoCheckFromOrtFormat(e)}static getValueNoCheckFromOnnxFormat(e){switch(e.type){case q.onnx.AttributeProto.AttributeType.FLOAT:return e.f;case q.onnx.AttributeProto.AttributeType.INT:return e.i;case q.onnx.AttributeProto.AttributeType.STRING:return e.s;case q.onnx.AttributeProto.AttributeType.TENSOR:return e.t;case q.onnx.AttributeProto.AttributeType.GRAPH:return e.g;case q.onnx.AttributeProto.AttributeType.FLOATS:return e.floats;case q.onnx.AttributeProto.AttributeType.INTS:return e.ints;case q.onnx.AttributeProto.AttributeType.STRINGS:return e.strings;case q.onnx.AttributeProto.AttributeType.TENSORS:return e.tensors;case q.onnx.AttributeProto.AttributeType.GRAPHS:return e.graphs;default:throw new Error(`unsupported attribute type: ${q.onnx.AttributeProto.AttributeType[e.type]}`)}}static getValueNoCheckFromOrtFormat(e){switch(e.type()){case Xt.AttributeType.FLOAT:return e.f();case Xt.AttributeType.INT:return e.i();case Xt.AttributeType.STRING:return e.s();case Xt.AttributeType.TENSOR:return e.t();case Xt.AttributeType.GRAPH:return e.g();case Xt.AttributeType.FLOATS:return e.floatsArray();case Xt.AttributeType.INTS:{let o=[];for(let t=0;t<e.intsLength();t++)o.push(e.ints(t));return o}case Xt.AttributeType.STRINGS:{let o=[];for(let t=0;t<e.stringsLength();t++)o.push(e.strings(t));return o}case Xt.AttributeType.TENSORS:{let o=[];for(let t=0;t<e.tensorsLength();t++)o.push(e.tensors(t));return o}default:throw new Error(`unsupported attribute type: ${Xt.AttributeType[e.type()]}`)}}}});var zi,Qn,Wi,me,to,Vi,Ep=O(()=>{"use strict";Pp();Pr();zi=rr(sr());We();Y();Qn=F.experimental.fbs,Wi={from:(i,e)=>new Vi(i,e)},me=class{constructor(e){this._from=void 0,this._to=[],this.tensor=void 0,this.type=void 0,e&&(this.type=At.tensorValueTypeFromProto(e.type.tensorType))}get from(){return this._from}get to(){return this._to}},to=class{constructor(e,o){e instanceof zi.onnx.NodeProto?(this.name=e.name,this.opType=e.opType,this.attributes=new Ur(e.attribute)):e instanceof Qn.Node&&(this.name=o??e.name(),this.opType=e.opType(),this.attributes=new Ur(At.tensorAttributesFromORTFormat(e))),this.inputs=[],this.outputs=[],this.executeNode=!0}},Vi=class{constructor(e,o){if(!e)throw new TypeError("graph is empty");this.buildGraph(e),this.transformGraph(o),this.checkIsAcyclic()}getInputIndices(){return this._allInputIndices}getInputNames(){return this._allInputNames}getOutputIndices(){return this._allOutputIndices}getOutputNames(){return this._allOutputNames}getValues(){return this._allData}getNodes(){return this._nodes}buildGraph(e){if(e instanceof zi.onnx.GraphProto)this.buildGraphFromOnnxFormat(e);else if(e instanceof Qn.Graph)this.buildGraphFromOrtFormat(e);else throw new TypeError("Graph type is not supported.")}buildGraphFromOnnxFormat(e){let o=new Map;this._allData=[],this._allInputIndices=[],this._allInputNames=[],this._allOutputIndices=[],this._allOutputNames=[],this._nodes=[];let t=new Map;if(!e.input)throw new Error("missing information in graph: input");let r=[];for(let n of e.input){if(o.has(n.name))throw new Error(`duplicated input name: ${n.name}`);let s=this._allData.push(new me(n))-1;o.set(n.name,s),r.push(n.name)}if(!e.initializer)throw new Error("missing information in graph: initializer");for(let n of e.initializer){let s=o.get(n.name);if(s===void 0){let a=new me;a.type={shape:{dims:At.tensorDimsFromProto(n.dims)},tensorType:At.tensorDataTypeFromProto(n.dataType)},s=this._allData.push(a)-1,o.set(n.name,s)}this._allData[s]._from=-1,this._allData[s].tensor=bt.fromProto(n)}for(let n=0;n<this._allData.length;n++)this._allData[n].tensor||(this._allInputIndices.push(n),this._allInputNames.push(r[n]));if(!e.output)throw new Error("missing information in graph: output");for(let n of e.output){if(o.has(n.name))throw new Error(`duplicated output name: ${n.name}`);let s=this._allData.push(new me(n))-1;o.set(n.name,s),this._allOutputIndices.push(s),this._allOutputNames.push(n.name)}if(!e.node)throw new Error("missing information in graph: node");for(let n of e.node){if(!n.name)for(let a=0;;a++){let u=`unnamed_${n.opType}_${a}`;if(!t.has(u)){n.name=u;break}}if(t.has(n.name))throw new Error(`duplicated node name: ${n.name}`);let s=this._nodes.push(new to(n))-1;t.set(n.name,s)}for(let n=0;n<this._nodes.length;n++){let s=this._nodes[n],a=e.node[n];if(!a.output)throw new Error(`missing output for node: ${a.name}`);for(let u of a.output){let l=o.get(u);if(typeof l>"u"&&(l=this._allData.push(new me)-1,o.set(u,l)),s.outputs.push(l),this._allData[l]._from!==void 0)throw new Error(`multiple nodes output to one data value: ${l}`);if(this._allData[l]._from=n,a.opType==="Constant"){if(!a.attribute||a.attribute.length!==1||!a.attribute[0].t)throw new Error("missing attributes or missing tensor value in attributes for this Constant operator");if(!a.output||a.output.length!==1)throw new Error("missing output or incorrect number of outputs for this Constant operator");s.outputs.pop(),s.executeNode=!1,this._allData[l]._from=-1,this._allData[l].tensor=bt.fromProto(a.attribute[0].t)}}}for(let n=0;n<this._nodes.length;n++){let s=this._nodes[n],a=e.node[n];if(!a.input)throw new Error(`missing input for node: ${a.name}`);for(let u of a.input){let l=o.get(u);if(typeof l>"u"){if(u===""&&(a.input.length===3||a.input.length===4)&&a.opType==="Resize")continue;throw new Error(`unrecognized input '${u}' for node: ${a.name}`)}s.inputs.push(l),this._allData[l]._to.push(n)}}return!0}buildGraphFromOrtFormat(e){let o=new Map;this._allData=[],this._allInputIndices=[],this._allInputNames=[],this._allOutputIndices=[],this._allOutputNames=[],this._nodes=[];let t=new Map,r=[];for(let n=0;n<e.inputsLength();n++){let s=e.inputs(n);if(o.has(s))throw new Error(`duplicated input name: ${s}`);for(let a=0;a<e.nodeArgsLength();a++)if(e.nodeArgs(a)?.name()===s){let u=new me;if(e.nodeArgs(a)?.type()?.valueType()!==Qn.TypeInfoValue.tensor_type)throw new Error("Unexpected value type for the nodeArg.");let f=e.nodeArgs(a).type().value(new Qn.TensorTypeAndShape),p=At.tensorDataTypeFromProto(f.elemType()),d=f.shape(),y=[];for(let v=0;v<d.dimLength();v++)y.push(Rt.longToNumber(d.dim(v).value().dimValue()));u.type={shape:{dims:y},tensorType:p};let T=this._allData.push(u)-1;o.set(s,T),r.push(s)}}for(let n=0;n<e.initializersLength();n++){let s=e.initializers(n),a=o.get(s.name());if(a===void 0){let u=new me,l=At.tensorDimsFromORTFormat(s),f=At.tensorDataTypeFromProto(s.dataType());u.type={shape:{dims:l},tensorType:f},a=this._allData.push(u)-1,o.set(s.name(),a)}this._allData[a]._from=-1,this._allData[a].tensor=bt.fromOrtTensor(s)}for(let n=0;n<this._allData.length;n++)this._allData[n].tensor||(this._allInputIndices.push(n),this._allInputNames.push(r[n]));for(let n=0;n<e.outputsLength();n++){let s=e.outputs(n);if(o.has(s))throw new Error(`duplicated output name: ${s}`);let a=this._allData.push(new me)-1;o.set(s,a),this._allOutputIndices.push(a),this._allOutputNames.push(s)}if(!e.nodes)throw new Error("missing information in graph: node");for(let n=0;n<e.nodesLength();n++){let s=e.nodes(n),a=s.name();if(!a)for(let l=0;a=`unnamed_${s.opType()}_${l}`,!!t.has(a);l++);if(t.has(a))throw new Error(`duplicated node name: ${a}`);let u=this._nodes.push(new to(s,a))-1;t.set(a,u)}for(let n=0;n<this._nodes.length;n++){let s=this._nodes[n],a=e.nodes(n);if(a==null)throw new Error(`No node exists at index ${n}`);if(a?.outputsLength()===0)throw new Error(`missing output for node: ${a.name}`);for(let u=0;u<a?.outputsLength();u++){let l=a?.outputs(u),f=o.get(l);if(typeof f>"u"&&(f=this._allData.push(new me)-1,o.set(l,f)),s.outputs.push(f),this._allData[f]._from!==void 0)throw new Error(`multiple nodes output to one data value: ${f}`);if(this._allData[f]._from=n,a.opType()==="Constant"){if(a.attributesLength()!==1||!a.attributes(0).t())throw new Error("missing attributes or missing tensor value in attributes for this Constant operator");if(a.outputsLength()!==1)throw new Error("missing output or incorrect number of outputs for this Constant operator");s.outputs.pop(),s.executeNode=!1,this._allData[f]._from=-1,this._allData[f].tensor=bt.fromOrtTensor(a.attributes(0).t())}}}for(let n=0;n<this._nodes.length;n++){let s=this._nodes[n],a=e.nodes(n);if(a.inputsLength()===0)throw new Error(`missing input for node: ${a.name}`);for(let u=0;u<a.inputsLength();u++){let l=a.inputs(u),f=o.get(l);if(typeof f>"u")throw new Error(`unrecognized input '${l}' for node: ${a.name()}`);s.inputs.push(f),this._allData[f]._to.push(n)}}}checkIsAcyclic(){let e=new Set;this._allInputIndices.forEach(r=>{this._allData[r]._to.forEach(s=>{e.add(s)})});let o=Array.from(e),t=new Array(this._nodes.length).fill("white");for(;o.length>0;){let r=o.pop();t[r]==="gray"?t[r]="black":(o.push(r),t[r]="gray",this._nodes[r].outputs.forEach(n=>{let s=this._allData[n];if(typeof s.tensor<"u")throw new Error("node outputs should not be initialized");if(s._from!==r)throw new Error("from property of the Value object doesn't match index of Node being processed");s._to.forEach(a=>{if(t[a]==="gray")throw new Error("model graph is cyclic");t[a]==="white"&&o.push(a)})}))}}transformGraph(e){this.removeAllIdentityNodes(),this.removeAllDropoutNodes(),this.fuseConvActivationNodes(),e&&e.transformGraph(this),this.finalizeGraph()}finalizeGraph(){let e=0,o=new Array(this._nodes.length,0),t=0;for(let r=0;r<this._nodes.length;r++)o[r]=t,this._nodes[r].executeNode?(t!==r&&(this._nodes[t]=this._nodes[r]),t++):this._nodes[r].outputs.forEach(n=>{this._allData[n]._from=-2});this._nodes.splice(t,this._nodes.length-t);for(let r=0;r<this._allData.length;r++){let n=this._allData[r];n._from!==void 0&&n._from!==-1&&n._from!==-2&&(n._from=o[n._from]);for(let s=0;s<n._to.length;s++)if(n._to[s]>=0)n._to[s]=o[n._to[s]];else throw new Error("Trying to update a removed node")}e=0;for(let r=0;r<this._allData.length;r++){if(this._allData[r].from===-2&&this._allOutputIndices.indexOf(r+e)===-1){e++,this._allData.splice(r,1),r--;continue}if(e>0){let n=-1;this._allData[r].from!==void 0&&this._allData[r].from!==-1?(n=this._nodes[this._allData[r].from].outputs.indexOf(r+e),n!==-1&&(this._nodes[this._allData[r].from].outputs[n]=r)):(n=this._allInputIndices.indexOf(r+e),n!==-1&&(this._allInputIndices[n]=r)),this._allData[r].to.forEach(s=>{n=this._nodes[s].inputs.indexOf(r+e),n!==-1&&(this._nodes[s].inputs[n]=r)}),this._allData[r].to.length===0&&(n=this._allOutputIndices.indexOf(r+e),n!==-1&&(this._allOutputIndices[n]=r))}}}deleteNode(e){let o=this._nodes[e];if(o.outputs.length>1){for(let a=1;a<o.outputs.length;a++)if(this._allData[o.outputs[a]].to.length>0)throw new Error("Node deletion with more than one output connected to other nodes is not supported. ")}o.executeNode=!1;let t=o.inputs[0],r=o.outputs[0],n=this._allData[r].to;for(let a=0;a<o.inputs.length;a++){let u=this._allData[o.inputs[a]].to.indexOf(e);if(u===-1)throw new Error("The Value object doesn't have the current Node in it's 'to' property ");this._allData[o.inputs[a]].to.splice(u,1)}this._allData[r]._to=[];let s=this._allOutputIndices.indexOf(r);if(s!==-1&&(this._allOutputIndices[s]=t),n&&n.length>0)for(let a of n){let u=this._nodes[a].inputs.indexOf(r);if(u===-1)throw new Error("The Node object doesn't have the output Value in it's 'inputs' property ");this._nodes[a].inputs[u]=t,this._allData[t].to.push(a)}}removeAllDropoutNodes(){let e=0;for(let o of this._nodes){if(o.opType==="Dropout"){if(o.inputs.length!==1)throw new Error("Dropout nodes should only contain one input. ");if(o.outputs.length!==1&&o.outputs.length!==2)throw new Error("Dropout nodes should contain either 1 or 2 output(s)");if(o.outputs.length===2&&this._allData[o.outputs[1]]._to.length!==0)throw new Error("Dropout nodes's second output should not be referenced by other nodes");this.deleteNode(e)}e++}}removeAllIdentityNodes(){let e=0;for(let o of this._nodes)o.opType==="Identity"&&this.deleteNode(e),e++}isActivation(e){switch(e.opType){case"Relu":case"Sigmoid":case"Clip":return!0;default:return!1}}fuseConvActivationNodes(){for(let e of this._nodes)if(e.opType==="Conv"){let o=this._allData[e.outputs[0]]._to;if(o.length===1&&this.isActivation(this._nodes[o[0]])){let t=this._nodes[o[0]];if(t.opType==="Clip")if(t.inputs.length===1)try{e.attributes.set("activation_params","floats",[t.attributes.getFloat("min"),t.attributes.getFloat("max")])}catch{e.attributes.set("activation_params","floats",[Ve,ze])}else if(t.inputs.length>=3&&this._allData[t.inputs[1]].tensor!==void 0&&this._allData[t.inputs[2]].tensor!==void 0)e.attributes.set("activation_params","floats",[this._allData[t.inputs[1]].tensor.floatData[0],this._allData[t.inputs[2]].tensor.floatData[0]]);else continue;e.attributes.set("activation","string",t.opType),this.deleteNode(o[0])}}}}});var Dp,vg,eo,Lp=O(()=>{"use strict";wn();Ep();Pr();Dp=rr(sr());Y();vg=F.experimental.fbs,eo=class{constructor(){}load(e,o,t){let r;if(!t)try{this.loadFromOnnxFormat(e,o);return}catch(n){if(t!==void 0)throw n;r=n}try{this.loadFromOrtFormat(e,o)}catch(n){throw t!==void 0?n:new Error(`Failed to load model as ONNX format: ${r}
-as ORT format: ${n}`)}}loadFromOnnxFormat(e,o){let t=Dp.onnx.ModelProto.decode(e);if(Rt.longToNumber(t.irVersion)<3)throw new Error("only support ONNX model with IR_VERSION>=3");this._opsets=t.opsetImport.map(n=>({domain:n.domain,version:Rt.longToNumber(n.version)})),this._graph=Wi.from(t.graph,o)}loadFromOrtFormat(e,o){let t=new w.ByteBuffer(e),r=vg.InferenceSession.getRootAsInferenceSession(t).model();if(Rt.longToNumber(r.irVersion())<3)throw new Error("only support ONNX model with IR_VERSION>=3");this._opsets=[];for(let s=0;s<r.opsetImportLength();s++){let a=r.opsetImport(s);this._opsets.push({domain:a?.domain(),version:Rt.longToNumber(a.version())})}this._graph=Wi.from(r.graph(),o)}get graph(){return this._graph}get opsets(){return this._opsets}}});var ro,$p=O(()=>{"use strict";Sp();Ap();Ut();Lp();ro=class{constructor(e={}){this._initialized=!1,this.backendHint=e.backendHint,this.profiler=xn.create(e.profiler),this.context={profiler:this.profiler,graphInputTypes:[],graphInputDims:[]}}get inputNames(){return this._model.graph.getInputNames()}get outputNames(){return this._model.graph.getOutputNames()}startProfiling(){this.profiler.start()}endProfiling(){this.profiler.stop()}async loadModel(e,o,t){await this.profiler.event("session","Session.loadModel",async()=>{let r=await Mi(this.backendHint);if(this.sessionHandler=r.createSessionHandler(this.context),this._model=new eo,typeof e=="string"){let n=e.endsWith(".ort");{let a=await(await fetch(e)).arrayBuffer();this.initialize(new Uint8Array(a),n)}}else if(ArrayBuffer.isView(e))this.initialize(e);else{let n=new Uint8Array(e,o||0,t||e.byteLength);this.initialize(n)}})}initialize(e,o){if(this._initialized)throw new Error("already initialized");this.profiler.event("session","Session.initialize",()=>{let t=this.sessionHandler.transformGraph?this.sessionHandler:void 0;this._model.load(e,t,o),this.sessionHandler.onGraphInitialized&&this.sessionHandler.onGraphInitialized(this._model.graph),this.initializeOps(this._model.graph),this._executionPlan=new Zn(this._model.graph,this._ops,this.profiler)}),this._initialized=!0}async run(e){if(!this._initialized)throw new Error("session not initialized yet");return this.profiler.event("session","Session.run",async()=>{let o=this.normalizeAndValidateInputs(e),t=await this._executionPlan.execute(this.sessionHandler,o);return this.createOutput(t)})}normalizeAndValidateInputs(e){let o=this._model.graph.getInputNames();if(Array.isArray(e)){if(e.length!==o.length)throw new Error(`incorrect input array length: expected ${o.length} but got ${e.length}`)}else{if(e.size!==o.length)throw new Error(`incorrect input map size: expected ${o.length} but got ${e.size}`);let t=new Array(e.size),r=0;for(let n=0;n<o.length;++n){let s=e.get(o[n]);if(!s)throw new Error(`missing input tensor for: '${name}'`);t[r++]=s}e=t}if(!this.context.graphInputTypes||this.context.graphInputTypes.length===0||!this.context.graphInputDims||this.context.graphInputDims.length===0){let t=this._model.graph.getInputIndices(),r=this._model.graph.getValues(),n=new Array(t.length);for(let s=0;s<t.length;++s){let a=r[t[s]];n[s]=a.type.shape.dims,this.context.graphInputTypes.push(a.type.tensorType),this.context.graphInputDims.push(e[s].dims)}this.validateInputTensorDims(n,e,!0)}else this.validateInputTensorDims(this.context.graphInputDims,e,!1);return this.validateInputTensorTypes(this.context.graphInputTypes,e),e}validateInputTensorTypes(e,o){for(let t=0;t<o.length;t++){let r=e[t],n=o[t].type;if(r!==n)throw new Error(`input tensor[${t}] check failed: expected type '${r}' but got ${n}`)}}validateInputTensorDims(e,o,t){for(let r=0;r<o.length;r++){let n=e[r],s=o[r].dims;if(!this.compareTensorDims(n,s,t))throw new Error(`input tensor[${r}] check failed: expected shape '[${n.join(",")}]' but got [${s.join(",")}]`)}}compareTensorDims(e,o,t){if(e.length!==o.length)return!1;for(let r=0;r<e.length;++r)if(e[r]!==o[r]&&(!t||e[r]!==0))return!1;return!0}createOutput(e){let o=this._model.graph.getOutputNames();if(e.length!==o.length)throw new Error("expected number of outputs do not match number of generated outputs");let t=new Map;for(let r=0;r<o.length;++r)t.set(o[r],e[r]);return t}initializeOps(e){let o=e.getNodes();this._ops=new Array(o.length);for(let t=0;t<o.length;t++)this._ops[t]=this.sessionHandler.resolve(o[t],this._model.opsets,e)}}});var no,kp=O(()=>{"use strict";Yt();We();no=class{constructor(e){this.session=e;this.inputNames=this.session.inputNames,this.outputNames=this.session.outputNames}async dispose(){}async run(e,o,t){let r=new Map;for(let a in e)if(Object.hasOwnProperty.call(e,a)){let u=e[a];r.set(a,new bt(u.dims,u.type,void 0,void 0,u.data))}let n=await this.session.run(r),s={};return n.forEach((a,u)=>{s[u]=new yt(a.type,a.data,a.dims)}),s}startProfiling(){this.session.startProfiling()}endProfiling(){this.session.endProfiling()}}});var Bp={};Or(Bp,{onnxjsBackend:()=>Ig});var Hi,Ig,Fp=O(()=>{"use strict";$p();kp();Hi=class{async init(){}async createInferenceSessionHandler(e,o){let t=new ro(o);return typeof e=="string"?await t.loadModel(e):await t.loadModel(e),new no(t)}},Ig=new Hi});var oo=O(()=>{"use strict"});var Rp={};Or(Rp,{default:()=>_g});var Cp,Np,_g,Gp=O(()=>{"use strict";qi();Ke();Vr();Cp="ort-wasm-proxy-worker",Np=globalThis.self?.name===Cp;Np&&(self.onmessage=i=>{let{type:e,in:o}=i.data;try{switch(e){case"init-wasm":io(o.wasm).then(()=>{ao(o).then(()=>{postMessage({type:e})},t=>{postMessage({type:e,err:t})})},t=>{postMessage({type:e,err:t})});break;case"init-ep":{let{epName:t,env:r}=o;so(r,t).then(()=>{postMessage({type:e})},n=>{postMessage({type:e,err:n})});break}case"copy-from":{let{buffer:t}=o,r=zr(t);postMessage({type:e,out:r});break}case"create":{let{model:t,options:r}=o;uo(t,r).then(n=>{postMessage({type:e,out:n})},n=>{postMessage({type:e,err:n})});break}case"release":lo(o),postMessage({type:e});break;case"run":{let{sessionId:t,inputIndices:r,inputs:n,outputIndices:s,options:a}=o;fo(t,r,n,s,new Array(s.length).fill(null),a).then(u=>{u.some(l=>l[3]!=="cpu")?postMessage({type:e,err:"Proxy does not support non-cpu tensor location."}):postMessage({type:e,out:u},po([...n,...u]))},u=>{postMessage({type:e,err:u})});break}case"end-profiling":co(o),postMessage({type:e});break;default:}}catch(t){postMessage({type:e,err:t})}});_g=Np?null:i=>new Worker(i??br,{type:"module",name:Cp})});var Up={};Or(Up,{default:()=>Og});var ji,Mp,Og,Vp=O(()=>{"use strict";Mp=(ji="file:///C:/Users/mohdy/OneDrive/Documents/GP/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs",async function(i={}){function e(){return C.buffer!=oe.buffer&&it(),oe}function o(){return C.buffer!=oe.buffer&&it(),be}function t(){return C.buffer!=oe.buffer&&it(),Z}function r(){return C.buffer!=oe.buffer&&it(),ge}function n(){return C.buffer!=oe.buffer&&it(),ae}var s,a,u=Object.assign({},i),l=new Promise((c,m)=>{s=c,a=m}),f=typeof window=="object",p=typeof importScripts=="function",d=p&&self.name=="em-pthread";u.mountExternalData=(c,m)=>{c.startsWith("./")&&(c=c.substring(2)),(u.Ua||(u.Ua=new Map)).set(c,m)},u.unmountExternalData=()=>{delete u.Ua};var y,T,v=globalThis.SharedArrayBuffer??new WebAssembly.Memory({initial:0,maximum:0,shared:!0}).buffer.constructor,S=Object.assign({},u),L="./this.program",P=(c,m)=>{throw m},A="";(f||p)&&(p?A=self.location.href:typeof document<"u"&&document.currentScript&&(A=document.currentScript.src),ji&&(A=ji),A=A.startsWith("blob:")?"":A.substr(0,A.replace(/[?#].*/,"").lastIndexOf("/")+1),p&&(T=c=>{var m=new XMLHttpRequest;return m.open("GET",c,!1),m.responseType="arraybuffer",m.send(null),new Uint8Array(m.response)}),y=(c,m,g)=>{var x=new XMLHttpRequest;x.open("GET",c,!0),x.responseType="arraybuffer",x.onload=()=>{x.status==200||x.status==0&&x.response?m(x.response):g()},x.onerror=g,x.send(null)});var M,V=console.log.bind(console),lt=console.error.bind(console),wt=V,et=lt;if(Object.assign(u,S),S=null,d){let c=function(m){try{var g=m.data,x=g.cmd;if(x==="load"){let I=[];self.onmessage=E=>I.push(E),self.startWorker=()=>{postMessage({cmd:"loaded"});for(let E of I)c(E);self.onmessage=c};for(let E of g.handlers)u[E]&&!u[E].proxy||(u[E]=(...R)=>{postMessage({Za:"callHandler",kb:E,args:R})},E=="print"&&(wt=u[E]),E=="printErr"&&(et=u[E]));C=g.wasmMemory,it(),Dt(g.wasmModule)}else if(x==="run"){$o(g.pthread_ptr,0,0,1,0,0),Ao(g.pthread_ptr),md(),aa(),_t||=!0;try{bd(g.start_routine,g.arg)}catch(I){if(I!="unwind")throw I}}else x==="cancel"?er()&&nn(-1):g.target!=="setimmediate"&&(x==="checkMailbox"?_t&&tn():x&&(et(`worker: received unknown command ${x}`),et(g)))}catch(I){throw Ha(),I}};var Vg=c,Dt,_t=!1;et=function(...m){m=m.join(" "),console.error(m)},self.alert=function(...m){postMessage({Za:"alert",text:m.join(" "),nb:er()})},u.instantiateWasm=(m,g)=>new Promise(x=>{Dt=I=>{I=new WebAssembly.Instance(I,Yr()),g(I),x()}}),self.onunhandledrejection=m=>{throw m.reason||m},self.onmessage=c}u.wasmBinary&&(M=u.wasmBinary);var C,Kr,we,oe,be,Z,ge,ie,ae,se=!1;function it(){var c=C.buffer;u.HEAP8=oe=new Int8Array(c),u.HEAP16=new Int16Array(c),u.HEAPU8=be=new Uint8Array(c),u.HEAPU16=new Uint16Array(c),u.HEAP32=Z=new Int32Array(c),u.HEAPU32=ge=new Uint32Array(c),u.HEAPF32=new Float32Array(c),u.HEAPF64=ae=new Float64Array(c),u.HEAP64=ie=new BigInt64Array(c),u.HEAPU64=new BigUint64Array(c)}if(!d){if(!((C=new WebAssembly.Memory({initial:256,maximum:65536,shared:!0})).buffer instanceof v))throw et("requested a shared WebAssembly.Memory but the returned buffer is not a SharedArrayBuffer, indicating that while the browser has SharedArrayBuffer it does not have WebAssembly threads support - you may need to set a flag"),Error("bad memory");it()}var Lt=[],Jr=[],Ye=[],ue=0,Ze=null,De=null;function le(){if(--ue==0&&(Ze!==null&&(clearInterval(Ze),Ze=null),De)){var c=De;De=null,c()}}function Mt(c){throw et(c="Aborted("+c+")"),se=!0,we=1,c=new WebAssembly.RuntimeError(c+". Build with -sASSERTIONS for more info."),a(c),c}var ve,gt=c=>c.startsWith("data:application/octet-stream;base64,"),Ot=c=>c.startsWith("file://");function Jt(c){if(c==ve&&M)return new Uint8Array(M);if(T)return T(c);throw"both async and sync fetching of the wasm failed"}function wr(c,m,g){return function(x){if(!M&&(f||p)){if(typeof fetch=="function"&&!Ot(x))return fetch(x,{credentials:"same-origin"}).then(I=>{if(!I.ok)throw`failed to load wasm binary file at '${x}'`;return I.arrayBuffer()}).catch(()=>Jt(x));if(y)return new Promise((I,E)=>{y(x,R=>I(new Uint8Array(R)),E)})}return Promise.resolve().then(()=>Jt(x))}(c).then(x=>WebAssembly.instantiate(x,m)).then(g,x=>{et(`failed to asynchronously prepare wasm: ${x}`),Mt(x)})}function Yr(){return{a:{j:hd,b:yd,E:ca,g:ha,V:ma,A:ya,C:xa,W:Ta,T:wa,L:va,S:Ia,o:_a,B:Oa,y:Sa,U:Aa,z:Pa,_:xd,Z:Td,P:wd,w:vd,F:Id,k:_d,O:Ao,Y:Od,I:Sd,J:Ad,K:Pd,G:La,H:$a,v:Ed,q:Dd,l:Ld,p:$d,e:kd,X:Bd,x:Fd,d:ka,f:Cd,i:Nd,u:Rd,t:Gd,s:Md,Q:Ca,R:Na,D:So,h:Ra,n:Ga,M:Ma,m:Ua,a:C,r:Oo,N:Wa,c:zd}}}var ea={837620:(c,m,g,x,I)=>{if(u===void 0||!u.Ua)return 1;if((c=Ir(c>>>0)).startsWith("./")&&(c=c.substring(2)),!(c=u.Ua.get(c)))return 2;if(x>>>=0,(m>>>=0)+(g>>>=0)>c.byteLength)return 3;try{let E=c.subarray(m,m+g);switch(I){case 0:o().set(E,x>>>0);break;case 1:u.mb(x,E);break;default:return 4}return 0}catch{return 4}},838303:()=>typeof wasmOffsetConverter<"u"};function hd(){return typeof wasmOffsetConverter<"u"}function Io(c){this.name="ExitStatus",this.message=`Program terminated with exit(${c})`,this.status=c}var _o=c=>{c.terminate(),c.onmessage=()=>{}},ra=c=>{Ie.length==0&&(ua(),sa(Ie[0]));var m=Ie.pop();if(!m)return 6;Le.push(m),fe[c.Ra]=m,m.Ra=c.Ra;var g={cmd:"run",start_routine:c.cb,arg:c.ab,pthread_ptr:c.Ra};return m.postMessage(g,c.ib),0},vr=0,st=(c,m,...g)=>{for(var x=2*g.length,I=Fo(),E=Bo(8*x),R=E>>>3,at=0;at<g.length;at++){var Pt=g[at];typeof Pt=="bigint"?(ie[R+2*at]=1n,ie[R+2*at+1]=Pt):(ie[R+2*at]=0n,n()[R+2*at+1>>>0]=Pt)}return c=qa(c,0,x,E,m),on(I),c};function Oo(c){if(d)return st(0,1,c);if(we=c,!(0<vr)){for(var m of Le)_o(m);for(m of Ie)_o(m);Ie=[],Le=[],fe=[],se=!0}P(c,new Io(c))}function na(c){if(d)return st(1,0,c);So(c)}var So=c=>{if(we=c,d)throw na(c),"unwind";Oo(c)},Ie=[],Le=[],oa=[],fe={},ia=c=>{var m=c.Ra;delete fe[m],Ie.push(c),Le.splice(Le.indexOf(c),1),c.Ra=0,ko(m)};function aa(){oa.forEach(c=>c())}var sa=c=>new Promise(m=>{c.onmessage=I=>{var E=(I=I.data).cmd;if(I.targetThread&&I.targetThread!=er()){var R=fe[I.targetThread];R?R.postMessage(I,I.transferList):et(`Internal error! Worker sent a message "${E}" to target pthread ${I.targetThread}, but that thread no longer exists!`)}else E==="checkMailbox"?tn():E==="spawnThread"?ra(I):E==="cleanupThread"?ia(fe[I.thread]):E==="killThread"?(I=I.thread,E=fe[I],delete fe[I],_o(E),ko(I),Le.splice(Le.indexOf(E),1),E.Ra=0):E==="cancelThread"?fe[I.thread].postMessage({cmd:"cancel"}):E==="loaded"?(c.loaded=!0,m(c)):E==="alert"?alert(`Thread ${I.threadId}: ${I.text}`):I.target==="setimmediate"?c.postMessage(I):E==="callHandler"?u[I.handler](...I.args):E&&et(`worker sent an unknown command ${E}`)},c.onerror=I=>{throw et(`worker sent an error! ${I.filename}:${I.lineno}: ${I.message}`),I};var g,x=[];for(g of[])u.hasOwnProperty(g)&&x.push(g);c.postMessage({cmd:"load",handlers:x,wasmMemory:C,wasmModule:Kr})});function ua(){var c=new Worker(new URL("file:///C:/Users/mohdy/OneDrive/Documents/GP/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs"),{type:"module",workerData:"em-pthread",name:"em-pthread"});Ie.push(c)}var la,Zr=c=>{for(;0<c.length;)c.shift()(u)},md=()=>{var c=er(),m=r()[c+52>>>2>>>0];c=r()[c+56>>>2>>>0],Xa(m,m-c),on(m)},Qr=[],bd=(c,m)=>{vr=0;var g=Qr[c];g||(c>=Qr.length&&(Qr.length=c+1),Qr[c]=g=la.get(c)),c=g(m),0<vr?we=c:nn(c)};class gd{constructor(m){this.Xa=m-24}}function yd(c,m,g){var x=new gd(c>>>=0);throw m>>>=0,g>>>=0,r()[x.Xa+16>>>2>>>0]=0,r()[x.Xa+4>>>2>>>0]=m,r()[x.Xa+8>>>2>>>0]=g,c}function fa(c,m,g,x){return d?st(2,1,c,m,g,x):ca(c,m,g,x)}function ca(c,m,g,x){if(c>>>=0,m>>>=0,g>>>=0,x>>>=0,v===void 0)return et("Current environment does not support SharedArrayBuffer, pthreads are not available!"),6;var I=[];return d&&I.length===0?fa(c,m,g,x):(c={cb:g,Ra:c,ab:x,ib:I},d?(c.Za="spawnThread",postMessage(c,I),0):ra(c))}var pa=typeof TextDecoder<"u"?new TextDecoder("utf8"):void 0,da=(c,m,g)=>{var x=(m>>>=0)+g;for(g=m;c[g]&&!(g>=x);)++g;if(16<g-m&&c.buffer&&pa)return pa.decode(c.buffer instanceof v?c.slice(m,g):c.subarray(m,g));for(x="";m<g;){var I=c[m++];if(128&I){var E=63&c[m++];if((224&I)==192)x+=String.fromCharCode((31&I)<<6|E);else{var R=63&c[m++];65536>(I=(240&I)==224?(15&I)<<12|E<<6|R:(7&I)<<18|E<<12|R<<6|63&c[m++])?x+=String.fromCharCode(I):(I-=65536,x+=String.fromCharCode(55296|I>>10,56320|1023&I))}}else x+=String.fromCharCode(I)}return x},Ir=(c,m)=>(c>>>=0)?da(o(),c,m):"";function ha(c,m,g){return d?st(3,1,c,m,g):0}function ma(c,m){if(d)return st(4,1,c,m)}var ba=c=>{for(var m=0,g=0;g<c.length;++g){var x=c.charCodeAt(g);127>=x?m++:2047>=x?m+=2:55296<=x&&57343>=x?(m+=4,++g):m+=3}return m},ga=(c,m,g,x)=>{if(!(0<x))return 0;var I=g>>>=0;x=g+x-1;for(var E=0;E<c.length;++E){var R=c.charCodeAt(E);if(55296<=R&&57343>=R&&(R=65536+((1023&R)<<10)|1023&c.charCodeAt(++E)),127>=R){if(g>=x)break;m[g++>>>0]=R}else{if(2047>=R){if(g+1>=x)break;m[g++>>>0]=192|R>>6}else{if(65535>=R){if(g+2>=x)break;m[g++>>>0]=224|R>>12}else{if(g+3>=x)break;m[g++>>>0]=240|R>>18,m[g++>>>0]=128|R>>12&63}m[g++>>>0]=128|R>>6&63}m[g++>>>0]=128|63&R}}return m[g>>>0]=0,g-I},_r=(c,m,g)=>ga(c,o(),m,g);function ya(c,m){if(d)return st(5,1,c,m)}function xa(c,m,g){if(d)return st(6,1,c,m,g)}function Ta(c,m,g){return d?st(7,1,c,m,g):0}function wa(c,m){if(d)return st(8,1,c,m)}function va(c,m,g){if(d)return st(9,1,c,m,g)}function Ia(c,m,g,x){if(d)return st(10,1,c,m,g,x)}function _a(c,m,g,x){if(d)return st(11,1,c,m,g,x)}function Oa(c,m,g,x){if(d)return st(12,1,c,m,g,x)}function Sa(c){if(d)return st(13,1,c)}function Aa(c,m){if(d)return st(14,1,c,m)}function Pa(c,m,g){if(d)return st(15,1,c,m,g)}var xd=()=>{Mt("")},Td=()=>1;function wd(c){$o(c>>>0,!p,1,!f,131072,!1),aa()}function Ao(c){c>>>=0,typeof Atomics.jb=="function"&&(Atomics.jb(t(),c>>>2,c).value.then(tn),c+=128,Atomics.store(t(),c>>>2,1))}var tn=()=>{var c=er();if(c&&(Ao(c),c=ja,!se))try{if(c(),!(0<vr))try{d?nn(we):So(we)}catch(m){m instanceof Io||m=="unwind"||P(1,m)}}catch(m){m instanceof Io||m=="unwind"||P(1,m)}};function vd(c,m){(c>>>=0)==m>>>0?setTimeout(tn):d?postMessage({targetThread:c,cmd:"checkMailbox"}):(c=fe[c])&&c.postMessage({cmd:"checkMailbox"})}var Po=[];function Id(c,m,g,x,I){for(m>>>=0,x/=2,Po.length=x,g=I>>>0>>>3,I=0;I<x;I++)Po[I]=ie[g+2*I]?ie[g+2*I+1]:n()[g+2*I+1>>>0];return(m?ea[m]:Wd[c])(...Po)}function _d(c){c>>>=0,d?postMessage({cmd:"cleanupThread",thread:c}):ia(fe[c])}function Od(c){}function Sd(c,m){c=-9007199254740992>c||9007199254740992<c?NaN:Number(c),m>>>=0,c=new Date(1e3*c),t()[m>>>2>>>0]=c.getUTCSeconds(),t()[m+4>>>2>>>0]=c.getUTCMinutes(),t()[m+8>>>2>>>0]=c.getUTCHours(),t()[m+12>>>2>>>0]=c.getUTCDate(),t()[m+16>>>2>>>0]=c.getUTCMonth(),t()[m+20>>>2>>>0]=c.getUTCFullYear()-1900,t()[m+24>>>2>>>0]=c.getUTCDay(),c=(c.getTime()-Date.UTC(c.getUTCFullYear(),0,1,0,0,0,0))/864e5|0,t()[m+28>>>2>>>0]=c}var Qe=c=>c%4==0&&(c%100!=0||c%400==0),Ea=[0,31,60,91,121,152,182,213,244,274,305,335],Da=[0,31,59,90,120,151,181,212,243,273,304,334];function Ad(c,m){c=-9007199254740992>c||9007199254740992<c?NaN:Number(c),m>>>=0,c=new Date(1e3*c),t()[m>>>2>>>0]=c.getSeconds(),t()[m+4>>>2>>>0]=c.getMinutes(),t()[m+8>>>2>>>0]=c.getHours(),t()[m+12>>>2>>>0]=c.getDate(),t()[m+16>>>2>>>0]=c.getMonth(),t()[m+20>>>2>>>0]=c.getFullYear()-1900,t()[m+24>>>2>>>0]=c.getDay();var g=(Qe(c.getFullYear())?Ea:Da)[c.getMonth()]+c.getDate()-1|0;t()[m+28>>>2>>>0]=g,t()[m+36>>>2>>>0]=-60*c.getTimezoneOffset(),g=new Date(c.getFullYear(),6,1).getTimezoneOffset();var x=new Date(c.getFullYear(),0,1).getTimezoneOffset();c=0|(g!=x&&c.getTimezoneOffset()==Math.min(x,g)),t()[m+32>>>2>>>0]=c}function Pd(c){c>>>=0;var m=new Date(t()[c+20>>>2>>>0]+1900,t()[c+16>>>2>>>0],t()[c+12>>>2>>>0],t()[c+8>>>2>>>0],t()[c+4>>>2>>>0],t()[c>>>2>>>0],0),g=t()[c+32>>>2>>>0],x=m.getTimezoneOffset(),I=new Date(m.getFullYear(),6,1).getTimezoneOffset(),E=new Date(m.getFullYear(),0,1).getTimezoneOffset(),R=Math.min(E,I);return 0>g?t()[c+32>>>2>>>0]=+(I!=E&&R==x):0<g!=(R==x)&&(I=Math.max(E,I),m.setTime(m.getTime()+6e4*((0<g?R:I)-x))),t()[c+24>>>2>>>0]=m.getDay(),g=(Qe(m.getFullYear())?Ea:Da)[m.getMonth()]+m.getDate()-1|0,t()[c+28>>>2>>>0]=g,t()[c>>>2>>>0]=m.getSeconds(),t()[c+4>>>2>>>0]=m.getMinutes(),t()[c+8>>>2>>>0]=m.getHours(),t()[c+12>>>2>>>0]=m.getDate(),t()[c+16>>>2>>>0]=m.getMonth(),t()[c+20>>>2>>>0]=m.getYear(),c=m.getTime(),BigInt(isNaN(c)?-1:c/1e3)}function La(c,m,g,x,I,E,R){return d?st(16,1,c,m,g,x,I,E,R):-52}function $a(c,m,g,x,I,E){if(d)return st(17,1,c,m,g,x,I,E)}function Ed(c,m,g,x){c>>>=0,m>>>=0,g>>>=0,x>>>=0;var I=new Date().getFullYear(),E=new Date(I,0,1),R=new Date(I,6,1);I=E.getTimezoneOffset();var at=R.getTimezoneOffset(),Pt=Math.max(I,at);r()[c>>>2>>>0]=60*Pt,t()[m>>>2>>>0]=+(I!=at),E=(c=$t=>$t.toLocaleTimeString(void 0,{hour12:!1,timeZoneName:"short"}).split(" ")[1])(E),R=c(R),at<I?(_r(E,g,17),_r(R,x,17)):(_r(E,x,17),_r(R,g,17))}var Eo=[];function Dd(c,m,g){c>>>=0,m>>>=0,g>>>=0,Eo.length=0;for(var x;x=o()[m++>>>0];){var I=x!=105;g+=(I&=x!=112)&&g%8?4:0,Eo.push(x==112?r()[g>>>2>>>0]:x==106?ie[g>>>3]:x==105?t()[g>>>2>>>0]:n()[g>>>3>>>0]),g+=I?8:4}return ea[c](...Eo)}var Ld=()=>{},$d=()=>Date.now();function kd(c,m){return et(Ir(c>>>0,m>>>0))}var ka,Bd=()=>{throw vr+=1,"unwind"};function Fd(){return 4294901760}ka=()=>performance.timeOrigin+performance.now();var Cd=()=>navigator.hardwareConcurrency;function Nd(){return Mt("Cannot use emscripten_pc_get_function without -sUSE_OFFSET_CONVERTER"),0}function Rd(c){c>>>=0;var m=o().length;if(c<=m||4294901760<c)return!1;for(var g=1;4>=g;g*=2){var x=m*(1+.2/g);x=Math.min(x,c+100663296);var I=Math;x=Math.max(c,x);t:{I=(I.min.call(I,4294901760,x+(65536-x%65536)%65536)-C.buffer.byteLength+65535)/65536;try{C.grow(I),it();var E=1;break t}catch{}E=void 0}if(E)return!0}return!1}var en=()=>(Mt("Cannot use convertFrameToPC (needed by __builtin_return_address) without -sUSE_OFFSET_CONVERTER"),0),tr={},Ba=c=>{c.forEach(m=>{var g=en();g&&(tr[g]=m)})};function Gd(){var c=Error().stack.toString().split(`
+as ORT format: ${n}`)}}loadFromOnnxFormat(e,o){let t=Dp.onnx.ModelProto.decode(e);if(Rt.longToNumber(t.irVersion)<3)throw new Error("only support ONNX model with IR_VERSION>=3");this._opsets=t.opsetImport.map(n=>({domain:n.domain,version:Rt.longToNumber(n.version)})),this._graph=Wi.from(t.graph,o)}loadFromOrtFormat(e,o){let t=new w.ByteBuffer(e),r=vg.InferenceSession.getRootAsInferenceSession(t).model();if(Rt.longToNumber(r.irVersion())<3)throw new Error("only support ONNX model with IR_VERSION>=3");this._opsets=[];for(let s=0;s<r.opsetImportLength();s++){let a=r.opsetImport(s);this._opsets.push({domain:a?.domain(),version:Rt.longToNumber(a.version())})}this._graph=Wi.from(r.graph(),o)}get graph(){return this._graph}get opsets(){return this._opsets}}});var ro,$p=O(()=>{"use strict";Sp();Ap();Ut();Lp();ro=class{constructor(e={}){this._initialized=!1,this.backendHint=e.backendHint,this.profiler=xn.create(e.profiler),this.context={profiler:this.profiler,graphInputTypes:[],graphInputDims:[]}}get inputNames(){return this._model.graph.getInputNames()}get outputNames(){return this._model.graph.getOutputNames()}startProfiling(){this.profiler.start()}endProfiling(){this.profiler.stop()}async loadModel(e,o,t){await this.profiler.event("session","Session.loadModel",async()=>{let r=await Mi(this.backendHint);if(this.sessionHandler=r.createSessionHandler(this.context),this._model=new eo,typeof e=="string"){let n=e.endsWith(".ort");{let a=await(await fetch(e)).arrayBuffer();this.initialize(new Uint8Array(a),n)}}else if(ArrayBuffer.isView(e))this.initialize(e);else{let n=new Uint8Array(e,o||0,t||e.byteLength);this.initialize(n)}})}initialize(e,o){if(this._initialized)throw new Error("already initialized");this.profiler.event("session","Session.initialize",()=>{let t=this.sessionHandler.transformGraph?this.sessionHandler:void 0;this._model.load(e,t,o),this.sessionHandler.onGraphInitialized&&this.sessionHandler.onGraphInitialized(this._model.graph),this.initializeOps(this._model.graph),this._executionPlan=new Zn(this._model.graph,this._ops,this.profiler)}),this._initialized=!0}async run(e){if(!this._initialized)throw new Error("session not initialized yet");return this.profiler.event("session","Session.run",async()=>{let o=this.normalizeAndValidateInputs(e),t=await this._executionPlan.execute(this.sessionHandler,o);return this.createOutput(t)})}normalizeAndValidateInputs(e){let o=this._model.graph.getInputNames();if(Array.isArray(e)){if(e.length!==o.length)throw new Error(`incorrect input array length: expected ${o.length} but got ${e.length}`)}else{if(e.size!==o.length)throw new Error(`incorrect input map size: expected ${o.length} but got ${e.size}`);let t=new Array(e.size),r=0;for(let n=0;n<o.length;++n){let s=e.get(o[n]);if(!s)throw new Error(`missing input tensor for: '${name}'`);t[r++]=s}e=t}if(!this.context.graphInputTypes||this.context.graphInputTypes.length===0||!this.context.graphInputDims||this.context.graphInputDims.length===0){let t=this._model.graph.getInputIndices(),r=this._model.graph.getValues(),n=new Array(t.length);for(let s=0;s<t.length;++s){let a=r[t[s]];n[s]=a.type.shape.dims,this.context.graphInputTypes.push(a.type.tensorType),this.context.graphInputDims.push(e[s].dims)}this.validateInputTensorDims(n,e,!0)}else this.validateInputTensorDims(this.context.graphInputDims,e,!1);return this.validateInputTensorTypes(this.context.graphInputTypes,e),e}validateInputTensorTypes(e,o){for(let t=0;t<o.length;t++){let r=e[t],n=o[t].type;if(r!==n)throw new Error(`input tensor[${t}] check failed: expected type '${r}' but got ${n}`)}}validateInputTensorDims(e,o,t){for(let r=0;r<o.length;r++){let n=e[r],s=o[r].dims;if(!this.compareTensorDims(n,s,t))throw new Error(`input tensor[${r}] check failed: expected shape '[${n.join(",")}]' but got [${s.join(",")}]`)}}compareTensorDims(e,o,t){if(e.length!==o.length)return!1;for(let r=0;r<e.length;++r)if(e[r]!==o[r]&&(!t||e[r]!==0))return!1;return!0}createOutput(e){let o=this._model.graph.getOutputNames();if(e.length!==o.length)throw new Error("expected number of outputs do not match number of generated outputs");let t=new Map;for(let r=0;r<o.length;++r)t.set(o[r],e[r]);return t}initializeOps(e){let o=e.getNodes();this._ops=new Array(o.length);for(let t=0;t<o.length;t++)this._ops[t]=this.sessionHandler.resolve(o[t],this._model.opsets,e)}}});var no,kp=O(()=>{"use strict";Yt();We();no=class{constructor(e){this.session=e;this.inputNames=this.session.inputNames,this.outputNames=this.session.outputNames}async dispose(){}async run(e,o,t){let r=new Map;for(let a in e)if(Object.hasOwnProperty.call(e,a)){let u=e[a];r.set(a,new bt(u.dims,u.type,void 0,void 0,u.data))}let n=await this.session.run(r),s={};return n.forEach((a,u)=>{s[u]=new yt(a.type,a.data,a.dims)}),s}startProfiling(){this.session.startProfiling()}endProfiling(){this.session.endProfiling()}}});var Bp={};Or(Bp,{onnxjsBackend:()=>Ig});var Hi,Ig,Fp=O(()=>{"use strict";$p();kp();Hi=class{async init(){}async createInferenceSessionHandler(e,o){let t=new ro(o);return typeof e=="string"?await t.loadModel(e):await t.loadModel(e),new no(t)}},Ig=new Hi});var oo=O(()=>{"use strict"});var Rp={};Or(Rp,{default:()=>_g});var Cp,Np,_g,Gp=O(()=>{"use strict";qi();Ke();Vr();Cp="ort-wasm-proxy-worker",Np=globalThis.self?.name===Cp;Np&&(self.onmessage=i=>{let{type:e,in:o}=i.data;try{switch(e){case"init-wasm":io(o.wasm).then(()=>{ao(o).then(()=>{postMessage({type:e})},t=>{postMessage({type:e,err:t})})},t=>{postMessage({type:e,err:t})});break;case"init-ep":{let{epName:t,env:r}=o;so(r,t).then(()=>{postMessage({type:e})},n=>{postMessage({type:e,err:n})});break}case"copy-from":{let{buffer:t}=o,r=zr(t);postMessage({type:e,out:r});break}case"create":{let{model:t,options:r}=o;uo(t,r).then(n=>{postMessage({type:e,out:n})},n=>{postMessage({type:e,err:n})});break}case"release":lo(o),postMessage({type:e});break;case"run":{let{sessionId:t,inputIndices:r,inputs:n,outputIndices:s,options:a}=o;fo(t,r,n,s,new Array(s.length).fill(null),a).then(u=>{u.some(l=>l[3]!=="cpu")?postMessage({type:e,err:"Proxy does not support non-cpu tensor location."}):postMessage({type:e,out:u},po([...n,...u]))},u=>{postMessage({type:e,err:u})});break}case"end-profiling":co(o),postMessage({type:e});break;default:}}catch(t){postMessage({type:e,err:t})}});_g=Np?null:i=>new Worker(i??br,{type:"module",name:Cp})});var Up={};Or(Up,{default:()=>Og});var ji,Mp,Og,Vp=O(()=>{"use strict";Mp=(ji="file:///Users/rawanabdulhayy/Graduation%20Project/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs",async function(i={}){function e(){return C.buffer!=oe.buffer&&it(),oe}function o(){return C.buffer!=oe.buffer&&it(),be}function t(){return C.buffer!=oe.buffer&&it(),Z}function r(){return C.buffer!=oe.buffer&&it(),ge}function n(){return C.buffer!=oe.buffer&&it(),ae}var s,a,u=Object.assign({},i),l=new Promise((c,m)=>{s=c,a=m}),f=typeof window=="object",p=typeof importScripts=="function",d=p&&self.name=="em-pthread";u.mountExternalData=(c,m)=>{c.startsWith("./")&&(c=c.substring(2)),(u.Ua||(u.Ua=new Map)).set(c,m)},u.unmountExternalData=()=>{delete u.Ua};var y,T,v=globalThis.SharedArrayBuffer??new WebAssembly.Memory({initial:0,maximum:0,shared:!0}).buffer.constructor,S=Object.assign({},u),L="./this.program",P=(c,m)=>{throw m},A="";(f||p)&&(p?A=self.location.href:typeof document<"u"&&document.currentScript&&(A=document.currentScript.src),ji&&(A=ji),A=A.startsWith("blob:")?"":A.substr(0,A.replace(/[?#].*/,"").lastIndexOf("/")+1),p&&(T=c=>{var m=new XMLHttpRequest;return m.open("GET",c,!1),m.responseType="arraybuffer",m.send(null),new Uint8Array(m.response)}),y=(c,m,g)=>{var x=new XMLHttpRequest;x.open("GET",c,!0),x.responseType="arraybuffer",x.onload=()=>{x.status==200||x.status==0&&x.response?m(x.response):g()},x.onerror=g,x.send(null)});var M,V=console.log.bind(console),lt=console.error.bind(console),wt=V,et=lt;if(Object.assign(u,S),S=null,d){let c=function(m){try{var g=m.data,x=g.cmd;if(x==="load"){let I=[];self.onmessage=E=>I.push(E),self.startWorker=()=>{postMessage({cmd:"loaded"});for(let E of I)c(E);self.onmessage=c};for(let E of g.handlers)u[E]&&!u[E].proxy||(u[E]=(...R)=>{postMessage({Za:"callHandler",kb:E,args:R})},E=="print"&&(wt=u[E]),E=="printErr"&&(et=u[E]));C=g.wasmMemory,it(),Dt(g.wasmModule)}else if(x==="run"){$o(g.pthread_ptr,0,0,1,0,0),Ao(g.pthread_ptr),md(),aa(),_t||=!0;try{bd(g.start_routine,g.arg)}catch(I){if(I!="unwind")throw I}}else x==="cancel"?er()&&nn(-1):g.target!=="setimmediate"&&(x==="checkMailbox"?_t&&tn():x&&(et(`worker: received unknown command ${x}`),et(g)))}catch(I){throw Ha(),I}};var Vg=c,Dt,_t=!1;et=function(...m){m=m.join(" "),console.error(m)},self.alert=function(...m){postMessage({Za:"alert",text:m.join(" "),nb:er()})},u.instantiateWasm=(m,g)=>new Promise(x=>{Dt=I=>{I=new WebAssembly.Instance(I,Yr()),g(I),x()}}),self.onunhandledrejection=m=>{throw m.reason||m},self.onmessage=c}u.wasmBinary&&(M=u.wasmBinary);var C,Kr,we,oe,be,Z,ge,ie,ae,se=!1;function it(){var c=C.buffer;u.HEAP8=oe=new Int8Array(c),u.HEAP16=new Int16Array(c),u.HEAPU8=be=new Uint8Array(c),u.HEAPU16=new Uint16Array(c),u.HEAP32=Z=new Int32Array(c),u.HEAPU32=ge=new Uint32Array(c),u.HEAPF32=new Float32Array(c),u.HEAPF64=ae=new Float64Array(c),u.HEAP64=ie=new BigInt64Array(c),u.HEAPU64=new BigUint64Array(c)}if(!d){if(!((C=new WebAssembly.Memory({initial:256,maximum:65536,shared:!0})).buffer instanceof v))throw et("requested a shared WebAssembly.Memory but the returned buffer is not a SharedArrayBuffer, indicating that while the browser has SharedArrayBuffer it does not have WebAssembly threads support - you may need to set a flag"),Error("bad memory");it()}var Lt=[],Jr=[],Ye=[],ue=0,Ze=null,De=null;function le(){if(--ue==0&&(Ze!==null&&(clearInterval(Ze),Ze=null),De)){var c=De;De=null,c()}}function Mt(c){throw et(c="Aborted("+c+")"),se=!0,we=1,c=new WebAssembly.RuntimeError(c+". Build with -sASSERTIONS for more info."),a(c),c}var ve,gt=c=>c.startsWith("data:application/octet-stream;base64,"),Ot=c=>c.startsWith("file://");function Jt(c){if(c==ve&&M)return new Uint8Array(M);if(T)return T(c);throw"both async and sync fetching of the wasm failed"}function wr(c,m,g){return function(x){if(!M&&(f||p)){if(typeof fetch=="function"&&!Ot(x))return fetch(x,{credentials:"same-origin"}).then(I=>{if(!I.ok)throw`failed to load wasm binary file at '${x}'`;return I.arrayBuffer()}).catch(()=>Jt(x));if(y)return new Promise((I,E)=>{y(x,R=>I(new Uint8Array(R)),E)})}return Promise.resolve().then(()=>Jt(x))}(c).then(x=>WebAssembly.instantiate(x,m)).then(g,x=>{et(`failed to asynchronously prepare wasm: ${x}`),Mt(x)})}function Yr(){return{a:{j:hd,b:yd,E:ca,g:ha,V:ma,A:ya,C:xa,W:Ta,T:wa,L:va,S:Ia,o:_a,B:Oa,y:Sa,U:Aa,z:Pa,_:xd,Z:Td,P:wd,w:vd,F:Id,k:_d,O:Ao,Y:Od,I:Sd,J:Ad,K:Pd,G:La,H:$a,v:Ed,q:Dd,l:Ld,p:$d,e:kd,X:Bd,x:Fd,d:ka,f:Cd,i:Nd,u:Rd,t:Gd,s:Md,Q:Ca,R:Na,D:So,h:Ra,n:Ga,M:Ma,m:Ua,a:C,r:Oo,N:Wa,c:zd}}}var ea={837620:(c,m,g,x,I)=>{if(u===void 0||!u.Ua)return 1;if((c=Ir(c>>>0)).startsWith("./")&&(c=c.substring(2)),!(c=u.Ua.get(c)))return 2;if(x>>>=0,(m>>>=0)+(g>>>=0)>c.byteLength)return 3;try{let E=c.subarray(m,m+g);switch(I){case 0:o().set(E,x>>>0);break;case 1:u.mb(x,E);break;default:return 4}return 0}catch{return 4}},838303:()=>typeof wasmOffsetConverter<"u"};function hd(){return typeof wasmOffsetConverter<"u"}function Io(c){this.name="ExitStatus",this.message=`Program terminated with exit(${c})`,this.status=c}var _o=c=>{c.terminate(),c.onmessage=()=>{}},ra=c=>{Ie.length==0&&(ua(),sa(Ie[0]));var m=Ie.pop();if(!m)return 6;Le.push(m),fe[c.Ra]=m,m.Ra=c.Ra;var g={cmd:"run",start_routine:c.cb,arg:c.ab,pthread_ptr:c.Ra};return m.postMessage(g,c.ib),0},vr=0,st=(c,m,...g)=>{for(var x=2*g.length,I=Fo(),E=Bo(8*x),R=E>>>3,at=0;at<g.length;at++){var Pt=g[at];typeof Pt=="bigint"?(ie[R+2*at]=1n,ie[R+2*at+1]=Pt):(ie[R+2*at]=0n,n()[R+2*at+1>>>0]=Pt)}return c=qa(c,0,x,E,m),on(I),c};function Oo(c){if(d)return st(0,1,c);if(we=c,!(0<vr)){for(var m of Le)_o(m);for(m of Ie)_o(m);Ie=[],Le=[],fe=[],se=!0}P(c,new Io(c))}function na(c){if(d)return st(1,0,c);So(c)}var So=c=>{if(we=c,d)throw na(c),"unwind";Oo(c)},Ie=[],Le=[],oa=[],fe={},ia=c=>{var m=c.Ra;delete fe[m],Ie.push(c),Le.splice(Le.indexOf(c),1),c.Ra=0,ko(m)};function aa(){oa.forEach(c=>c())}var sa=c=>new Promise(m=>{c.onmessage=I=>{var E=(I=I.data).cmd;if(I.targetThread&&I.targetThread!=er()){var R=fe[I.targetThread];R?R.postMessage(I,I.transferList):et(`Internal error! Worker sent a message "${E}" to target pthread ${I.targetThread}, but that thread no longer exists!`)}else E==="checkMailbox"?tn():E==="spawnThread"?ra(I):E==="cleanupThread"?ia(fe[I.thread]):E==="killThread"?(I=I.thread,E=fe[I],delete fe[I],_o(E),ko(I),Le.splice(Le.indexOf(E),1),E.Ra=0):E==="cancelThread"?fe[I.thread].postMessage({cmd:"cancel"}):E==="loaded"?(c.loaded=!0,m(c)):E==="alert"?alert(`Thread ${I.threadId}: ${I.text}`):I.target==="setimmediate"?c.postMessage(I):E==="callHandler"?u[I.handler](...I.args):E&&et(`worker sent an unknown command ${E}`)},c.onerror=I=>{throw et(`worker sent an error! ${I.filename}:${I.lineno}: ${I.message}`),I};var g,x=[];for(g of[])u.hasOwnProperty(g)&&x.push(g);c.postMessage({cmd:"load",handlers:x,wasmMemory:C,wasmModule:Kr})});function ua(){var c=new Worker(new URL("file:///Users/rawanabdulhayy/Graduation%20Project/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs"),{type:"module",workerData:"em-pthread",name:"em-pthread"});Ie.push(c)}var la,Zr=c=>{for(;0<c.length;)c.shift()(u)},md=()=>{var c=er(),m=r()[c+52>>>2>>>0];c=r()[c+56>>>2>>>0],Xa(m,m-c),on(m)},Qr=[],bd=(c,m)=>{vr=0;var g=Qr[c];g||(c>=Qr.length&&(Qr.length=c+1),Qr[c]=g=la.get(c)),c=g(m),0<vr?we=c:nn(c)};class gd{constructor(m){this.Xa=m-24}}function yd(c,m,g){var x=new gd(c>>>=0);throw m>>>=0,g>>>=0,r()[x.Xa+16>>>2>>>0]=0,r()[x.Xa+4>>>2>>>0]=m,r()[x.Xa+8>>>2>>>0]=g,c}function fa(c,m,g,x){return d?st(2,1,c,m,g,x):ca(c,m,g,x)}function ca(c,m,g,x){if(c>>>=0,m>>>=0,g>>>=0,x>>>=0,v===void 0)return et("Current environment does not support SharedArrayBuffer, pthreads are not available!"),6;var I=[];return d&&I.length===0?fa(c,m,g,x):(c={cb:g,Ra:c,ab:x,ib:I},d?(c.Za="spawnThread",postMessage(c,I),0):ra(c))}var pa=typeof TextDecoder<"u"?new TextDecoder("utf8"):void 0,da=(c,m,g)=>{var x=(m>>>=0)+g;for(g=m;c[g]&&!(g>=x);)++g;if(16<g-m&&c.buffer&&pa)return pa.decode(c.buffer instanceof v?c.slice(m,g):c.subarray(m,g));for(x="";m<g;){var I=c[m++];if(128&I){var E=63&c[m++];if((224&I)==192)x+=String.fromCharCode((31&I)<<6|E);else{var R=63&c[m++];65536>(I=(240&I)==224?(15&I)<<12|E<<6|R:(7&I)<<18|E<<12|R<<6|63&c[m++])?x+=String.fromCharCode(I):(I-=65536,x+=String.fromCharCode(55296|I>>10,56320|1023&I))}}else x+=String.fromCharCode(I)}return x},Ir=(c,m)=>(c>>>=0)?da(o(),c,m):"";function ha(c,m,g){return d?st(3,1,c,m,g):0}function ma(c,m){if(d)return st(4,1,c,m)}var ba=c=>{for(var m=0,g=0;g<c.length;++g){var x=c.charCodeAt(g);127>=x?m++:2047>=x?m+=2:55296<=x&&57343>=x?(m+=4,++g):m+=3}return m},ga=(c,m,g,x)=>{if(!(0<x))return 0;var I=g>>>=0;x=g+x-1;for(var E=0;E<c.length;++E){var R=c.charCodeAt(E);if(55296<=R&&57343>=R&&(R=65536+((1023&R)<<10)|1023&c.charCodeAt(++E)),127>=R){if(g>=x)break;m[g++>>>0]=R}else{if(2047>=R){if(g+1>=x)break;m[g++>>>0]=192|R>>6}else{if(65535>=R){if(g+2>=x)break;m[g++>>>0]=224|R>>12}else{if(g+3>=x)break;m[g++>>>0]=240|R>>18,m[g++>>>0]=128|R>>12&63}m[g++>>>0]=128|R>>6&63}m[g++>>>0]=128|63&R}}return m[g>>>0]=0,g-I},_r=(c,m,g)=>ga(c,o(),m,g);function ya(c,m){if(d)return st(5,1,c,m)}function xa(c,m,g){if(d)return st(6,1,c,m,g)}function Ta(c,m,g){return d?st(7,1,c,m,g):0}function wa(c,m){if(d)return st(8,1,c,m)}function va(c,m,g){if(d)return st(9,1,c,m,g)}function Ia(c,m,g,x){if(d)return st(10,1,c,m,g,x)}function _a(c,m,g,x){if(d)return st(11,1,c,m,g,x)}function Oa(c,m,g,x){if(d)return st(12,1,c,m,g,x)}function Sa(c){if(d)return st(13,1,c)}function Aa(c,m){if(d)return st(14,1,c,m)}function Pa(c,m,g){if(d)return st(15,1,c,m,g)}var xd=()=>{Mt("")},Td=()=>1;function wd(c){$o(c>>>0,!p,1,!f,131072,!1),aa()}function Ao(c){c>>>=0,typeof Atomics.jb=="function"&&(Atomics.jb(t(),c>>>2,c).value.then(tn),c+=128,Atomics.store(t(),c>>>2,1))}var tn=()=>{var c=er();if(c&&(Ao(c),c=ja,!se))try{if(c(),!(0<vr))try{d?nn(we):So(we)}catch(m){m instanceof Io||m=="unwind"||P(1,m)}}catch(m){m instanceof Io||m=="unwind"||P(1,m)}};function vd(c,m){(c>>>=0)==m>>>0?setTimeout(tn):d?postMessage({targetThread:c,cmd:"checkMailbox"}):(c=fe[c])&&c.postMessage({cmd:"checkMailbox"})}var Po=[];function Id(c,m,g,x,I){for(m>>>=0,x/=2,Po.length=x,g=I>>>0>>>3,I=0;I<x;I++)Po[I]=ie[g+2*I]?ie[g+2*I+1]:n()[g+2*I+1>>>0];return(m?ea[m]:Wd[c])(...Po)}function _d(c){c>>>=0,d?postMessage({cmd:"cleanupThread",thread:c}):ia(fe[c])}function Od(c){}function Sd(c,m){c=-9007199254740992>c||9007199254740992<c?NaN:Number(c),m>>>=0,c=new Date(1e3*c),t()[m>>>2>>>0]=c.getUTCSeconds(),t()[m+4>>>2>>>0]=c.getUTCMinutes(),t()[m+8>>>2>>>0]=c.getUTCHours(),t()[m+12>>>2>>>0]=c.getUTCDate(),t()[m+16>>>2>>>0]=c.getUTCMonth(),t()[m+20>>>2>>>0]=c.getUTCFullYear()-1900,t()[m+24>>>2>>>0]=c.getUTCDay(),c=(c.getTime()-Date.UTC(c.getUTCFullYear(),0,1,0,0,0,0))/864e5|0,t()[m+28>>>2>>>0]=c}var Qe=c=>c%4==0&&(c%100!=0||c%400==0),Ea=[0,31,60,91,121,152,182,213,244,274,305,335],Da=[0,31,59,90,120,151,181,212,243,273,304,334];function Ad(c,m){c=-9007199254740992>c||9007199254740992<c?NaN:Number(c),m>>>=0,c=new Date(1e3*c),t()[m>>>2>>>0]=c.getSeconds(),t()[m+4>>>2>>>0]=c.getMinutes(),t()[m+8>>>2>>>0]=c.getHours(),t()[m+12>>>2>>>0]=c.getDate(),t()[m+16>>>2>>>0]=c.getMonth(),t()[m+20>>>2>>>0]=c.getFullYear()-1900,t()[m+24>>>2>>>0]=c.getDay();var g=(Qe(c.getFullYear())?Ea:Da)[c.getMonth()]+c.getDate()-1|0;t()[m+28>>>2>>>0]=g,t()[m+36>>>2>>>0]=-60*c.getTimezoneOffset(),g=new Date(c.getFullYear(),6,1).getTimezoneOffset();var x=new Date(c.getFullYear(),0,1).getTimezoneOffset();c=0|(g!=x&&c.getTimezoneOffset()==Math.min(x,g)),t()[m+32>>>2>>>0]=c}function Pd(c){c>>>=0;var m=new Date(t()[c+20>>>2>>>0]+1900,t()[c+16>>>2>>>0],t()[c+12>>>2>>>0],t()[c+8>>>2>>>0],t()[c+4>>>2>>>0],t()[c>>>2>>>0],0),g=t()[c+32>>>2>>>0],x=m.getTimezoneOffset(),I=new Date(m.getFullYear(),6,1).getTimezoneOffset(),E=new Date(m.getFullYear(),0,1).getTimezoneOffset(),R=Math.min(E,I);return 0>g?t()[c+32>>>2>>>0]=+(I!=E&&R==x):0<g!=(R==x)&&(I=Math.max(E,I),m.setTime(m.getTime()+6e4*((0<g?R:I)-x))),t()[c+24>>>2>>>0]=m.getDay(),g=(Qe(m.getFullYear())?Ea:Da)[m.getMonth()]+m.getDate()-1|0,t()[c+28>>>2>>>0]=g,t()[c>>>2>>>0]=m.getSeconds(),t()[c+4>>>2>>>0]=m.getMinutes(),t()[c+8>>>2>>>0]=m.getHours(),t()[c+12>>>2>>>0]=m.getDate(),t()[c+16>>>2>>>0]=m.getMonth(),t()[c+20>>>2>>>0]=m.getYear(),c=m.getTime(),BigInt(isNaN(c)?-1:c/1e3)}function La(c,m,g,x,I,E,R){return d?st(16,1,c,m,g,x,I,E,R):-52}function $a(c,m,g,x,I,E){if(d)return st(17,1,c,m,g,x,I,E)}function Ed(c,m,g,x){c>>>=0,m>>>=0,g>>>=0,x>>>=0;var I=new Date().getFullYear(),E=new Date(I,0,1),R=new Date(I,6,1);I=E.getTimezoneOffset();var at=R.getTimezoneOffset(),Pt=Math.max(I,at);r()[c>>>2>>>0]=60*Pt,t()[m>>>2>>>0]=+(I!=at),E=(c=$t=>$t.toLocaleTimeString(void 0,{hour12:!1,timeZoneName:"short"}).split(" ")[1])(E),R=c(R),at<I?(_r(E,g,17),_r(R,x,17)):(_r(E,x,17),_r(R,g,17))}var Eo=[];function Dd(c,m,g){c>>>=0,m>>>=0,g>>>=0,Eo.length=0;for(var x;x=o()[m++>>>0];){var I=x!=105;g+=(I&=x!=112)&&g%8?4:0,Eo.push(x==112?r()[g>>>2>>>0]:x==106?ie[g>>>3]:x==105?t()[g>>>2>>>0]:n()[g>>>3>>>0]),g+=I?8:4}return ea[c](...Eo)}var Ld=()=>{},$d=()=>Date.now();function kd(c,m){return et(Ir(c>>>0,m>>>0))}var ka,Bd=()=>{throw vr+=1,"unwind"};function Fd(){return 4294901760}ka=()=>performance.timeOrigin+performance.now();var Cd=()=>navigator.hardwareConcurrency;function Nd(){return Mt("Cannot use emscripten_pc_get_function without -sUSE_OFFSET_CONVERTER"),0}function Rd(c){c>>>=0;var m=o().length;if(c<=m||4294901760<c)return!1;for(var g=1;4>=g;g*=2){var x=m*(1+.2/g);x=Math.min(x,c+100663296);var I=Math;x=Math.max(c,x);t:{I=(I.min.call(I,4294901760,x+(65536-x%65536)%65536)-C.buffer.byteLength+65535)/65536;try{C.grow(I),it();var E=1;break t}catch{}E=void 0}if(E)return!0}return!1}var en=()=>(Mt("Cannot use convertFrameToPC (needed by __builtin_return_address) without -sUSE_OFFSET_CONVERTER"),0),tr={},Ba=c=>{c.forEach(m=>{var g=en();g&&(tr[g]=m)})};function Gd(){var c=Error().stack.toString().split(`
 `);return c[0]=="Error"&&c.shift(),Ba(c),tr.$a=en(),tr.bb=c,tr.$a}function Md(c,m,g){if(c>>>=0,m>>>=0,tr.$a==c)var x=tr.bb;else(x=Error().stack.toString().split(`
 `))[0]=="Error"&&x.shift(),Ba(x);for(var I=3;x[I]&&en()!=c;)++I;for(c=0;c<g&&x[c+I];++c)t()[m+4*c>>>2>>>0]=en();return c}var Do,Lo={},Fa=()=>{if(!Do){var c,m={USER:"web_user",LOGNAME:"web_user",PATH:"/",PWD:"/",HOME:"/home/web_user",LANG:(typeof navigator=="object"&&navigator.languages&&navigator.languages[0]||"C").replace("-","_")+".UTF-8",_:L||"./this.program"};for(c in Lo)Lo[c]===void 0?delete m[c]:m[c]=Lo[c];var g=[];for(c in m)g.push(`${c}=${m[c]}`);Do=g}return Do};function Ca(c,m){if(d)return st(18,1,c,m);c>>>=0,m>>>=0;var g=0;return Fa().forEach((x,I)=>{var E=m+g;for(I=r()[c+4*I>>>2>>>0]=E,E=0;E<x.length;++E)e()[I++>>>0]=x.charCodeAt(E);e()[I>>>0]=0,g+=x.length+1}),0}function Na(c,m){if(d)return st(19,1,c,m);c>>>=0,m>>>=0;var g=Fa();r()[c>>>2>>>0]=g.length;var x=0;return g.forEach(I=>x+=I.length+1),r()[m>>>2>>>0]=x,0}function Ra(c){return d?st(20,1,c):52}function Ga(c,m,g,x){return d?st(21,1,c,m,g,x):52}function Ma(c,m,g,x){return d?st(22,1,c,m,g,x):70}var Ud=[null,[],[]];function Ua(c,m,g,x){if(d)return st(23,1,c,m,g,x);m>>>=0,g>>>=0,x>>>=0;for(var I=0,E=0;E<g;E++){var R=r()[m>>>2>>>0],at=r()[m+4>>>2>>>0];m+=8;for(var Pt=0;Pt<at;Pt++){var $t=o()[R+Pt>>>0],Ft=Ud[c];$t===0||$t===10?((c===1?wt:et)(da(Ft,0)),Ft.length=0):Ft.push($t)}I+=at}return r()[x>>>2>>>0]=I,0}var Va=[31,29,31,30,31,30,31,31,30,31,30,31],za=[31,28,31,30,31,30,31,31,30,31,30,31],Vd=(c,m)=>{e().set(c,m>>>0)};function Wa(c,m,g,x){function I(_,Q,ft){for(_=typeof _=="number"?_.toString():_||"";_.length<Q;)_=ft[0]+_;return _}function E(_,Q){return I(_,Q,"0")}function R(_,Q){function ft(Za){return 0>Za?-1:0<Za?1:0}var $e;return($e=ft(_.getFullYear()-Q.getFullYear()))===0&&($e=ft(_.getMonth()-Q.getMonth()))===0&&($e=ft(_.getDate()-Q.getDate())),$e}function at(_){switch(_.getDay()){case 0:return new Date(_.getFullYear()-1,11,29);case 1:return _;case 2:return new Date(_.getFullYear(),0,3);case 3:return new Date(_.getFullYear(),0,2);case 4:return new Date(_.getFullYear(),0,1);case 5:return new Date(_.getFullYear()-1,11,31);case 6:return new Date(_.getFullYear()-1,11,30)}}function Pt(_){var Q=_.Sa;for(_=new Date(new Date(_.Ta+1900,0,1).getTime());0<Q;){var ft=_.getMonth(),$e=(Qe(_.getFullYear())?Va:za)[ft];if(!(Q>$e-_.getDate())){_.setDate(_.getDate()+Q);break}Q-=$e-_.getDate()+1,_.setDate(1),11>ft?_.setMonth(ft+1):(_.setMonth(0),_.setFullYear(_.getFullYear()+1))}return ft=new Date(_.getFullYear()+1,0,4),Q=at(new Date(_.getFullYear(),0,4)),ft=at(ft),0>=R(Q,_)?0>=R(ft,_)?_.getFullYear()+1:_.getFullYear():_.getFullYear()-1}c>>>=0,m>>>=0,g>>>=0,x>>>=0;var $t=r()[x+40>>>2>>>0];for(var Ft in x={gb:t()[x>>>2>>>0],fb:t()[x+4>>>2>>>0],Va:t()[x+8>>>2>>>0],Ya:t()[x+12>>>2>>>0],Wa:t()[x+16>>>2>>>0],Ta:t()[x+20>>>2>>>0],Qa:t()[x+24>>>2>>>0],Sa:t()[x+28>>>2>>>0],ob:t()[x+32>>>2>>>0],eb:t()[x+36>>>2>>>0],hb:$t?Ir($t):""},g=Ir(g),$t={"%c":"%a %b %d %H:%M:%S %Y","%D":"%m/%d/%y","%F":"%Y-%m-%d","%h":"%b","%r":"%I:%M:%S %p","%R":"%H:%M","%T":"%H:%M:%S","%x":"%m/%d/%y","%X":"%H:%M:%S","%Ec":"%c","%EC":"%C","%Ex":"%m/%d/%y","%EX":"%H:%M:%S","%Ey":"%y","%EY":"%Y","%Od":"%d","%Oe":"%e","%OH":"%H","%OI":"%I","%Om":"%m","%OM":"%M","%OS":"%S","%Ou":"%u","%OU":"%U","%OV":"%V","%Ow":"%w","%OW":"%W","%Oy":"%y"})g=g.replace(new RegExp(Ft,"g"),$t[Ft]);var Ja="Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split(" "),Ya="January February March April May June July August September October November December".split(" ");for(Ft in $t={"%a":_=>Ja[_.Qa].substring(0,3),"%A":_=>Ja[_.Qa],"%b":_=>Ya[_.Wa].substring(0,3),"%B":_=>Ya[_.Wa],"%C":_=>E((_.Ta+1900)/100|0,2),"%d":_=>E(_.Ya,2),"%e":_=>I(_.Ya,2," "),"%g":_=>Pt(_).toString().substring(2),"%G":Pt,"%H":_=>E(_.Va,2),"%I":_=>((_=_.Va)==0?_=12:12<_&&(_-=12),E(_,2)),"%j":_=>{for(var Q=0,ft=0;ft<=_.Wa-1;Q+=(Qe(_.Ta+1900)?Va:za)[ft++]);return E(_.Ya+Q,3)},"%m":_=>E(_.Wa+1,2),"%M":_=>E(_.fb,2),"%n":()=>`
-`,"%p":_=>0<=_.Va&&12>_.Va?"AM":"PM","%S":_=>E(_.gb,2),"%t":()=>"	","%u":_=>_.Qa||7,"%U":_=>E(Math.floor((_.Sa+7-_.Qa)/7),2),"%V":_=>{var Q=Math.floor((_.Sa+7-(_.Qa+6)%7)/7);if(2>=(_.Qa+371-_.Sa-2)%7&&Q++,Q)Q==53&&((ft=(_.Qa+371-_.Sa)%7)==4||ft==3&&Qe(_.Ta)||(Q=1));else{Q=52;var ft=(_.Qa+7-_.Sa-1)%7;(ft==4||ft==5&&Qe(_.Ta%400-1))&&Q++}return E(Q,2)},"%w":_=>_.Qa,"%W":_=>E(Math.floor((_.Sa+7-(_.Qa+6)%7)/7),2),"%y":_=>(_.Ta+1900).toString().substring(2),"%Y":_=>_.Ta+1900,"%z":_=>{var Q=0<=(_=_.eb);return _=Math.abs(_)/60,(Q?"+":"-")+("0000"+(_/60*100+_%60)).slice(-4)},"%Z":_=>_.hb,"%%":()=>"%"},g=g.replace(/%%/g,"\0\0"),$t)g.includes(Ft)&&(g=g.replace(new RegExp(Ft,"g"),$t[Ft](x)));return Ft=function(_){var Q=Array(ba(_)+1);return ga(_,Q,0,Q.length),Q}(g=g.replace(/\0\0/g,"%")),Ft.length>m?0:(Vd(Ft,c),Ft.length-1)}function zd(c,m,g,x){return Wa(c>>>0,m>>>0,g>>>0,x>>>0)}d||function(){for(var c=u.numThreads-1;c--;)ua();Lt.unshift(()=>{ue++,function(m){d?m():Promise.all(Ie.map(sa)).then(m)}(()=>le())})}();var Wd=[Oo,na,fa,ha,ma,ya,xa,Ta,wa,va,Ia,_a,Oa,Sa,Aa,Pa,La,$a,Ca,Na,Ra,Ga,Ma,Ua],U=function(){function c(g,x){return U=g.exports,U=function(){var I=U,E=at=>()=>at()>>>0,R=at=>Pt=>at(Pt)>>>0;return(I=Object.assign({},I)).Ba=E(I.Ba),I.Ca=R(I.Ca),I.emscripten_main_runtime_thread_id=E(I.emscripten_main_runtime_thread_id),I.Oa=R(I.Oa),I.Pa=E(I.Pa),I}(),oa.push(U.Ea),la=U.Fa,Jr.unshift(U.$),Kr=x,le(),U}var m=Yr();if(ue++,u.instantiateWasm)try{return u.instantiateWasm(m,c)}catch(g){et(`Module.instantiateWasm callback failed with error: ${g}`),a(g)}return ve||=u.locateFile?gt("ort-wasm-simd-threaded.wasm")?"ort-wasm-simd-threaded.wasm":u.locateFile?u.locateFile("ort-wasm-simd-threaded.wasm",A):A+"ort-wasm-simd-threaded.wasm":new URL(/* asset import */ __webpack_require__(/*! ort-wasm-simd-threaded.wasm */ "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"), __webpack_require__.b).href,function(g,x){var I=ve;return M||typeof WebAssembly.instantiateStreaming!="function"||gt(I)||Ot(I)||typeof fetch!="function"?wr(I,g,x):fetch(I,{credentials:"same-origin"}).then(E=>WebAssembly.instantiateStreaming(E,g).then(x,function(R){return et(`wasm streaming compile failed: ${R}`),et("falling back to ArrayBuffer instantiation"),wr(I,g,x)}))}(m,function(g){c(g.instance,g.module)}).catch(a),{}}();u._OrtInit=(c,m)=>(u._OrtInit=U.aa)(c,m),u._OrtGetLastError=(c,m)=>(u._OrtGetLastError=U.ba)(c,m),u._OrtCreateSessionOptions=(c,m,g,x,I,E,R,at,Pt,$t)=>(u._OrtCreateSessionOptions=U.ca)(c,m,g,x,I,E,R,at,Pt,$t),u._OrtAppendExecutionProvider=(c,m)=>(u._OrtAppendExecutionProvider=U.da)(c,m),u._OrtAddFreeDimensionOverride=(c,m,g)=>(u._OrtAddFreeDimensionOverride=U.ea)(c,m,g),u._OrtAddSessionConfigEntry=(c,m,g)=>(u._OrtAddSessionConfigEntry=U.fa)(c,m,g),u._OrtReleaseSessionOptions=c=>(u._OrtReleaseSessionOptions=U.ga)(c),u._OrtCreateSession=(c,m,g)=>(u._OrtCreateSession=U.ha)(c,m,g),u._OrtReleaseSession=c=>(u._OrtReleaseSession=U.ia)(c),u._OrtGetInputOutputCount=(c,m,g)=>(u._OrtGetInputOutputCount=U.ja)(c,m,g),u._OrtGetInputName=(c,m)=>(u._OrtGetInputName=U.ka)(c,m),u._OrtGetOutputName=(c,m)=>(u._OrtGetOutputName=U.la)(c,m),u._OrtFree=c=>(u._OrtFree=U.ma)(c),u._OrtCreateTensor=(c,m,g,x,I,E)=>(u._OrtCreateTensor=U.na)(c,m,g,x,I,E),u._OrtGetTensorData=(c,m,g,x,I)=>(u._OrtGetTensorData=U.oa)(c,m,g,x,I),u._OrtReleaseTensor=c=>(u._OrtReleaseTensor=U.pa)(c),u._OrtCreateRunOptions=(c,m,g,x)=>(u._OrtCreateRunOptions=U.qa)(c,m,g,x),u._OrtAddRunConfigEntry=(c,m,g)=>(u._OrtAddRunConfigEntry=U.ra)(c,m,g),u._OrtReleaseRunOptions=c=>(u._OrtReleaseRunOptions=U.sa)(c),u._OrtCreateBinding=c=>(u._OrtCreateBinding=U.ta)(c),u._OrtBindInput=(c,m,g)=>(u._OrtBindInput=U.ua)(c,m,g),u._OrtBindOutput=(c,m,g,x)=>(u._OrtBindOutput=U.va)(c,m,g,x),u._OrtClearBoundOutputs=c=>(u._OrtClearBoundOutputs=U.wa)(c),u._OrtReleaseBinding=c=>(u._OrtReleaseBinding=U.xa)(c),u._OrtRunWithBinding=(c,m,g,x,I)=>(u._OrtRunWithBinding=U.ya)(c,m,g,x,I),u._OrtRun=(c,m,g,x,I,E,R,at)=>(u._OrtRun=U.za)(c,m,g,x,I,E,R,at),u._OrtEndProfiling=c=>(u._OrtEndProfiling=U.Aa)(c);var er=()=>(er=U.Ba)();u._malloc=c=>(u._malloc=U.Ca)(c),u._free=c=>(u._free=U.Da)(c);var rn,$o=(c,m,g,x,I,E)=>($o=U.Ga)(c,m,g,x,I,E),Ha=()=>(Ha=U.Ha)(),qa=(c,m,g,x,I)=>(qa=U.Ia)(c,m,g,x,I),ko=c=>(ko=U.Ja)(c),nn=c=>(nn=U.Ka)(c),ja=()=>(ja=U.La)(),Xa=(c,m)=>(Xa=U.Ma)(c,m),on=c=>(on=U.Na)(c),Bo=c=>(Bo=U.Oa)(c),Fo=()=>(Fo=U.Pa)();function Ka(){0<ue||(d?(s(u),d||Zr(Jr),startWorker(u)):(Zr(Lt),0<ue||rn||(rn=!0,u.calledRun=!0,se||(d||Zr(Jr),s(u),d||Zr(Ye)))))}return u.___start_em_js=838360,u.___stop_em_js=838421,u.stackSave=()=>Fo(),u.stackRestore=c=>on(c),u.stackAlloc=c=>Bo(c),u.UTF8ToString=Ir,u.stringToUTF8=_r,u.lengthBytesUTF8=ba,De=function c(){rn||Ka(),rn||(De=c)},Ka(),l}),Og=Mp;globalThis.self?.name==="em-pthread"&&Mp()});var br,Sg,Ag,Pg,zp,Wp,Eg,Hp,Vr=O(()=>{"use strict";oo();br= false?0:"file:///C:/Users/mohdy/OneDrive/Documents/GP/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs"??(0),Sg= false||typeof location>"u"?void 0:location.origin,Ag=(i,e)=>{try{let o=e??br;return(o?new URL(i,o):new URL(i)).origin===Sg}catch{return!1}},Pg=async i=>{let o=await(await fetch(i,{credentials:"same-origin"})).blob();return URL.createObjectURL(o)},zp=(Gp(),sn(Rp)).default,Wp=async()=>{if(!br)throw new Error("Failed to load proxy worker: cannot determine the script source URL.");if(Ag(br))return[void 0,zp()];let i=await Pg(br);return[i,zp(i)]},Eg=(Vp(),sn(Up)).default,Hp=async(i,e,o)=>[void 0,Eg]});var Xi,Ki,ho,qp,Dg,Lg,io,xt,Ke=O(()=>{"use strict";Vr();Ki=!1,ho=!1,qp=!1,Dg=()=>{if(typeof SharedArrayBuffer>"u")return!1;try{return typeof MessageChannel<"u"&&new MessageChannel().port1.postMessage(new SharedArrayBuffer(1)),WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,0,0,1,4,1,96,0,0,3,2,1,0,5,4,1,3,1,1,10,11,1,9,0,65,0,254,16,2,0,26,11]))}catch{return!1}},Lg=()=>{try{return WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,0,0,1,4,1,96,0,0,3,2,1,0,10,30,1,28,0,65,0,253,15,253,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,253,186,1,26,11]))}catch{return!1}},io=async i=>{if(Ki)return Promise.resolve();if(ho)throw new Error("multiple calls to 'initializeWebAssembly()' detected.");if(qp)throw new Error("previous call to 'initializeWebAssembly()' failed.");ho=!0;let e=i.initTimeout,o=i.numThreads;if(!Lg())throw new Error("WebAssembly SIMD is not supported in the current environment.");let t=Dg();o>1&&!t&&(typeof self<"u"&&!self.crossOriginIsolated&&console.warn("env.wasm.numThreads is set to "+o+", but this will not work unless you enable crossOriginIsolated mode. See https://web.dev/cross-origin-isolation-guide/ for more info."),console.warn("WebAssembly multi-threading is not supported in the current environment. Falling back to single-threading."),i.numThreads=o=1);let r=i.wasmPaths,n=typeof r=="string"?r:void 0,s=r?.mjs,a=s?.href??s,u=r?.wasm,l=u?.href??u,f=i.wasmBinary,[p,d]=await Hp(a,n,o>1),y=!1,T=[];if(e>0&&T.push(new Promise(v=>{setTimeout(()=>{y=!0,v()},e)})),T.push(new Promise((v,S)=>{let L={numThreads:o};f?L.wasmBinary=f:(l||n)&&(L.locateFile=(P,A)=>l??(n??A)+P),d(L).then(P=>{ho=!1,Ki=!0,Xi=P,v(),p&&URL.revokeObjectURL(p)},P=>{ho=!1,qp=!0,S(P)})})),await Promise.race(T),y)throw new Error(`WebAssembly backend initializing failed due to timeout: ${e}ms`)},xt=()=>{if(Ki&&Xi)return Xi;throw new Error("WebAssembly is not initialized yet.")}});var Tt,Wr,ht,mo=O(()=>{"use strict";Ke();Tt=(i,e)=>{let o=xt(),t=o.lengthBytesUTF8(i)+1,r=o._malloc(t);return o.stringToUTF8(i,r,t),e.push(r),r},Wr=(i,e,o,t)=>{if(typeof i=="object"&&i!==null){if(o.has(i))throw new Error("Circular reference in options");o.add(i)}Object.entries(i).forEach(([r,n])=>{let s=e?e+r:r;if(typeof n=="object")Wr(n,s+".",o,t);else if(typeof n=="string"||typeof n=="number")t(s,n.toString());else if(typeof n=="boolean")t(s,n?"1":"0");else throw new Error(`Can't handle extra config type: ${typeof n}`)})},ht=i=>{let e=xt(),o=e.stackSave();try{let t=e.stackAlloc(8);e._OrtGetLastError(t,t+4);let r=e.HEAP32[t/4],n=e.HEAPU32[t/4+1],s=n?e.UTF8ToString(n):"";throw new Error(`${i} ERROR_CODE: ${r}, ERROR_MESSAGE: ${s}`)}finally{e.stackRestore(o)}}});var jp,Xp=O(()=>{"use strict";Ke();mo();jp=i=>{let e=xt(),o=0,t=[],r=i||{};try{if(i?.logSeverityLevel===void 0)r.logSeverityLevel=2;else if(typeof i.logSeverityLevel!="number"||!Number.isInteger(i.logSeverityLevel)||i.logSeverityLevel<0||i.logSeverityLevel>4)throw new Error(`log serverity level is not valid: ${i.logSeverityLevel}`);if(i?.logVerbosityLevel===void 0)r.logVerbosityLevel=0;else if(typeof i.logVerbosityLevel!="number"||!Number.isInteger(i.logVerbosityLevel))throw new Error(`log verbosity level is not valid: ${i.logVerbosityLevel}`);i?.terminate===void 0&&(r.terminate=!1);let n=0;return i?.tag!==void 0&&(n=Tt(i.tag,t)),o=e._OrtCreateRunOptions(r.logSeverityLevel,r.logVerbosityLevel,!!r.terminate,n),o===0&&ht("Can't create run options."),i?.extra!==void 0&&Wr(i.extra,"",new WeakSet,(s,a)=>{let u=Tt(s,t),l=Tt(a,t);e._OrtAddRunConfigEntry(o,u,l)!==0&&ht(`Can't set a run config entry: ${s} - ${a}.`)}),[o,t]}catch(n){throw o!==0&&e._OrtReleaseRunOptions(o),t.forEach(s=>e._free(s)),n}}});var $g,kg,Bg,Fg,Kp,Jp=O(()=>{"use strict";Ke();mo();$g=i=>{switch(i){case"disabled":return 0;case"basic":return 1;case"extended":return 2;case"all":return 99;default:throw new Error(`unsupported graph optimization level: ${i}`)}},kg=i=>{switch(i){case"sequential":return 0;case"parallel":return 1;default:throw new Error(`unsupported execution mode: ${i}`)}},Bg=i=>{i.extra||(i.extra={}),i.extra.session||(i.extra.session={});let e=i.extra.session;e.use_ort_model_bytes_directly||(e.use_ort_model_bytes_directly="1"),i.executionProviders&&i.executionProviders.some(o=>(typeof o=="string"?o:o.name)==="webgpu")&&(i.enableMemPattern=!1)},Fg=(i,e,o)=>{for(let t of e){let r=typeof t=="string"?t:t.name;switch(r){case"webnn":if(r="WEBNN",typeof t!="string"){let a=t?.deviceType;if(a){let u=Tt("deviceType",o),l=Tt(a,o);xt()._OrtAddSessionConfigEntry(i,u,l)!==0&&ht(`Can't set a session config entry: 'deviceType' - ${a}.`)}}break;case"webgpu":if(r="JS",typeof t!="string"){let s=t;if(s?.preferredLayout){if(s.preferredLayout!=="NCHW"&&s.preferredLayout!=="NHWC")throw new Error(`preferredLayout must be either 'NCHW' or 'NHWC': ${s.preferredLayout}`);let a=Tt("preferredLayout",o),u=Tt(s.preferredLayout,o);xt()._OrtAddSessionConfigEntry(i,a,u)!==0&&ht(`Can't set a session config entry: 'preferredLayout' - ${s.preferredLayout}.`)}}break;case"wasm":case"cpu":continue;default:throw new Error(`not supported execution provider: ${r}`)}let n=Tt(r,o);xt()._OrtAppendExecutionProvider(i,n)!==0&&ht(`Can't append execution provider: ${r}.`)}},Kp=i=>{let e=xt(),o=0,t=[],r=i||{};Bg(r);try{let n=$g(r.graphOptimizationLevel??"all"),s=kg(r.executionMode??"sequential"),a=typeof r.logId=="string"?Tt(r.logId,t):0,u=r.logSeverityLevel??2;if(!Number.isInteger(u)||u<0||u>4)throw new Error(`log serverity level is not valid: ${u}`);let l=r.logVerbosityLevel??0;if(!Number.isInteger(l)||l<0||l>4)throw new Error(`log verbosity level is not valid: ${l}`);let f=typeof r.optimizedModelFilePath=="string"?Tt(r.optimizedModelFilePath,t):0;if(o=e._OrtCreateSessionOptions(n,!!r.enableCpuMemArena,!!r.enableMemPattern,s,!!r.enableProfiling,0,a,u,l,f),o===0&&ht("Can't create session options."),r.executionProviders&&Fg(o,r.executionProviders,t),r.enableGraphCapture!==void 0){if(typeof r.enableGraphCapture!="boolean")throw new Error(`enableGraphCapture must be a boolean value: ${r.enableGraphCapture}`);let p=Tt("enableGraphCapture",t),d=Tt(r.enableGraphCapture.toString(),t);e._OrtAddSessionConfigEntry(o,p,d)!==0&&ht(`Can't set a session config entry: 'enableGraphCapture' - ${r.enableGraphCapture}.`)}if(r.freeDimensionOverrides)for(let[p,d]of Object.entries(r.freeDimensionOverrides)){if(typeof p!="string")throw new Error(`free dimension override name must be a string: ${p}`);if(typeof d!="number"||!Number.isInteger(d)||d<0)throw new Error(`free dimension override value must be a non-negative integer: ${d}`);let y=Tt(p,t);e._OrtAddFreeDimensionOverride(o,y,d)!==0&&ht(`Can't set a free dimension override: ${p} - ${d}.`)}return r.extra!==void 0&&Wr(r.extra,"",new WeakSet,(p,d)=>{let y=Tt(p,t),T=Tt(d,t);e._OrtAddSessionConfigEntry(o,y,T)!==0&&ht(`Can't set a session config entry: ${p} - ${d}.`)}),[o,t]}catch(n){throw o!==0&&e._OrtReleaseSessionOptions(o),t.forEach(s=>e._free(s)),n}}});var Hr,Yp,qr,Zp,Qp,bo,go,td,Ji=O(()=>{"use strict";Hr=i=>{switch(i){case"int8":return 3;case"uint8":return 2;case"bool":return 9;case"int16":return 5;case"uint16":return 4;case"int32":return 6;case"uint32":return 12;case"float16":return 10;case"float32":return 1;case"float64":return 11;case"string":return 8;case"int64":return 7;case"uint64":return 13;case"int4":return 22;case"uint4":return 21;default:throw new Error(`unsupported data type: ${i}`)}},Yp=i=>{switch(i){case 3:return"int8";case 2:return"uint8";case 9:return"bool";case 5:return"int16";case 4:return"uint16";case 6:return"int32";case 12:return"uint32";case 10:return"float16";case 1:return"float32";case 11:return"float64";case 8:return"string";case 7:return"int64";case 13:return"uint64";case 22:return"int4";case 21:return"uint4";default:throw new Error(`unsupported data type: ${i}`)}},qr=(i,e)=>{let o=[-1,4,1,1,2,2,4,8,-1,1,2,8,4,8,-1,-1,-1,-1,-1,-1,-1,.5,.5][i],t=typeof e=="number"?e:e.reduce((r,n)=>r*n,1);return o>0?Math.ceil(t*o):void 0},Zp=i=>{switch(i){case"float16":return typeof Float16Array<"u"&&Float16Array.from?Float16Array:Uint16Array;case"float32":return Float32Array;case"uint8":return Uint8Array;case"int8":return Int8Array;case"uint16":return Uint16Array;case"int16":return Int16Array;case"int32":return Int32Array;case"bool":return Uint8Array;case"float64":return Float64Array;case"uint32":return Uint32Array;case"int64":return BigInt64Array;case"uint64":return BigUint64Array;default:throw new Error(`unsupported type: ${i}`)}},Qp=i=>{switch(i){case"verbose":return 0;case"info":return 1;case"warning":return 2;case"error":return 3;case"fatal":return 4;default:throw new Error(`unsupported logging level: ${i}`)}},bo=i=>i==="float32"||i==="float16"||i==="int32"||i==="int64"||i==="uint32"||i==="uint8"||i==="bool"||i==="uint4"||i==="int4",go=i=>i==="float32"||i==="float16"||i==="int32"||i==="int64"||i==="uint32"||i==="uint64"||i==="int8"||i==="uint8"||i==="bool",td=i=>{switch(i){case"none":return 0;case"cpu":return 1;case"cpu-pinned":return 2;case"texture":return 3;case"gpu-buffer":return 4;case"ml-tensor":return 5;default:throw new Error(`unsupported data location: ${i}`)}}});var jr,Yi=O(()=>{"use strict";oo();jr=async i=>{if(typeof i=="string")if(false){}else{let e=await fetch(i);if(!e.ok)throw new Error(`failed to load external data file: ${i}`);let o=e.headers.get("Content-Length"),t=o?parseInt(o,10):0;if(t<1073741824)return new Uint8Array(await e.arrayBuffer());{if(!e.body)throw new Error(`failed to load external data file: ${i}, no response body.`);let r=e.body.getReader(),n;try{n=new ArrayBuffer(t)}catch(a){if(a instanceof RangeError){let u=Math.ceil(t/65536);n=new WebAssembly.Memory({initial:u,maximum:u}).buffer}else throw a}let s=0;for(;;){let{done:a,value:u}=await r.read();if(a)break;let l=u.byteLength;new Uint8Array(n,s,l).set(u),s+=l}return new Uint8Array(n,0,t)}}else return i instanceof Blob?new Uint8Array(await i.arrayBuffer()):i instanceof Uint8Array?i:new Uint8Array(i)}});var Cg,ao,so,yr,Ng,zr,uo,lo,ed,fo,co,po,qi=O(()=>{"use strict";Xp();Jp();Ji();Ke();mo();Yi();Cg=(i,e)=>{xt()._OrtInit(i,e)!==0&&ht("Can't initialize onnxruntime.")},ao=async i=>{Cg(i.wasm.numThreads,Qp(i.logLevel))},so=async(i,e)=>{},yr=new Map,Ng=i=>{let e=xt(),o=e.stackSave();try{let t=e.stackAlloc(8);return e._OrtGetInputOutputCount(i,t,t+4)!==0&&ht("Can't get session input/output count."),[e.HEAP32[t/4],e.HEAP32[t/4+1]]}finally{e.stackRestore(o)}},zr=i=>{let e=xt(),o=e._malloc(i.byteLength);if(o===0)throw new Error(`Can't create a session. failed to allocate a buffer of size ${i.byteLength}.`);return e.HEAPU8.set(i,o),[o,i.byteLength]},uo=async(i,e)=>{let o,t,r=xt();Array.isArray(i)?[o,t]=i:i.buffer===r.HEAPU8.buffer?[o,t]=[i.byteOffset,i.byteLength]:[o,t]=zr(i);let n=0,s=0,a=0,u=[],l=[],f=[];try{if([s,u]=Kp(e),e?.externalData&&r.mountExternalData){let P=[];for(let A of e.externalData){let M=typeof A=="string"?A:A.path;P.push(jr(typeof A=="string"?A:A.data).then(V=>{r.mountExternalData(M,V)}))}await Promise.all(P)}for(let P of e?.executionProviders??[])if((typeof P=="string"?P:P.name)==="webnn"){if(r.shouldTransferToMLTensor=!1,r.currentContext)throw new Error("WebNN execution provider is already set.");if(typeof P!="string"){let M=P,V=M?.context,lt=M?.gpuDevice,wt=M?.deviceType,et=M?.numThreads,Dt=M?.powerPreference;V?r.currentContext=V:lt?r.currentContext=await navigator.ml.createContext(lt):r.currentContext=await navigator.ml.createContext({deviceType:wt,numThreads:et,powerPreference:Dt})}else r.currentContext=await navigator.ml.createContext();break}n=await r._OrtCreateSession(o,t,s),n===0&&ht("Can't create a session."),r.currentContext&&(r.jsepRegisterMLContext(n,r.currentContext),r.currentContext=void 0,r.shouldTransferToMLTensor=!0);let[p,d]=Ng(n),y=!!e?.enableGraphCapture,T=[],v=[],S=[];for(let P=0;P<p;P++){let A=r._OrtGetInputName(n,P);A===0&&ht("Can't get an input name."),l.push(A),T.push(r.UTF8ToString(A))}for(let P=0;P<d;P++){let A=r._OrtGetOutputName(n,P);A===0&&ht("Can't get an output name."),f.push(A);let M=r.UTF8ToString(A);v.push(M)}let L=null;return yr.set(n,[n,l,f,L,y,!1]),[n,T,v]}catch(p){throw l.forEach(d=>r._OrtFree(d)),f.forEach(d=>r._OrtFree(d)),a!==0&&r._OrtReleaseBinding(a),n!==0&&r._OrtReleaseSession(n),p}finally{r._free(o),s!==0&&r._OrtReleaseSessionOptions(s),u.forEach(p=>r._free(p)),r.unmountExternalData?.()}},lo=i=>{let e=xt(),o=yr.get(i);if(!o)throw new Error(`cannot release session. invalid session id: ${i}`);let[t,r,n,s,a]=o;s&&(a&&e._OrtClearBoundOutputs(s.handle),e._OrtReleaseBinding(s.handle)),e.jsepOnReleaseSession?.(i),r.forEach(u=>e._OrtFree(u)),n.forEach(u=>e._OrtFree(u)),e._OrtReleaseSession(t),yr.delete(i)},ed=(i,e,o,t,r,n=!1)=>{if(!i){e.push(0);return}let s=xt(),a=i[0],u=i[1],l=i[3],f,p;if(a==="string"&&(l==="gpu-buffer"||l==="ml-tensor"))throw new Error("String tensor is not supported on GPU.");if(n&&l!=="gpu-buffer")throw new Error(`External buffer must be provided for input/output index ${r} when enableGraphCapture is true.`);if(l==="gpu-buffer"){let T=i[2].gpuBuffer;p=qr(Hr(a),u);let v=s.jsepRegisterBuffer;if(!v)throw new Error('Tensor location "gpu-buffer" is not supported without using WebGPU.');f=v(t,r,T,p)}else if(l==="ml-tensor"){let T=i[2].mlTensor;p=qr(Hr(a),u);let v=s.jsepRegisterMLTensor;if(!v)throw new Error('Tensor location "ml-tensor" is not supported without using WebNN.');f=v(T,Hr(a),u)}else{let T=i[2];if(Array.isArray(T)){p=4*T.length,f=s._malloc(p),o.push(f);let v=f/4;for(let S=0;S<T.length;S++){if(typeof T[S]!="string")throw new TypeError(`tensor data at index ${S} is not a string`);s.HEAPU32[v++]=Tt(T[S],o)}}else p=T.byteLength,f=s._malloc(p),o.push(f),s.HEAPU8.set(new Uint8Array(T.buffer,T.byteOffset,p),f)}let d=s.stackSave(),y=s.stackAlloc(4*u.length);try{let T=y/4;u.forEach(S=>s.HEAP32[T++]=S);let v=s._OrtCreateTensor(Hr(a),f,p,y,u.length,td(l));v===0&&ht(`Can't create tensor for input/output. session=${t}, index=${r}.`),e.push(v)}finally{s.stackRestore(d)}},fo=async(i,e,o,t,r,n)=>{let s=xt(),a=yr.get(i);if(!a)throw new Error(`cannot run inference. invalid session id: ${i}`);let u=a[0],l=a[1],f=a[2],p=a[3],d=a[4],y=a[5],T=e.length,v=t.length,S=0,L=[],P=[],A=[],M=[],V=s.stackSave(),lt=s.stackAlloc(T*4),wt=s.stackAlloc(T*4),et=s.stackAlloc(v*4),Dt=s.stackAlloc(v*4);try{s.jsepOnRunStart?.(u),[S,L]=jp(n);for(let Z=0;Z<T;Z++)ed(o[Z],P,M,i,e[Z],d);for(let Z=0;Z<v;Z++)ed(r[Z],A,M,i,T+t[Z],d);let _t=lt/4,C=wt/4,Kr=et/4,we=Dt/4;for(let Z=0;Z<T;Z++)s.HEAPU32[_t++]=P[Z],s.HEAPU32[C++]=l[e[Z]];for(let Z=0;Z<v;Z++)s.HEAPU32[Kr++]=A[Z],s.HEAPU32[we++]=f[t[Z]];let oe;oe=await s._OrtRun(u,wt,lt,T,Dt,v,et,S),oe!==0&&ht("failed to call OrtRun().");let be=[];for(let Z=0;Z<v;Z++){let ge=s.HEAPU32[et/4+Z];if(ge===A[Z]){be.push(r[Z]);continue}let ie=s.stackSave(),ae=s.stackAlloc(4*4),se=!1,it,Lt=0;try{s._OrtGetTensorData(ge,ae,ae+4,ae+8,ae+12)!==0&&ht(`Can't access output tensor data on index ${Z}.`);let Ye=ae/4,ue=s.HEAPU32[Ye++];Lt=s.HEAPU32[Ye++];let Ze=s.HEAPU32[Ye++],De=s.HEAPU32[Ye++],le=[];for(let gt=0;gt<De;gt++)le.push(s.HEAPU32[Ze/4+gt]);s._OrtFree(Ze);let Mt=le.reduce((gt,Ot)=>gt*Ot,1);it=Yp(ue);let ve=p?.outputPreferredLocations[t[Z]];if(it==="string"){if(ve==="gpu-buffer"||ve==="ml-tensor")throw new Error("String tensor is not supported on GPU.");let gt=[],Ot=Lt/4;for(let Jt=0;Jt<Mt;Jt++){let wr=s.HEAPU32[Ot++],Yr=Jt===Mt-1?void 0:s.HEAPU32[Ot]-wr;gt.push(s.UTF8ToString(wr,Yr))}be.push([it,le,gt,"cpu"])}else if(ve==="gpu-buffer"&&Mt>0){let gt=s.jsepGetBuffer;if(!gt)throw new Error('preferredLocation "gpu-buffer" is not supported without using WebGPU.');let Ot=gt(Lt),Jt=qr(ue,Mt);if(Jt===void 0||!bo(it))throw new Error(`Unsupported data type: ${it}`);se=!0,be.push([it,le,{gpuBuffer:Ot,download:s.jsepCreateDownloader(Ot,Jt,it),dispose:()=>{s._OrtReleaseTensor(ge)}},"gpu-buffer"])}else if(ve==="ml-tensor"&&Mt>0){let gt=s.jsepEnsureTensor;if(!gt)throw new Error('preferredLocation "ml-tensor" is not supported without using WebNN.');if(qr(ue,Mt)===void 0||!go(it))throw new Error(`Unsupported data type: ${it}`);let Jt=await gt(Lt,ue,le,!1);se=!0,be.push([it,le,{mlTensor:Jt,download:s.jsepCreateMLTensorDownloader(Lt,it),dispose:()=>{s.jsepReleaseTensorId(Lt),s._OrtReleaseTensor(ge)}},"ml-tensor"])}else{let gt=Zp(it),Ot=new gt(Mt);new Uint8Array(Ot.buffer,Ot.byteOffset,Ot.byteLength).set(s.HEAPU8.subarray(Lt,Lt+Ot.byteLength)),be.push([it,le,Ot,"cpu"])}}finally{s.stackRestore(ie),it==="string"&&Lt&&s._free(Lt),se||s._OrtReleaseTensor(ge)}}return p&&!d&&(s._OrtClearBoundOutputs(p.handle),yr.set(i,[u,l,f,p,d,!1])),be}finally{s.stackRestore(V),P.forEach(_t=>s._OrtReleaseTensor(_t)),A.forEach(_t=>s._OrtReleaseTensor(_t)),M.forEach(_t=>s._free(_t)),S!==0&&s._OrtReleaseRunOptions(S),L.forEach(_t=>s._free(_t))}},co=i=>{let e=xt(),o=yr.get(i);if(!o)throw new Error("invalid session id");let t=o[0],r=e._OrtEndProfiling(t);r===0&&ht("Can't get an profile file name."),e._OrtFree(r)},po=i=>{let e=[];for(let o of i){let t=o[2];!Array.isArray(t)&&"buffer"in t&&e.push(t.buffer)}return e}});var Je,Kt,Xr,xo,To,yo,Zi,Qi,xr,Tr,Gg,rd,nd,od,id,ad,sd,ud,ta=O(()=>{"use strict";Yt();qi();Ke();Vr();Je=()=>!!z.wasm.proxy&&typeof document<"u",Xr=!1,xo=!1,To=!1,Qi=new Map,xr=(i,e)=>{let o=Qi.get(i);o?o.push(e):Qi.set(i,[e])},Tr=()=>{if(Xr||!xo||To||!Kt)throw new Error("worker not ready")},Gg=i=>{switch(i.data.type){case"init-wasm":Xr=!1,i.data.err?(To=!0,Zi[1](i.data.err)):(xo=!0,Zi[0]()),yo&&(URL.revokeObjectURL(yo),yo=void 0);break;case"init-ep":case"copy-from":case"create":case"release":case"run":case"end-profiling":{let e=Qi.get(i.data.type);i.data.err?e.shift()[1](i.data.err):e.shift()[0](i.data.out);break}default:}},rd=async()=>{if(!xo){if(Xr)throw new Error("multiple calls to 'initWasm()' detected.");if(To)throw new Error("previous call to 'initWasm()' failed.");if(Xr=!0,Je())return new Promise((i,e)=>{Kt?.terminate(),Wp().then(([o,t])=>{try{Kt=t,Kt.onerror=n=>e(n),Kt.onmessage=Gg,Zi=[i,e];let r={type:"init-wasm",in:z};Kt.postMessage(r),yo=o}catch(r){e(r)}},e)});try{await io(z.wasm),await ao(z),xo=!0}catch(i){throw To=!0,i}finally{Xr=!1}}},nd=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("init-ep",[e,o]);let t={type:"init-ep",in:{epName:i,env:z}};Kt.postMessage(t)});await so(z,i)},od=async i=>Je()?(Tr(),new Promise((e,o)=>{xr("copy-from",[e,o]);let t={type:"copy-from",in:{buffer:i}};Kt.postMessage(t,[i.buffer])})):zr(i),id=async(i,e)=>{if(Je()){if(e?.preferredOutputLocation)throw new Error('session option "preferredOutputLocation" is not supported for proxy.');return Tr(),new Promise((o,t)=>{xr("create",[o,t]);let r={type:"create",in:{model:i,options:{...e}}},n=[];i instanceof Uint8Array&&n.push(i.buffer),Kt.postMessage(r,n)})}else return uo(i,e)},ad=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("release",[e,o]);let t={type:"release",in:i};Kt.postMessage(t)});lo(i)},sd=async(i,e,o,t,r,n)=>{if(Je()){if(o.some(s=>s[3]!=="cpu"))throw new Error("input tensor on GPU is not supported for proxy.");if(r.some(s=>s))throw new Error("pre-allocated output tensor is not supported for proxy.");return Tr(),new Promise((s,a)=>{xr("run",[s,a]);let u=o,l={type:"run",in:{sessionId:i,inputIndices:e,inputs:u,outputIndices:t,options:n}};Kt.postMessage(l,po(u))})}else return fo(i,e,o,t,r,n)},ud=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("end-profiling",[e,o]);let t={type:"end-profiling",in:i};Kt.postMessage(t)});co(i)}});var ld,Mg,wo,fd=O(()=>{"use strict";Yt();ta();Ji();oo();Yi();ld=(i,e)=>{switch(i.location){case"cpu":return[i.type,i.dims,i.data,"cpu"];case"gpu-buffer":return[i.type,i.dims,{gpuBuffer:i.gpuBuffer},"gpu-buffer"];case"ml-tensor":return[i.type,i.dims,{mlTensor:i.mlTensor},"ml-tensor"];default:throw new Error(`invalid data location: ${i.location} for ${e()}`)}},Mg=i=>{switch(i[3]){case"cpu":return new yt(i[0],i[2],i[1]);case"gpu-buffer":{let e=i[0];if(!bo(e))throw new Error(`not supported data type: ${e} for deserializing GPU tensor`);let{gpuBuffer:o,download:t,dispose:r}=i[2];return yt.fromGpuBuffer(o,{dataType:e,dims:i[1],download:t,dispose:r})}case"ml-tensor":{let e=i[0];if(!go(e))throw new Error(`not supported data type: ${e} for deserializing MLTensor tensor`);let{mlTensor:o,download:t,dispose:r}=i[2];return yt.fromMLTensor(o,{dataType:e,dims:i[1],download:t,dispose:r})}default:throw new Error(`invalid data location: ${i[3]}`)}},wo=class{async fetchModelAndCopyToWasmMemory(e){return od(await jr(e))}async loadModel(e,o){Fe();let t;typeof e=="string"? false?0:t=await this.fetchModelAndCopyToWasmMemory(e):t=e,[this.sessionId,this.inputNames,this.outputNames]=await id(t,o),Ce()}async dispose(){return ad(this.sessionId)}async run(e,o,t){Fe();let r=[],n=[];Object.entries(e).forEach(d=>{let y=d[0],T=d[1],v=this.inputNames.indexOf(y);if(v===-1)throw new Error(`invalid input '${y}'`);r.push(T),n.push(v)});let s=[],a=[];Object.entries(o).forEach(d=>{let y=d[0],T=d[1],v=this.outputNames.indexOf(y);if(v===-1)throw new Error(`invalid output '${y}'`);s.push(T),a.push(v)});let u=r.map((d,y)=>ld(d,()=>`input "${this.inputNames[n[y]]}"`)),l=s.map((d,y)=>d?ld(d,()=>`output "${this.outputNames[a[y]]}"`):null),f=await sd(this.sessionId,n,u,a,l,t),p={};for(let d=0;d<f.length;d++)p[this.outputNames[a[d]]]=s[d]??Mg(f[d]);return Ce(),p}startProfiling(){}endProfiling(){ud(this.sessionId)}}});var pd={};Or(pd,{OnnxruntimeWebAssemblyBackend:()=>vo,initializeFlags:()=>cd,wasmBackend:()=>Ug});var cd,vo,Ug,dd=O(()=>{"use strict";Yt();ta();fd();Vr();cd=()=>{if((typeof z.wasm.initTimeout!="number"||z.wasm.initTimeout<0)&&(z.wasm.initTimeout=0),z.wasm.simd===!1&&console.warn('Deprecated property "env.wasm.simd" is set to false. non-SIMD build is no longer provided, and this setting will be ignored.'),typeof z.wasm.proxy!="boolean"&&(z.wasm.proxy=!1),typeof z.wasm.trace!="boolean"&&(z.wasm.trace=!1),typeof z.wasm.numThreads!="number"||!Number.isInteger(z.wasm.numThreads)||z.wasm.numThreads<=0)if(typeof self<"u"&&!self.crossOriginIsolated)z.wasm.numThreads=1;else{let i=typeof navigator>"u"?Co("node:os").cpus().length:navigator.hardwareConcurrency;z.wasm.numThreads=Math.min(4,Math.ceil((i||1)/2))}},vo=class{async init(e){cd(),await rd(),await nd(e)}async createInferenceSessionHandler(e,o){let t=new wo;return await t.loadModel(e,o),Promise.resolve(t)}},Ug=new vo});Yt();Yt();Yt();var Ds="1.20.1";var mO=Mo;{let i=(Fp(),sn(Bp)).onnxjsBackend;nr("webgl",i,-10)}{let i=(dd(),sn(pd)).wasmBackend;nr("cpu",i,10),nr("wasm",i,10)}Object.defineProperty(z.versions,"web",{value:Ds,enumerable:!0});
+`,"%p":_=>0<=_.Va&&12>_.Va?"AM":"PM","%S":_=>E(_.gb,2),"%t":()=>"	","%u":_=>_.Qa||7,"%U":_=>E(Math.floor((_.Sa+7-_.Qa)/7),2),"%V":_=>{var Q=Math.floor((_.Sa+7-(_.Qa+6)%7)/7);if(2>=(_.Qa+371-_.Sa-2)%7&&Q++,Q)Q==53&&((ft=(_.Qa+371-_.Sa)%7)==4||ft==3&&Qe(_.Ta)||(Q=1));else{Q=52;var ft=(_.Qa+7-_.Sa-1)%7;(ft==4||ft==5&&Qe(_.Ta%400-1))&&Q++}return E(Q,2)},"%w":_=>_.Qa,"%W":_=>E(Math.floor((_.Sa+7-(_.Qa+6)%7)/7),2),"%y":_=>(_.Ta+1900).toString().substring(2),"%Y":_=>_.Ta+1900,"%z":_=>{var Q=0<=(_=_.eb);return _=Math.abs(_)/60,(Q?"+":"-")+("0000"+(_/60*100+_%60)).slice(-4)},"%Z":_=>_.hb,"%%":()=>"%"},g=g.replace(/%%/g,"\0\0"),$t)g.includes(Ft)&&(g=g.replace(new RegExp(Ft,"g"),$t[Ft](x)));return Ft=function(_){var Q=Array(ba(_)+1);return ga(_,Q,0,Q.length),Q}(g=g.replace(/\0\0/g,"%")),Ft.length>m?0:(Vd(Ft,c),Ft.length-1)}function zd(c,m,g,x){return Wa(c>>>0,m>>>0,g>>>0,x>>>0)}d||function(){for(var c=u.numThreads-1;c--;)ua();Lt.unshift(()=>{ue++,function(m){d?m():Promise.all(Ie.map(sa)).then(m)}(()=>le())})}();var Wd=[Oo,na,fa,ha,ma,ya,xa,Ta,wa,va,Ia,_a,Oa,Sa,Aa,Pa,La,$a,Ca,Na,Ra,Ga,Ma,Ua],U=function(){function c(g,x){return U=g.exports,U=function(){var I=U,E=at=>()=>at()>>>0,R=at=>Pt=>at(Pt)>>>0;return(I=Object.assign({},I)).Ba=E(I.Ba),I.Ca=R(I.Ca),I.emscripten_main_runtime_thread_id=E(I.emscripten_main_runtime_thread_id),I.Oa=R(I.Oa),I.Pa=E(I.Pa),I}(),oa.push(U.Ea),la=U.Fa,Jr.unshift(U.$),Kr=x,le(),U}var m=Yr();if(ue++,u.instantiateWasm)try{return u.instantiateWasm(m,c)}catch(g){et(`Module.instantiateWasm callback failed with error: ${g}`),a(g)}return ve||=u.locateFile?gt("ort-wasm-simd-threaded.wasm")?"ort-wasm-simd-threaded.wasm":u.locateFile?u.locateFile("ort-wasm-simd-threaded.wasm",A):A+"ort-wasm-simd-threaded.wasm":new URL(/* asset import */ __webpack_require__(/*! ort-wasm-simd-threaded.wasm */ "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"), __webpack_require__.b).href,function(g,x){var I=ve;return M||typeof WebAssembly.instantiateStreaming!="function"||gt(I)||Ot(I)||typeof fetch!="function"?wr(I,g,x):fetch(I,{credentials:"same-origin"}).then(E=>WebAssembly.instantiateStreaming(E,g).then(x,function(R){return et(`wasm streaming compile failed: ${R}`),et("falling back to ArrayBuffer instantiation"),wr(I,g,x)}))}(m,function(g){c(g.instance,g.module)}).catch(a),{}}();u._OrtInit=(c,m)=>(u._OrtInit=U.aa)(c,m),u._OrtGetLastError=(c,m)=>(u._OrtGetLastError=U.ba)(c,m),u._OrtCreateSessionOptions=(c,m,g,x,I,E,R,at,Pt,$t)=>(u._OrtCreateSessionOptions=U.ca)(c,m,g,x,I,E,R,at,Pt,$t),u._OrtAppendExecutionProvider=(c,m)=>(u._OrtAppendExecutionProvider=U.da)(c,m),u._OrtAddFreeDimensionOverride=(c,m,g)=>(u._OrtAddFreeDimensionOverride=U.ea)(c,m,g),u._OrtAddSessionConfigEntry=(c,m,g)=>(u._OrtAddSessionConfigEntry=U.fa)(c,m,g),u._OrtReleaseSessionOptions=c=>(u._OrtReleaseSessionOptions=U.ga)(c),u._OrtCreateSession=(c,m,g)=>(u._OrtCreateSession=U.ha)(c,m,g),u._OrtReleaseSession=c=>(u._OrtReleaseSession=U.ia)(c),u._OrtGetInputOutputCount=(c,m,g)=>(u._OrtGetInputOutputCount=U.ja)(c,m,g),u._OrtGetInputName=(c,m)=>(u._OrtGetInputName=U.ka)(c,m),u._OrtGetOutputName=(c,m)=>(u._OrtGetOutputName=U.la)(c,m),u._OrtFree=c=>(u._OrtFree=U.ma)(c),u._OrtCreateTensor=(c,m,g,x,I,E)=>(u._OrtCreateTensor=U.na)(c,m,g,x,I,E),u._OrtGetTensorData=(c,m,g,x,I)=>(u._OrtGetTensorData=U.oa)(c,m,g,x,I),u._OrtReleaseTensor=c=>(u._OrtReleaseTensor=U.pa)(c),u._OrtCreateRunOptions=(c,m,g,x)=>(u._OrtCreateRunOptions=U.qa)(c,m,g,x),u._OrtAddRunConfigEntry=(c,m,g)=>(u._OrtAddRunConfigEntry=U.ra)(c,m,g),u._OrtReleaseRunOptions=c=>(u._OrtReleaseRunOptions=U.sa)(c),u._OrtCreateBinding=c=>(u._OrtCreateBinding=U.ta)(c),u._OrtBindInput=(c,m,g)=>(u._OrtBindInput=U.ua)(c,m,g),u._OrtBindOutput=(c,m,g,x)=>(u._OrtBindOutput=U.va)(c,m,g,x),u._OrtClearBoundOutputs=c=>(u._OrtClearBoundOutputs=U.wa)(c),u._OrtReleaseBinding=c=>(u._OrtReleaseBinding=U.xa)(c),u._OrtRunWithBinding=(c,m,g,x,I)=>(u._OrtRunWithBinding=U.ya)(c,m,g,x,I),u._OrtRun=(c,m,g,x,I,E,R,at)=>(u._OrtRun=U.za)(c,m,g,x,I,E,R,at),u._OrtEndProfiling=c=>(u._OrtEndProfiling=U.Aa)(c);var er=()=>(er=U.Ba)();u._malloc=c=>(u._malloc=U.Ca)(c),u._free=c=>(u._free=U.Da)(c);var rn,$o=(c,m,g,x,I,E)=>($o=U.Ga)(c,m,g,x,I,E),Ha=()=>(Ha=U.Ha)(),qa=(c,m,g,x,I)=>(qa=U.Ia)(c,m,g,x,I),ko=c=>(ko=U.Ja)(c),nn=c=>(nn=U.Ka)(c),ja=()=>(ja=U.La)(),Xa=(c,m)=>(Xa=U.Ma)(c,m),on=c=>(on=U.Na)(c),Bo=c=>(Bo=U.Oa)(c),Fo=()=>(Fo=U.Pa)();function Ka(){0<ue||(d?(s(u),d||Zr(Jr),startWorker(u)):(Zr(Lt),0<ue||rn||(rn=!0,u.calledRun=!0,se||(d||Zr(Jr),s(u),d||Zr(Ye)))))}return u.___start_em_js=838360,u.___stop_em_js=838421,u.stackSave=()=>Fo(),u.stackRestore=c=>on(c),u.stackAlloc=c=>Bo(c),u.UTF8ToString=Ir,u.stringToUTF8=_r,u.lengthBytesUTF8=ba,De=function c(){rn||Ka(),rn||(De=c)},Ka(),l}),Og=Mp;globalThis.self?.name==="em-pthread"&&Mp()});var br,Sg,Ag,Pg,zp,Wp,Eg,Hp,Vr=O(()=>{"use strict";oo();br= false?0:"file:///Users/rawanabdulhayy/Graduation%20Project/TEAN-Mate/node_modules/onnxruntime-web/dist/ort.bundle.min.mjs"??(0),Sg= false||typeof location>"u"?void 0:location.origin,Ag=(i,e)=>{try{let o=e??br;return(o?new URL(i,o):new URL(i)).origin===Sg}catch{return!1}},Pg=async i=>{let o=await(await fetch(i,{credentials:"same-origin"})).blob();return URL.createObjectURL(o)},zp=(Gp(),sn(Rp)).default,Wp=async()=>{if(!br)throw new Error("Failed to load proxy worker: cannot determine the script source URL.");if(Ag(br))return[void 0,zp()];let i=await Pg(br);return[i,zp(i)]},Eg=(Vp(),sn(Up)).default,Hp=async(i,e,o)=>[void 0,Eg]});var Xi,Ki,ho,qp,Dg,Lg,io,xt,Ke=O(()=>{"use strict";Vr();Ki=!1,ho=!1,qp=!1,Dg=()=>{if(typeof SharedArrayBuffer>"u")return!1;try{return typeof MessageChannel<"u"&&new MessageChannel().port1.postMessage(new SharedArrayBuffer(1)),WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,0,0,1,4,1,96,0,0,3,2,1,0,5,4,1,3,1,1,10,11,1,9,0,65,0,254,16,2,0,26,11]))}catch{return!1}},Lg=()=>{try{return WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,0,0,1,4,1,96,0,0,3,2,1,0,10,30,1,28,0,65,0,253,15,253,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,253,186,1,26,11]))}catch{return!1}},io=async i=>{if(Ki)return Promise.resolve();if(ho)throw new Error("multiple calls to 'initializeWebAssembly()' detected.");if(qp)throw new Error("previous call to 'initializeWebAssembly()' failed.");ho=!0;let e=i.initTimeout,o=i.numThreads;if(!Lg())throw new Error("WebAssembly SIMD is not supported in the current environment.");let t=Dg();o>1&&!t&&(typeof self<"u"&&!self.crossOriginIsolated&&console.warn("env.wasm.numThreads is set to "+o+", but this will not work unless you enable crossOriginIsolated mode. See https://web.dev/cross-origin-isolation-guide/ for more info."),console.warn("WebAssembly multi-threading is not supported in the current environment. Falling back to single-threading."),i.numThreads=o=1);let r=i.wasmPaths,n=typeof r=="string"?r:void 0,s=r?.mjs,a=s?.href??s,u=r?.wasm,l=u?.href??u,f=i.wasmBinary,[p,d]=await Hp(a,n,o>1),y=!1,T=[];if(e>0&&T.push(new Promise(v=>{setTimeout(()=>{y=!0,v()},e)})),T.push(new Promise((v,S)=>{let L={numThreads:o};f?L.wasmBinary=f:(l||n)&&(L.locateFile=(P,A)=>l??(n??A)+P),d(L).then(P=>{ho=!1,Ki=!0,Xi=P,v(),p&&URL.revokeObjectURL(p)},P=>{ho=!1,qp=!0,S(P)})})),await Promise.race(T),y)throw new Error(`WebAssembly backend initializing failed due to timeout: ${e}ms`)},xt=()=>{if(Ki&&Xi)return Xi;throw new Error("WebAssembly is not initialized yet.")}});var Tt,Wr,ht,mo=O(()=>{"use strict";Ke();Tt=(i,e)=>{let o=xt(),t=o.lengthBytesUTF8(i)+1,r=o._malloc(t);return o.stringToUTF8(i,r,t),e.push(r),r},Wr=(i,e,o,t)=>{if(typeof i=="object"&&i!==null){if(o.has(i))throw new Error("Circular reference in options");o.add(i)}Object.entries(i).forEach(([r,n])=>{let s=e?e+r:r;if(typeof n=="object")Wr(n,s+".",o,t);else if(typeof n=="string"||typeof n=="number")t(s,n.toString());else if(typeof n=="boolean")t(s,n?"1":"0");else throw new Error(`Can't handle extra config type: ${typeof n}`)})},ht=i=>{let e=xt(),o=e.stackSave();try{let t=e.stackAlloc(8);e._OrtGetLastError(t,t+4);let r=e.HEAP32[t/4],n=e.HEAPU32[t/4+1],s=n?e.UTF8ToString(n):"";throw new Error(`${i} ERROR_CODE: ${r}, ERROR_MESSAGE: ${s}`)}finally{e.stackRestore(o)}}});var jp,Xp=O(()=>{"use strict";Ke();mo();jp=i=>{let e=xt(),o=0,t=[],r=i||{};try{if(i?.logSeverityLevel===void 0)r.logSeverityLevel=2;else if(typeof i.logSeverityLevel!="number"||!Number.isInteger(i.logSeverityLevel)||i.logSeverityLevel<0||i.logSeverityLevel>4)throw new Error(`log serverity level is not valid: ${i.logSeverityLevel}`);if(i?.logVerbosityLevel===void 0)r.logVerbosityLevel=0;else if(typeof i.logVerbosityLevel!="number"||!Number.isInteger(i.logVerbosityLevel))throw new Error(`log verbosity level is not valid: ${i.logVerbosityLevel}`);i?.terminate===void 0&&(r.terminate=!1);let n=0;return i?.tag!==void 0&&(n=Tt(i.tag,t)),o=e._OrtCreateRunOptions(r.logSeverityLevel,r.logVerbosityLevel,!!r.terminate,n),o===0&&ht("Can't create run options."),i?.extra!==void 0&&Wr(i.extra,"",new WeakSet,(s,a)=>{let u=Tt(s,t),l=Tt(a,t);e._OrtAddRunConfigEntry(o,u,l)!==0&&ht(`Can't set a run config entry: ${s} - ${a}.`)}),[o,t]}catch(n){throw o!==0&&e._OrtReleaseRunOptions(o),t.forEach(s=>e._free(s)),n}}});var $g,kg,Bg,Fg,Kp,Jp=O(()=>{"use strict";Ke();mo();$g=i=>{switch(i){case"disabled":return 0;case"basic":return 1;case"extended":return 2;case"all":return 99;default:throw new Error(`unsupported graph optimization level: ${i}`)}},kg=i=>{switch(i){case"sequential":return 0;case"parallel":return 1;default:throw new Error(`unsupported execution mode: ${i}`)}},Bg=i=>{i.extra||(i.extra={}),i.extra.session||(i.extra.session={});let e=i.extra.session;e.use_ort_model_bytes_directly||(e.use_ort_model_bytes_directly="1"),i.executionProviders&&i.executionProviders.some(o=>(typeof o=="string"?o:o.name)==="webgpu")&&(i.enableMemPattern=!1)},Fg=(i,e,o)=>{for(let t of e){let r=typeof t=="string"?t:t.name;switch(r){case"webnn":if(r="WEBNN",typeof t!="string"){let a=t?.deviceType;if(a){let u=Tt("deviceType",o),l=Tt(a,o);xt()._OrtAddSessionConfigEntry(i,u,l)!==0&&ht(`Can't set a session config entry: 'deviceType' - ${a}.`)}}break;case"webgpu":if(r="JS",typeof t!="string"){let s=t;if(s?.preferredLayout){if(s.preferredLayout!=="NCHW"&&s.preferredLayout!=="NHWC")throw new Error(`preferredLayout must be either 'NCHW' or 'NHWC': ${s.preferredLayout}`);let a=Tt("preferredLayout",o),u=Tt(s.preferredLayout,o);xt()._OrtAddSessionConfigEntry(i,a,u)!==0&&ht(`Can't set a session config entry: 'preferredLayout' - ${s.preferredLayout}.`)}}break;case"wasm":case"cpu":continue;default:throw new Error(`not supported execution provider: ${r}`)}let n=Tt(r,o);xt()._OrtAppendExecutionProvider(i,n)!==0&&ht(`Can't append execution provider: ${r}.`)}},Kp=i=>{let e=xt(),o=0,t=[],r=i||{};Bg(r);try{let n=$g(r.graphOptimizationLevel??"all"),s=kg(r.executionMode??"sequential"),a=typeof r.logId=="string"?Tt(r.logId,t):0,u=r.logSeverityLevel??2;if(!Number.isInteger(u)||u<0||u>4)throw new Error(`log serverity level is not valid: ${u}`);let l=r.logVerbosityLevel??0;if(!Number.isInteger(l)||l<0||l>4)throw new Error(`log verbosity level is not valid: ${l}`);let f=typeof r.optimizedModelFilePath=="string"?Tt(r.optimizedModelFilePath,t):0;if(o=e._OrtCreateSessionOptions(n,!!r.enableCpuMemArena,!!r.enableMemPattern,s,!!r.enableProfiling,0,a,u,l,f),o===0&&ht("Can't create session options."),r.executionProviders&&Fg(o,r.executionProviders,t),r.enableGraphCapture!==void 0){if(typeof r.enableGraphCapture!="boolean")throw new Error(`enableGraphCapture must be a boolean value: ${r.enableGraphCapture}`);let p=Tt("enableGraphCapture",t),d=Tt(r.enableGraphCapture.toString(),t);e._OrtAddSessionConfigEntry(o,p,d)!==0&&ht(`Can't set a session config entry: 'enableGraphCapture' - ${r.enableGraphCapture}.`)}if(r.freeDimensionOverrides)for(let[p,d]of Object.entries(r.freeDimensionOverrides)){if(typeof p!="string")throw new Error(`free dimension override name must be a string: ${p}`);if(typeof d!="number"||!Number.isInteger(d)||d<0)throw new Error(`free dimension override value must be a non-negative integer: ${d}`);let y=Tt(p,t);e._OrtAddFreeDimensionOverride(o,y,d)!==0&&ht(`Can't set a free dimension override: ${p} - ${d}.`)}return r.extra!==void 0&&Wr(r.extra,"",new WeakSet,(p,d)=>{let y=Tt(p,t),T=Tt(d,t);e._OrtAddSessionConfigEntry(o,y,T)!==0&&ht(`Can't set a session config entry: ${p} - ${d}.`)}),[o,t]}catch(n){throw o!==0&&e._OrtReleaseSessionOptions(o),t.forEach(s=>e._free(s)),n}}});var Hr,Yp,qr,Zp,Qp,bo,go,td,Ji=O(()=>{"use strict";Hr=i=>{switch(i){case"int8":return 3;case"uint8":return 2;case"bool":return 9;case"int16":return 5;case"uint16":return 4;case"int32":return 6;case"uint32":return 12;case"float16":return 10;case"float32":return 1;case"float64":return 11;case"string":return 8;case"int64":return 7;case"uint64":return 13;case"int4":return 22;case"uint4":return 21;default:throw new Error(`unsupported data type: ${i}`)}},Yp=i=>{switch(i){case 3:return"int8";case 2:return"uint8";case 9:return"bool";case 5:return"int16";case 4:return"uint16";case 6:return"int32";case 12:return"uint32";case 10:return"float16";case 1:return"float32";case 11:return"float64";case 8:return"string";case 7:return"int64";case 13:return"uint64";case 22:return"int4";case 21:return"uint4";default:throw new Error(`unsupported data type: ${i}`)}},qr=(i,e)=>{let o=[-1,4,1,1,2,2,4,8,-1,1,2,8,4,8,-1,-1,-1,-1,-1,-1,-1,.5,.5][i],t=typeof e=="number"?e:e.reduce((r,n)=>r*n,1);return o>0?Math.ceil(t*o):void 0},Zp=i=>{switch(i){case"float16":return typeof Float16Array<"u"&&Float16Array.from?Float16Array:Uint16Array;case"float32":return Float32Array;case"uint8":return Uint8Array;case"int8":return Int8Array;case"uint16":return Uint16Array;case"int16":return Int16Array;case"int32":return Int32Array;case"bool":return Uint8Array;case"float64":return Float64Array;case"uint32":return Uint32Array;case"int64":return BigInt64Array;case"uint64":return BigUint64Array;default:throw new Error(`unsupported type: ${i}`)}},Qp=i=>{switch(i){case"verbose":return 0;case"info":return 1;case"warning":return 2;case"error":return 3;case"fatal":return 4;default:throw new Error(`unsupported logging level: ${i}`)}},bo=i=>i==="float32"||i==="float16"||i==="int32"||i==="int64"||i==="uint32"||i==="uint8"||i==="bool"||i==="uint4"||i==="int4",go=i=>i==="float32"||i==="float16"||i==="int32"||i==="int64"||i==="uint32"||i==="uint64"||i==="int8"||i==="uint8"||i==="bool",td=i=>{switch(i){case"none":return 0;case"cpu":return 1;case"cpu-pinned":return 2;case"texture":return 3;case"gpu-buffer":return 4;case"ml-tensor":return 5;default:throw new Error(`unsupported data location: ${i}`)}}});var jr,Yi=O(()=>{"use strict";oo();jr=async i=>{if(typeof i=="string")if(false){}else{let e=await fetch(i);if(!e.ok)throw new Error(`failed to load external data file: ${i}`);let o=e.headers.get("Content-Length"),t=o?parseInt(o,10):0;if(t<1073741824)return new Uint8Array(await e.arrayBuffer());{if(!e.body)throw new Error(`failed to load external data file: ${i}, no response body.`);let r=e.body.getReader(),n;try{n=new ArrayBuffer(t)}catch(a){if(a instanceof RangeError){let u=Math.ceil(t/65536);n=new WebAssembly.Memory({initial:u,maximum:u}).buffer}else throw a}let s=0;for(;;){let{done:a,value:u}=await r.read();if(a)break;let l=u.byteLength;new Uint8Array(n,s,l).set(u),s+=l}return new Uint8Array(n,0,t)}}else return i instanceof Blob?new Uint8Array(await i.arrayBuffer()):i instanceof Uint8Array?i:new Uint8Array(i)}});var Cg,ao,so,yr,Ng,zr,uo,lo,ed,fo,co,po,qi=O(()=>{"use strict";Xp();Jp();Ji();Ke();mo();Yi();Cg=(i,e)=>{xt()._OrtInit(i,e)!==0&&ht("Can't initialize onnxruntime.")},ao=async i=>{Cg(i.wasm.numThreads,Qp(i.logLevel))},so=async(i,e)=>{},yr=new Map,Ng=i=>{let e=xt(),o=e.stackSave();try{let t=e.stackAlloc(8);return e._OrtGetInputOutputCount(i,t,t+4)!==0&&ht("Can't get session input/output count."),[e.HEAP32[t/4],e.HEAP32[t/4+1]]}finally{e.stackRestore(o)}},zr=i=>{let e=xt(),o=e._malloc(i.byteLength);if(o===0)throw new Error(`Can't create a session. failed to allocate a buffer of size ${i.byteLength}.`);return e.HEAPU8.set(i,o),[o,i.byteLength]},uo=async(i,e)=>{let o,t,r=xt();Array.isArray(i)?[o,t]=i:i.buffer===r.HEAPU8.buffer?[o,t]=[i.byteOffset,i.byteLength]:[o,t]=zr(i);let n=0,s=0,a=0,u=[],l=[],f=[];try{if([s,u]=Kp(e),e?.externalData&&r.mountExternalData){let P=[];for(let A of e.externalData){let M=typeof A=="string"?A:A.path;P.push(jr(typeof A=="string"?A:A.data).then(V=>{r.mountExternalData(M,V)}))}await Promise.all(P)}for(let P of e?.executionProviders??[])if((typeof P=="string"?P:P.name)==="webnn"){if(r.shouldTransferToMLTensor=!1,r.currentContext)throw new Error("WebNN execution provider is already set.");if(typeof P!="string"){let M=P,V=M?.context,lt=M?.gpuDevice,wt=M?.deviceType,et=M?.numThreads,Dt=M?.powerPreference;V?r.currentContext=V:lt?r.currentContext=await navigator.ml.createContext(lt):r.currentContext=await navigator.ml.createContext({deviceType:wt,numThreads:et,powerPreference:Dt})}else r.currentContext=await navigator.ml.createContext();break}n=await r._OrtCreateSession(o,t,s),n===0&&ht("Can't create a session."),r.currentContext&&(r.jsepRegisterMLContext(n,r.currentContext),r.currentContext=void 0,r.shouldTransferToMLTensor=!0);let[p,d]=Ng(n),y=!!e?.enableGraphCapture,T=[],v=[],S=[];for(let P=0;P<p;P++){let A=r._OrtGetInputName(n,P);A===0&&ht("Can't get an input name."),l.push(A),T.push(r.UTF8ToString(A))}for(let P=0;P<d;P++){let A=r._OrtGetOutputName(n,P);A===0&&ht("Can't get an output name."),f.push(A);let M=r.UTF8ToString(A);v.push(M)}let L=null;return yr.set(n,[n,l,f,L,y,!1]),[n,T,v]}catch(p){throw l.forEach(d=>r._OrtFree(d)),f.forEach(d=>r._OrtFree(d)),a!==0&&r._OrtReleaseBinding(a),n!==0&&r._OrtReleaseSession(n),p}finally{r._free(o),s!==0&&r._OrtReleaseSessionOptions(s),u.forEach(p=>r._free(p)),r.unmountExternalData?.()}},lo=i=>{let e=xt(),o=yr.get(i);if(!o)throw new Error(`cannot release session. invalid session id: ${i}`);let[t,r,n,s,a]=o;s&&(a&&e._OrtClearBoundOutputs(s.handle),e._OrtReleaseBinding(s.handle)),e.jsepOnReleaseSession?.(i),r.forEach(u=>e._OrtFree(u)),n.forEach(u=>e._OrtFree(u)),e._OrtReleaseSession(t),yr.delete(i)},ed=(i,e,o,t,r,n=!1)=>{if(!i){e.push(0);return}let s=xt(),a=i[0],u=i[1],l=i[3],f,p;if(a==="string"&&(l==="gpu-buffer"||l==="ml-tensor"))throw new Error("String tensor is not supported on GPU.");if(n&&l!=="gpu-buffer")throw new Error(`External buffer must be provided for input/output index ${r} when enableGraphCapture is true.`);if(l==="gpu-buffer"){let T=i[2].gpuBuffer;p=qr(Hr(a),u);let v=s.jsepRegisterBuffer;if(!v)throw new Error('Tensor location "gpu-buffer" is not supported without using WebGPU.');f=v(t,r,T,p)}else if(l==="ml-tensor"){let T=i[2].mlTensor;p=qr(Hr(a),u);let v=s.jsepRegisterMLTensor;if(!v)throw new Error('Tensor location "ml-tensor" is not supported without using WebNN.');f=v(T,Hr(a),u)}else{let T=i[2];if(Array.isArray(T)){p=4*T.length,f=s._malloc(p),o.push(f);let v=f/4;for(let S=0;S<T.length;S++){if(typeof T[S]!="string")throw new TypeError(`tensor data at index ${S} is not a string`);s.HEAPU32[v++]=Tt(T[S],o)}}else p=T.byteLength,f=s._malloc(p),o.push(f),s.HEAPU8.set(new Uint8Array(T.buffer,T.byteOffset,p),f)}let d=s.stackSave(),y=s.stackAlloc(4*u.length);try{let T=y/4;u.forEach(S=>s.HEAP32[T++]=S);let v=s._OrtCreateTensor(Hr(a),f,p,y,u.length,td(l));v===0&&ht(`Can't create tensor for input/output. session=${t}, index=${r}.`),e.push(v)}finally{s.stackRestore(d)}},fo=async(i,e,o,t,r,n)=>{let s=xt(),a=yr.get(i);if(!a)throw new Error(`cannot run inference. invalid session id: ${i}`);let u=a[0],l=a[1],f=a[2],p=a[3],d=a[4],y=a[5],T=e.length,v=t.length,S=0,L=[],P=[],A=[],M=[],V=s.stackSave(),lt=s.stackAlloc(T*4),wt=s.stackAlloc(T*4),et=s.stackAlloc(v*4),Dt=s.stackAlloc(v*4);try{s.jsepOnRunStart?.(u),[S,L]=jp(n);for(let Z=0;Z<T;Z++)ed(o[Z],P,M,i,e[Z],d);for(let Z=0;Z<v;Z++)ed(r[Z],A,M,i,T+t[Z],d);let _t=lt/4,C=wt/4,Kr=et/4,we=Dt/4;for(let Z=0;Z<T;Z++)s.HEAPU32[_t++]=P[Z],s.HEAPU32[C++]=l[e[Z]];for(let Z=0;Z<v;Z++)s.HEAPU32[Kr++]=A[Z],s.HEAPU32[we++]=f[t[Z]];let oe;oe=await s._OrtRun(u,wt,lt,T,Dt,v,et,S),oe!==0&&ht("failed to call OrtRun().");let be=[];for(let Z=0;Z<v;Z++){let ge=s.HEAPU32[et/4+Z];if(ge===A[Z]){be.push(r[Z]);continue}let ie=s.stackSave(),ae=s.stackAlloc(4*4),se=!1,it,Lt=0;try{s._OrtGetTensorData(ge,ae,ae+4,ae+8,ae+12)!==0&&ht(`Can't access output tensor data on index ${Z}.`);let Ye=ae/4,ue=s.HEAPU32[Ye++];Lt=s.HEAPU32[Ye++];let Ze=s.HEAPU32[Ye++],De=s.HEAPU32[Ye++],le=[];for(let gt=0;gt<De;gt++)le.push(s.HEAPU32[Ze/4+gt]);s._OrtFree(Ze);let Mt=le.reduce((gt,Ot)=>gt*Ot,1);it=Yp(ue);let ve=p?.outputPreferredLocations[t[Z]];if(it==="string"){if(ve==="gpu-buffer"||ve==="ml-tensor")throw new Error("String tensor is not supported on GPU.");let gt=[],Ot=Lt/4;for(let Jt=0;Jt<Mt;Jt++){let wr=s.HEAPU32[Ot++],Yr=Jt===Mt-1?void 0:s.HEAPU32[Ot]-wr;gt.push(s.UTF8ToString(wr,Yr))}be.push([it,le,gt,"cpu"])}else if(ve==="gpu-buffer"&&Mt>0){let gt=s.jsepGetBuffer;if(!gt)throw new Error('preferredLocation "gpu-buffer" is not supported without using WebGPU.');let Ot=gt(Lt),Jt=qr(ue,Mt);if(Jt===void 0||!bo(it))throw new Error(`Unsupported data type: ${it}`);se=!0,be.push([it,le,{gpuBuffer:Ot,download:s.jsepCreateDownloader(Ot,Jt,it),dispose:()=>{s._OrtReleaseTensor(ge)}},"gpu-buffer"])}else if(ve==="ml-tensor"&&Mt>0){let gt=s.jsepEnsureTensor;if(!gt)throw new Error('preferredLocation "ml-tensor" is not supported without using WebNN.');if(qr(ue,Mt)===void 0||!go(it))throw new Error(`Unsupported data type: ${it}`);let Jt=await gt(Lt,ue,le,!1);se=!0,be.push([it,le,{mlTensor:Jt,download:s.jsepCreateMLTensorDownloader(Lt,it),dispose:()=>{s.jsepReleaseTensorId(Lt),s._OrtReleaseTensor(ge)}},"ml-tensor"])}else{let gt=Zp(it),Ot=new gt(Mt);new Uint8Array(Ot.buffer,Ot.byteOffset,Ot.byteLength).set(s.HEAPU8.subarray(Lt,Lt+Ot.byteLength)),be.push([it,le,Ot,"cpu"])}}finally{s.stackRestore(ie),it==="string"&&Lt&&s._free(Lt),se||s._OrtReleaseTensor(ge)}}return p&&!d&&(s._OrtClearBoundOutputs(p.handle),yr.set(i,[u,l,f,p,d,!1])),be}finally{s.stackRestore(V),P.forEach(_t=>s._OrtReleaseTensor(_t)),A.forEach(_t=>s._OrtReleaseTensor(_t)),M.forEach(_t=>s._free(_t)),S!==0&&s._OrtReleaseRunOptions(S),L.forEach(_t=>s._free(_t))}},co=i=>{let e=xt(),o=yr.get(i);if(!o)throw new Error("invalid session id");let t=o[0],r=e._OrtEndProfiling(t);r===0&&ht("Can't get an profile file name."),e._OrtFree(r)},po=i=>{let e=[];for(let o of i){let t=o[2];!Array.isArray(t)&&"buffer"in t&&e.push(t.buffer)}return e}});var Je,Kt,Xr,xo,To,yo,Zi,Qi,xr,Tr,Gg,rd,nd,od,id,ad,sd,ud,ta=O(()=>{"use strict";Yt();qi();Ke();Vr();Je=()=>!!z.wasm.proxy&&typeof document<"u",Xr=!1,xo=!1,To=!1,Qi=new Map,xr=(i,e)=>{let o=Qi.get(i);o?o.push(e):Qi.set(i,[e])},Tr=()=>{if(Xr||!xo||To||!Kt)throw new Error("worker not ready")},Gg=i=>{switch(i.data.type){case"init-wasm":Xr=!1,i.data.err?(To=!0,Zi[1](i.data.err)):(xo=!0,Zi[0]()),yo&&(URL.revokeObjectURL(yo),yo=void 0);break;case"init-ep":case"copy-from":case"create":case"release":case"run":case"end-profiling":{let e=Qi.get(i.data.type);i.data.err?e.shift()[1](i.data.err):e.shift()[0](i.data.out);break}default:}},rd=async()=>{if(!xo){if(Xr)throw new Error("multiple calls to 'initWasm()' detected.");if(To)throw new Error("previous call to 'initWasm()' failed.");if(Xr=!0,Je())return new Promise((i,e)=>{Kt?.terminate(),Wp().then(([o,t])=>{try{Kt=t,Kt.onerror=n=>e(n),Kt.onmessage=Gg,Zi=[i,e];let r={type:"init-wasm",in:z};Kt.postMessage(r),yo=o}catch(r){e(r)}},e)});try{await io(z.wasm),await ao(z),xo=!0}catch(i){throw To=!0,i}finally{Xr=!1}}},nd=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("init-ep",[e,o]);let t={type:"init-ep",in:{epName:i,env:z}};Kt.postMessage(t)});await so(z,i)},od=async i=>Je()?(Tr(),new Promise((e,o)=>{xr("copy-from",[e,o]);let t={type:"copy-from",in:{buffer:i}};Kt.postMessage(t,[i.buffer])})):zr(i),id=async(i,e)=>{if(Je()){if(e?.preferredOutputLocation)throw new Error('session option "preferredOutputLocation" is not supported for proxy.');return Tr(),new Promise((o,t)=>{xr("create",[o,t]);let r={type:"create",in:{model:i,options:{...e}}},n=[];i instanceof Uint8Array&&n.push(i.buffer),Kt.postMessage(r,n)})}else return uo(i,e)},ad=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("release",[e,o]);let t={type:"release",in:i};Kt.postMessage(t)});lo(i)},sd=async(i,e,o,t,r,n)=>{if(Je()){if(o.some(s=>s[3]!=="cpu"))throw new Error("input tensor on GPU is not supported for proxy.");if(r.some(s=>s))throw new Error("pre-allocated output tensor is not supported for proxy.");return Tr(),new Promise((s,a)=>{xr("run",[s,a]);let u=o,l={type:"run",in:{sessionId:i,inputIndices:e,inputs:u,outputIndices:t,options:n}};Kt.postMessage(l,po(u))})}else return fo(i,e,o,t,r,n)},ud=async i=>{if(Je())return Tr(),new Promise((e,o)=>{xr("end-profiling",[e,o]);let t={type:"end-profiling",in:i};Kt.postMessage(t)});co(i)}});var ld,Mg,wo,fd=O(()=>{"use strict";Yt();ta();Ji();oo();Yi();ld=(i,e)=>{switch(i.location){case"cpu":return[i.type,i.dims,i.data,"cpu"];case"gpu-buffer":return[i.type,i.dims,{gpuBuffer:i.gpuBuffer},"gpu-buffer"];case"ml-tensor":return[i.type,i.dims,{mlTensor:i.mlTensor},"ml-tensor"];default:throw new Error(`invalid data location: ${i.location} for ${e()}`)}},Mg=i=>{switch(i[3]){case"cpu":return new yt(i[0],i[2],i[1]);case"gpu-buffer":{let e=i[0];if(!bo(e))throw new Error(`not supported data type: ${e} for deserializing GPU tensor`);let{gpuBuffer:o,download:t,dispose:r}=i[2];return yt.fromGpuBuffer(o,{dataType:e,dims:i[1],download:t,dispose:r})}case"ml-tensor":{let e=i[0];if(!go(e))throw new Error(`not supported data type: ${e} for deserializing MLTensor tensor`);let{mlTensor:o,download:t,dispose:r}=i[2];return yt.fromMLTensor(o,{dataType:e,dims:i[1],download:t,dispose:r})}default:throw new Error(`invalid data location: ${i[3]}`)}},wo=class{async fetchModelAndCopyToWasmMemory(e){return od(await jr(e))}async loadModel(e,o){Fe();let t;typeof e=="string"? false?0:t=await this.fetchModelAndCopyToWasmMemory(e):t=e,[this.sessionId,this.inputNames,this.outputNames]=await id(t,o),Ce()}async dispose(){return ad(this.sessionId)}async run(e,o,t){Fe();let r=[],n=[];Object.entries(e).forEach(d=>{let y=d[0],T=d[1],v=this.inputNames.indexOf(y);if(v===-1)throw new Error(`invalid input '${y}'`);r.push(T),n.push(v)});let s=[],a=[];Object.entries(o).forEach(d=>{let y=d[0],T=d[1],v=this.outputNames.indexOf(y);if(v===-1)throw new Error(`invalid output '${y}'`);s.push(T),a.push(v)});let u=r.map((d,y)=>ld(d,()=>`input "${this.inputNames[n[y]]}"`)),l=s.map((d,y)=>d?ld(d,()=>`output "${this.outputNames[a[y]]}"`):null),f=await sd(this.sessionId,n,u,a,l,t),p={};for(let d=0;d<f.length;d++)p[this.outputNames[a[d]]]=s[d]??Mg(f[d]);return Ce(),p}startProfiling(){}endProfiling(){ud(this.sessionId)}}});var pd={};Or(pd,{OnnxruntimeWebAssemblyBackend:()=>vo,initializeFlags:()=>cd,wasmBackend:()=>Ug});var cd,vo,Ug,dd=O(()=>{"use strict";Yt();ta();fd();Vr();cd=()=>{if((typeof z.wasm.initTimeout!="number"||z.wasm.initTimeout<0)&&(z.wasm.initTimeout=0),z.wasm.simd===!1&&console.warn('Deprecated property "env.wasm.simd" is set to false. non-SIMD build is no longer provided, and this setting will be ignored.'),typeof z.wasm.proxy!="boolean"&&(z.wasm.proxy=!1),typeof z.wasm.trace!="boolean"&&(z.wasm.trace=!1),typeof z.wasm.numThreads!="number"||!Number.isInteger(z.wasm.numThreads)||z.wasm.numThreads<=0)if(typeof self<"u"&&!self.crossOriginIsolated)z.wasm.numThreads=1;else{let i=typeof navigator>"u"?Co("node:os").cpus().length:navigator.hardwareConcurrency;z.wasm.numThreads=Math.min(4,Math.ceil((i||1)/2))}},vo=class{async init(e){cd(),await rd(),await nd(e)}async createInferenceSessionHandler(e,o){let t=new wo;return await t.loadModel(e,o),Promise.resolve(t)}},Ug=new vo});Yt();Yt();Yt();var Ds="1.20.1";var mO=Mo;{let i=(Fp(),sn(Bp)).onnxjsBackend;nr("webgl",i,-10)}{let i=(dd(),sn(pd)).wasmBackend;nr("cpu",i,10),nr("wasm",i,10)}Object.defineProperty(z.versions,"web",{value:Ds,enumerable:!0});
 /*! Bundled license information:
 
 long/index.js:
@@ -21548,7 +25127,10 @@ long/index.js:
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var execOptions = { id: moduleId, module: module, factory: __webpack_modules__[moduleId], require: __webpack_require__ };
+/******/ 		__webpack_require__.i.forEach(function(handler) { handler(execOptions); });
+/******/ 		module = execOptions.module;
+/******/ 		execOptions.factory.call(module.exports, module, module.exports, execOptions.require);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -21557,7 +25139,25 @@ long/index.js:
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = __webpack_module_cache__;
+/******/ 	
+/******/ 	// expose the module execution interceptor
+/******/ 	__webpack_require__.i = [];
+/******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -21568,6 +25168,25 @@ long/index.js:
 /******/ 				}
 /******/ 			}
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript update chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference all chunks
+/******/ 		__webpack_require__.hu = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + "." + __webpack_require__.h() + ".hot-update.js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get update manifest filename */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmrF = () => ("content." + __webpack_require__.h() + ".hot-update.json");
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/getFullHash */
+/******/ 	(() => {
+/******/ 		__webpack_require__.h = () => ("c8a7677336f031c26294")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -21587,6 +25206,52 @@ long/index.js:
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "tean-mate:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 		
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -21596,6 +25261,397 @@ long/index.js:
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hot module replacement */
+/******/ 	(() => {
+/******/ 		var currentModuleData = {};
+/******/ 		var installedModules = __webpack_require__.c;
+/******/ 		
+/******/ 		// module and require creation
+/******/ 		var currentChildModule;
+/******/ 		var currentParents = [];
+/******/ 		
+/******/ 		// status
+/******/ 		var registeredStatusHandlers = [];
+/******/ 		var currentStatus = "idle";
+/******/ 		
+/******/ 		// while downloading
+/******/ 		var blockingPromises = 0;
+/******/ 		var blockingPromisesWaiting = [];
+/******/ 		
+/******/ 		// The update info
+/******/ 		var currentUpdateApplyHandlers;
+/******/ 		var queuedInvalidatedModules;
+/******/ 		
+/******/ 		__webpack_require__.hmrD = currentModuleData;
+/******/ 		
+/******/ 		__webpack_require__.i.push(function (options) {
+/******/ 			var module = options.module;
+/******/ 			var require = createRequire(options.require, options.id);
+/******/ 			module.hot = createModuleHotObject(options.id, module);
+/******/ 			module.parents = currentParents;
+/******/ 			module.children = [];
+/******/ 			currentParents = [];
+/******/ 			options.require = require;
+/******/ 		});
+/******/ 		
+/******/ 		__webpack_require__.hmrC = {};
+/******/ 		__webpack_require__.hmrI = {};
+/******/ 		
+/******/ 		function createRequire(require, moduleId) {
+/******/ 			var me = installedModules[moduleId];
+/******/ 			if (!me) return require;
+/******/ 			var fn = function (request) {
+/******/ 				if (me.hot.active) {
+/******/ 					if (installedModules[request]) {
+/******/ 						var parents = installedModules[request].parents;
+/******/ 						if (parents.indexOf(moduleId) === -1) {
+/******/ 							parents.push(moduleId);
+/******/ 						}
+/******/ 					} else {
+/******/ 						currentParents = [moduleId];
+/******/ 						currentChildModule = request;
+/******/ 					}
+/******/ 					if (me.children.indexOf(request) === -1) {
+/******/ 						me.children.push(request);
+/******/ 					}
+/******/ 				} else {
+/******/ 					console.warn(
+/******/ 						"[HMR] unexpected require(" +
+/******/ 							request +
+/******/ 							") from disposed module " +
+/******/ 							moduleId
+/******/ 					);
+/******/ 					currentParents = [];
+/******/ 				}
+/******/ 				return require(request);
+/******/ 			};
+/******/ 			var createPropertyDescriptor = function (name) {
+/******/ 				return {
+/******/ 					configurable: true,
+/******/ 					enumerable: true,
+/******/ 					get: function () {
+/******/ 						return require[name];
+/******/ 					},
+/******/ 					set: function (value) {
+/******/ 						require[name] = value;
+/******/ 					}
+/******/ 				};
+/******/ 			};
+/******/ 			for (var name in require) {
+/******/ 				if (Object.prototype.hasOwnProperty.call(require, name) && name !== "e") {
+/******/ 					Object.defineProperty(fn, name, createPropertyDescriptor(name));
+/******/ 				}
+/******/ 			}
+/******/ 			fn.e = function (chunkId, fetchPriority) {
+/******/ 				return trackBlockingPromise(require.e(chunkId, fetchPriority));
+/******/ 			};
+/******/ 			return fn;
+/******/ 		}
+/******/ 		
+/******/ 		function createModuleHotObject(moduleId, me) {
+/******/ 			var _main = currentChildModule !== moduleId;
+/******/ 			var hot = {
+/******/ 				// private stuff
+/******/ 				_acceptedDependencies: {},
+/******/ 				_acceptedErrorHandlers: {},
+/******/ 				_declinedDependencies: {},
+/******/ 				_selfAccepted: false,
+/******/ 				_selfDeclined: false,
+/******/ 				_selfInvalidated: false,
+/******/ 				_disposeHandlers: [],
+/******/ 				_main: _main,
+/******/ 				_requireSelf: function () {
+/******/ 					currentParents = me.parents.slice();
+/******/ 					currentChildModule = _main ? undefined : moduleId;
+/******/ 					__webpack_require__(moduleId);
+/******/ 				},
+/******/ 		
+/******/ 				// Module API
+/******/ 				active: true,
+/******/ 				accept: function (dep, callback, errorHandler) {
+/******/ 					if (dep === undefined) hot._selfAccepted = true;
+/******/ 					else if (typeof dep === "function") hot._selfAccepted = dep;
+/******/ 					else if (typeof dep === "object" && dep !== null) {
+/******/ 						for (var i = 0; i < dep.length; i++) {
+/******/ 							hot._acceptedDependencies[dep[i]] = callback || function () {};
+/******/ 							hot._acceptedErrorHandlers[dep[i]] = errorHandler;
+/******/ 						}
+/******/ 					} else {
+/******/ 						hot._acceptedDependencies[dep] = callback || function () {};
+/******/ 						hot._acceptedErrorHandlers[dep] = errorHandler;
+/******/ 					}
+/******/ 				},
+/******/ 				decline: function (dep) {
+/******/ 					if (dep === undefined) hot._selfDeclined = true;
+/******/ 					else if (typeof dep === "object" && dep !== null)
+/******/ 						for (var i = 0; i < dep.length; i++)
+/******/ 							hot._declinedDependencies[dep[i]] = true;
+/******/ 					else hot._declinedDependencies[dep] = true;
+/******/ 				},
+/******/ 				dispose: function (callback) {
+/******/ 					hot._disposeHandlers.push(callback);
+/******/ 				},
+/******/ 				addDisposeHandler: function (callback) {
+/******/ 					hot._disposeHandlers.push(callback);
+/******/ 				},
+/******/ 				removeDisposeHandler: function (callback) {
+/******/ 					var idx = hot._disposeHandlers.indexOf(callback);
+/******/ 					if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
+/******/ 				},
+/******/ 				invalidate: function () {
+/******/ 					this._selfInvalidated = true;
+/******/ 					switch (currentStatus) {
+/******/ 						case "idle":
+/******/ 							currentUpdateApplyHandlers = [];
+/******/ 							Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 								__webpack_require__.hmrI[key](
+/******/ 									moduleId,
+/******/ 									currentUpdateApplyHandlers
+/******/ 								);
+/******/ 							});
+/******/ 							setStatus("ready");
+/******/ 							break;
+/******/ 						case "ready":
+/******/ 							Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 								__webpack_require__.hmrI[key](
+/******/ 									moduleId,
+/******/ 									currentUpdateApplyHandlers
+/******/ 								);
+/******/ 							});
+/******/ 							break;
+/******/ 						case "prepare":
+/******/ 						case "check":
+/******/ 						case "dispose":
+/******/ 						case "apply":
+/******/ 							(queuedInvalidatedModules = queuedInvalidatedModules || []).push(
+/******/ 								moduleId
+/******/ 							);
+/******/ 							break;
+/******/ 						default:
+/******/ 							// ignore requests in error states
+/******/ 							break;
+/******/ 					}
+/******/ 				},
+/******/ 		
+/******/ 				// Management API
+/******/ 				check: hotCheck,
+/******/ 				apply: hotApply,
+/******/ 				status: function (l) {
+/******/ 					if (!l) return currentStatus;
+/******/ 					registeredStatusHandlers.push(l);
+/******/ 				},
+/******/ 				addStatusHandler: function (l) {
+/******/ 					registeredStatusHandlers.push(l);
+/******/ 				},
+/******/ 				removeStatusHandler: function (l) {
+/******/ 					var idx = registeredStatusHandlers.indexOf(l);
+/******/ 					if (idx >= 0) registeredStatusHandlers.splice(idx, 1);
+/******/ 				},
+/******/ 		
+/******/ 				// inherit from previous dispose call
+/******/ 				data: currentModuleData[moduleId]
+/******/ 			};
+/******/ 			currentChildModule = undefined;
+/******/ 			return hot;
+/******/ 		}
+/******/ 		
+/******/ 		function setStatus(newStatus) {
+/******/ 			currentStatus = newStatus;
+/******/ 			var results = [];
+/******/ 		
+/******/ 			for (var i = 0; i < registeredStatusHandlers.length; i++)
+/******/ 				results[i] = registeredStatusHandlers[i].call(null, newStatus);
+/******/ 		
+/******/ 			return Promise.all(results).then(function () {});
+/******/ 		}
+/******/ 		
+/******/ 		function unblock() {
+/******/ 			if (--blockingPromises === 0) {
+/******/ 				setStatus("ready").then(function () {
+/******/ 					if (blockingPromises === 0) {
+/******/ 						var list = blockingPromisesWaiting;
+/******/ 						blockingPromisesWaiting = [];
+/******/ 						for (var i = 0; i < list.length; i++) {
+/******/ 							list[i]();
+/******/ 						}
+/******/ 					}
+/******/ 				});
+/******/ 			}
+/******/ 		}
+/******/ 		
+/******/ 		function trackBlockingPromise(promise) {
+/******/ 			switch (currentStatus) {
+/******/ 				case "ready":
+/******/ 					setStatus("prepare");
+/******/ 				/* fallthrough */
+/******/ 				case "prepare":
+/******/ 					blockingPromises++;
+/******/ 					promise.then(unblock, unblock);
+/******/ 					return promise;
+/******/ 				default:
+/******/ 					return promise;
+/******/ 			}
+/******/ 		}
+/******/ 		
+/******/ 		function waitForBlockingPromises(fn) {
+/******/ 			if (blockingPromises === 0) return fn();
+/******/ 			return new Promise(function (resolve) {
+/******/ 				blockingPromisesWaiting.push(function () {
+/******/ 					resolve(fn());
+/******/ 				});
+/******/ 			});
+/******/ 		}
+/******/ 		
+/******/ 		function hotCheck(applyOnUpdate) {
+/******/ 			if (currentStatus !== "idle") {
+/******/ 				throw new Error("check() is only allowed in idle status");
+/******/ 			}
+/******/ 			return setStatus("check")
+/******/ 				.then(__webpack_require__.hmrM)
+/******/ 				.then(function (update) {
+/******/ 					if (!update) {
+/******/ 						return setStatus(applyInvalidatedModules() ? "ready" : "idle").then(
+/******/ 							function () {
+/******/ 								return null;
+/******/ 							}
+/******/ 						);
+/******/ 					}
+/******/ 		
+/******/ 					return setStatus("prepare").then(function () {
+/******/ 						var updatedModules = [];
+/******/ 						currentUpdateApplyHandlers = [];
+/******/ 		
+/******/ 						return Promise.all(
+/******/ 							Object.keys(__webpack_require__.hmrC).reduce(function (
+/******/ 								promises,
+/******/ 								key
+/******/ 							) {
+/******/ 								__webpack_require__.hmrC[key](
+/******/ 									update.c,
+/******/ 									update.r,
+/******/ 									update.m,
+/******/ 									promises,
+/******/ 									currentUpdateApplyHandlers,
+/******/ 									updatedModules
+/******/ 								);
+/******/ 								return promises;
+/******/ 							}, [])
+/******/ 						).then(function () {
+/******/ 							return waitForBlockingPromises(function () {
+/******/ 								if (applyOnUpdate) {
+/******/ 									return internalApply(applyOnUpdate);
+/******/ 								}
+/******/ 								return setStatus("ready").then(function () {
+/******/ 									return updatedModules;
+/******/ 								});
+/******/ 							});
+/******/ 						});
+/******/ 					});
+/******/ 				});
+/******/ 		}
+/******/ 		
+/******/ 		function hotApply(options) {
+/******/ 			if (currentStatus !== "ready") {
+/******/ 				return Promise.resolve().then(function () {
+/******/ 					throw new Error(
+/******/ 						"apply() is only allowed in ready status (state: " +
+/******/ 							currentStatus +
+/******/ 							")"
+/******/ 					);
+/******/ 				});
+/******/ 			}
+/******/ 			return internalApply(options);
+/******/ 		}
+/******/ 		
+/******/ 		function internalApply(options) {
+/******/ 			options = options || {};
+/******/ 		
+/******/ 			applyInvalidatedModules();
+/******/ 		
+/******/ 			var results = currentUpdateApplyHandlers.map(function (handler) {
+/******/ 				return handler(options);
+/******/ 			});
+/******/ 			currentUpdateApplyHandlers = undefined;
+/******/ 		
+/******/ 			var errors = results
+/******/ 				.map(function (r) {
+/******/ 					return r.error;
+/******/ 				})
+/******/ 				.filter(Boolean);
+/******/ 		
+/******/ 			if (errors.length > 0) {
+/******/ 				return setStatus("abort").then(function () {
+/******/ 					throw errors[0];
+/******/ 				});
+/******/ 			}
+/******/ 		
+/******/ 			// Now in "dispose" phase
+/******/ 			var disposePromise = setStatus("dispose");
+/******/ 		
+/******/ 			results.forEach(function (result) {
+/******/ 				if (result.dispose) result.dispose();
+/******/ 			});
+/******/ 		
+/******/ 			// Now in "apply" phase
+/******/ 			var applyPromise = setStatus("apply");
+/******/ 		
+/******/ 			var error;
+/******/ 			var reportError = function (err) {
+/******/ 				if (!error) error = err;
+/******/ 			};
+/******/ 		
+/******/ 			var outdatedModules = [];
+/******/ 			results.forEach(function (result) {
+/******/ 				if (result.apply) {
+/******/ 					var modules = result.apply(reportError);
+/******/ 					if (modules) {
+/******/ 						for (var i = 0; i < modules.length; i++) {
+/******/ 							outdatedModules.push(modules[i]);
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 			});
+/******/ 		
+/******/ 			return Promise.all([disposePromise, applyPromise]).then(function () {
+/******/ 				// handle errors in accept handlers and self accepted module load
+/******/ 				if (error) {
+/******/ 					return setStatus("fail").then(function () {
+/******/ 						throw error;
+/******/ 					});
+/******/ 				}
+/******/ 		
+/******/ 				if (queuedInvalidatedModules) {
+/******/ 					return internalApply(options).then(function (list) {
+/******/ 						outdatedModules.forEach(function (moduleId) {
+/******/ 							if (list.indexOf(moduleId) < 0) list.push(moduleId);
+/******/ 						});
+/******/ 						return list;
+/******/ 					});
+/******/ 				}
+/******/ 		
+/******/ 				return setStatus("idle").then(function () {
+/******/ 					return outdatedModules;
+/******/ 				});
+/******/ 			});
+/******/ 		}
+/******/ 		
+/******/ 		function applyInvalidatedModules() {
+/******/ 			if (queuedInvalidatedModules) {
+/******/ 				if (!currentUpdateApplyHandlers) currentUpdateApplyHandlers = [];
+/******/ 				Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 					queuedInvalidatedModules.forEach(function (moduleId) {
+/******/ 						__webpack_require__.hmrI[key](
+/******/ 							moduleId,
+/******/ 							currentUpdateApplyHandlers
+/******/ 						);
+/******/ 					});
+/******/ 				});
+/******/ 				queuedInvalidatedModules = undefined;
+/******/ 				return true;
+/******/ 			}
+/******/ 		}
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
@@ -21628,7 +25684,7 @@ long/index.js:
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
-/******/ 		var installedChunks = {
+/******/ 		var installedChunks = __webpack_require__.hmrS_jsonp = __webpack_require__.hmrS_jsonp || {
 /******/ 			"content": 0
 /******/ 		};
 /******/ 		
@@ -21638,9 +25694,495 @@ long/index.js:
 /******/ 		
 /******/ 		// no preloaded
 /******/ 		
-/******/ 		// no HMR
+/******/ 		var currentUpdatedModulesList;
+/******/ 		var waitingUpdateResolves = {};
+/******/ 		function loadUpdateChunk(chunkId, updatedModulesList) {
+/******/ 			currentUpdatedModulesList = updatedModulesList;
+/******/ 			return new Promise((resolve, reject) => {
+/******/ 				waitingUpdateResolves[chunkId] = resolve;
+/******/ 				// start update chunk loading
+/******/ 				var url = __webpack_require__.p + __webpack_require__.hu(chunkId);
+/******/ 				// create error before stack unwound to get useful stacktrace later
+/******/ 				var error = new Error();
+/******/ 				var loadingEnded = (event) => {
+/******/ 					if(waitingUpdateResolves[chunkId]) {
+/******/ 						waitingUpdateResolves[chunkId] = undefined
+/******/ 						var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 						var realSrc = event && event.target && event.target.src;
+/******/ 						error.message = 'Loading hot update chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 						error.name = 'ChunkLoadError';
+/******/ 						error.type = errorType;
+/******/ 						error.request = realSrc;
+/******/ 						reject(error);
+/******/ 					}
+/******/ 				};
+/******/ 				__webpack_require__.l(url, loadingEnded);
+/******/ 			});
+/******/ 		}
 /******/ 		
-/******/ 		// no HMR manifest
+/******/ 		self["webpackHotUpdatetean_mate"] = (chunkId, moreModules, runtime) => {
+/******/ 			for(var moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					currentUpdate[moduleId] = moreModules[moduleId];
+/******/ 					if(currentUpdatedModulesList) currentUpdatedModulesList.push(moduleId);
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) currentUpdateRuntime.push(runtime);
+/******/ 			if(waitingUpdateResolves[chunkId]) {
+/******/ 				waitingUpdateResolves[chunkId]();
+/******/ 				waitingUpdateResolves[chunkId] = undefined;
+/******/ 			}
+/******/ 		};
+/******/ 		
+/******/ 		var currentUpdateChunks;
+/******/ 		var currentUpdate;
+/******/ 		var currentUpdateRemovedChunks;
+/******/ 		var currentUpdateRuntime;
+/******/ 		function applyHandler(options) {
+/******/ 			if (__webpack_require__.f) delete __webpack_require__.f.jsonpHmr;
+/******/ 			currentUpdateChunks = undefined;
+/******/ 			function getAffectedModuleEffects(updateModuleId) {
+/******/ 				var outdatedModules = [updateModuleId];
+/******/ 				var outdatedDependencies = {};
+/******/ 		
+/******/ 				var queue = outdatedModules.map(function (id) {
+/******/ 					return {
+/******/ 						chain: [id],
+/******/ 						id: id
+/******/ 					};
+/******/ 				});
+/******/ 				while (queue.length > 0) {
+/******/ 					var queueItem = queue.pop();
+/******/ 					var moduleId = queueItem.id;
+/******/ 					var chain = queueItem.chain;
+/******/ 					var module = __webpack_require__.c[moduleId];
+/******/ 					if (
+/******/ 						!module ||
+/******/ 						(module.hot._selfAccepted && !module.hot._selfInvalidated)
+/******/ 					)
+/******/ 						continue;
+/******/ 					if (module.hot._selfDeclined) {
+/******/ 						return {
+/******/ 							type: "self-declined",
+/******/ 							chain: chain,
+/******/ 							moduleId: moduleId
+/******/ 						};
+/******/ 					}
+/******/ 					if (module.hot._main) {
+/******/ 						return {
+/******/ 							type: "unaccepted",
+/******/ 							chain: chain,
+/******/ 							moduleId: moduleId
+/******/ 						};
+/******/ 					}
+/******/ 					for (var i = 0; i < module.parents.length; i++) {
+/******/ 						var parentId = module.parents[i];
+/******/ 						var parent = __webpack_require__.c[parentId];
+/******/ 						if (!parent) continue;
+/******/ 						if (parent.hot._declinedDependencies[moduleId]) {
+/******/ 							return {
+/******/ 								type: "declined",
+/******/ 								chain: chain.concat([parentId]),
+/******/ 								moduleId: moduleId,
+/******/ 								parentId: parentId
+/******/ 							};
+/******/ 						}
+/******/ 						if (outdatedModules.indexOf(parentId) !== -1) continue;
+/******/ 						if (parent.hot._acceptedDependencies[moduleId]) {
+/******/ 							if (!outdatedDependencies[parentId])
+/******/ 								outdatedDependencies[parentId] = [];
+/******/ 							addAllToSet(outdatedDependencies[parentId], [moduleId]);
+/******/ 							continue;
+/******/ 						}
+/******/ 						delete outdatedDependencies[parentId];
+/******/ 						outdatedModules.push(parentId);
+/******/ 						queue.push({
+/******/ 							chain: chain.concat([parentId]),
+/******/ 							id: parentId
+/******/ 						});
+/******/ 					}
+/******/ 				}
+/******/ 		
+/******/ 				return {
+/******/ 					type: "accepted",
+/******/ 					moduleId: updateModuleId,
+/******/ 					outdatedModules: outdatedModules,
+/******/ 					outdatedDependencies: outdatedDependencies
+/******/ 				};
+/******/ 			}
+/******/ 		
+/******/ 			function addAllToSet(a, b) {
+/******/ 				for (var i = 0; i < b.length; i++) {
+/******/ 					var item = b[i];
+/******/ 					if (a.indexOf(item) === -1) a.push(item);
+/******/ 				}
+/******/ 			}
+/******/ 		
+/******/ 			// at begin all updates modules are outdated
+/******/ 			// the "outdated" status can propagate to parents if they don't accept the children
+/******/ 			var outdatedDependencies = {};
+/******/ 			var outdatedModules = [];
+/******/ 			var appliedUpdate = {};
+/******/ 		
+/******/ 			var warnUnexpectedRequire = function warnUnexpectedRequire(module) {
+/******/ 				console.warn(
+/******/ 					"[HMR] unexpected require(" + module.id + ") to disposed module"
+/******/ 				);
+/******/ 			};
+/******/ 		
+/******/ 			for (var moduleId in currentUpdate) {
+/******/ 				if (__webpack_require__.o(currentUpdate, moduleId)) {
+/******/ 					var newModuleFactory = currentUpdate[moduleId];
+/******/ 					/** @type {TODO} */
+/******/ 					var result = newModuleFactory
+/******/ 						? getAffectedModuleEffects(moduleId)
+/******/ 						: {
+/******/ 								type: "disposed",
+/******/ 								moduleId: moduleId
+/******/ 							};
+/******/ 					/** @type {Error|false} */
+/******/ 					var abortError = false;
+/******/ 					var doApply = false;
+/******/ 					var doDispose = false;
+/******/ 					var chainInfo = "";
+/******/ 					if (result.chain) {
+/******/ 						chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
+/******/ 					}
+/******/ 					switch (result.type) {
+/******/ 						case "self-declined":
+/******/ 							if (options.onDeclined) options.onDeclined(result);
+/******/ 							if (!options.ignoreDeclined)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because of self decline: " +
+/******/ 										result.moduleId +
+/******/ 										chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "declined":
+/******/ 							if (options.onDeclined) options.onDeclined(result);
+/******/ 							if (!options.ignoreDeclined)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because of declined dependency: " +
+/******/ 										result.moduleId +
+/******/ 										" in " +
+/******/ 										result.parentId +
+/******/ 										chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "unaccepted":
+/******/ 							if (options.onUnaccepted) options.onUnaccepted(result);
+/******/ 							if (!options.ignoreUnaccepted)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because " + moduleId + " is not accepted" + chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "accepted":
+/******/ 							if (options.onAccepted) options.onAccepted(result);
+/******/ 							doApply = true;
+/******/ 							break;
+/******/ 						case "disposed":
+/******/ 							if (options.onDisposed) options.onDisposed(result);
+/******/ 							doDispose = true;
+/******/ 							break;
+/******/ 						default:
+/******/ 							throw new Error("Unexception type " + result.type);
+/******/ 					}
+/******/ 					if (abortError) {
+/******/ 						return {
+/******/ 							error: abortError
+/******/ 						};
+/******/ 					}
+/******/ 					if (doApply) {
+/******/ 						appliedUpdate[moduleId] = newModuleFactory;
+/******/ 						addAllToSet(outdatedModules, result.outdatedModules);
+/******/ 						for (moduleId in result.outdatedDependencies) {
+/******/ 							if (__webpack_require__.o(result.outdatedDependencies, moduleId)) {
+/******/ 								if (!outdatedDependencies[moduleId])
+/******/ 									outdatedDependencies[moduleId] = [];
+/******/ 								addAllToSet(
+/******/ 									outdatedDependencies[moduleId],
+/******/ 									result.outdatedDependencies[moduleId]
+/******/ 								);
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 					if (doDispose) {
+/******/ 						addAllToSet(outdatedModules, [result.moduleId]);
+/******/ 						appliedUpdate[moduleId] = warnUnexpectedRequire;
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 			currentUpdate = undefined;
+/******/ 		
+/******/ 			// Store self accepted outdated modules to require them later by the module system
+/******/ 			var outdatedSelfAcceptedModules = [];
+/******/ 			for (var j = 0; j < outdatedModules.length; j++) {
+/******/ 				var outdatedModuleId = outdatedModules[j];
+/******/ 				var module = __webpack_require__.c[outdatedModuleId];
+/******/ 				if (
+/******/ 					module &&
+/******/ 					(module.hot._selfAccepted || module.hot._main) &&
+/******/ 					// removed self-accepted modules should not be required
+/******/ 					appliedUpdate[outdatedModuleId] !== warnUnexpectedRequire &&
+/******/ 					// when called invalidate self-accepting is not possible
+/******/ 					!module.hot._selfInvalidated
+/******/ 				) {
+/******/ 					outdatedSelfAcceptedModules.push({
+/******/ 						module: outdatedModuleId,
+/******/ 						require: module.hot._requireSelf,
+/******/ 						errorHandler: module.hot._selfAccepted
+/******/ 					});
+/******/ 				}
+/******/ 			}
+/******/ 		
+/******/ 			var moduleOutdatedDependencies;
+/******/ 		
+/******/ 			return {
+/******/ 				dispose: function () {
+/******/ 					currentUpdateRemovedChunks.forEach(function (chunkId) {
+/******/ 						delete installedChunks[chunkId];
+/******/ 					});
+/******/ 					currentUpdateRemovedChunks = undefined;
+/******/ 		
+/******/ 					var idx;
+/******/ 					var queue = outdatedModules.slice();
+/******/ 					while (queue.length > 0) {
+/******/ 						var moduleId = queue.pop();
+/******/ 						var module = __webpack_require__.c[moduleId];
+/******/ 						if (!module) continue;
+/******/ 		
+/******/ 						var data = {};
+/******/ 		
+/******/ 						// Call dispose handlers
+/******/ 						var disposeHandlers = module.hot._disposeHandlers;
+/******/ 						for (j = 0; j < disposeHandlers.length; j++) {
+/******/ 							disposeHandlers[j].call(null, data);
+/******/ 						}
+/******/ 						__webpack_require__.hmrD[moduleId] = data;
+/******/ 		
+/******/ 						// disable module (this disables requires from this module)
+/******/ 						module.hot.active = false;
+/******/ 		
+/******/ 						// remove module from cache
+/******/ 						delete __webpack_require__.c[moduleId];
+/******/ 		
+/******/ 						// when disposing there is no need to call dispose handler
+/******/ 						delete outdatedDependencies[moduleId];
+/******/ 		
+/******/ 						// remove "parents" references from all children
+/******/ 						for (j = 0; j < module.children.length; j++) {
+/******/ 							var child = __webpack_require__.c[module.children[j]];
+/******/ 							if (!child) continue;
+/******/ 							idx = child.parents.indexOf(moduleId);
+/******/ 							if (idx >= 0) {
+/******/ 								child.parents.splice(idx, 1);
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// remove outdated dependency from module children
+/******/ 					var dependency;
+/******/ 					for (var outdatedModuleId in outdatedDependencies) {
+/******/ 						if (__webpack_require__.o(outdatedDependencies, outdatedModuleId)) {
+/******/ 							module = __webpack_require__.c[outdatedModuleId];
+/******/ 							if (module) {
+/******/ 								moduleOutdatedDependencies =
+/******/ 									outdatedDependencies[outdatedModuleId];
+/******/ 								for (j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 									dependency = moduleOutdatedDependencies[j];
+/******/ 									idx = module.children.indexOf(dependency);
+/******/ 									if (idx >= 0) module.children.splice(idx, 1);
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 				},
+/******/ 				apply: function (reportError) {
+/******/ 					// insert new code
+/******/ 					for (var updateModuleId in appliedUpdate) {
+/******/ 						if (__webpack_require__.o(appliedUpdate, updateModuleId)) {
+/******/ 							__webpack_require__.m[updateModuleId] = appliedUpdate[updateModuleId];
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// run new runtime modules
+/******/ 					for (var i = 0; i < currentUpdateRuntime.length; i++) {
+/******/ 						currentUpdateRuntime[i](__webpack_require__);
+/******/ 					}
+/******/ 		
+/******/ 					// call accept handlers
+/******/ 					for (var outdatedModuleId in outdatedDependencies) {
+/******/ 						if (__webpack_require__.o(outdatedDependencies, outdatedModuleId)) {
+/******/ 							var module = __webpack_require__.c[outdatedModuleId];
+/******/ 							if (module) {
+/******/ 								moduleOutdatedDependencies =
+/******/ 									outdatedDependencies[outdatedModuleId];
+/******/ 								var callbacks = [];
+/******/ 								var errorHandlers = [];
+/******/ 								var dependenciesForCallbacks = [];
+/******/ 								for (var j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 									var dependency = moduleOutdatedDependencies[j];
+/******/ 									var acceptCallback =
+/******/ 										module.hot._acceptedDependencies[dependency];
+/******/ 									var errorHandler =
+/******/ 										module.hot._acceptedErrorHandlers[dependency];
+/******/ 									if (acceptCallback) {
+/******/ 										if (callbacks.indexOf(acceptCallback) !== -1) continue;
+/******/ 										callbacks.push(acceptCallback);
+/******/ 										errorHandlers.push(errorHandler);
+/******/ 										dependenciesForCallbacks.push(dependency);
+/******/ 									}
+/******/ 								}
+/******/ 								for (var k = 0; k < callbacks.length; k++) {
+/******/ 									try {
+/******/ 										callbacks[k].call(null, moduleOutdatedDependencies);
+/******/ 									} catch (err) {
+/******/ 										if (typeof errorHandlers[k] === "function") {
+/******/ 											try {
+/******/ 												errorHandlers[k](err, {
+/******/ 													moduleId: outdatedModuleId,
+/******/ 													dependencyId: dependenciesForCallbacks[k]
+/******/ 												});
+/******/ 											} catch (err2) {
+/******/ 												if (options.onErrored) {
+/******/ 													options.onErrored({
+/******/ 														type: "accept-error-handler-errored",
+/******/ 														moduleId: outdatedModuleId,
+/******/ 														dependencyId: dependenciesForCallbacks[k],
+/******/ 														error: err2,
+/******/ 														originalError: err
+/******/ 													});
+/******/ 												}
+/******/ 												if (!options.ignoreErrored) {
+/******/ 													reportError(err2);
+/******/ 													reportError(err);
+/******/ 												}
+/******/ 											}
+/******/ 										} else {
+/******/ 											if (options.onErrored) {
+/******/ 												options.onErrored({
+/******/ 													type: "accept-errored",
+/******/ 													moduleId: outdatedModuleId,
+/******/ 													dependencyId: dependenciesForCallbacks[k],
+/******/ 													error: err
+/******/ 												});
+/******/ 											}
+/******/ 											if (!options.ignoreErrored) {
+/******/ 												reportError(err);
+/******/ 											}
+/******/ 										}
+/******/ 									}
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// Load self accepted modules
+/******/ 					for (var o = 0; o < outdatedSelfAcceptedModules.length; o++) {
+/******/ 						var item = outdatedSelfAcceptedModules[o];
+/******/ 						var moduleId = item.module;
+/******/ 						try {
+/******/ 							item.require(moduleId);
+/******/ 						} catch (err) {
+/******/ 							if (typeof item.errorHandler === "function") {
+/******/ 								try {
+/******/ 									item.errorHandler(err, {
+/******/ 										moduleId: moduleId,
+/******/ 										module: __webpack_require__.c[moduleId]
+/******/ 									});
+/******/ 								} catch (err1) {
+/******/ 									if (options.onErrored) {
+/******/ 										options.onErrored({
+/******/ 											type: "self-accept-error-handler-errored",
+/******/ 											moduleId: moduleId,
+/******/ 											error: err1,
+/******/ 											originalError: err
+/******/ 										});
+/******/ 									}
+/******/ 									if (!options.ignoreErrored) {
+/******/ 										reportError(err1);
+/******/ 										reportError(err);
+/******/ 									}
+/******/ 								}
+/******/ 							} else {
+/******/ 								if (options.onErrored) {
+/******/ 									options.onErrored({
+/******/ 										type: "self-accept-errored",
+/******/ 										moduleId: moduleId,
+/******/ 										error: err
+/******/ 									});
+/******/ 								}
+/******/ 								if (!options.ignoreErrored) {
+/******/ 									reportError(err);
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					return outdatedModules;
+/******/ 				}
+/******/ 			};
+/******/ 		}
+/******/ 		__webpack_require__.hmrI.jsonp = function (moduleId, applyHandlers) {
+/******/ 			if (!currentUpdate) {
+/******/ 				currentUpdate = {};
+/******/ 				currentUpdateRuntime = [];
+/******/ 				currentUpdateRemovedChunks = [];
+/******/ 				applyHandlers.push(applyHandler);
+/******/ 			}
+/******/ 			if (!__webpack_require__.o(currentUpdate, moduleId)) {
+/******/ 				currentUpdate[moduleId] = __webpack_require__.m[moduleId];
+/******/ 			}
+/******/ 		};
+/******/ 		__webpack_require__.hmrC.jsonp = function (
+/******/ 			chunkIds,
+/******/ 			removedChunks,
+/******/ 			removedModules,
+/******/ 			promises,
+/******/ 			applyHandlers,
+/******/ 			updatedModulesList
+/******/ 		) {
+/******/ 			applyHandlers.push(applyHandler);
+/******/ 			currentUpdateChunks = {};
+/******/ 			currentUpdateRemovedChunks = removedChunks;
+/******/ 			currentUpdate = removedModules.reduce(function (obj, key) {
+/******/ 				obj[key] = false;
+/******/ 				return obj;
+/******/ 			}, {});
+/******/ 			currentUpdateRuntime = [];
+/******/ 			chunkIds.forEach(function (chunkId) {
+/******/ 				if (
+/******/ 					__webpack_require__.o(installedChunks, chunkId) &&
+/******/ 					installedChunks[chunkId] !== undefined
+/******/ 				) {
+/******/ 					promises.push(loadUpdateChunk(chunkId, updatedModulesList));
+/******/ 					currentUpdateChunks[chunkId] = true;
+/******/ 				} else {
+/******/ 					currentUpdateChunks[chunkId] = false;
+/******/ 				}
+/******/ 			});
+/******/ 			if (__webpack_require__.f) {
+/******/ 				__webpack_require__.f.jsonpHmr = function (chunkId, promises) {
+/******/ 					if (
+/******/ 						currentUpdateChunks &&
+/******/ 						__webpack_require__.o(currentUpdateChunks, chunkId) &&
+/******/ 						!currentUpdateChunks[chunkId]
+/******/ 					) {
+/******/ 						promises.push(loadUpdateChunk(chunkId));
+/******/ 						currentUpdateChunks[chunkId] = true;
+/******/ 					}
+/******/ 				};
+/******/ 			}
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.hmrM = () => {
+/******/ 			if (typeof fetch === "undefined") throw new Error("No browser support: need fetch API");
+/******/ 			return fetch(__webpack_require__.p + __webpack_require__.hmrF()).then((response) => {
+/******/ 				if(response.status === 404) return; // no update available
+/******/ 				if(!response.ok) throw new Error("Failed to fetch update manifest " + response.statusText);
+/******/ 				return response.json();
+/******/ 			});
+/******/ 		};
 /******/ 		
 /******/ 		// no on chunks loaded
 /******/ 		
@@ -21648,92 +26190,14 @@ long/index.js:
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
-(() => {
-"use strict";
-/*!******************************!*\
-  !*** ./4-content/content.js ***!
-  \******************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs3_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
-
-
-
-
-
-
-
-
-var ContentHandler = /*#__PURE__*/function () {
-  function ContentHandler() {
-    var _context;
-    (0,_babel_runtime_corejs3_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ContentHandler);
-    this.sections = [];
-    this.currentIndex = 0;
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
-    chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context = this.handleMessage).call(_context, this));
-  }
-  return (0,_babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ContentHandler, [{
-    key: "speakCurrentSection",
-    value: function speakCurrentSection() {
-      var _this = this;
-      if (this.currentIndex >= this.sections.length) {
-        this.highlightBox.remove();
-        return;
-      }
-      var section = this.sections[this.currentIndex];
-      this.highlightBox.highlight(section);
-      this.speechHandler.speak(section.text, function () {
-        _this.currentIndex++;
-        _this.speakCurrentSection();
-      });
-    }
-  }, {
-    key: "handleMessage",
-    value: function handleMessage(request) {
-      if (request.action === "extractText") {
-        var _this$textExtractor$e = this.textExtractor.extractAllTextWithTags(document.body),
-          textSections = _this$textExtractor$e.textSections,
-          elementSections = _this$textExtractor$e.elementSections;
-        this.sections = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_3__(textSections).call(textSections, function (text, index) {
-          return {
-            text: text,
-            element: elementSections[index]
-          };
-        });
-        this.currentIndex = 0;
-        this.speakCurrentSection();
-      } else if (request.action === "skipToNext") {
-        this.speechHandler.stop();
-        this.currentIndex = Math.min(this.currentIndex + 1, this.sections.length - 1);
-        this.speakCurrentSection();
-      } else if (request.action === "skipToPrevious") {
-        this.speechHandler.stop();
-        this.currentIndex = Math.max(this.currentIndex - 1, 0);
-        this.speakCurrentSection();
-      } else if (request.action === "toggleReading") {
-        this.speechHandler.isSpeaking ? this.speechHandler.stop() : this.speakCurrentSection();
-      } else if (request.action === "accessLink") {
-        var section = this.sections[this.currentIndex];
-        this.linkHandler.accessLink(section.element);
-      }
-    }
-  }]);
-}(); // Instantiate the content handler
-new ContentHandler();
-})();
-
+/******/ 	
+/******/ 	// module cache are used so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	__webpack_require__("./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8080&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true");
+/******/ 	__webpack_require__("./node_modules/webpack/hot/dev-server.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./4-content/content.js");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=content.bundle.js.map
