@@ -4,6 +4,8 @@ export default class SpeechHandler {
     constructor() {
         this.isSpeaking = false;
         this.piperTTS = new PiperTTS();
+        this.currentAudio = null;
+        this.abortController = null;
 
         chrome.runtime.sendMessage({ action: "getVoices" }, (response) => {
             if (response.voices) {
@@ -16,23 +18,39 @@ export default class SpeechHandler {
     }
 
     async speak(text, onEnd) {
-        try {
-            const audioBlob = await this.piperTTS.runPredict(text);
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
+        if(this.abortController){
+            console.log("Abort previous request");
+            this.abortController.abort();
+        }
 
-            audio.onended = () => {
+        this.abortController = new AbortController();
+        const signal = this.abortController.signal;
+
+        try {
+            if(this.currentAudio == null){
+                const audioBlob = await this.piperTTS.runPredict(text, signal);
+                const audioUrl = URL.createObjectURL(audioBlob);
+                this.currentAudio = new Audio(audioUrl);
+            }
+            if(!this.isSpeaking){
+                this.isSpeaking = true;
+                console.log("Playing audio");
+                this.currentAudio.play();
+            }
+            this.currentAudio.onended = () => {
                 this.isSpeaking = false;
+                this.currentAudio = null;
+                console.log("Audio Ended")
                 if (onEnd) onEnd();
             };
-
-            this.isSpeaking = true;
-            this.currentAudio = audio;
-            console.log("Playing audio");
-            audio.play();
-            
         } catch (error) {
-            console.error("Error in speak:", error);
+            if (signal.aborted) {
+                console.log("Request aborted");
+            } else {
+                console.error("Error in speak:", error);
+            }
+            this.isSpeaking = false;
+            this.abortController = null;
         }
     }
 
@@ -44,6 +62,9 @@ export default class SpeechHandler {
             this.currentAudio = null;
         }
         this.isSpeaking = false;
-        this.piperTTS.abort();
+        if(this.abortController){
+            this.abortController.abort();
+            this.abortController = null;
+        }
     }
 }

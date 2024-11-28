@@ -34,7 +34,7 @@ class PiperTTS {
         if (cached) return cached;
 
         try {
-            const response = await fetch(url, { signal: this.abortController.signal });
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`Network error while fetching ${url}`);
             }
@@ -47,8 +47,7 @@ class PiperTTS {
         }
     }
 
-    async init(data) {
-
+    async init(data, signal) {
         const { input, speakerId, modelUrl, modelConfigUrl } = data;
         const onnxruntimeBase = chrome.runtime.getURL("./");
 
@@ -66,6 +65,10 @@ class PiperTTS {
             console.error("Error parsing modelConfig JSON:", error);
             console.error("Response text:", await modelConfigBlob.text());
             return;
+        }
+
+        if (signal.aborted) {
+            throw new Error("Prediction aborted");
         }
 
         const phonemeIds = await new Promise(async resolve => {
@@ -86,6 +89,10 @@ class PiperTTS {
             module.callMain(["-l", modelConfig.espeak.voice, "--input", JSON.stringify([{ text: input }]), "--espeak_data", "/espeak-ng-data"]);
         });
 
+        if (signal.aborted) {
+            throw new Error("Prediction aborted");
+        }
+
         const sampleRate = modelConfig.audio.sample_rate;
         const numChannels = 1;
         const noiseScale = modelConfig.inference.noise_scale;
@@ -95,6 +102,11 @@ class PiperTTS {
         if(!this.session){
             this.session = await ort.InferenceSession.create(modelUrl);
         }
+
+        if (signal.aborted) {
+            throw new Error("Prediction aborted");
+        }
+
         const session = this.session;
         console.log("Model loaded");
         const feeds = {
@@ -105,6 +117,10 @@ class PiperTTS {
         if (Object.keys(modelConfig.speaker_id_map).length)
             feeds.sid = new ort.Tensor("int64", [speakerId]);
         const { output: { data: pcm } } = await session.run(feeds);
+
+        if (signal.aborted) {
+            throw new Error("Prediction aborted");
+        }
 
         // Float32Array (PCM) to ArrayBuffer (WAV)
         function PCM2WAV(buffer) {
@@ -146,7 +162,7 @@ class PiperTTS {
         return file;
     }
 
-    async runPredict(inputText) {
+    async runPredict(inputText, signal) {
         this.abortController = new AbortController();
         const HF_BASE = `/TTS/voices_models/`;
         const voicesElement = "en_US-lessac-medium";
@@ -173,7 +189,11 @@ class PiperTTS {
             modelConfigUrl
         };
 
-        return await this.init(data);
+        if (signal.aborted) {
+            throw new Error("Prediction aborted");
+        }
+
+        return this.init(data, signal);
     }
     async abort() {
         if (this.abortController) {
