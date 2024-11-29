@@ -14,51 +14,75 @@ class ContentHandler {
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
+        this.currentElement = null;
+
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     }
 
+    getNextElement(startIndex) {
+        // Start iterating from the current position
+        const elements = Array.from(document.body.querySelectorAll('*'));
+        for (let i = startIndex; i < elements.length; i++) {
+            const element = elements[i];
+            if (this.isElementVisible(element)) {
+                const text = this.textExtractor.extractText(element);
+                if (text.trim()) {
+                    return { element, text };
+                }
+            }
+        }
+        return null; // No more valid elements
+    }
+
     speakCurrentSection() {
-        if (this.currentIndex >= this.sections.length) {
-            this.highlightBox.removeHighlight(this.sections[this.currentIndex - 1]?.element);
+        if (!this.currentElement) {
+            this.currentElement = this.getNextElement(this.currentIndex);
+        }
+
+        if (!this.currentElement) {
+            // No more elements to process
             return;
         }
 
-        const section = this.sections[this.currentIndex];
-        this.highlightBox.addHighlight(section.element);
-        this.speechHandler.speak(section.text, () => {
-            this.highlightBox.removeHighlight(section.element);
+        const { element, text } = this.currentElement;
+
+        this.highlightBox.addHighlight(element);
+        this.speechHandler.speak(text, () => {
+            this.highlightBox.removeHighlight(element);
             this.currentIndex++;
+            this.currentElement = null; // Prepare for the next element
             this.speakCurrentSection();
         });
     }
 
     handleMessage(request) {
         if (request.action === "extractText") {
-            const { textSections, elementSections } = this.textExtractor.extractAllTextWithTags(document.body);
-            this.sections = textSections.map((text, index) => ({
-                text,
-                element: elementSections[index],
-            })).filter(section => this.isElementVisible(section.element));
             this.currentIndex = 0;
+            this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToNext") {
-            this.highlightBox.removeHighlight(this.sections[this.currentIndex]?.element);
             this.speechHandler.stop();
-            this.currentIndex = Math.min(this.currentIndex + 1, this.sections.length - 1);
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+            this.currentIndex++;
+            this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
-            this.highlightBox.removeHighlight(this.sections[this.currentIndex]?.element);
             this.speechHandler.stop();
-            this.currentIndex = Math.max(this.currentIndex - 1, 0);
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+            this.currentIndex = Math.max(0, this.currentIndex - 1);
+            this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
-            if(this.speechHandler.isSpeaking) {
+            if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
-                this.highlightBox.removeHighlight(this.sections[this.currentIndex]?.element);
-            } else this.speakCurrentSection();
+                this.highlightBox.removeHighlight(this.currentElement?.element);
+            } else {
+                this.speakCurrentSection();
+            }
         } else if (request.action === "accessLink") {
-            const section = this.sections[this.currentIndex];
-            this.linkHandler.accessLink(section.element);
+            if (this.currentElement) {
+                this.linkHandler.accessLink(this.currentElement.element);
+            }
         }
     }
 
