@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import { resolve, dirname } from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,28 +18,44 @@ export default {
   },
   mode: 'development',
   devtool: 'source-map',
+  
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            plugins: [
-                ['@babel/plugin-transform-runtime', {
-                  corejs: 3,
-                  regenerator: true
-                }]
-              ]
-          }
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: [
+            ['@babel/plugin-transform-runtime', {
+              corejs: 3,
+              regenerator: true,
+              useESModules: true
+            }],
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-proposal-optional-chaining'
+          ]
         }
+       }
       },
-      // {
-      //   test: /\.css$/,
-      //   use: ['style-loader', 'css-loader']
-      // },
+
+      {
+        test: /artyom\.window\.min\.js$/,
+        use: [
+          {
+            loader: 'expose-loader',
+            options: {
+              exposes: ['Artyom']
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
       {
         test: /\.wasm$/,
         type: 'javascript/auto',
@@ -67,8 +84,15 @@ export default {
       '@content': resolve(__dirname, '4-content'),
       '@common': resolve(__dirname, '5-common'),
       '@sidebar': resolve(__dirname, '1-sidebar'),
+      'artyom.js': path.resolve(__dirname, 'node_modules/artyom.js'),
+      '@artyom': path.resolve(__dirname, 'node_modules/artyom.js/build/artyom.window.min.js')
+
+
     },
-    extensions: ['.js', '.css']
+    fallback: {
+      "artyom.js": path.resolve(__dirname, 'node_modules/artyom.js/build/artyom.window.min.js')
+    },
+    extensions: ['.js', '.css' , '.main.js']
   },
   plugins: [
     new CopyWebpackPlugin({
@@ -111,7 +135,12 @@ export default {
         {
           from: 'node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm',
           to: 'ort-wasm-simd-threaded.wasm'
+        },
+        {
+          from: 'node_modules/artyom.js/build/artyom.window.min.js',
+          to: 'artyom.window.min.js'
         }
+          
       ]
     })
   ],

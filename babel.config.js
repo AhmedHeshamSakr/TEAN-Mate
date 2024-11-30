@@ -16,6 +16,8 @@ export default {
         helpers: true,
         regenerator: true,
         useESModules: true
-      }]
+      }],
+      "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-optional-chaining"
     ]
   };

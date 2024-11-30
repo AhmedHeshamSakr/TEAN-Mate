@@ -1,6 +1,12 @@
+
+import ArtyomAssistant from "../2-features/STT/ArtyomHandller.js";
+
+
 class SidebarController {
   constructor() {
       this.buttons = {}; // Store button references for easy access
+      this.artyomAssistant = new ArtyomAssistant(); // Initialize ArtyomAssistant
+      this.listenersAttached = false; // Prevent duplicate listeners
       this.initialize(); // Set up event listeners and initial state
   }
 
@@ -9,8 +15,11 @@ class SidebarController {
       // Set sidebar title using the extension's name
       document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 
-      // Wait for DOM to load before attaching event listeners
-      document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
+      if (!this.listenersAttached) {
+        document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
+        this.listenersAttached = true;
+    }
+    
   }
 
   // Set up event listeners for all buttons
@@ -52,7 +61,7 @@ class SidebarController {
   // Handle Speech-to-Text button click
   handleSTT() {
       console.log("Speech-to-Text button clicked");
-      alert("Speech to Text activated"); // Placeholder for STT functionality
+      this.artyomAssistant.toggleListening(); // Toggle Artyom listening
   }
 
   // Handle Sign Language Translator button click
@@ -69,14 +78,20 @@ class SidebarController {
 
   // Send a message to the active tab
   sendMessageToActiveTab(message) {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs.length > 0) {
-              chrome.tabs.sendMessage(tabs[0].id, message);
-          } else {
-              console.warn("No active tab found");
-          }
-      });
-  }
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+            chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error("Error sending message:", chrome.runtime.lastError.message);
+                } else {
+                    console.log("Message sent successfully:", response);
+                }
+            });
+        } else {
+            console.warn("No active tab found");
+        }
+    });
+}
 }
 
 // Instantiate the SidebarController
