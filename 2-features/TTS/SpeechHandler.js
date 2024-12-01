@@ -6,6 +6,7 @@ export default class SpeechHandler {
         this.piperTTS = new PiperTTS();
         this.currentAudio = null;
         this.abortController = null;
+        this.speed = 1.0;
 
         chrome.runtime.sendMessage({ action: "getVoices" }, (response) => {
             if (response.voices) {
@@ -35,6 +36,7 @@ export default class SpeechHandler {
             if(!this.isSpeaking){
                 this.isSpeaking = true;
                 console.log("Playing audio");
+                this.currentAudio.playbackRate = this.speed;
                 this.currentAudio.play();
             }
             this.currentAudio.onended = () => {
