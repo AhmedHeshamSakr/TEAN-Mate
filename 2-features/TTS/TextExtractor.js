@@ -62,4 +62,8 @@ export default class TextExtractor {
             style.display !== 'none'
         );
     }
+
+    clearProcessedElements() {
+        this.processedElements = new WeakSet();
+    }
 }

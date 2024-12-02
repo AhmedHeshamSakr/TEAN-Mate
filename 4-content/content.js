@@ -15,18 +15,34 @@ class ContentHandler {
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
         this.currentElement = null;
+        this.elements = Array.from(document.body.querySelectorAll('*'));
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     }
 
     getNextElement(startIndex) {
         // Start iterating from the current position
-        const elements = Array.from(document.body.querySelectorAll('*'));
-        for (let i = startIndex; i < elements.length; i++) {
-            const element = elements[i];
+        for (let i = startIndex; i < this.elements.length; i++) {
+            const element = this.elements[i];
             if (this.isElementVisible(element)) {
                 const text = this.textExtractor.extractText(element);
                 if (text.trim()) {
+                    this.currentIndex = i;
+                    return { element, text };
+                }
+            }
+        }
+        return null; // No more valid elements
+    }
+
+    prevElement(startIndex) {
+        // Start iterating backward from the current position
+        for (let i = startIndex-1; i >= 0; i--) {
+            const element = this.elements[i];
+            if (this.isElementVisible(element)) {
+                const text = this.textExtractor.extractText(element);
+                if (text.trim()) {
+                    this.currentIndex = i;
                     return { element, text };
                 }
             }
@@ -69,8 +85,9 @@ class ContentHandler {
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
             this.highlightBox.removeHighlight(this.currentElement?.element);
-            this.currentIndex = Math.max(0, this.currentIndex - 1);
-            this.currentElement = null;
+            // this.currentIndex = Math.max(0, this.currentIndex - 1);
+            this.textExtractor.clearProcessedElements();
+            this.currentElement = this.prevElement(this.currentIndex);
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
@@ -82,6 +99,7 @@ class ContentHandler {
         } else if (request.action === "accessLink") {
             if (this.currentElement) {
                 this.linkHandler.accessLink(this.currentElement.element);
+                this.speechHandler.stop();
             }
         }
     }
