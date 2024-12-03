@@ -105,9 +105,6 @@ export default {
           from: '1-sidebar/sidebar.css',
           to: 'sidebar.css'
         },
-        { from: './dist/sidebar.bundle.js', 
-          to: 'sidebar.bundle.js' 
-        },
         {
           from: 'manifest.json',
           to: 'manifest.json'
