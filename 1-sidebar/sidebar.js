@@ -1,3 +1,5 @@
+import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
+
 class SidebarController {
   constructor() {
       this.buttons = {}; // Store button references for easy access
@@ -6,6 +8,17 @@ class SidebarController {
 
   // Initialize sidebar
   initialize() {
+      // Check if the sidebar has been opened before
+      // Play the welcome audio
+    //   const audioUrl = chrome.runtime.getURL(welcomeAudio);
+    //   console.log("Welcome audio URL:", audioUrl);
+      const audio = new Audio(welcomeAudio);
+      audio.play().then(() => {
+         console.log("Welcome audio played successfully");
+      }).catch((error) => {
+          console.error("Error playing welcome audio:", error);
+      });
+
       // Set sidebar title using the extension's name
       document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 

@@ -49,7 +49,7 @@ export default class SpeechHandler {
             if (signal.aborted) {
                 console.log("Request aborted");
             } else {
-                console.error("Error in speak:", error);
+                console.log("Error in speak:", error);
             }
             this.isSpeaking = false;
             this.abortController = null;

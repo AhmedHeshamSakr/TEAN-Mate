@@ -57,6 +57,18 @@ export default {
               },
           },
         ],
+      },
+      {
+        test: /\.(wav|mp3)$/,
+        use: [
+          {
+              loader: 'file-loader',
+              options: {
+                  name: '[name].[hash].[ext]', // Output file name
+                  outputPath: 'assets/', // Output folder
+              },
+          },
+        ],
       }
     ]
   },

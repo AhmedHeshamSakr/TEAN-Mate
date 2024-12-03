@@ -38,7 +38,8 @@
           "sidebar.bundle.js",
           "icons/*",
           "TTS/*",
-          "*.wasm"
+          "*.wasm",
+          "assets/*"
         ],
         "matches": ["<all_urls>"]
       }
