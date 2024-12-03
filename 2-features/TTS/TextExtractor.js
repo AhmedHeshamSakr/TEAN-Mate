@@ -1,35 +1,69 @@
 export default class TextExtractor {
-    extractAllTextWithTags(node) {
-        let textSections = [];
-        let elementSections = [];
+    constructor() {
+        this.processedElements = new WeakSet(); // Tracks processed elements
+    }
 
-        if (node.nodeType === Node.TEXT_NODE) {
-            const text = node.textContent.trim();
-            if (text && node.parentNode.offsetParent !== null) {
-                textSections.push(text);
-                elementSections.push(node.parentNode);
-            }
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-            const tagName = node.tagName.toLowerCase();
-            if (tagName === "style" || tagName === "script") return { textSections, elementSections };
+    /**
+     * Extracts visible and meaningful text from a given node.
+     * @param {Node} node - The DOM node to extract text from.
+     * @returns {string} - Extracted text.
+     */
+    extractText(node) {
+        // Skip non-visible elements
+        if (!this.isElementVisible(node)) {
+            return '';
+        }
 
-            if (tagName === "a" && node.href) {
-                const text = Array.from(node.childNodes)
-                    .filter(child => child.nodeType === Node.TEXT_NODE)
-                    .map(child => child.textContent.trim())
-                    .join("");
-                const domain = new URL(node.href).hostname.replace("www.", "");
-                textSections.push(text ? `Link text: ${text}` : `Link destination: ${domain}`);
-                elementSections.push(node);
-            }
+        // Skip non-relevant tags
+        const tagName = node.tagName?.toLowerCase();
+        if (["script", "style", "noscript"].includes(tagName)) {
+            return '';
+        }
 
-            for (let child of node.childNodes) {
-                const { textSections: childTexts, elementSections: childElements } = this.extractAllTextWithTags(child);
-                textSections = textSections.concat(childTexts);
-                elementSections = elementSections.concat(childElements);
+        // Avoid processing the same element multiple times
+        if (this.processedElements.has(node)) {
+            return '';
+        }
+        this.processedElements.add(node);
+
+        // Extract text from text nodes
+        let text = '';
+        for (let child of node.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                const trimmed = child.textContent.trim();
+                if (trimmed) {
+                    text += ' ' + trimmed;
+                }
             }
         }
 
-        return { textSections, elementSections };
+        // Special handling for links
+        if (tagName === 'a' && node.href) {
+            const domain = new URL(node.href).hostname.replace('www.', '');
+            text = text.trim() ? `Link text: ${text.trim()}` : `Link destination: ${domain}`;
+        }
+
+        return text.trim();
+    }
+
+    /**
+     * Checks if an element is visible in the DOM.
+     * @param {Element} element - The element to check.
+     * @returns {boolean} - True if the element is visible, false otherwise.
+     */
+    isElementVisible(element) {
+        if (!(element instanceof HTMLElement)) return false;
+        const rect = element.getBoundingClientRect();
+        const style = window.getComputedStyle(element);
+        return (
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.visibility !== 'hidden' &&
+            style.display !== 'none'
+        );
+    }
+
+    clearProcessedElements() {
+        this.processedElements = new WeakSet();
     }
 }

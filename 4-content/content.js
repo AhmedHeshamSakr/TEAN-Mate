@@ -2,94 +2,115 @@ import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor  from "../2-features/TTS/TextExtractor.js";
 import  SpeechHandler  from "../2-features/TTS/SpeechHandler.js";
 import  LinkHandler  from "../2-features/TTS/LinkHandler.js";
-import ArtyomAssistant  from "../2-features/STT/ArtyomHandller.js";
 
 class ContentHandler {
     constructor() {
         this.sections = [];
         this.currentIndex = 0;
+        this.pastBorderStyle = "";
+        this.pastBackgroundStyle = "";
 
         this.highlightBox = new HighlightBox();
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
-        this.ArtyomAssistant=new ArtyomAssistant();
-        this.initializeVoiceCommands();
+        this.currentElement = null;
+        this.elements = Array.from(document.body.querySelectorAll('*'));
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     }
 
-    initializeVoiceCommands() {
-        // Add commands
-        this.ArtyomAssistant.addCommand("next", () => this.handleMessage({ action: "skipToNext" }));
-        this.ArtyomAssistant.addCommand("previous", () => this.handleMessage({ action: "skipToPrevious" }));
-        this.ArtyomAssistant.addCommand("start reading", () => this.handleMessage({ action: "toggleReading" }));
-        this.ArtyomAssistant.addCommand("open link", () => this.handleMessage({ action: "accessLink" }));
-
-        // Start Artyom listening
-        this.ArtyomAssistant.startListening();
+    getNextElement(startIndex) {
+        // Start iterating from the current position
+        for (let i = startIndex; i < this.elements.length; i++) {
+            const element = this.elements[i];
+            if (this.isElementVisible(element)) {
+                const text = this.textExtractor.extractText(element);
+                if (text.trim()) {
+                    this.currentIndex = i;
+                    return { element, text };
+                }
+            }
+        }
+        return null; // No more valid elements
     }
+
+    prevElement(startIndex) {
+        // Start iterating backward from the current position
+        for (let i = startIndex-1; i >= 0; i--) {
+            const element = this.elements[i];
+            if (this.isElementVisible(element)) {
+                const text = this.textExtractor.extractText(element);
+                if (text.trim()) {
+                    this.currentIndex = i;
+                    return { element, text };
+                }
+            }
+        }
+        return null; // No more valid elements
+    }
+
     speakCurrentSection() {
-        if (this.currentIndex >= this.sections.length) {
-            this.highlightBox.remove();
+        if (!this.currentElement) {
+            this.currentElement = this.getNextElement(this.currentIndex);
+        }
+
+        if (!this.currentElement) {
+            // No more elements to process
             return;
         }
 
-        const section = this.sections[this.currentIndex];
-        this.highlightBox.highlight(section);
-        this.speechHandler.speak(section.text, () => {
+        const { element, text } = this.currentElement;
+
+        this.highlightBox.addHighlight(element);
+        this.speechHandler.speak(text, () => {
+            this.highlightBox.removeHighlight(element);
             this.currentIndex++;
+            this.currentElement = null; // Prepare for the next element
             this.speakCurrentSection();
         });
     }
 
     handleMessage(request) {
         if (request.action === "extractText") {
-            const { textSections, elementSections } = this.textExtractor.extractAllTextWithTags(document.body);
-            this.sections = textSections.map((text, index) => ({
-                text,
-                element: elementSections[index],
-            }));
             this.currentIndex = 0;
+            this.currentElement = null;
             this.speakCurrentSection();
-
-        }else if (request.action === "toggleListening"){
-                this.ArtyomAssistant.toggleListening();
-        
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
-            this.currentIndex = Math.min(this.currentIndex + 1, this.sections.length - 1);
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+            this.currentIndex++;
+            this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
-            this.currentIndex = Math.max(this.currentIndex - 1, 0);
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+            // this.currentIndex = Math.max(0, this.currentIndex - 1);
+            this.textExtractor.clearProcessedElements();
+            this.currentElement = this.prevElement(this.currentIndex);
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
-            this.speechHandler.isSpeaking ? this.speechHandler.stop() : this.speakCurrentSection();
+            if (this.speechHandler.isSpeaking) {
+                this.speechHandler.stop();
+                this.highlightBox.removeHighlight(this.currentElement?.element);
+            } else {
+                this.speakCurrentSection();
+            }
         } else if (request.action === "accessLink") {
-            const section = this.sections[this.currentIndex];
-            this.linkHandler.accessLink(section.element);
-            
-        }else {
-            console.warn("Unhandled action:", request.action);
+            if (this.currentElement) {
+                this.linkHandler.accessLink(this.currentElement.element);
+                this.speechHandler.stop();
+            }
         }
-        // ////// Using Voice Commands ///////////////////////////////////
-        // else if (request.action === "startSpeechRecognition") {
-        //     console.log("Starting speech recognition");
-        //     this.ArtyomAssistant.start();
-        // } else if (request.action === "stopSpeechRecognition") {
-        //     console.log("Stopping speech recognition");
-        //     this.ArtyomAssistant.stop();
-        // } else if (request.action === "processSpeechCommand") {
-        //     const command = request.command;
-        //     console.log("Processing speech command:", command);
-        //     // Add logic to handle recognized commands, e.g., triggering TTS, skipping, etc.
-        //     if (command === "next") {
-        //         this.handleMessage({ action: "skipToNext" });
-        //     } else if (command === "previous") {
-        //         this.handleMessage({ action: "skipToPrevious" });
-        //     }
-        // }
+    }
+
+    isElementVisible(element) {
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top >= 0 &&
+                          rect.left >= 0;
+        const isNotHidden = window.getComputedStyle(element).visibility !== 'hidden' &&
+                            window.getComputedStyle(element).display !== 'none';
+        return isVisible && isNotHidden;
     }
 }
 
