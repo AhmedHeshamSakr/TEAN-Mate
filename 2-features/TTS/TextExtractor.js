@@ -27,21 +27,31 @@ export default class TextExtractor {
         this.processedElements.add(node);
 
         // Extract text from text nodes
-        let text = '';
-        for (let child of node.childNodes) {
+        let text = ''; // Initialize text
+        for (const child of node.childNodes) {
             if (child.nodeType === Node.TEXT_NODE) {
-                const trimmed = child.textContent.trim();
-                if (trimmed) {
-                    text += ' ' + trimmed;
-                }
-            }
-        }
+                text += child.textContent.trim() + ' ';
+                if (child.nextSibling && child.nextSibling.nodeType === Node.ELEMENT_NODE) {
+                    //this.extractText(child);
+                    break;
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
 
-        // Special handling for links
+            }
+            // Recursively process child nodes to handle nested structures
+            text += this.extractText(child);
+        
+        }}
+        //Special handling for links
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
             text = text.trim() ? `Link text: ${text.trim()}` : `Link destination: ${domain}`;
+            if (node.nextSibling && node.nextSibling.nodeType === Node.TEXT_NODE) {
+                const nextText = node.nextSibling.textContent.trim();
+                if (nextText) {
+                    text += nextText + ' ';
+                }
         }
+    }
 
         return text.trim();
     }
