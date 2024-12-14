@@ -30,7 +30,7 @@ class ContentHandler {
                 for (const child of element.childNodes) {
                     if (child.nodeType === Node.TEXT_NODE) {
                         text.push(child.textContent.trim() + ' ');
-                        elementsToReturn.push(child);
+                        elementsToReturn.push(element);
                     } else if (child.nodeType === Node.ELEMENT_NODE) {
                         text.push(this.textExtractor.extractText(child));
                         elementsToReturn.push(child);
