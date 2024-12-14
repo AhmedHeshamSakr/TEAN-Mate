@@ -1,7 +1,7 @@
 import HighlightBox from "../2-features/TTS/HighlightBox.js";
-import TextExtractor  from "../2-features/TTS/TextExtractor.js";
-import  SpeechHandler  from "../2-features/TTS/SpeechHandler.js";
-import  LinkHandler  from "../2-features/TTS/LinkHandler.js";
+import TextExtractor from "../2-features/TTS/TextExtractor.js";
+import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
+import LinkHandler from "../2-features/TTS/LinkHandler.js";
 
 class ContentHandler {
     constructor() {
@@ -21,23 +21,32 @@ class ContentHandler {
     }
 
     getNextElement(startIndex) {
-        // Start iterating from the current position
+        let elementsToReturn = [];
+        let text = [];
         for (let i = startIndex; i < this.elements.length; i++) {
             const element = this.elements[i];
+
             if (this.isElementVisible(element)) {
-                const text = this.textExtractor.extractText(element);
-                if (text.trim()) {
-                    this.currentIndex = i;
-                    return { element, text };
+                for (const child of element.childNodes) {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        text.push(child.textContent.trim() + ' ');
+                        elementsToReturn.push(child);
+                    } else if (child.nodeType === Node.ELEMENT_NODE) {
+                        text.push(this.textExtractor.extractText(child));
+                        elementsToReturn.push(child);
+                    }
                 }
             }
+            if (text.length > 0) {
+                this.currentIndex = i;
+                return { elementsToReturn, text };
+            }
         }
-        return null; // No more valid elements
+        return { elementsToReturn, text };
     }
 
     prevElement(startIndex) {
-        // Start iterating backward from the current position
-        for (let i = startIndex-1; i >= 0; i--) {
+        for (let i = startIndex - 1; i >= 0; i--) {
             const element = this.elements[i];
             if (this.isElementVisible(element)) {
                 const text = this.textExtractor.extractText(element);
@@ -47,7 +56,7 @@ class ContentHandler {
                 }
             }
         }
-        return null; // No more valid elements
+        return null;
     }
 
     speakCurrentSection() {
@@ -61,14 +70,15 @@ class ContentHandler {
         }
 
         const { element, text } = this.currentElement;
-
-        this.highlightBox.addHighlight(element);
-        this.speechHandler.speak(text, () => {
-            this.highlightBox.removeHighlight(element);
-            this.currentIndex++;
-            this.currentElement = null; // Prepare for the next element
-            this.speakCurrentSection();
-        });
+        for (let i = 0; i<element.length; i++) {
+            this.highlightBox.addHighlight(element[i]);
+            this.speechHandler.speak(text[i], () => {
+                this.highlightBox.removeHighlight(element[i]);
+                this.currentIndex++;
+                this.currentElement = null; // Prepare for the next element
+                this.speakCurrentSection();
+            });
+        }
     }
 
     handleMessage(request) {
@@ -78,27 +88,38 @@ class ContentHandler {
             this.speakCurrentSection();
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
-            this.highlightBox.removeHighlight(this.currentElement?.element);
+            if (this.currentElement && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
+            }
             this.currentIndex++;
             this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
-            this.highlightBox.removeHighlight(this.currentElement?.element);
-            // this.currentIndex = Math.max(0, this.currentIndex - 1);
+            if (this.currentElement && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
+            }
             this.textExtractor.clearProcessedElements();
             this.currentElement = this.prevElement(this.currentIndex);
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
-                this.highlightBox.removeHighlight(this.currentElement?.element);
+                if (this.currentElement && this.currentElement.elementsToReturn) {
+                    for (let el of this.currentElement.elementsToReturn) {
+                        this.highlightBox.removeHighlight(el);
+                    }
+                }
             } else {
                 this.speakCurrentSection();
             }
         } else if (request.action === "accessLink") {
             if (this.currentElement) {
-                this.linkHandler.accessLink(this.currentElement.element);
+                this.linkHandler.accessLink(this.currentElement.elementsToReturn);
                 this.speechHandler.stop();
             }
         }
@@ -106,8 +127,7 @@ class ContentHandler {
 
     isElementVisible(element) {
         const rect = element.getBoundingClientRect();
-        const isVisible = rect.top >= 0 &&
-                          rect.left >= 0;
+        const isVisible = rect.top >= 0 && rect.left >= 0;
         const isNotHidden = window.getComputedStyle(element).visibility !== 'hidden' &&
                             window.getComputedStyle(element).display !== 'none';
         return isVisible && isNotHidden;

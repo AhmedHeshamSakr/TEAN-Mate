@@ -26,34 +26,28 @@ export default class TextExtractor {
         }
         this.processedElements.add(node);
 
-        // Extract text from text nodes
-        let text = ''; // Initialize text
-        for (const child of node.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                text += child.textContent.trim() + ' ';
-                if (child.nextSibling && child.nextSibling.nodeType === Node.ELEMENT_NODE) {
-                    //this.extractText(child);
-                    break;
-            } else if (child.nodeType === Node.ELEMENT_NODE) {
-
-            }
-            // Recursively process child nodes to handle nested structures
-            text += this.extractText(child);
-        
-        }}
-        //Special handling for links
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
-            text = text.trim() ? `Link text: ${text.trim()}` : `Link destination: ${domain}`;
-            if (node.nextSibling && node.nextSibling.nodeType === Node.TEXT_NODE) {
-                const nextText = node.nextSibling.textContent.trim();
-                if (nextText) {
-                    text += nextText + ' ';
-                }
+            text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : '';
         }
-    }
-
+        else if (tagName === "em" || tagName === 'b') {
+            this.processedElements.add(node);
+            text += node.textContent.trim();
+        }
         return text.trim();
+    }
+    extractTextFromElementNode(node) {
+        const tagName = node.tagName?.toLowerCase();
+        let text = '';
+        this.processedElements.add(node);
+        if (tagName === 'a' && node.href) {
+            const domain = new URL(node.href).hostname.replace('www.', '');
+            text = node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : `Link destination: ${domain}`;
+        }
+        else if (tagName === "em" || tagName === 'b') {
+            text = node.textContent.trim();
+        }
+        return text;
     }
 
     /**
