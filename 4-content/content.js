@@ -87,14 +87,14 @@ class ContentHandler {
             this.currentElement = this.getNextElement(this.currentIndex);
         }
         let { elementsToReturn, text } = this.currentElement;
-        if (!this.currentElement || !elementsToReturn|| !text) {
-            console.log("in !this.currentElement || !element|| !text");
-            console.log("this.currentElement : " + this.currentElement.elementsToReturn + " " + this.currentElement.text);
-            console.log("element: " + elementsToReturn);
-            console.log("text: " + text);
-            this.currentElement = this.getNextElement(this.currentIndex); 
-        } 
-        elementsToReturn, text = this.currentElement; 
+        // if (!this.currentElement || !elementsToReturn|| !text) {
+        //     console.log("in !this.currentElement || !element|| !text");
+        //     console.log("this.currentElement : " + this.currentElement.elementsToReturn + " " + this.currentElement.text);
+        //     console.log("element: " + elementsToReturn);
+        //     console.log("text: " + text);
+        //     this.currentElement = this.getNextElement(this.currentIndex); 
+        // } 
+        // elementsToReturn, text = this.currentElement; 
         if (!this.currentElement || !elementsToReturn) {
             console.log("No element to speak!");
             return;
@@ -109,10 +109,11 @@ class ContentHandler {
       
                 // Wait for speech to complete
                 await this.speechHandler.speak(text[i]);
-      
-                // Remove highlight after speech
                 this.highlightBox.removeHighlight(elementsToReturn[i]);
-      
+                this.currentIndex++;
+                this.currentElement = null; // Prepare for the next element
+                this.speakCurrentSection();
+                
                 resolve();
               } catch (error) {
                 console.error('Error in sequence:', error);
