@@ -61,27 +61,35 @@ export default class ArtyomAssistant {
     }
 
     startListening() {
-        this.artyom.fatality();
-        setTimeout(() => {
-            this.artyom.initialize({
-                lang: "en-US",
-                continuous: true,
-                listen: true,
-                debug: true,
-                speed: 1,
-            }).then(() => {
-                console.log("Artyom is listening!");
-                this.isListening = true;
-            }).catch(err => {
-                console.error("Artyom initialization error:", err);
-            });
-        }, 250);
+        if (!this.isListening) {
+            this.isListening = true;
+            console.log("Artyom is now listening...");
+            this.artyom.fatality();
+            setTimeout(() => {
+                this.artyom.initialize({
+                    lang: "en-US",
+                    continuous: true,
+                    listen: true,
+                    debug: true,
+                    speed: 1,
+                }).then(() => {
+                    console.log("Artyom is listening!");
+                    this.isListening = true;
+                }).catch(err => {
+                    console.error("Artyom initialization error:", err);
+                });
+            }, 250);
+        }
     }
 
     stopListening() {
-        this.artyom.fatality();
-        console.log("Artyom has stopped listening.");
-        this.isListening = false;
+        if (this.isListening) {
+            this.isListening = false;
+            console.log("Artyom stopped listening.");
+            this.artyom.fatality();
+            console.log("Artyom has stopped listening.");
+            this.isListening = false;
+        }
     }
 
     toggleListening() {

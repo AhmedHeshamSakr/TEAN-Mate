@@ -54,9 +54,26 @@ class SidebarController {
 
     // Handle Speech-to-Text button click
     handleSTT() {
-        console.log("Speech-to-Text button clicked");
-        this.artyomAssistant.toggleListening(); // Integrate Artyom for speech recognition
+        console.log("Speech-to-Text initialized with push-to-talk");
+    
+        // Add keyboard listeners for push-to-talk
+        window.addEventListener("keydown", (event) => {
+            if (event.code === "Space" && !this.artyomAssistant.isListening) {
+                console.log("Push-to-Talk: Listening activated");
+                this.artyomAssistant.startListening(); // Start STT
+                this.buttons.stt.textContent = "Listening..."; // Change button text
+            }
+        });
+    
+        window.addEventListener("keyup", (event) => {
+            if (event.code === "Space" && this.artyomAssistant.isListening) {
+                console.log("Push-to-Talk: Listening stopped");
+                this.artyomAssistant.stopListening(); // Stop STT
+                this.buttons.stt.textContent = "Speech to Text (STT)"; // Reset button text
+            }
+        });
     }
+    
 
     // Handle Sign Language Translator button click
     handleSignLanguage() {
