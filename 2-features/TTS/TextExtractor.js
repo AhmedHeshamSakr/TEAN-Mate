@@ -26,6 +26,7 @@ export default class TextExtractor {
         }
         this.processedElements.add(node);
 
+        let text = '';
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
             text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : '';

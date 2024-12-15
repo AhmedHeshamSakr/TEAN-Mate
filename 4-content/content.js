@@ -25,20 +25,41 @@ class ContentHandler {
         let text = [];
         for (let i = startIndex; i < this.elements.length; i++) {
             const element = this.elements[i];
+            console.log("element: " + element);
 
             if (this.isElementVisible(element)) {
+                console.log("element in if");
+                const tagName = element.tagName?.toLowerCase();
+                if (["script", "style", "noscript"].includes(tagName)) {
+                    console.log("element is s/s/n");
+                    continue;
+                }
                 for (const child of element.childNodes) {
+                    let textRes = '';
+                    console.log("child: " + child);
                     if (child.nodeType === Node.TEXT_NODE) {
-                        text.push(child.textContent.trim() + ' ');
-                        elementsToReturn.push(element);
+                        console.log("entered text condition");
+                        textRes = child.textContent.trim();
+                        console.log("textRes in text: "+textRes);
+                        if (textRes !== ''){
+                            text.push(textRes);
+                            elementsToReturn.push(element);
+                        }
                     } else if (child.nodeType === Node.ELEMENT_NODE) {
-                        text.push(this.textExtractor.extractText(child));
-                        elementsToReturn.push(child);
+                        console.log("entered element condition");
+                        textRes = this.textExtractor.extractText(child);
+                        console.log("textRes in element: "+textRes);
+                        if (textRes !== ''){
+                            text.push(textRes);
+                            elementsToReturn.push(child);
+                        }
                     }
                 }
             }
             if (text.length > 0) {
                 this.currentIndex = i;
+                console.log("elementsToReturn: "+ elementsToReturn);
+                console.log("text to return: "+text);
                 return { elementsToReturn, text };
             }
         }
@@ -59,21 +80,33 @@ class ContentHandler {
         return null;
     }
 
-    speakCurrentSection() {
+    async speakCurrentSection() {
+        console.log("in speakCurrentSection");
         if (!this.currentElement) {
+            console.log("!this.currentElement");
             this.currentElement = this.getNextElement(this.currentIndex);
         }
-
-        if (!this.currentElement) {
-            // No more elements to process
+        let { elementsToReturn, text } = this.currentElement;
+        if (!this.currentElement || !elementsToReturn|| !text) {
+            console.log("in !this.currentElement || !element|| !text");
+            console.log("this.currentElement : " + this.currentElement.elementsToReturn + " " + this.currentElement.text);
+            console.log("element: " + elementsToReturn);
+            console.log("text: " + text);
+            this.currentElement = this.getNextElement(this.currentIndex); 
+        } 
+        elementsToReturn, text = this.currentElement; 
+        if (!this.currentElement || !elementsToReturn) {
+            console.log("No element to speak!");
             return;
         }
 
-        const { element, text } = this.currentElement;
-        for (let i = 0; i<element.length; i++) {
-            this.highlightBox.addHighlight(element[i]);
-            this.speechHandler.speak(text[i], () => {
-                this.highlightBox.removeHighlight(element[i]);
+        for (let i = 0; i<elementsToReturn.length; i++) {
+            console.log("entered for loop");
+            this.highlightBox.addHighlight(elementsToReturn[i]);
+            console.log("before speak");
+            await this.speechHandler.speak(text[i], () => {
+                console.log("after speak");
+                this.highlightBox.removeHighlight(elementsToReturn[i]);
                 this.currentIndex++;
                 this.currentElement = null; // Prepare for the next element
                 this.speakCurrentSection();
