@@ -100,16 +100,25 @@ class ContentHandler {
             return;
         }
 
-        for (let i = 0; i<elementsToReturn.length; i++) {
-            console.log("entered for loop");
-            this.highlightBox.addHighlight(elementsToReturn[i]);
-            console.log("before speak");
-            await this.speechHandler.speak(text[i], () => {
-                console.log("after speak");
+        for (let i = 0; i < elementsToReturn.length; i++) {
+            // Wait for the previous speech/highlight to complete before starting the next
+            await new Promise(async (resolve) => {
+              try {
+                // Add highlight first
+                this.highlightBox.addHighlight(elementsToReturn[i]);
+      
+                // Wait for speech to complete
+                await this.speechHandler.speak(text[i]);
+      
+                // Remove highlight after speech
                 this.highlightBox.removeHighlight(elementsToReturn[i]);
-                this.currentIndex++;
-                this.currentElement = null; // Prepare for the next element
-                this.speakCurrentSection();
+      
+                resolve();
+              } catch (error) {
+                console.error('Error in sequence:', error);
+                this.highlightBox.removeHighlight(elementsToReturn[i]);
+                resolve(); // Continue to next item even if there's an error
+              }
             });
         }
     }
