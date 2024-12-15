@@ -1,149 +1,257 @@
-/* General Styles */
+/* Enhanced Color Palette */
+:root {
+    --primary-color: #2196f3;
+    --secondary-color: #4caf50;
+    --info-color: #00bcd4;
+    --warning-color: #ff9800;
+    --background-gradient-start: #e3f2fd;
+    --background-gradient-end: #bbdefb;
+    --text-dark: #333333;
+    --text-light: #ffffff;
+}
+
+/* Modern Typography and Base Styling */
 body {
-    font-family: Arial, sans-serif;
-    /* background-color: #0e99b8; */
-    background: linear-gradient(110deg, #070707 30%, #787677 70%);
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 20px;
-    margin: 6%;
-    height: 100%;
-}
-
-/* Sidebar Container */
-.sidebar-MainContainer{
-    width: 90%;
-    height: 100%;
-    padding: 20px;
-    background: linear-gradient(110deg, #B4E3E9 30% , #1C3F65 70%);
-    /* box-shadow: 2px 0 5px rgba(91, 90, 90, 0.1); */
-    border-radius: 10px;
-    margin: 0 auto;
-    border: 2px solid #e3f1ffad;
-    border-style:double;
-}
-
-.Features-div{
-    width: 90%;
-    height: 100%;
-    padding: 15px;
-    align-self: center;
-    background:#ffffff;
-    border-radius: 10px;
-    margin:0 auto;
-}
-
-/* Header */
-.header h1 {
-    text-align: Left;
-    font-size: 1.3em;
-    font-weight: bold;
-    font-family:'Lucida Sans';
-    color: #003366;
-    margin-bottom: 10px;
-    text-decoration: black;
-}
-
-/* Styling for the sidebar title */
-.sidebar-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #f4f8fc;
-    text-align: center;
-    font-family:'Times New Roman', Times, serif;
-}
-
-/* Section Title */
-h2 {
-    color: #003366;
-
-    font-size: 1.3em;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Button Container */
-.button-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Accessibility Buttons */
-.accessibility-button {
-    background-color: #ffffff;
-    color: hwb(210 1% 92%);
-    border: 2px solid #024D84;
-    padding: 15px;
-    font-size: 1.2em;
-    border-radius: 10px;
-    text-align: left;
-    font-weight: bold;
-    font-family:'Franklin Gothic Medium';
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    gap: 10px;  /* Space for icon and text */
-    transition: all 0.3s ease;
-}
-
-.accessibility-button:hover {
-    background-color: #C2D8ED;
-    cursor: pointer;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Icon Style inside Buttons */
-.accessibility-button img {
-    width: 25px;
-    height: 25px;
-    display: inline-block;
-}
-
-.speech-display {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    height: 150px;
-}
-
-.speech-display h2 {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #333;
-}
-
-#speech-output {
-    font-size: 14px;
-    color: #555;
-}
-
-
-/* Footer Button
-.footer-button {
-    text-align: center;
-    margin-top: 30px;
-} */
-
-/* .submit-button {
-    background-color: #003366;
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 1em;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s ease;
+    line-height: 1.6;
+    color: var(--text-dark);
 }
 
-.submit-button:hover {
-    background-color: #004b8d;
-    cursor: pointer;
-} */
+/* Container Refinements */
+.sidebar-MainContainer {
+    max-width: 750px;
+    width: 95%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(33, 150, 243, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+}
+
+.sidebar-MainContainer:hover {
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Title Styling */
+.sidebar-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: -1px;
+}
+
+.tools-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    border-left: 6px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+
+/* Feature Container */
+.Features-div {
+    background: rgba(249, 249, 249, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Enhanced Button Design */
+.accessibility-button {
+    padding: 18px 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.accessibility-button i {
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.accessibility-button:hover i {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.accessibility-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.accessibility-button:hover::before {
+    left: 0;
+}
+
+/* Color-specific button variations */
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-success {
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline-info {
+    border: 2px solid var(--info-color);
+    color: var(--info-color);
+}
+
+.btn-outline-warning {
+    border: 2px solid var(--warning-color);
+    color: var(--warning-color);
+}
+
+/* Speech Display Enhancements */
+.speech-display {
+    border: 2px dashed rgba(33, 150, 243, 0.3);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+}
+
+.speech-display:hover {
+    border-color: rgba(33, 150, 243, 0.6);
+}
+
+.speech-display h3 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(33, 150, 243, 0.2);
+    padding-bottom: 10px;
+}
+
+#recognizedText {
+    font-style: italic;
+    color: #555;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar-MainContainer {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .sidebar-title {
+        font-size: 2.2rem;
+    }
+
+    .tools-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.button-container > * {
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+}
+
+.button-container > *:nth-child(1) { animation-delay: 0.2s; }
+.button-container > *:nth-child(2) { animation-delay: 0.4s; }
+.button-container > *:nth-child(3) { animation-delay: 0.6s; }
+.button-container > *:nth-child(4) { animation-delay: 0.8s; }
+
+/* @font-face {
+    font-family: 'Inter';
+    font-weight: 300;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Light.woff2') format('woff2'),
+         url('fonts/inter/Inter-Light.otf') format('otf'),
+         url('fonts/inter/Inter-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 400;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Regular.woff2') format('woff2'),
+         url('fonts/inter/Inter-Regular.otf') format('otf'),
+         url('fonts/inter/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 600;
+    font-style: normal;
+    src: url('fonts/inter/Inter-SemiBold.woff2') format('woff2'),
+         url('fonts/inter/Inter-SemiBold.otf') format('otf'),
+         url('fonts/inter/Inter-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Bold.woff2') format('woff2'),
+         url('fonts/inter/Inter-Bold.otf') format('otf'),
+         url('fonts/inter/Inter-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('fonts/fontawesome/fontawesome-webfont.woff2') format('woff2'),
+         url('fonts/fontawesome/fontawesome-webfont.woff') format('woff'),
+         url('fonts/fontawesome/fontawesome-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fas {
+    font-family: 'FontAwesome';
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-volume-up::before { content: "\f028"; }
+.fa-microphone::before { content: "\f130"; }
+.fa-sign-language::before { content: "\f2a7"; }
+.fa-image::before { content: "\f03e"; } */

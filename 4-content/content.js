@@ -101,6 +101,8 @@ class ContentHandler {
                 this.linkHandler.accessLink(this.currentElement.element);
                 this.speechHandler.stop();
             }
+        }else if (request.action === "performSearch"){
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
         }
     }
 

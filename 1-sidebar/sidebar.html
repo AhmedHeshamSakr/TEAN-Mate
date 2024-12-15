@@ -4,53 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEAN Mate</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="sidebar.css">
-    <!-- <script src="artyom.window.min.js"></script> -->
 
+    
 </head>
-
 <body>
-    <main class="sidebar-MainContainer">
-        <h1 id="sidebar-title" class="sidebar-title"></h1>
-        <!-- Accessibility Tools Section -->
-        <h1 class="tools-title">Accessibility Tools:</h1>
+    <main class="sidebar-MainContainer container">
+        <h1 id="sidebar-title" class="sidebar-title text-center">TEAN Mate</h1>
+
+        <h2 class="tools-title mb-4">Accessibility Tools</h2>
+
         <div class="Features-div">
-            <!-- Buttons -->                                            
-            <div class="button-container">
-                <div>
-                    <button class="accessibility-button">
-                        <!-- <img src="icons/tts.png" alt="Text to Speech"> -->
-                        Text to Speech (TTS)
-                    </button>
-                </div>
-                <div>
-                    <button class="accessibility-button">
-                        <!-- <img src="icons/stt.png" alt="Speech to Text"> -->
-                        Speech to Text (STT)
-                    </button>
-                </div>
-                <div>
-                    <button class="accessibility-button">
-                        <!-- <img src="icons/sign-language.png" alt="Sign Language"> -->
-                        Sign Language Translator
-                    </button>
-                </div>
-                <div>
-                    <button class="accessibility-button">
-                        <!-- <img src="icons/image-caption.png" alt="Image Captioning"> -->
-                        Image Captioning
-                    </button>
-                </div>
+            <div class="button-container d-grid gap-3">
+                <button class="accessibility-button btn btn-outline-primary">
+                    <i class="fas fa-volume-up"></i>
+                    Text to Speech
+                </button>
+                <button class="accessibility-button btn btn-outline-success">
+                    <i class="fas fa-microphone"></i>
+                    Speech to Text
+                </button>
+                <button class="accessibility-button btn btn-outline-info">
+                    <i class="fas fa-sign-language"></i>
+                    Sign Language
+                </button>
+                <button class="accessibility-button btn btn-outline-warning">
+                    <i class="fas fa-image"></i>
+                    Image Captioning
+                </button>
             </div>
-            <!-- Speech Display Area -->
+
             <div id="speech-display" class="speech-display">
-                <h2>Speech to Text Output:</h2>
+                <h3>Speech Recognition Output:</h3>
                 <div id="recognizedText">Start speaking to see the text here...</div>
             </div>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="sidebar.bundle.js" > </script>
-    <!-- <script src="ArtyomAssistant.js"></script> -->
 
 </body>
 </html>

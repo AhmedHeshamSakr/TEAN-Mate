@@ -5019,6 +5019,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/bind */ ".
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js ***!
+  \*******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/concat */ "./node_modules/core-js-pure/stable/instance/concat.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js ***!
@@ -5094,6 +5104,22 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/array/virtual/concat.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/concat.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.concat */ "./node_modules/core-js-pure/modules/es.array.concat.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'concat');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/function/virtual/bind.js":
 /*!***************************************************************!*\
   !*** ./node_modules/core-js-pure/es/function/virtual/bind.js ***!
@@ -5126,6 +5152,27 @@ var FunctionPrototype = Function.prototype;
 module.exports = function (it) {
   var own = it.bind;
   return it === FunctionPrototype || (isPrototypeOf(FunctionPrototype, it) && own === FunctionPrototype.bind) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/concat.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/concat.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/concat */ "./node_modules/core-js-pure/es/array/virtual/concat.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.concat;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.concat) ? method : own;
 };
 
 
@@ -9857,6 +9904,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/instance/concat.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/concat.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/concat */ "./node_modules/core-js-pure/es/instance/concat.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/define-property.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/define-property.js ***!
@@ -10234,12 +10296,30 @@ var SidebarController = /*#__PURE__*/function () {
         action: "toggleReading"
       });
     }
+  }, {
+    key: "handleSearch",
+    value: function handleSearch(query) {
+      console.log("Searching for: ".concat(query));
+      // Send a message to the active tab to perform the search
+      this.sendMessageToActiveTab({
+        action: "performSearch",
+        query: query
+      });
+    }
 
     // Trigger button action programmatically
   }, {
     key: "triggerButtonAction",
     value: function triggerButtonAction(action) {
+      var query = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       switch (action) {
+        case "search":
+          if (query) {
+            this.handleSearch(query);
+          } else {
+            console.warn("Search query is missing");
+          }
+          break;
         case "tts":
           this.handleTTS();
           break;
@@ -10288,8 +10368,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _node_modules_artyom_js_build_artyom_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/artyom.js/build/artyom.js */ "./node_modules/artyom.js/build/artyom.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _node_modules_artyom_js_build_artyom_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../node_modules/artyom.js/build/artyom.js */ "./node_modules/artyom.js/build/artyom.js");
+
+
 
 
 
@@ -10297,7 +10381,7 @@ __webpack_require__.r(__webpack_exports__);
 var ArtyomAssistant = /*#__PURE__*/function () {
   function ArtyomAssistant(sidebarController) {
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ArtyomAssistant);
-    this.artyom = new _node_modules_artyom_js_build_artyom_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
+    this.artyom = new _node_modules_artyom_js_build_artyom_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
     this.sidebarController = sidebarController; // Reference to SidebarController
     this.isListening = false;
     this.setupCommands();
@@ -10305,41 +10389,50 @@ var ArtyomAssistant = /*#__PURE__*/function () {
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ArtyomAssistant, [{
     key: "setupCommands",
     value: function setupCommands() {
-      var _this = this;
+      var _context;
+      var triggerAction = _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_2__(_context = this.triggerExtensionAction).call(_context, this);
       this.artyom.addCommands([{
         indexes: ["text to speech", "start reading"],
         action: function action() {
-          _this.triggerExtensionAction("tts");
+          triggerAction("tts");
         }
       }, {
         indexes: ["stop", "pause"],
         action: function action() {
-          _this.triggerExtensionAction("toggle-reading");
+          triggerAction("toggle-reading");
         }
       }, {
         indexes: ["sign language", "show sign language"],
         action: function action() {
-          _this.triggerExtensionAction("signLanguage");
+          triggerAction("signLanguage");
         }
       }, {
         indexes: ["image caption", "describe image"],
         action: function action() {
-          _this.triggerExtensionAction("imageCaption");
+          triggerAction("imageCaption");
         }
       }, {
         indexes: ["next", "skip next"],
         action: function action() {
-          _this.triggerExtensionAction("skip-next");
+          triggerAction("skip-next");
         }
       }, {
-        indexes: ["back ", "skip back"],
+        indexes: ["back", "skip back"],
         action: function action() {
-          _this.triggerExtensionAction("skip-previous");
+          triggerAction("skip-previous");
         }
       }, {
         indexes: ["open link", "open this link"],
         action: function action() {
-          _this.triggerExtensionAction("access-link");
+          triggerAction("access-link");
+        }
+      },
+      // New search command
+      {
+        indexes: ["search for *", "find *"],
+        smart: true,
+        action: function action(i, wildcard) {
+          triggerAction("search", wildcard);
         }
       }]);
       this.artyom.redirectRecognizedTextOutput(function (recognized, isFinal) {
@@ -10350,13 +10443,13 @@ var ArtyomAssistant = /*#__PURE__*/function () {
   }, {
     key: "startListening",
     value: function startListening() {
-      var _this2 = this;
+      var _this = this;
       if (!this.isListening) {
         this.isListening = true;
         console.log("Artyom is now listening...");
         this.artyom.fatality();
-        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_2__(function () {
-          _this2.artyom.initialize({
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_3__(function () {
+          _this.artyom.initialize({
             lang: "en-US",
             continuous: true,
             listen: true,
@@ -10364,7 +10457,7 @@ var ArtyomAssistant = /*#__PURE__*/function () {
             speed: 1
           }).then(function () {
             console.log("Artyom is listening!");
-            _this2.isListening = true;
+            _this.isListening = true;
           })["catch"](function (err) {
             console.error("Artyom initialization error:", err);
           });
@@ -10395,8 +10488,15 @@ var ArtyomAssistant = /*#__PURE__*/function () {
   }, {
     key: "triggerExtensionAction",
     value: function triggerExtensionAction(action) {
+      var query = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       if (this.sidebarController) {
-        this.sidebarController.triggerButtonAction(action);
+        var _context2;
+        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__(_context2 = "Triggering action: ".concat(action, ", Query: ")).call(_context2, query));
+        if (query) {
+          this.sidebarController.triggerButtonAction(action, query);
+        } else {
+          this.sidebarController.triggerButtonAction(action);
+        }
       } else {
         console.warn("SidebarController is not set.");
       }
@@ -10486,7 +10586,7 @@ var ArtyomAssistant = /*#__PURE__*/function () {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("e934469440391069fc89")
+/******/ 		__webpack_require__.h = () => ("d37afa899bb4b9af5677")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

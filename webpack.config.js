@@ -85,7 +85,9 @@ export default {
       '@common': resolve(__dirname, '5-common'),
       '@sidebar': resolve(__dirname, '1-sidebar'),
       'artyom.js': path.resolve(__dirname, 'node_modules/artyom.js'),
-      '@artyom': path.resolve(__dirname, 'node_modules/artyom.js/build/artyom.window.min.js')
+      // '@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/css/all.min.css'),
+      // '@bootstrap': path.resolve(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.min.css'),
+
 
 
     },
@@ -136,7 +138,15 @@ export default {
         {
           from: 'node_modules/artyom.js/build/artyom.window.min.js',
           to: 'artyom.window.min.js'
-        }
+        },
+        // {
+        //   from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+        //   to: 'all.min.css'
+        // },
+        // {
+        //   from: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        //   to: 'bootstrap.min.css'
+        // }
           
       ]
     })

@@ -117,9 +117,24 @@ class SidebarController {
         this.sendMessageToActiveTab({ action: "toggleReading" });
     }
 
+    handleSearch(query) {
+        console.log(`Searching for: ${query}`);
+        // Send a message to the active tab to perform the search
+        this.sendMessageToActiveTab({ 
+            action: "performSearch", 
+            query: query 
+        });
+    }
+
     // Trigger button action programmatically
-    triggerButtonAction(action) {
+    triggerButtonAction(action , query = null) {
         switch (action) {
+            case "search":
+                if (query) {
+                    this.handleSearch(query);
+                } else {
+                    console.warn("Search query is missing");
+                }break;
             case "tts":
                 this.handleTTS();
                 break;
