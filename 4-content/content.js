@@ -87,14 +87,6 @@ class ContentHandler {
             this.currentElement = this.getNextElement(this.currentIndex);
         }
         let { elementsToReturn, text } = this.currentElement;
-        // if (!this.currentElement || !elementsToReturn|| !text) {
-        //     console.log("in !this.currentElement || !element|| !text");
-        //     console.log("this.currentElement : " + this.currentElement.elementsToReturn + " " + this.currentElement.text);
-        //     console.log("element: " + elementsToReturn);
-        //     console.log("text: " + text);
-        //     this.currentElement = this.getNextElement(this.currentIndex); 
-        // } 
-        // elementsToReturn, text = this.currentElement; 
         if (!this.currentElement || !elementsToReturn) {
             console.log("No element to speak!");
             return;
@@ -108,11 +100,8 @@ class ContentHandler {
                 this.highlightBox.addHighlight(elementsToReturn[i]);
       
                 // Wait for speech to complete
-                await this.speechHandler.speak(text[i]);
+                await this.speechHandler.speak(text[i], ()=>{});
                 this.highlightBox.removeHighlight(elementsToReturn[i]);
-                this.currentIndex++;
-                this.currentElement = null; // Prepare for the next element
-                this.speakCurrentSection();
                 
                 resolve();
               } catch (error) {
@@ -122,6 +111,9 @@ class ContentHandler {
               }
             });
         }
+        this.currentIndex++;
+        this.currentElement = null; // Prepare for the next element
+        this.speakCurrentSection();
     }
 
     handleMessage(request) {
