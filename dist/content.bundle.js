@@ -13602,6 +13602,7 @@ var PiperTTS = /*#__PURE__*/function () {
     this.voices = null;
     this.abortController = null;
     this.session = null;
+    this.voice = "en_US-hfc_female-medium";
   }
   return (0,_babel_runtime_corejs3_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(PiperTTS, [{
     key: "setVoices",
@@ -13878,7 +13879,7 @@ var PiperTTS = /*#__PURE__*/function () {
             case 0:
               this.abortController = new AbortController();
               HF_BASE = "/TTS/voices_models/";
-              voicesElement = "en_US-lessac-medium";
+              voicesElement = this.voice;
               piperPhonemizeJsUrl = chrome.runtime.getURL("TTS/piper_phonemize.js");
               piperPhonemizeWasmUrl = chrome.runtime.getURL("TTS/piper_phonemize.wasm");
               piperPhonemizeDataUrl = chrome.runtime.getURL("TTS/piper_phonemize.data");
