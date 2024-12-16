@@ -1,6 +1,12 @@
+import LimitedWeakSet from "../TTS/LimitedWeakSet.js";
 export default class TextExtractor {
+    static processedElements = new LimitedWeakSet(50); // Tracks processed elements
+    static textContainingTags = [
+        "b", "strong", "i", "em", "u", "mark", "small", "sub", "sup", "s",
+        "span", "abbr", "cite", "q", "code", "kbd", "var", "a", "time"
+      ];
     constructor() {
-        this.processedElements = new WeakSet(); // Tracks processed elements
+        
     }
 
     /**
@@ -21,34 +27,21 @@ export default class TextExtractor {
         }
 
         // Avoid processing the same element multiple times
-        if (this.processedElements.has(node)) {
+        if (TextExtractor.processedElements.has(node)) {
             return '';
         }
-        this.processedElements.add(node);
+        TextExtractor.processedElements.add(node);
 
         let text = '';
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
             text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : '';
         }
-        else if (tagName === "em" || tagName === 'b') {
-            this.processedElements.add(node);
+        else if (TextExtractor.textContainingTags.includes(tagName.toLowerCase())) {
+            TextExtractor.processedElements.add(node);
             text += node.textContent.trim();
         }
         return text.trim();
-    }
-    extractTextFromElementNode(node) {
-        const tagName = node.tagName?.toLowerCase();
-        let text = '';
-        this.processedElements.add(node);
-        if (tagName === 'a' && node.href) {
-            const domain = new URL(node.href).hostname.replace('www.', '');
-            text = node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : `Link destination: ${domain}`;
-        }
-        else if (tagName === "em" || tagName === 'b') {
-            text = node.textContent.trim();
-        }
-        return text;
     }
 
     /**
@@ -61,14 +54,12 @@ export default class TextExtractor {
         const rect = element.getBoundingClientRect();
         const style = window.getComputedStyle(element);
         return (
-            rect.width > 0 &&
-            rect.height > 0 &&
             style.visibility !== 'hidden' &&
             style.display !== 'none'
         );
     }
 
     clearProcessedElements() {
-        this.processedElements = new WeakSet();
+        TextExtractor.processedElements = new LimitedWeakSet(50);
     }
 }

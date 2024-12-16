@@ -15,6 +15,7 @@ class ContentHandler {
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
         this.currentElement = null;
+        this.currentLink = null;
         this.elements = Array.from(document.body.querySelectorAll('*'));
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
@@ -25,34 +26,29 @@ class ContentHandler {
         let text = [];
         for (let i = startIndex; i < this.elements.length; i++) {
             const element = this.elements[i];
-            console.log("element: " + element);
-
             if (this.isElementVisible(element)) {
-                console.log("element in if");
                 const tagName = element.tagName?.toLowerCase();
                 if (["script", "style", "noscript"].includes(tagName)) {
-                    console.log("element is s/s/n");
                     continue;
                 }
                 for (const child of element.childNodes) {
                     let textRes = '';
-                    console.log("child: " + child);
                     if (child.nodeType === Node.TEXT_NODE) {
-                        console.log("entered text condition");
+                        if(TextExtractor.processedElements.has(element)) continue;
                         textRes = child.textContent.trim();
-                        console.log("textRes in text: "+textRes);
                         if (textRes !== ''){
                             text.push(textRes);
                             elementsToReturn.push(element);
                         }
                     } else if (child.nodeType === Node.ELEMENT_NODE) {
-                        console.log("entered element condition");
                         textRes = this.textExtractor.extractText(child);
-                        console.log("textRes in element: "+textRes);
                         if (textRes !== ''){
                             text.push(textRes);
                             elementsToReturn.push(child);
                         }
+                        if (child.tagName.toLowerCase() === "a"){
+                            this.currentLink = child;
+                        } else this.currentLink = null;
                     }
                 }
             }
@@ -107,7 +103,7 @@ class ContentHandler {
               } catch (error) {
                 console.error('Error in sequence:', error);
                 this.highlightBox.removeHighlight(elementsToReturn[i]);
-                resolve(); // Continue to next item even if there's an error
+                //resolve(); // Continue to next item even if there's an error
               }
             });
         }
@@ -154,18 +150,20 @@ class ContentHandler {
             }
         } else if (request.action === "accessLink") {
             if (this.currentElement) {
-                this.linkHandler.accessLink(this.currentElement.elementsToReturn);
+                this.linkHandler.accessLink(this.currentLink);
                 this.speechHandler.stop();
             }
         }
     }
 
     isElementVisible(element) {
+        if (!(element instanceof HTMLElement)) return false;
         const rect = element.getBoundingClientRect();
         const isVisible = rect.top >= 0 && rect.left >= 0;
-        const isNotHidden = window.getComputedStyle(element).visibility !== 'hidden' &&
-                            window.getComputedStyle(element).display !== 'none';
-        return isVisible && isNotHidden;
+        const style = window.getComputedStyle(element);
+        const isNotHidden = style.visibility !== 'hidden' &&
+                            style.display !== 'none';
+        return isNotHidden;
     }
 }
 
