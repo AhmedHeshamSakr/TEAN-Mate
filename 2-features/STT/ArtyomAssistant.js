@@ -9,48 +9,41 @@ export default class ArtyomAssistant {
     }
 
     setupCommands() {
+        const triggerAction = this.triggerExtensionAction.bind(this);
         this.artyom.addCommands([
             {
                 indexes: ["text to speech", "start reading"],
-                action: () => {
-                    this.triggerExtensionAction("tts");
-                }
+                action: () => {triggerAction("tts");}
             },
             {
                 indexes: ["stop", "pause"],
-                action: () => {
-                    this.triggerExtensionAction("toggle-reading");
-                }
+                action: () => {triggerAction("toggle-reading");}
             },
             {
                 indexes: ["sign language", "show sign language"],
-                action: () => {
-                    this.triggerExtensionAction("signLanguage");
-                }
+                action: () => {triggerAction("signLanguage");}
             },
             {
                 indexes: ["image caption", "describe image"],
-                action: () => {
-                    this.triggerExtensionAction("imageCaption");
-                }
+                action: () => {triggerAction("imageCaption");}
             },
             {
                 indexes: ["next", "skip next"],
-                action: () => {
-                    this.triggerExtensionAction("skip-next");
-                }
+                action: () => {triggerAction("skip-next");}
             },
             {
-                indexes: ["back ", "skip back"],
-                action: () => {
-                    this.triggerExtensionAction("skip-previous");
-                }
+                indexes: ["back", "skip back"],
+                action: () => {triggerAction("skip-previous");}
             },
             {
                 indexes: ["open link", "open this link"],
-                action: () => {
-                    this.triggerExtensionAction("access-link");
-                }
+                action: () => {triggerAction("access-link");}
+            },
+            // New search command
+            {
+                indexes: ["search for *", "find *"],
+                smart: true,
+                action: (i, wildcard) => {triggerAction("search", wildcard);}
             }
         ]);
 
@@ -61,27 +54,35 @@ export default class ArtyomAssistant {
     }
 
     startListening() {
-        this.artyom.fatality();
-        setTimeout(() => {
-            this.artyom.initialize({
-                lang: "en-US",
-                continuous: true,
-                listen: true,
-                debug: true,
-                speed: 1,
-            }).then(() => {
-                console.log("Artyom is listening!");
-                this.isListening = true;
-            }).catch(err => {
-                console.error("Artyom initialization error:", err);
-            });
-        }, 250);
+        if (!this.isListening) {
+            this.isListening = true;
+            console.log("Artyom is now listening...");
+            this.artyom.fatality();
+            setTimeout(() => {
+                this.artyom.initialize({
+                    lang: "en-US",
+                    continuous: true,
+                    listen: true,
+                    debug: true,
+                    speed: 1,
+                }).then(() => {
+                    console.log("Artyom is listening!");
+                    this.isListening = true;
+                }).catch(err => {
+                    console.error("Artyom initialization error:", err);
+                });
+            }, 250);
+        }
     }
 
     stopListening() {
-        this.artyom.fatality();
-        console.log("Artyom has stopped listening.");
-        this.isListening = false;
+        if (this.isListening) {
+            this.isListening = false;
+            console.log("Artyom stopped listening.");
+            this.artyom.fatality();
+            console.log("Artyom has stopped listening.");
+            this.isListening = false;
+        }
     }
 
     toggleListening() {
@@ -93,11 +94,17 @@ export default class ArtyomAssistant {
         return this.isListening;
     }
 
-    triggerExtensionAction(action) {
+    triggerExtensionAction(action, query = null) {
         if (this.sidebarController) {
-            this.sidebarController.triggerButtonAction(action);
+            console.log(`Triggering action: ${action}, Query: ${query}`);
+            if (query) {
+                this.sidebarController.triggerButtonAction(action, query);
+            } else {
+                this.sidebarController.triggerButtonAction(action);
+            }
         } else {
             console.warn("SidebarController is not set.");
         }
     }
 }
+
