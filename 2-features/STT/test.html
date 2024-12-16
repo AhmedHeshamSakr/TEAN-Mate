@@ -1,11 +1,10 @@
-<script src="node_modules/artyom.js/build/artyom.window.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artyom Voice Assistant</title>
-    <script src="node_modules/artyom.js/build/artyom.window.min.js"></script>
+    <script src="/node_modules/artyom.js/build/artyom.window.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,11 +18,15 @@
             overflow-y: auto;
             background-color: #f9f9f9;
         }
+        button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Artyom Voice Assistant</h1>
     <button id="start">Start Listening</button>
+    <button id="actionButton" onclick="alert('Button clicked!')">Action Button</button>
     <h3>Recognized Speech:</h3>
     <div id="recognizedText"></div>
 
@@ -32,43 +35,32 @@
             constructor() {
                 this.artyom = new Artyom();
                 this.isListening = false;
-                this.selectedVoice = null; // Default voice
                 this.setupCommands();
                 this.setupUI();
-                this.loadVoices();
-            }
-
-            loadVoices() {
-                const voices = speechSynthesis.getVoices();
-                if (voices.length > 0) {
-                    // Select a voice (e.g., English Female)
-                    this.selectedVoice = voices.find(voice => voice.lang === "en_US" && voice.name.includes("Female"));
-                }
-
-                // Fallback to default if the specific voice isn't available
-                if (!this.selectedVoice) {
-                    this.selectedVoice = voices[0]; // First available voice
-                }
             }
 
             setupCommands() {
                 this.artyom.addCommands([
                     {
-                        indexes: ["hello", "hi", "hey"],
+                        indexes: ["click the button", "press the button"],
                         action: () => {
-                            this.artyom.say("Hello! How can I assist you today?", {
-                                voice: this.selectedVoice?.voiceURI,
-                            });
+                            const actionButton = document.getElementById("actionButton");
+                            actionButton.click(); // Simulates a button click
+                            this.displayAction("Action button clicked!");
                         }
                     },
                     {
-                        indexes: ["what time is it", "tell me the time"],
+                        indexes: ["scroll down", "scroll the page"],
                         action: () => {
-                            const now = new Date();
-                            const time = now.toLocaleTimeString();
-                            this.artyom.say(`The current time is ${time}`, {
-                                voice: this.selectedVoice?.voiceURI,
-                            });
+                            window.scrollBy(0, 100); // Scrolls the page down by 100 pixels
+                            this.displayAction("Page scrolled down!");
+                        }
+                    },
+                    {
+                        indexes: ["change the color", "make it red"],
+                        action: () => {
+                            document.body.style.backgroundColor = "red"; // Changes background color
+                            this.displayAction("Background color changed to red!");
                         }
                     }
                 ]);
@@ -81,6 +73,11 @@
                         recognizedTextDiv.textContent = recognized;
                     }
                 });
+            }
+
+            displayAction(message) {
+                const recognizedTextDiv = document.getElementById("recognizedText");
+                recognizedTextDiv.textContent = message;
             }
 
             setupUI() {
@@ -97,13 +94,8 @@
                         listen: true,
                         debug: true,
                         speed: 1,
-                        loadVoices: true,
-                        voice: this.selectedVoice?.voiceURI, // Use the selected voice
                     }).then(() => {
                         console.log("Artyom is ready to listen!");
-                        this.artyom.say("Voice assistant activated!", {
-                            voice: this.selectedVoice?.voiceURI,
-                        });
                         this.isListening = true;
                         document.getElementById("start").textContent = "Stop Listening";
                     }).catch(err => {
@@ -116,9 +108,6 @@
             stopListening() {
                 this.artyom.fatality();
                 console.log("Artyom has stopped listening.");
-                this.artyom.say("Voice assistant deactivated!", {
-                    voice: this.selectedVoice?.voiceURI,
-                });
                 this.isListening = false;
                 document.getElementById("start").textContent = "Start Listening";
             }
@@ -134,12 +123,6 @@
 
         // Instantiate the assistant
         const assistant = new ArtyomAssistant();
-
-        // Ensure voices are loaded
-        speechSynthesis.onvoiceschanged = () => {
-            assistant.loadVoices();
-        };
-
     </script>
 </body>
 </html>

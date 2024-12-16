@@ -7,6 +7,7 @@ class BackgroundHandler {
           "skip-previous": "skipToPrevious",
           "toggle-reading": "toggleReading",
           "access-link": "accessLink",
+          "toggle-stt": "toggleSTT",
       };
 
       this.initialize();
@@ -23,13 +24,13 @@ class BackgroundHandler {
   }
 
   async initializeVoices() {
-        try {
-            const voices = await initializeVoices();
-            chrome.storage.local.set({ voices });
-            console.log("Voices initialized:", voices);
-        } catch (error) {
-            console.error("Failed to initialize voices:", error);
-        }
+      try {
+          const voices = await initializeVoices();
+          chrome.storage.local.set({ voices });
+          console.log("Voices initialized:", voices);
+      } catch (error) {
+          console.error("Failed to initialize voices:", error);
+      }
   }
 
   onInstalled() {
@@ -39,7 +40,6 @@ class BackgroundHandler {
   }
 
   onActionClicked() {
-      // Placeholder for action click logic, if needed in the future
       console.log("Action icon clicked");
   }
 
@@ -53,12 +53,12 @@ class BackgroundHandler {
   }
 
   onMessage(request, sender, sendResponse) {
-        if (request.action === "getVoices") {
-            chrome.storage.local.get("voices", (result) => {
-                sendResponse({ voices: result.voices });
-            });
-            return true;
-        }
+      if (request.action === "getVoices") {
+          chrome.storage.local.get("voices", (result) => {
+              sendResponse({ voices: result.voices });
+          });
+          return true; // Indicate async response
+      }
   }
 
   sendMessageToActiveTab(message) {
