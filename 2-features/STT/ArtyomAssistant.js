@@ -1,8 +1,8 @@
-import Artyom from '/node_modules/artyom.js/build/artyom.js';
+import Artyom from "artyom.js";
 
 export default class ArtyomAssistant {
     constructor(sidebarController) {
-        this.artyom = new Artyom();
+        this.artyom = new Artyom.default();
         this.sidebarController = sidebarController; // Reference to SidebarController
         this.isListening = false;
         this.setupCommands();

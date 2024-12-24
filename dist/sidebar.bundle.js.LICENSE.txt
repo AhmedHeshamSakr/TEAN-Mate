@@ -1,0 +1,11 @@
+/**
+ * Artyom.js is a voice control, speech recognition and speech synthesis JavaScript library.
+ *
+ * @requires {webkitSpeechRecognition && speechSynthesis}
+ * @license MIT
+ * @version 1.0.6
+ * @copyright 2017 Our Code World (www.ourcodeworld.com) All Rights Reserved.
+ * @author Carlos Delgado (https://github.com/sdkcarlos) and Sema García (https://github.com/semagarcia)
+ * @see https://sdkcarlos.github.io/sites/artyom.html
+ * @see http://docs.ourcodeworld.com/projects/artyom-js
+ */
