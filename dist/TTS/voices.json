@@ -1,0 +1,14 @@
+{
+    "en_US-lessac-medium": {
+        "files": {
+            "en_US-lessac-medium.onnx": "voices_models/en_US-lessac-medium.onnx",
+            "en_US-lessac-medium.onnx.json": "voices_models/en_US-lessac-medium.onnx.json"
+        }
+    },
+    "en_US-hfc_female-medium": {
+        "files": {
+            "en_US-hfc_female-medium.onnx": "voices_models/en_US-hfc_female-medium.onnx",
+            "en_US-hfc_female-medium.onnx.json": "voices_models/en_US-hfc_female-medium.onnx.json"
+        }
+    }
+}
