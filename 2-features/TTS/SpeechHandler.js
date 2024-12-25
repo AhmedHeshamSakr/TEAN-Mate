@@ -13,7 +13,7 @@ export default class SpeechHandler {
                 this.piperTTS.setVoices(response.voices);
                 console.log("Voices set in content script:", response.voices);
             } else {
-                console.error("Failed to get voices from background script");
+                console.log("Failed to get voices from background script");
             }
         });
     }
@@ -37,7 +37,13 @@ export default class SpeechHandler {
                 this.isSpeaking = true;
                 console.log("Playing audio");
                 this.currentAudio.playbackRate = this.speed;
-                this.currentAudio.play();
+                this.currentAudio.play().catch(error => {
+                    if (error.name === 'AbortError') {
+                        console.log("Audio play aborted");
+                    } else {
+                        console.log("Error in play:", error);
+                    }
+                });
             }
             this.currentAudio.onended = () => {
                 this.isSpeaking = false;

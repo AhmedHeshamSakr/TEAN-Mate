@@ -78,6 +78,7 @@ class ContentHandler {
             this.currentIndex = 0;
             this.currentElement = null;
             this.speakCurrentSection();
+            this.wasSpeaking = true;
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
             this.highlightBox.removeHighlight(this.currentElement?.element);
@@ -98,6 +99,7 @@ class ContentHandler {
                 this.wasSpeaking = false;
             } else {
                 this.speakCurrentSection();
+                this.wasSpeaking = true;
             }
         } else if (request.action === "accessLink") {
             if (this.currentElement) {
@@ -109,7 +111,6 @@ class ContentHandler {
         } else if (request.action === "pauseTTS") {
             this.speechHandler.stop();
             this.highlightBox.removeHighlight(this.currentElement?.element);
-            this.wasSpeaking = true;
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
                 this.highlightBox.removeHighlight(this.currentElement?.element);
