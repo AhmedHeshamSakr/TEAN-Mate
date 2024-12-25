@@ -60,6 +60,7 @@ class SidebarController {
         window.addEventListener("keydown", (event) => {
             if (event.code === "Space" && !this.artyomAssistant.isListening) {
                 console.log("Push-to-Talk: Listening activated");
+                this.sendMessageToActiveTab({ action: "pauseTTS" });
                 this.artyomAssistant.startListening(); // Start STT
                 this.buttons.stt.textContent = "Listening..."; // Change button text
             }
@@ -68,6 +69,7 @@ class SidebarController {
         window.addEventListener("keyup", (event) => {
             if (event.code === "Space" && this.artyomAssistant.isListening) {
                 console.log("Push-to-Talk: Listening stopped");
+                this.sendMessageToActiveTab({ action: "resumeTTS" });
                 this.artyomAssistant.stopListening(); // Stop STT
                 this.buttons.stt.textContent = "Speech to Text (STT)"; // Reset button text
             }

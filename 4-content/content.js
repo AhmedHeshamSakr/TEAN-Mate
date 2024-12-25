@@ -18,6 +18,8 @@ class ContentHandler {
         this.elements = Array.from(document.body.querySelectorAll('*'));
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+
+        this.wasSpeaking = false;
     }
 
     getNextElement(startIndex) {
@@ -93,6 +95,7 @@ class ContentHandler {
             if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
                 this.highlightBox.removeHighlight(this.currentElement?.element);
+                this.wasSpeaking = false;
             } else {
                 this.speakCurrentSection();
             }
@@ -103,6 +106,15 @@ class ContentHandler {
             }
         }else if (request.action === "performSearch"){
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
+        } else if (request.action === "pauseTTS") {
+            this.speechHandler.stop();
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+            this.wasSpeaking = true;
+        } else if (request.action === "resumeTTS") {
+            if (this.wasSpeaking) {
+                this.highlightBox.removeHighlight(this.currentElement?.element);
+                this.speakCurrentSection();
+            }
         }
     }
 
