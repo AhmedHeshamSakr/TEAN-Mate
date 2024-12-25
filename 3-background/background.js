@@ -34,6 +34,8 @@ class BackgroundHandler {
   }
 
   onInstalled() {
+      // Placeholder for installation logic, if needed in the future
+      chrome.localStorage.setItem("sidebarOpened", false);
       console.log("Extension installed");
   }
 
