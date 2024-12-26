@@ -6,7 +6,6 @@ import LinkHandler from "../2-features/TTS/LinkHandler.js";
 class ContentHandler {
     constructor() {
         this.sections = [];
-        this.currentIndex = 0;
         this.pastBorderStyle = "";
         this.pastBackgroundStyle = "";
 
@@ -16,16 +15,60 @@ class ContentHandler {
         this.linkHandler = new LinkHandler();
         this.currentElement = null;
         this.currentLink = null;
-        this.elements = Array.from(document.body.querySelectorAll('*'));
+        this.walker = document.createTreeWalker(
+            document.body,       // Start from the body element
+            NodeFilter.SHOW_ELEMENT,  // Only show elements (ignore text and comments)
+            null,                 // No filter, so it gets all elements
+            false                 // No expanding of the tree, just the visible nodes
+        );
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     }
 
-    getNextElement(startIndex) {
+    getNextElement() {
         let elementsToReturn = [];
         let text = [];
-        for (let i = startIndex; i < this.elements.length; i++) {
-            const element = this.elements[i];
+        while (this.walker.nextNode()) {
+            const element = this.walker.currentNode;
+            if(TextExtractor.processedElements.has(element)) continue;
+            if (this.isElementVisible(element)) {
+                const tagName = element.tagName?.toLowerCase();
+                if (["script", "style", "noscript"].includes(tagName)) {
+                    continue;
+                }
+                for (const child of element.childNodes) {
+                    let textRes = '';
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        textRes = child.textContent.trim();
+                        if (textRes !== ''){
+                            text.push(textRes);
+                            elementsToReturn.push(element);
+                        }
+                    } else if (child.nodeType === Node.ELEMENT_NODE) {
+                        textRes = this.textExtractor.extractText(child);
+                        if (textRes !== ''){
+                            text.push(textRes);
+                            elementsToReturn.push(child);
+                        }
+                        if (child.tagName.toLowerCase() === "a"){
+                            this.currentLink = child;
+                        } else this.currentLink = null;
+                    }
+                }
+                TextExtractor.processedElements.add(element);
+            }
+            if (text.length > 0) {
+                return { elementsToReturn, text };
+            }
+        }
+        return { elementsToReturn, text };
+    }
+
+    prevElement() {
+        let elementsToReturn = [];
+        let text = [];
+        while (this.walker.previousNode()) {
+            const element = this.walker.currentNode;
             if (this.isElementVisible(element)) {
                 const tagName = element.tagName?.toLowerCase();
                 if (["script", "style", "noscript"].includes(tagName)) {
@@ -53,38 +96,18 @@ class ContentHandler {
                 }
             }
             if (text.length > 0) {
-                this.currentIndex = i;
-                console.log("elementsToReturn: "+ elementsToReturn);
-                console.log("text to return: "+text);
                 return { elementsToReturn, text };
             }
         }
         return { elementsToReturn, text };
     }
 
-    prevElement(startIndex) {
-        for (let i = startIndex - 1; i >= 0; i--) {
-            const element = this.elements[i];
-            if (this.isElementVisible(element)) {
-                const text = this.textExtractor.extractText(element);
-                if (text.trim()) {
-                    this.currentIndex = i;
-                    return { element, text };
-                }
-            }
-        }
-        return null;
-    }
-
     async speakCurrentSection() {
-        console.log("in speakCurrentSection");
         if (!this.currentElement) {
-            console.log("!this.currentElement");
-            this.currentElement = this.getNextElement(this.currentIndex);
+            this.currentElement = this.getNextElement();
         }
         let { elementsToReturn, text } = this.currentElement;
         if (!this.currentElement || !elementsToReturn) {
-            console.log("No element to speak!");
             return;
         }
 
@@ -107,14 +130,12 @@ class ContentHandler {
               }
             });
         }
-        this.currentIndex++;
         this.currentElement = null; // Prepare for the next element
         this.speakCurrentSection();
     }
 
     handleMessage(request) {
         if (request.action === "extractText") {
-            this.currentIndex = 0;
             this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToNext") {
@@ -124,7 +145,6 @@ class ContentHandler {
                     this.highlightBox.removeHighlight(el);
                 }
             }
-            this.currentIndex++;
             this.currentElement = null;
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
@@ -135,7 +155,7 @@ class ContentHandler {
                 }
             }
             this.textExtractor.clearProcessedElements();
-            this.currentElement = this.prevElement(this.currentIndex);
+            this.currentElement = this.prevElement();
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
@@ -149,20 +169,27 @@ class ContentHandler {
                 this.speakCurrentSection();
             }
         } else if (request.action === "accessLink") {
-            if (this.currentElement) {
-                this.linkHandler.accessLink(this.currentLink);
+            if (this.currentElement  && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
                 this.speechHandler.stop();
+                this.linkHandler.accessLink(this.currentLink);
             }
         }
     }
 
     isElementVisible(element) {
         if (!(element instanceof HTMLElement)) return false;
-        const rect = element.getBoundingClientRect();
-        const isVisible = rect.top >= 0 && rect.left >= 0;
+        if (element.offsetHeight === 0 || element.offsetWidth === 0) {
+            return false;
+        }
         const style = window.getComputedStyle(element);
         const isNotHidden = style.visibility !== 'hidden' &&
-                            style.display !== 'none';
+                            style.display !== 'none' &&
+                            style.opacity !== '0' &&
+                            style.height !== '0px' &&
+                            style.width !== '0px';
         return isNotHidden;
     }
 }

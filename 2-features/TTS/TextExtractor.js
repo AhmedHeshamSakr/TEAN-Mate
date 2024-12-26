@@ -35,11 +35,20 @@ export default class TextExtractor {
         let text = '';
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
-            text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : '';
+            text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : `Link to ${domain}`;
         }
         else if (TextExtractor.textContainingTags.includes(tagName.toLowerCase())) {
-            TextExtractor.processedElements.add(node);
             text += node.textContent.trim();
+            for (const child of node.childNodes) {
+                // Only process element nodes and check for anchor tags
+                if (child.nodeType === Node.ELEMENT_NODE) {  // Check if it's an element node
+                    const noAnchorChildren = child.getElementsByTagName('a').length === 0;
+                    if (child.tagName.toLowerCase() !== 'a' && 
+                        noAnchorChildren) {
+                        TextExtractor.processedElements.add(child);
+                    }
+                }
+            }
         }
         return text.trim();
     }
@@ -51,12 +60,16 @@ export default class TextExtractor {
      */
     isElementVisible(element) {
         if (!(element instanceof HTMLElement)) return false;
-        const rect = element.getBoundingClientRect();
+        if (element.offsetHeight === 0 || element.offsetWidth === 0) {
+            return false;
+        }
         const style = window.getComputedStyle(element);
-        return (
-            style.visibility !== 'hidden' &&
-            style.display !== 'none'
-        );
+        const isNotHidden = style.visibility !== 'hidden' &&
+                            style.display !== 'none' &&
+                            style.opacity !== '0' &&
+                            style.height !== '0px' &&
+                            style.width !== '0px';
+        return isNotHidden;
     }
 
     clearProcessedElements() {
