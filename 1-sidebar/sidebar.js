@@ -84,7 +84,7 @@ class SidebarController {
                 console.log("Push-to-Talk: Listening stopped");
                 this.sendMessageToActiveTab({ action: "resumeTTS" });
                 this.artyomAssistant.stopListening(); // Stop STT
-                this.buttons.stt.textContent = "Speech to Text (STT)"; // Reset button text
+                this.buttons.stt.textContent = "Speech to Text"; // Reset button text
             }
         });
     }
