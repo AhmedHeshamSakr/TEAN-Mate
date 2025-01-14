@@ -31,6 +31,8 @@ class ContentHandler {
         );
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+
+        this.wasSpeaking = false;
     }
 
     getNextElement() {
@@ -148,6 +150,7 @@ class ContentHandler {
         if (request.action === "extractText") {
             this.currentElement = null;
             this.speakCurrentSection();
+            this.wasSpeaking = true;
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
             if (this.currentElement && this.currentElement.elementsToReturn) {
@@ -175,8 +178,10 @@ class ContentHandler {
                         this.highlightBox.removeHighlight(el);
                     }
                 }
+                this.wasSpeaking = false;
             } else {
                 this.speakCurrentSection();
+                this.wasSpeaking = true;
             }
         } else if (request.action === "accessLink") {
             if (this.currentElement  && this.currentElement.elementsToReturn) {
@@ -185,6 +190,16 @@ class ContentHandler {
                 }
                 this.speechHandler.stop();
                 this.linkHandler.accessLink(this.currentLink);
+            }
+        }else if (request.action === "performSearch"){
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
+        } else if (request.action === "pauseTTS") {
+            this.speechHandler.stop();
+            this.highlightBox.removeHighlight(this.currentElement?.element);
+        } else if (request.action === "resumeTTS") {
+            if (this.wasSpeaking) {
+                this.highlightBox.removeHighlight(this.currentElement?.element);
+                this.speakCurrentSection();
             }
         }
     }

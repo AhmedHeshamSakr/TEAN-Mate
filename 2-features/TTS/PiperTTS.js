@@ -7,6 +7,7 @@ class PiperTTS {
         this.voices = null;
         this.abortController = null;
         this.session = null;
+        this.voice = "en_US-hfc_female-medium";
     }
 
     setVoices(voices) {
@@ -165,7 +166,7 @@ class PiperTTS {
     async runPredict(inputText, signal) {
         this.abortController = new AbortController();
         const HF_BASE = `/TTS/voices_models/`;
-        const voicesElement = "en_US-lessac-medium";
+        const voicesElement = this.voice;
         const piperPhonemizeJsUrl = chrome.runtime.getURL("TTS/piper_phonemize.js");
         const piperPhonemizeWasmUrl = chrome.runtime.getURL("TTS/piper_phonemize.wasm");
         const piperPhonemizeDataUrl = chrome.runtime.getURL("TTS/piper_phonemize.data");

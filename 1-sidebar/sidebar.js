@@ -1,83 +1,185 @@
+import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
+
+import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js"; 
+
+// Update the SidebarController
 class SidebarController {
-  constructor() {
-      this.buttons = {}; // Store button references for easy access
-      this.initialize(); // Set up event listeners and initial state
-  }
+    constructor() {
+        this.buttons = {}; // Store button references for easy access
+        this.artyomAssistant = new ArtyomAssistant(this); // Initialize ArtyomAssistant with SidebarController instance
+        this.initialize(); // Set up event listeners and initial state
+    }
 
   // Initialize sidebar
   initialize() {
+      // Check if the sidebar has been opened before
+      // Play the welcome audio
+    //   const audioUrl = chrome.runtime.getURL(welcomeAudio);
+    //   console.log("Welcome audio URL:", audioUrl);
+      const audio = new Audio(welcomeAudio);
+      audio.play().then(() => {
+         console.log("Welcome audio played successfully");
+      }).catch((error) => {
+          console.error("Error playing welcome audio:", error);
+      });
+
       // Set sidebar title using the extension's name
       document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 
-      // Wait for DOM to load before attaching event listeners
-      document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
-  }
+        // Wait for DOM to load before attaching event listeners
+        document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
+    }
 
-  // Set up event listeners for all buttons
-  setupEventListeners() {
-    const buttons = document.querySelectorAll(".accessibility-button");
-    if (!buttons.length) {
-      console.warn("No accessibility buttons found!");
-      return;
+    // Set up event listeners for all buttons
+    setupEventListeners() {
+        const buttons = document.querySelectorAll(".accessibility-button");
+        if (!buttons.length) {
+            console.warn("No accessibility buttons found!");
+            return;
+        }
+
+        // Assign buttons dynamically and bind their handlers
+        this.buttons.tts = buttons[0];
+        this.buttons.stt = buttons[1];
+        this.buttons.signLanguage = buttons[2];
+        this.buttons.imageCaption = buttons[3];
+
+        this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
+        this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
+        this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
+        this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
+    }
+
+    // Add an event listener to a button, with error handling
+    addButtonListener(button, handler) {
+        if (!button) {
+            console.warn("Button not found, skipping event binding.");
+            return;
+        }
+        button.addEventListener("click", handler);
+    }
+
+    // Handle Text-to-Speech button click
+    handleTTS() {
+        console.log("Text-to-Speech button clicked");
+        this.sendMessageToActiveTab({ action: "extractText" });
+    }
+
+    // Handle Speech-to-Text button click
+    handleSTT() {
+        console.log("Speech-to-Text initialized with push-to-talk");
+    
+        // Add keyboard listeners for push-to-talk
+        window.addEventListener("keydown", (event) => {
+            if (event.code === "Space" && !this.artyomAssistant.isListening) {
+                console.log("Push-to-Talk: Listening activated");
+                this.sendMessageToActiveTab({ action: "pauseTTS" });
+                this.artyomAssistant.startListening(); // Start STT
+                this.buttons.stt.textContent = "Listening..."; // Change button text
+            }
+        });
+    
+        window.addEventListener("keyup", (event) => {
+            if (event.code === "Space" && this.artyomAssistant.isListening) {
+                console.log("Push-to-Talk: Listening stopped");
+                this.sendMessageToActiveTab({ action: "resumeTTS" });
+                this.artyomAssistant.stopListening(); // Stop STT
+                this.buttons.stt.textContent = "Speech to Text"; // Reset button text
+            }
+        });
     }
     
-    // More robust button assignment
-    this.buttons.tts = buttons[0];
-    this.buttons.stt = buttons[1];
-    this.buttons.signLanguage = buttons[2];
-    this.buttons.imageCaption = buttons[3];
-  
-    this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
-    this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
-    this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
-    this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
-  }
 
-  
-  // Add an event listener to a button, with error handling
-  addButtonListener(button, handler) {
-      if (!button) {
-          console.warn("Button not found, skipping event binding.");
-          return;
-      }
-      button.addEventListener("click", handler);
-  }
+    // Handle Sign Language Translator button click
+    handleSignLanguage() {
+        console.log("Sign Language Translator button clicked");
+        alert("Sign Language Translator activated"); // Placeholder for sign language functionality
+    }
 
-  // Handle Text-to-Speech button click
-  handleTTS() {
-      console.log("Text-to-Speech button clicked");
-      this.sendMessageToActiveTab({ action: "extractText" });
-  }
+    // Handle Image Captioning button click
+    handleImageCaption() {
+        console.log("Image Captioning button clicked");
+        alert("Image Captioning activated"); // Placeholder for image captioning functionality
+    }
 
-  // Handle Speech-to-Text button click
-  handleSTT() {
-      console.log("Speech-to-Text button clicked");
-      alert("Speech to Text activated"); // Placeholder for STT functionality
-  }
+    // Send a message to the active tab
+    sendMessageToActiveTab(message) {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, message);
+            } else {
+                console.warn("No active tab found");
+            }
+        });
+    }
 
-  // Handle Sign Language Translator button click
-  handleSignLanguage() {
-      console.log("Sign Language Translator button clicked");
-      alert("Sign Language Translator activated"); // Placeholder for sign language functionality
-  }
+    handleSkipNext() {
+        console.log("Skipping to next item...");
+        this.sendMessageToActiveTab({ action: "skipNext" });
+    }
+    
+    handleSkipPrevious() {
+        console.log("Skipping to previous item...");
+        this.sendMessageToActiveTab({ action: "skipPrevious" });
+    }
+    
+    handleAccessLink() {
+        console.log("Accessing link...");
+        this.sendMessageToActiveTab({ action: "accessLink" });
+    }
+    handleStopReading() {
+        console.log("Reading Stoped...");
+        this.sendMessageToActiveTab({ action: "toggleReading" });
+    }
 
-  // Handle Image Captioning button click
-  handleImageCaption() {
-      console.log("Image Captioning button clicked");
-      alert("Image Captioning activated"); // Placeholder for image captioning functionality
-  }
+    handleSearch(query) {
+        console.log(`Searching for: ${query}`);
+        // Send a message to the active tab to perform the search
+        this.sendMessageToActiveTab({ 
+            action: "performSearch", 
+            query: query 
+        });
+    }
 
-  // Send a message to the active tab
-  sendMessageToActiveTab(message) {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs.length > 0) {
-              chrome.tabs.sendMessage(tabs[0].id, message);
-          } else {
-              console.warn("No active tab found");
-          }
-      });
-  }
+    // Trigger button action programmatically
+    triggerButtonAction(action , query = null) {
+        switch (action) {
+            case "search":
+                if (query) {
+                    this.handleSearch(query);
+                } else {
+                    console.warn("Search query is missing");
+                }break;
+            case "tts":
+                this.handleTTS();
+                break;
+            case "stt":
+                this.handleSTT();
+                break;
+            case "signLanguage":
+                this.handleSignLanguage();
+                break;
+            case "imageCaption":
+                this.handleImageCaption();
+                break;
+            case "skip-next":
+                this.handleSkipNext();
+                break;
+            case "skip-previous":
+                this.handleSkipPrevious();
+                break;
+            case "access-link":
+                this.handleAccessLink();
+                break;
+            case "toggle-reading":
+                this.handleStopReading();
+                break;    
+            default:
+                console.warn(`Unknown action: ${action}`);
+        }
+    }
 }
 
 // Instantiate the SidebarController
-new SidebarController();
+const sidebarController = new SidebarController();
+export default sidebarController;

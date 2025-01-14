@@ -2,7 +2,7 @@
 
 
 # TEAN Mate Extension
-An AI-powered Microsoft Edge Extension aimed at improving web accessibility for individuals with disabilities.
+An AI-powered Extension aimed at improving web accessibility for individuals with disabilities.
 
 ## Project Structure
 ```
