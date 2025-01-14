@@ -115,12 +115,12 @@ class SidebarController {
 
     handleSkipNext() {
         console.log("Skipping to next item...");
-        this.sendMessageToActiveTab({ action: "skipNext" });
+        this.sendMessageToActiveTab({ action: "skipToNext" });
     }
     
     handleSkipPrevious() {
         console.log("Skipping to previous item...");
-        this.sendMessageToActiveTab({ action: "skipPrevious" });
+        this.sendMessageToActiveTab({ action: "skipToPrevious" });
     }
     
     handleAccessLink() {
@@ -129,7 +129,7 @@ class SidebarController {
     }
     handleStopReading() {
         console.log("Reading Stoped...");
-        this.sendMessageToActiveTab({ action: "toggleReading" });
+        this.sendMessageToActiveTab({ action: "pauseTTS" });
     }
 
     handleSearch(query) {
