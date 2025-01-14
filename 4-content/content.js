@@ -195,10 +195,19 @@ class ContentHandler {
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
         } else if (request.action === "pauseTTS") {
             this.speechHandler.stop();
-            this.highlightBox.removeHighlight(this.currentElement?.element);
+            if (this.currentElement && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
+            }
+            this.wasSpeaking = false;
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
-                this.highlightBox.removeHighlight(this.currentElement?.element);
+                if (this.currentElement && this.currentElement.elementsToReturn) {
+                    for (let el of this.currentElement.elementsToReturn) {
+                        this.highlightBox.removeHighlight(el);
+                    }
+                }
                 this.speakCurrentSection();
             }
         }
