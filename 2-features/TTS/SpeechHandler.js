@@ -22,18 +22,25 @@ export default class SpeechHandler {
         if(this.abortController){
             console.log("Abort previous request");
             this.abortController.abort();
+            this.abortController = null;
         }
 
-        this.abortController = new AbortController();
-        const signal = this.abortController.signal;
+        if (this.currentAudio) {
+            this.currentAudio.pause();
+            this.currentAudio = null;
+        }
 
-        try {
-            if(this.currentAudio == null){
-                const audioBlob = await this.piperTTS.runPredict(text, signal);
-                const audioUrl = URL.createObjectURL(audioBlob);
-                this.currentAudio = new Audio(audioUrl);
-            }
-            if(!this.isSpeaking){
+        return new Promise(async (resolve, reject) => {
+            try {
+              this.abortController = new AbortController();
+              const signal = this.abortController.signal;
+      
+              // Generate new audio
+              const audioBlob = await this.piperTTS.runPredict(text, signal);
+              const audioUrl = URL.createObjectURL(audioBlob);
+              
+              this.currentAudio = new Audio(audioUrl);
+              if(!this.isSpeaking){
                 this.isSpeaking = true;
                 console.log("Playing audio");
                 this.currentAudio.playbackRate = this.speed;
@@ -44,22 +51,38 @@ export default class SpeechHandler {
                         console.log("Error in play:", error);
                     }
                 });
-            }
-            this.currentAudio.onended = () => {
+              }
+      
+              // Set up event handlers
+              this.currentAudio.onended = () => {
                 this.isSpeaking = false;
                 this.currentAudio = null;
-                console.log("Audio Ended")
-                if (onEnd) onEnd();
-            };
-        } catch (error) {
-            if (signal.aborted) {
+                URL.revokeObjectURL(audioUrl); // Clean up the blob URL
+                resolve();
+              };
+      
+              this.currentAudio.onerror = (error) => {
+                this.isSpeaking = false;
+                this.currentAudio = null;
+                URL.revokeObjectURL(audioUrl);
+                reject(error);
+              };
+      
+              // Start playback
+              this.isSpeaking = true;
+      
+            } catch (error) {
+              if (this.abortController?.signal.aborted) {
                 console.log("Request aborted");
-            } else {
+              } else {
                 console.log("Error in speak:", error);
+              }
+              this.isSpeaking = false;
+              this.currentAudio = null;
+              this.abortController = null;
+            //   reject(error);
             }
-            this.isSpeaking = false;
-            this.abortController = null;
-        }
+          });
     }
 
 
