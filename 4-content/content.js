@@ -16,10 +16,18 @@ class ContentHandler {
         this.currentElement = null;
         this.currentLink = null;
         this.walker = document.createTreeWalker(
-            document.body,       // Start from the body element
-            NodeFilter.SHOW_ELEMENT,  // Only show elements (ignore text and comments)
-            null,                 // No filter, so it gets all elements
-            false                 // No expanding of the tree, just the visible nodes
+            document.body,
+            NodeFilter.SHOW_ELEMENT,
+            {
+                acceptNode: function(node) {
+                    const tagName = node.tagName?.toLowerCase();
+                    if (["script", "style", "noscript"].includes(tagName)) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            },
+            false
         );
 
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
@@ -33,26 +41,31 @@ class ContentHandler {
             if(TextExtractor.processedElements.has(element)) continue;
             if (this.isElementVisible(element)) {
                 const tagName = element.tagName?.toLowerCase();
-                if (["script", "style", "noscript"].includes(tagName)) {
-                    continue;
-                }
-                for (const child of element.childNodes) {
-                    let textRes = '';
-                    if (child.nodeType === Node.TEXT_NODE) {
-                        textRes = child.textContent.trim();
-                        if (textRes !== ''){
-                            text.push(textRes);
-                            elementsToReturn.push(element);
+                if (element.tagName.toLowerCase() === 'a' && element.href) {
+                    const domain = new URL(element.href).hostname.replace('www.', '');
+                    text.push(element.textContent.trim() ? `Link text: ${element.textContent.trim()}` : `Link to ${domain}`);
+                    elementsToReturn.push(element);
+                    this.currentLink = element;
+                    TextExtractor.processAllDescendants(element);
+                } else {
+                    for (const child of element.childNodes) {
+                        let textRes = '';
+                        if (child.nodeType === Node.TEXT_NODE) {
+                            textRes = child.textContent.trim();
+                            if (textRes !== ''){
+                                text.push(textRes);
+                                elementsToReturn.push(element);
+                            }
+                        } else if (child.nodeType === Node.ELEMENT_NODE) {
+                            textRes = this.textExtractor.extractText(child);
+                            if (textRes !== ''){
+                                text.push(textRes);
+                                elementsToReturn.push(child);
+                            }
+                            if (child.tagName.toLowerCase() === "a"){
+                                this.currentLink = child;
+                            } else this.currentLink = null;
                         }
-                    } else if (child.nodeType === Node.ELEMENT_NODE) {
-                        textRes = this.textExtractor.extractText(child);
-                        if (textRes !== ''){
-                            text.push(textRes);
-                            elementsToReturn.push(child);
-                        }
-                        if (child.tagName.toLowerCase() === "a"){
-                            this.currentLink = child;
-                        } else this.currentLink = null;
                     }
                 }
                 TextExtractor.processedElements.add(element);
@@ -71,9 +84,6 @@ class ContentHandler {
             const element = this.walker.currentNode;
             if (this.isElementVisible(element)) {
                 const tagName = element.tagName?.toLowerCase();
-                if (["script", "style", "noscript"].includes(tagName)) {
-                    continue;
-                }
                 for (const child of element.childNodes) {
                     let textRes = '';
                     if (child.nodeType === Node.TEXT_NODE) {
