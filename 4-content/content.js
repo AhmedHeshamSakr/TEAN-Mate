@@ -148,6 +148,7 @@ class ContentHandler {
 
     handleMessage(request) {
         if (request.action === "extractText") {
+            if (this.speechHandler.isSpeaking) return;
             this.currentElement = null;
             this.speakCurrentSection();
             this.wasSpeaking = true;
