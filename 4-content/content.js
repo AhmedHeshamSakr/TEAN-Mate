@@ -2,6 +2,7 @@ import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
 import LinkHandler from "../2-features/TTS/LinkHandler.js";
+import InteractionHandler from "../2-features/TTS/InteractionHandler.js";
 
 class ContentHandler {
     constructor() {
@@ -43,13 +44,20 @@ class ContentHandler {
             if(TextExtractor.processedElements.has(element)) continue;
             if (this.isElementVisible(element)) {
                 const tagName = element.tagName?.toLowerCase();
-                if (element.tagName.toLowerCase() === 'a' && element.href) {
+                if (tagName === 'a' && element.href) {
                     const domain = new URL(element.href).hostname.replace('www.', '');
                     text.push(element.textContent.trim() ? `Link text: ${element.textContent.trim()}` : `Link to ${domain}`);
                     elementsToReturn.push(element);
                     this.currentLink = element;
                     TextExtractor.processAllDescendants(element);
-                } else {
+                }
+                else if (['button', 'input', 'select', 'textarea', 'option'].includes(tagName)) {
+                    const stateText = TextExtractor.getElementState(element);
+                    text += `${stateText}${element.textContent.trim()}`;
+                    TextExtractor.processAllDescendants(element);
+                    this.currentLink = element;
+                }
+                else {
                     for (const child of element.childNodes) {
                         let textRes = '';
                         if (child.nodeType === Node.TEXT_NODE) {
@@ -64,7 +72,7 @@ class ContentHandler {
                                 text.push(textRes);
                                 elementsToReturn.push(child);
                             }
-                            if (child.tagName.toLowerCase() === "a"){
+                            if (['button', 'input', 'select', 'textarea', 'option', 'a'].includes(child.tagName?.toLowerCase())){
                                 this.currentLink = child;
                             } else this.currentLink = null;
                         }
@@ -191,6 +199,7 @@ class ContentHandler {
                 }
                 this.speechHandler.stop();
                 this.linkHandler.accessLink(this.currentLink);
+                InteractionHandler.handleInteraction(this.currentLink);
             }
         }else if (request.action === "performSearch"){
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
