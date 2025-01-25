@@ -1,6 +1,12 @@
+import LimitedWeakSet from "../TTS/LimitedWeakSet.js";
 export default class TextExtractor {
+    static processedElements = new LimitedWeakSet(50); // Tracks processed elements
+    static textContainingTags = [
+        "b", "strong", "i", "em", "u", "mark", "small", "sub", "sup", "s",
+        "span", "abbr", "cite", "q", "code", "kbd", "var", "a", "time", "th", "td"
+      ];
     constructor() {
-        this.processedElements = new WeakSet(); // Tracks processed elements
+        
     }
 
     /**
@@ -16,33 +22,35 @@ export default class TextExtractor {
 
         // Skip non-relevant tags
         const tagName = node.tagName?.toLowerCase();
-        if (["script", "style", "noscript"].includes(tagName)) {
-            return '';
-        }
 
         // Avoid processing the same element multiple times
-        if (this.processedElements.has(node)) {
+        if (TextExtractor.processedElements.has(node)) {
             return '';
         }
-        this.processedElements.add(node);
+        TextExtractor.processedElements.add(node);
 
-        // Extract text from text nodes
         let text = '';
-        for (let child of node.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                const trimmed = child.textContent.trim();
-                if (trimmed) {
-                    text += ' ' + trimmed;
-                }
-            }
-        }
-
-        // Special handling for links
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
-            text = text.trim() ? `Link text: ${text.trim()}` : `Link destination: ${domain}`;
+            text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : `Link to ${domain}`;
+            TextExtractor.processAllDescendants(node);
         }
-
+        else if (TextExtractor.textContainingTags.includes(tagName.toLowerCase())) {
+            // text += node.textContent.trim();
+            for (const child of node.childNodes) {
+                // Only process element nodes and check for anchor tags
+                if (child.nodeType === Node.ELEMENT_NODE) {  // Check if it's an element node
+                    const noAnchorChildren = child.getElementsByTagName('a').length === 0;
+                    if (child.tagName.toLowerCase() !== 'a' && 
+                        noAnchorChildren) {
+                        TextExtractor.processedElements.add(child);
+                    }else {
+                        return text;
+                    }
+                }
+            }
+            text += node.textContent.trim();
+        }
         return text.trim();
     }
 
@@ -53,17 +61,31 @@ export default class TextExtractor {
      */
     isElementVisible(element) {
         if (!(element instanceof HTMLElement)) return false;
-        const rect = element.getBoundingClientRect();
+        if (element.offsetHeight === 0 || element.offsetWidth === 0) {
+            return false;
+        }
         const style = window.getComputedStyle(element);
-        return (
-            rect.width > 0 &&
-            rect.height > 0 &&
-            style.visibility !== 'hidden' &&
-            style.display !== 'none'
-        );
+        const isNotHidden = style.visibility !== 'hidden' &&
+                            style.display !== 'none' &&
+                            style.opacity !== '0' &&
+                            style.height !== '0px' &&
+                            style.width !== '0px';
+        return isNotHidden;
     }
 
     clearProcessedElements() {
-        this.processedElements = new WeakSet();
+        TextExtractor.processedElements = new LimitedWeakSet(50);
+    }
+
+    static processAllDescendants(element) {
+        for (const child of element.children) {
+            if (child.nodeType === Node.ELEMENT_NODE) {
+                TextExtractor.processedElements.add(child);
+                // Recursively process this child's children
+                if (child.children.length > 0) {
+                    TextExtractor.processAllDescendants(child);
+                }
+            }
+        }
     }
 }

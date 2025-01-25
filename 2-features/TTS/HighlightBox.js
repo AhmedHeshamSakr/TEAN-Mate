@@ -13,8 +13,8 @@ export default class HighlightBox {
     removeHighlight(element) {
         if (element) {
             Object.assign(element.style, {
-                border: this.pastBorderStyle,
-                background: this.pastBackgroundStyle,
+                border: this.pastBackgroundStyle,
+                background: this.pastBorderStyle,
                 borderRadius: ""
             });
         }
