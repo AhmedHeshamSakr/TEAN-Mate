@@ -9,6 +9,7 @@ class BackgroundHandler {
       "toggle-reading": "toggleReading",
       "access-link": "accessLink",
       "toggle-stt": "toggleSTT",
+      "startSLcapture": "startSLcapture", 
     };
     this.initialize();
   }
