@@ -443,5 +443,30 @@ class ContentHandler {
     }
 }
 
-// Instantiate the content handler
-new ContentHandler();
+// // Instantiate the content handler
+// new ContentHandler();
+
+// // ContentHandler.js
+// import { VideoProcessor } from "./VideoProcessor.js";
+
+// class ContentHandler {
+//   constructor() {
+//     this.videoProcessor = new VideoProcessor();
+
+//     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+//   }
+
+//   handleMessage(request) {
+//     if (request.action === "startSLcapture") {
+//       if (this.videoProcessor.processingActive) {
+//         this.videoProcessor.stopProcessing();
+//       } else {
+//         this.videoProcessor.startProcessing();
+//       }
+//     }
+//     // Handle other actions...
+//   }
+// }
+
+// // Instantiate the content handler
+// new ContentHandler();
