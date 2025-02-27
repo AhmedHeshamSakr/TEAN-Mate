@@ -93,7 +93,8 @@ class SidebarController {
     // Handle Sign Language Translator button click
     handleSignLanguage() {
         console.log("Sign Language Translator button clicked");
-        alert("Sign Language Translator activated"); // Placeholder for sign language functionality
+        this.sendMessageToActiveTab({ action: "startSLcapture" });
+        // alert("Sign Language Translator activated"); // Placeholder for sign language functionality
     }
 
     // Handle Image Captioning button click

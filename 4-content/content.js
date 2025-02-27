@@ -33,6 +33,17 @@ class ContentHandler {
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
         this.wasSpeaking = false;
+
+        this.captureStream = null;
+        this.videoElement = null;
+        this.canvasElement = null;
+        this.animationFrameId = null;
+        this.isCapturing = false;
+        this.frameProcessor = null;
+        this.debugMode = false;
+        this.debugOverlay = null;
+        this.debugContext = null;
+        this.processFrames = this.processFrames.bind(this);
     }
 
     getNextElement() {
@@ -146,6 +157,200 @@ class ContentHandler {
         this.speakCurrentSection();
     }
 
+    initializeDebugOverlay() {
+        // Create a canvas element for the debug overlay
+        this.debugOverlay = document.createElement('canvas');
+        this.debugOverlay.width = 320;  // Smaller preview size
+        this.debugOverlay.height = 240;
+        this.debugOverlay.style.position = 'fixed';
+        this.debugOverlay.style.bottom = '20px';
+        this.debugOverlay.style.right = '20px';
+        this.debugOverlay.style.border = '2px solid #4CAF50';
+        this.debugOverlay.style.borderRadius = '5px';
+        this.debugOverlay.style.zIndex = '9999';  // Make sure it's on top
+        this.debugOverlay.style.backgroundColor = '#000';
+        this.debugContext = this.debugOverlay.getContext('2d');
+        
+        // Add a close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'X';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '5px';
+        closeBtn.style.right = '5px';
+        closeBtn.style.backgroundColor = 'red';
+        closeBtn.style.color = 'white';
+        closeBtn.style.border = 'none';
+        closeBtn.style.borderRadius = '50%';
+        closeBtn.style.width = '20px';
+        closeBtn.style.height = '20px';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.style.fontSize = '12px';
+        closeBtn.style.display = 'flex';
+        closeBtn.style.justifyContent = 'center';
+        closeBtn.style.alignItems = 'center';
+        closeBtn.onclick = () => {
+          this.debugOverlay.style.display = 'none';
+          this.debugMode = false;
+        };
+        
+        // Create a wrapper div to hold the canvas and button
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.bottom = '20px';
+        wrapper.style.right = '20px';
+        wrapper.style.zIndex = '9999';
+        
+        wrapper.appendChild(this.debugOverlay);
+        wrapper.appendChild(closeBtn);
+        document.body.appendChild(wrapper);
+      }
+
+      toggleDebugOverlay() {
+        this.debugMode = !this.debugMode;
+        
+        if (this.debugMode && !this.debugOverlay) {
+          this.initializeDebugOverlay();
+        } else if (this.debugOverlay) {
+          this.debugOverlay.parentNode.style.display = this.debugMode ? 'block' : 'none';
+        }
+      }
+      
+
+    // Function to initialize canvas and video elements
+    initializeElements() {
+        // Create hidden video element to receive the stream
+        this.videoElement = document.createElement('video');
+        this.videoElement.style.display = 'none';
+        this.videoElement.setAttribute('autoplay', true);
+        document.body.appendChild(this.videoElement);
+        
+        // Create hidden canvas for frame extraction
+        this.canvasElement = document.createElement('canvas');
+        this.canvasElement.style.display = 'none';
+        document.body.appendChild(this.canvasElement);
+
+        if (this.debugMode) {
+            this.initializeDebugOverlay();
+        }
+    }
+
+    async startCapture() {
+        if (this.isCapturing) return;
+        
+        try {
+          // Initialize elements if not already done
+          if (!this.videoElement) this.initializeElements();
+          
+          // Request display media (screen sharing)
+          this.captureStream = await navigator.mediaDevices.getDisplayMedia({
+            video: { 
+              cursor: "never",
+              displaySurface: "window"
+            },
+            audio: false
+          });
+          
+          // Connect stream to video element
+          this.videoElement.srcObject = this.captureStream;
+          
+          // Set canvas size based on video dimensions
+          this.videoElement.onloadedmetadata = () => {
+            this.canvasElement.width = this.videoElement.videoWidth;
+            this.canvasElement.height = this.videoElement.videoHeight;
+            
+            // Start the frame processing loop
+            this.isCapturing = true;
+            this.processFrames();
+          };
+          
+          // Handle stream ending (user stops sharing)
+          this.captureStream.getVideoTracks()[0].onended = () => {
+            this.stopCapture();
+          };
+          
+        } catch (error) {
+          console.error("Error starting capture:", error);
+        }
+    }
+
+    stopCapture() {
+        if (!this.isCapturing) return;
+        
+        // Stop the animation frame loop
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
+        
+        // Stop all tracks in the stream
+        if (this.captureStream) {
+            this.captureStream.getTracks().forEach(track => track.stop());
+            this.captureStream = null;
+        }
+        
+        // Clear video source
+        if (this.videoElement) {
+            this.videoElement.srcObject = null;
+        }
+        
+        this.isCapturing = false;
+    }
+
+    // Function to process video frames
+    processFrames() {
+        if (!this.isCapturing) return;
+        
+        // Draw current video frame to canvas
+        const ctx = this.canvasElement.getContext('2d');
+        ctx.drawImage(this.videoElement, 0, 0, this.canvasElement.width, this.canvasElement.height);
+        
+        // Get image data from canvas
+        const imageData = ctx.getImageData(0, 0, this.canvasElement.width, this.canvasElement.height);
+        // Update debug overlay if enabled
+        if (this.debugMode && this.debugContext) {
+            // Draw a scaled version of the frame to the debug overlay
+            this.debugContext.drawImage(
+            this.canvasElement, 
+            0, 0, this.canvasElement.width, this.canvasElement.height,
+            0, 0, this.debugOverlay.width, this.debugOverlay.height
+            );
+            
+            // Optional: Add frame info text
+            this.debugContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            this.debugContext.fillRect(0, 0, 150, 20);
+            this.debugContext.fillStyle = 'white';
+            this.debugContext.font = '12px Arial';
+            this.debugContext.fillText(`Frame: ${new Date().toISOString().substr(11, 8)}`, 5, 15);
+        }
+        // Process the frame for sign language recognition
+        this.processFrame(imageData);
+        
+        // Continue the loop
+        setTimeout(() => {
+            this.animationFrameId = requestAnimationFrame(this.processFrames);
+          }, 100);
+    }
+
+    processFrame(imageData) {
+        // This is where you would implement your sign language recognition logic
+        // For example:
+        
+        // 1. Extract relevant regions of interest (hands, face)
+        // 2. Preprocess the image (resize, normalize)
+        // 3. Apply your sign language detection model
+        // 4. Interpret the results
+        
+        // For demonstration, let's just log some basic info
+        const frameTime = new Date().toISOString();
+        console.log(`Processing frame at ${frameTime}: ${imageData.width}x${imageData.height}`);
+        
+        // For actual implementation, you might want to:
+        // - Send frames to a web worker for processing
+        // - Use TensorFlow.js or similar for ML inference
+        // - Send results to background script or external service
+    }
+  
+
     handleMessage(request) {
         if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) return;
@@ -210,6 +415,15 @@ class ContentHandler {
                     }
                 }
                 this.speakCurrentSection();
+            }
+        } else if (request.action === "startSLcapture") {
+            if (this.isCapturing) {
+                this.stopCapture();
+                this.toggleDebugOverlay();
+            }
+            else {
+                this.startCapture();
+                this.toggleDebugOverlay();
             }
         }
     }
