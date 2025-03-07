@@ -39,7 +39,8 @@
         "icons/*",
         "TTS/*",
         "*.wasm",
-        "assets/*"
+        "assets/*",
+        "lib/mediapipe/*"
       ],
       "matches": ["<all_urls>"]
     }

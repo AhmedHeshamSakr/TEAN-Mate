@@ -151,6 +151,10 @@ export default {
           from: 'node_modules/artyom.js/build/artyom.window.min.js',
           to: 'artyom.window.min.js'
         },
+        {
+          from: 'node_modules/@mediapipe/holistic',
+          to: 'lib/mediapipe'
+        }
         // {
         //   from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
         //   to: 'all.min.css'

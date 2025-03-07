@@ -44,6 +44,11 @@ class ContentHandler {
         this.debugOverlay = null;
         this.debugContext = null;
         this.processFrames = this.processFrames.bind(this);
+
+        this.holistic = null;
+        this.holisticLoaded = false;
+        this.resultsCanvas = null;
+        this.resultsContext = null;
     }
 
     getNextElement() {
@@ -234,12 +239,122 @@ class ContentHandler {
         }
     }
 
+    async initializeHolistic() {
+        if (this.holisticLoaded) return;
+        
+        try {
+            // Load MediaPipe WASM files
+            const filePathBase = chrome.runtime.getURL('lib/mediapipe/');
+            console.log("checkpoint 1");
+            
+            // Create a script element to load the MediaPipe WASM files
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('lib/mediapipe/holistic.js');
+            document.head.appendChild(script);
+            console.log("checkpoint 2");
+    
+            // Wait for the script to load
+            await new Promise((resolve, reject) => {
+                script.onload = resolve;
+                script.onerror = (error) => {
+                    console.error("Error loading script:", error);
+                    reject(error);
+                };
+            });
+            console.log("checkpoint 3");
+            
+            // Check what objects were exposed by the script
+            console.log("Available MediaPipe objects:", Object.keys(window).filter(key => 
+                key.includes('mediapipe') || key.includes('Holistic') || key.includes('holistic')));
+            
+            // Try to find the Holistic constructor
+            let HolisticConstructor;
+            if (window.Holistic) {
+                console.log("Found direct Holistic constructor");
+                HolisticConstructor = window.Holistic;
+            } else if (window.mediapipe && window.mediapipe.Holistic) {
+                console.log("Found Holistic in mediapipe namespace");
+                HolisticConstructor = window.mediapipe.Holistic;
+            } else {
+                // Try loading a custom implementation
+                console.log("Creating custom Holistic implementation");
+                this.createCustomHolistic();
+                HolisticConstructor = window.Holistic;
+            }
+            
+            if (!HolisticConstructor) {
+                throw new Error("Could not find Holistic constructor");
+            }
+            
+            // Initialize Holistic with local WASM files
+            this.holistic = new HolisticConstructor({
+                locateFile: (file) => {
+                    console.log(`Loading file: ${file}`);
+                    return `${filePathBase}${file}`;
+                }
+            });
+            console.log("checkpoint 4");
+    
+            // Configure Holistic
+            await this.holistic.initialize();
+            this.holistic.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+            console.log("checkpoint 5");
+    
+            // Create canvas for displaying results
+            this.resultsCanvas = document.createElement('canvas');
+            this.resultsCanvas.width = 320;
+            this.resultsCanvas.height = 240;
+            this.resultsContext = this.resultsCanvas.getContext('2d');
+            
+            this.holisticLoaded = true;
+            console.log("MediaPipe Holistic initialized successfully");
+        } catch (error) {
+            console.error("Error initializing MediaPipe Holistic:", error);
+        }
+    }
+    
+    // Helper method to create a custom Holistic implementation if needed
+    createCustomHolistic() {
+        // This is a simplified implementation - you may need to adjust based on your needs
+        window.Holistic = class {
+            constructor(options) {
+                this.options = options;
+                console.log("Custom Holistic constructor called with options:", options);
+            }
+            
+            initialize() {
+                console.log("Custom Holistic initialize called");
+                return Promise.resolve();
+            }
+            
+            setOptions(options) {
+                console.log("Custom Holistic setOptions called with:", options);
+                this.options = {...this.options, ...options};
+            }
+            
+            send(input) {
+                console.log("Custom Holistic send called with input:", input);
+                return Promise.resolve({});
+            }
+        };
+    }
+
     async startCapture() {
         if (this.isCapturing) return;
         
         try {
           // Initialize elements if not already done
           if (!this.videoElement) this.initializeElements();
+          
+          // Initialize MediaPipe Holistic if not already done
+          if (!this.holisticLoaded) {
+            await this.initializeHolistic();
+          }
           
           // Request display media (screen sharing)
           this.captureStream = await navigator.mediaDevices.getDisplayMedia({
@@ -297,38 +412,154 @@ class ContentHandler {
     }
 
     // Function to process video frames
-    processFrames() {
+    async processFrames() {
         if (!this.isCapturing) return;
         
         // Draw current video frame to canvas
         const ctx = this.canvasElement.getContext('2d');
         ctx.drawImage(this.videoElement, 0, 0, this.canvasElement.width, this.canvasElement.height);
         
-        // Get image data from canvas
-        const imageData = ctx.getImageData(0, 0, this.canvasElement.width, this.canvasElement.height);
-        // Update debug overlay if enabled
-        if (this.debugMode && this.debugContext) {
-            // Draw a scaled version of the frame to the debug overlay
-            this.debugContext.drawImage(
-            this.canvasElement, 
-            0, 0, this.canvasElement.width, this.canvasElement.height,
-            0, 0, this.debugOverlay.width, this.debugOverlay.height
-            );
-            
-            // Optional: Add frame info text
-            this.debugContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
-            this.debugContext.fillRect(0, 0, 150, 20);
-            this.debugContext.fillStyle = 'white';
-            this.debugContext.font = '12px Arial';
-            this.debugContext.fillText(`Frame: ${new Date().toISOString().substr(11, 8)}`, 5, 15);
+        // Process the frame with MediaPipe Holistic
+        if (this.holistic && this.holisticLoaded) {
+            try {
+                // Process the current frame
+                const results = await this.holistic.send({image: this.canvasElement});
+                
+                // Draw the results
+                this.drawResults(results);
+                
+                // Update debug overlay if enabled
+                if (this.debugMode && this.debugContext && this.resultsCanvas) {
+                    // Draw the results canvas to the debug overlay
+                    this.debugContext.drawImage(
+                        this.resultsCanvas,
+                        0, 0, this.resultsCanvas.width, this.resultsCanvas.height,
+                        0, 0, this.debugOverlay.width, this.debugOverlay.height
+                    );
+                    
+                    // Add frame info text
+                    this.debugContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    this.debugContext.fillRect(0, 0, 150, 20);
+                    this.debugContext.fillStyle = 'white';
+                    this.debugContext.font = '12px Arial';
+                    this.debugContext.fillText(`Frame: ${new Date().toISOString().substr(11, 8)}`, 5, 15);
+                }
+                
+                // Process the results for sign language recognition
+                this.processHolisticResults(results);
+            } catch (error) {
+                console.error("Error processing frame with MediaPipe:", error);
+            }
+        } else {
+            // Update debug overlay with raw frame if MediaPipe is not available
+            if (this.debugMode && this.debugContext) {
+                this.debugContext.drawImage(
+                    this.canvasElement, 
+                    0, 0, this.canvasElement.width, this.canvasElement.height,
+                    0, 0, this.debugOverlay.width, this.debugOverlay.height
+                );
+            }
         }
-        // Process the frame for sign language recognition
-        this.processFrame(imageData);
         
         // Continue the loop
         setTimeout(() => {
             this.animationFrameId = requestAnimationFrame(this.processFrames);
-          }, 100);
+        }, 100);
+    }
+
+    // Draw MediaPipe results on the results canvas
+    drawResults(results) {
+        if (!this.resultsContext || !this.resultsCanvas) return;
+        
+        // Clear the canvas
+        this.resultsContext.clearRect(0, 0, this.resultsCanvas.width, this.resultsCanvas.height);
+        
+        // Draw the input image
+        this.resultsContext.drawImage(
+            this.canvasElement,
+            0, 0, this.canvasElement.width, this.canvasElement.height,
+            0, 0, this.resultsCanvas.width, this.resultsCanvas.height
+        );
+        
+        // Draw face landmarks
+        if (results.faceLandmarks) {
+            this.drawLandmarks(this.resultsContext, results.faceLandmarks, {
+                color: '#FF3030',
+                lineWidth: 1
+            });
+        }
+        
+        // Draw pose landmarks
+        if (results.poseLandmarks) {
+            this.drawLandmarks(this.resultsContext, results.poseLandmarks, {
+                color: '#00FF00',
+                lineWidth: 2
+            });
+        }
+        
+        // Draw left hand landmarks
+        if (results.leftHandLandmarks) {
+            this.drawLandmarks(this.resultsContext, results.leftHandLandmarks, {
+                color: '#30C0FF',
+                lineWidth: 2
+            });
+        }
+        
+        // Draw right hand landmarks
+        if (results.rightHandLandmarks) {
+            this.drawLandmarks(this.resultsContext, results.rightHandLandmarks, {
+                color: '#FF6060',
+                lineWidth: 2
+            });
+        }
+    }
+
+    // Helper function to draw landmarks
+    drawLandmarks(ctx, landmarks, options = {}) {
+        if (!landmarks) return;
+        
+        const { color = 'white', lineWidth = 1 } = options;
+        
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        
+        // Draw each landmark point
+        for (const landmark of landmarks) {
+            const x = landmark.x * ctx.canvas.width;
+            const y = landmark.y * ctx.canvas.height;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // Connect landmarks with lines if needed
+        // This would require knowledge of the connections between landmarks
+    }
+
+    // Process MediaPipe Holistic results for sign language recognition
+    processHolisticResults(results) {
+        // Extract relevant features from the results
+        const features = {
+            pose: results.poseLandmarks || [],
+            leftHand: results.leftHandLandmarks || [],
+            rightHand: results.rightHandLandmarks || [],
+            face: results.faceLandmarks || []
+        };
+        
+        // Here you would implement your sign language recognition logic
+        // For example:
+        // 1. Extract gesture features from the landmarks
+        // 2. Apply classification or pattern recognition
+        // 3. Map to sign language meanings
+        
+        // For demonstration, log some basic info
+        console.log(`Processing holistic results: 
+            - Pose landmarks: ${features.pose.length}
+            - Left hand landmarks: ${features.leftHand.length}
+            - Right hand landmarks: ${features.rightHand.length}
+            - Face landmarks: ${features.face.length}`);
     }
 
     processFrame(imageData) {
@@ -469,4 +700,4 @@ class ContentHandler {
 // }
 
 // // Instantiate the content handler
-// new ContentHandler();
+new ContentHandler();
