@@ -2,6 +2,11 @@ import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
 import LinkHandler from "../2-features/TTS/LinkHandler.js";
+import * as tf from '@tensorflow/tfjs-core';
+import '@tensorflow/tfjs-backend-webgl';
+import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+import * as poseDetection from '@tensorflow-models/pose-detection';
 
 class ContentHandler {
     constructor() {
@@ -44,6 +49,14 @@ class ContentHandler {
         this.debugOverlay = null;
         this.debugContext = null;
         this.processFrames = this.processFrames.bind(this);
+
+        this.handDetector = null;
+        this.handDetectorLoaded = false;
+        this.lastDetectedGesture = null;
+        this.faceDetector = null;
+        this.faceDetectorLoaded = false;
+        this.poseDetector = null;
+        this.poseDetectorLoaded = false;
     }
 
     getNextElement() {
@@ -215,6 +228,66 @@ class ContentHandler {
         }
       }
       
+    async initializeHandDetector() {
+        try {
+            // Make sure TensorFlow backend is initialized
+        await tf.ready();
+        console.log('TensorFlow backend ready:', tf.getBackend());
+        
+        const model = handPoseDetection.SupportedModels.MediaPipeHands;
+        const detectorConfig = {
+            runtime: 'tfjs',
+            modelType: 'lite', // Try 'lite' instead of 'full' for better performance
+            maxHands: 2,
+            scoreThreshold: 0.5 // Lower threshold to detect hands more easily
+        };
+        
+        console.log('Creating hand detector with config:', detectorConfig);
+        this.handDetector = await handPoseDetection.createDetector(model, detectorConfig);
+        this.handDetectorLoaded = true;
+        console.log('Hand detector initialized successfully');
+        } catch (error) {
+            console.error('Error initializing hand detector:', error);
+            this.handDetectorLoaded = false;
+        }
+    }
+
+    async initializeFaceDetector() {
+        try {
+            const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
+            const detectorConfig = {
+                runtime: 'tfjs',
+                refineLandmarks: true,
+                maxFaces: 1
+            };
+            
+            console.log('Creating face detector with config:', detectorConfig);
+            this.faceDetector = await faceLandmarksDetection.createDetector(model, detectorConfig);
+            this.faceDetectorLoaded = true;
+            console.log('Face detector initialized successfully');
+        } catch (error) {
+            console.error('Error initializing face detector:', error);
+            this.faceDetectorLoaded = false;
+        }
+    }
+    
+    async initializePoseDetector() {
+        try {
+            const model = poseDetection.SupportedModels.MoveNet;
+            const detectorConfig = {
+                modelType: 'SinglePose.Lightning',
+                enableSmoothing: true
+            };
+            
+            console.log('Creating pose detector with config:', detectorConfig);
+            this.poseDetector = await poseDetection.createDetector(model, detectorConfig);
+            this.poseDetectorLoaded = true;
+            console.log('Pose detector initialized successfully');
+        } catch (error) {
+            console.error('Error initializing pose detector:', error);
+            this.poseDetectorLoaded = false;
+        }
+    }
 
     // Function to initialize canvas and video elements
     initializeElements() {
@@ -238,8 +311,19 @@ class ContentHandler {
         if (this.isCapturing) return;
         
         try {
-          // Initialize elements if not already done
-          if (!this.videoElement) this.initializeElements();
+            // Initialize elements if not already done
+            if (!this.videoElement) this.initializeElements();
+
+            // Initialize hand detector if not already loaded
+            if (!this.handDetectorLoaded) {
+                await this.initializeHandDetector();
+            }
+            if (!this.faceDetectorLoaded) {
+                await this.initializeFaceDetector();
+            }
+            if (!this.poseDetectorLoaded) {
+                await this.initializePoseDetector();
+            }
           
           // Request display media (screen sharing)
           this.captureStream = await navigator.mediaDevices.getDisplayMedia({
@@ -328,26 +412,321 @@ class ContentHandler {
         // Continue the loop
         setTimeout(() => {
             this.animationFrameId = requestAnimationFrame(this.processFrames);
-          }, 100);
+          }, 30);
     }
 
-    processFrame(imageData) {
-        // This is where you would implement your sign language recognition logic
-        // For example:
+    async processFrame(imageData) {
+        if (!this.handDetectorLoaded || !this.handDetector) {
+            console.log('Hand detector not ready');
+            if (!this.handDetectorLoaded) {
+                console.log('waiting for hand detectector initialization');
+                await this.initializeHandDetector();
+            } else {
+                console.log('hand detector loaded but not initialized');
+            }
+            return;
+        }
         
-        // 1. Extract relevant regions of interest (hands, face)
-        // 2. Preprocess the image (resize, normalize)
-        // 3. Apply your sign language detection model
-        // 4. Interpret the results
+        try {
+            if (!this.videoElement || !this.videoElement.videoWidth || !this.videoElement.videoHeight) {
+                console.log('Video element not ready yet');
+                return;
+            }
+            console.log("before processing the frame");
+            // Create a temporary canvas with the exact dimensions of the video
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = this.videoElement.videoWidth;
+            tempCanvas.height = this.videoElement.videoHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Draw the current video frame to the canvas
+            tempCtx.drawImage(this.videoElement, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Get the image data from the canvas
+            const tempImageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Process the frame with the hand detector using the image data
+            const hands = await this.handDetector.estimateHands(tempImageData);
+            
+            console.log("Hand detection result:", hands);
+
+            let faces = [];
+            if (this.faceDetectorLoaded && this.faceDetector) {
+                faces = await this.faceDetector.estimateFaces(tempImageData);
+                console.log("Face detection result:", faces.length > 0 ? "Face detected" : "No face detected");
+            }
+            
+            // Process with pose detector if loaded
+            let poses = [];
+            if (this.poseDetectorLoaded && this.poseDetector) {
+                poses = await this.poseDetector.estimatePoses(tempImageData);
+                console.log("Pose detection result:", poses.length > 0 ? "Pose detected" : "No pose detected");
+            }
+            
+            //this.processHandGestures(hands)
+            if (this.debugMode && this.debugContext) {
+                if (hands && hands.length > 0) {
+                    this.drawHandLandmarks(hands);
+                } else {
+                    console.log("No Hands Detected");
+                }
+                if (faces && faces.length > 0) {
+                    this.drawFaceLandmarks(faces);
+                } else {
+                    console.log("No Faces Detected");
+                }
+                if (poses && poses.length > 0) {
+                    this.drawPoseLandmarks(poses);
+                } else {
+                    console.log("No Poses Detected");
+                }
+            }
+
+            // Clean up the temporary canvas
+            tempCanvas.remove();
+        } catch (error) {
+            console.error('Error in hand pose detection:', error);
+        }
         
-        // For demonstration, let's just log some basic info
-        const frameTime = new Date().toISOString();
-        console.log(`Processing frame at ${frameTime}: ${imageData.width}x${imageData.height}`);
+    }
+
+    processHandGestures(hands) {
+        // Simple gesture recognition based on hand landmarks
+        for (const hand of hands) {
+            const landmarks = hand.keypoints;
+            const handedness = hand.handedness; // 'Left' or 'Right'
+            console.log(`${handedness} hand keypoints:`, JSON.stringify(landmarks, null, 2));
+            // Example: Detect a simple pointing gesture
+            const indexFinger = landmarks.find(lm => lm.name === 'index_finger_tip');
+            const wrist = landmarks.find(lm => lm.name === 'wrist');
+            
+            // Check if index finger is extended (simple pointing gesture)
+            if (indexFinger && wrist && indexFinger.y < wrist.y - 50) {
+                const gesture = 'pointing';
+                
+                // Only log when gesture changes
+                if (this.lastDetectedGesture !== gesture) {
+                    console.log(`Detected ${handedness} hand ${gesture} gesture`);
+                    this.lastDetectedGesture = gesture;
+                    
+                    // Here you could trigger actions based on detected gestures
+                    // For example: this.handleGesture(gesture, handedness);
+                }
+            } else {
+                this.lastDetectedGesture = null;
+            }
+        }
+    }
+    
+    drawHandLandmarks(hands) {
+        // Scale factors to map from original image to debug overlay
+        const scaleX = this.debugOverlay.width / this.canvasElement.width;
+        const scaleY = this.debugOverlay.height / this.canvasElement.height;
         
-        // For actual implementation, you might want to:
-        // - Send frames to a web worker for processing
-        // - Use TensorFlow.js or similar for ML inference
-        // - Send results to background script or external service
+        // Clear previous drawings
+        this.debugContext.clearRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
+        
+        // Redraw the frame
+        this.debugContext.drawImage(
+            this.canvasElement, 
+            0, 0, this.canvasElement.width, this.canvasElement.height,
+            0, 0, this.debugOverlay.width, this.debugOverlay.height
+        );
+        
+        // Draw hand landmarks
+        for (const hand of hands) {
+            const landmarks = hand.keypoints;
+            const handedness = hand.handedness;
+            
+            // Set color based on handedness
+            this.debugContext.fillStyle = handedness === 'Left' ? 'red' : 'blue';
+            
+            // Draw each landmark
+            for (const landmark of landmarks) {
+                const x = landmark.x * scaleX;
+                const y = landmark.y * scaleY;
+                
+                this.debugContext.beginPath();
+                this.debugContext.arc(x, y, 3, 0, 2 * Math.PI);
+                this.debugContext.fill();
+            }
+            
+            // Draw connections between landmarks
+            this.debugContext.strokeStyle = handedness === 'Left' ? 'red' : 'blue';
+            this.debugContext.lineWidth = 2;
+            
+            // Draw connections for fingers
+            this.drawHandConnections(landmarks, scaleX, scaleY);
+        }
+        
+        // Add text showing detected gesture if any
+        if (this.lastDetectedGesture) {
+            this.debugContext.fillStyle = 'white';
+            this.debugContext.font = '16px Arial';
+            this.debugContext.fillText(`Gesture: ${this.lastDetectedGesture}`, 10, 30);
+        }
+    }
+    
+    drawHandConnections(landmarks, scaleX, scaleY) {
+        // Define connections between landmarks (simplified)
+        const connections = [
+            // Thumb
+            ['wrist', 'thumb_cmc'],
+            ['thumb_cmc', 'thumb_mcp'],
+            ['thumb_mcp', 'thumb_ip'],
+            ['thumb_ip', 'thumb_tip'],
+            
+            // Index finger
+            ['wrist', 'index_finger_mcp'],
+            ['index_finger_mcp', 'index_finger_pip'],
+            ['index_finger_pip', 'index_finger_dip'],
+            ['index_finger_dip', 'index_finger_tip'],
+            
+            // Middle finger
+            ['wrist', 'middle_finger_mcp'],
+            ['middle_finger_mcp', 'middle_finger_pip'],
+            ['middle_finger_pip', 'middle_finger_dip'],
+            ['middle_finger_dip', 'middle_finger_tip'],
+            
+            // Ring finger
+            ['wrist', 'ring_finger_mcp'],
+            ['ring_finger_mcp', 'ring_finger_pip'],
+            ['ring_finger_pip', 'ring_finger_dip'],
+            ['ring_finger_dip', 'ring_finger_tip'],
+            
+            // Pinky
+            ['wrist', 'pinky_mcp'],
+            ['pinky_mcp', 'pinky_pip'],
+            ['pinky_pip', 'pinky_dip'],
+            ['pinky_dip', 'pinky_tip'],
+            
+            // Palm
+            ['index_finger_mcp', 'middle_finger_mcp'],
+            ['middle_finger_mcp', 'ring_finger_mcp'],
+            ['ring_finger_mcp', 'pinky_mcp']
+        ];
+        
+        for (const [start, end] of connections) {
+            const startPoint = landmarks.find(lm => lm.name === start);
+            const endPoint = landmarks.find(lm => lm.name === end);
+            
+            if (startPoint && endPoint) {
+                this.debugContext.beginPath();
+                this.debugContext.moveTo(startPoint.x * scaleX, startPoint.y * scaleY);
+                this.debugContext.lineTo(endPoint.x * scaleX, endPoint.y * scaleY);
+                this.debugContext.stroke();
+            }
+        }
+    }
+
+    drawFaceLandmarks(faces) {
+        // Scale factors to map from original image to debug overlay
+        const scaleX = this.debugOverlay.width / this.canvasElement.width;
+        const scaleY = this.debugOverlay.height / this.canvasElement.height;
+        
+        // Draw face landmarks
+        for (const face of faces) {
+            const keypoints = face.keypoints;
+            
+            // Set color for face landmarks
+            this.debugContext.fillStyle = 'green';
+            this.debugContext.strokeStyle = 'green';
+            this.debugContext.lineWidth = 1;
+            
+            // Draw each landmark
+            for (const keypoint of keypoints) {
+                const x = keypoint.x * scaleX;
+                const y = keypoint.y * scaleY;
+                
+                this.debugContext.beginPath();
+                this.debugContext.arc(x, y, 1, 0, 2 * Math.PI);
+                this.debugContext.fill();
+            }
+            
+            // Draw face bounding box if available
+            if (face.box) {
+                const box = face.box;
+                this.debugContext.strokeRect(
+                    box.xMin * scaleX, 
+                    box.yMin * scaleY, 
+                    (box.xMax - box.xMin) * scaleX, 
+                    (box.yMax - box.yMin) * scaleY
+                );
+            }
+        }
+    }
+    
+    drawPoseLandmarks(poses) {
+        // Scale factors to map from original image to debug overlay
+        const scaleX = this.debugOverlay.width / this.canvasElement.width;
+        const scaleY = this.debugOverlay.height / this.canvasElement.height;
+        
+        // Draw pose landmarks
+        for (const pose of poses) {
+            const keypoints = pose.keypoints;
+            
+            // Set color for pose landmarks
+            this.debugContext.fillStyle = 'yellow';
+            this.debugContext.strokeStyle = 'yellow';
+            this.debugContext.lineWidth = 2;
+            
+            // Draw each landmark
+            for (const keypoint of keypoints) {
+                if (keypoint.score > 0.3) { // Only draw high-confidence keypoints
+                    const x = keypoint.x * scaleX;
+                    const y = keypoint.y * scaleY;
+                    
+                    this.debugContext.beginPath();
+                    this.debugContext.arc(x, y, 3, 0, 2 * Math.PI);
+                    this.debugContext.fill();
+                    
+                    // Optionally add keypoint name
+                    this.debugContext.fillText(keypoint.name, x + 5, y - 5);
+                }
+            }
+            
+            // Draw connections between pose keypoints
+            this.drawPoseConnections(keypoints, scaleX, scaleY);
+        }
+    }
+    
+    drawPoseConnections(keypoints, scaleX, scaleY) {
+        // Define connections between pose keypoints
+        const connections = [
+            ['nose', 'left_eye'],
+            ['nose', 'right_eye'],
+            ['left_eye', 'left_ear'],
+            ['right_eye', 'right_ear'],
+            ['nose', 'left_shoulder'],
+            ['nose', 'right_shoulder'],
+            ['left_shoulder', 'left_elbow'],
+            ['left_elbow', 'left_wrist'],
+            ['right_shoulder', 'right_elbow'],
+            ['right_elbow', 'right_wrist'],
+            ['left_shoulder', 'right_shoulder'],
+            ['left_shoulder', 'left_hip'],
+            ['right_shoulder', 'right_hip'],
+            ['left_hip', 'right_hip'],
+            ['left_hip', 'left_knee'],
+            ['left_knee', 'left_ankle'],
+            ['right_hip', 'right_knee'],
+            ['right_knee', 'right_ankle']
+        ];
+        
+        this.debugContext.strokeStyle = 'yellow';
+        this.debugContext.lineWidth = 2;
+        
+        for (const [startName, endName] of connections) {
+            const startPoint = keypoints.find(kp => kp.name === startName);
+            const endPoint = keypoints.find(kp => kp.name === endName);
+            
+            if (startPoint && endPoint && startPoint.score > 0.3 && endPoint.score > 0.3) {
+                this.debugContext.beginPath();
+                this.debugContext.moveTo(startPoint.x * scaleX, startPoint.y * scaleY);
+                this.debugContext.lineTo(endPoint.x * scaleX, endPoint.y * scaleY);
+                this.debugContext.stroke();
+            }
+        }
     }
   
 
@@ -469,4 +848,4 @@ class ContentHandler {
 // }
 
 // // Instantiate the content handler
-// new ContentHandler();
+new ContentHandler();
