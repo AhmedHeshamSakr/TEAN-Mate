@@ -2,12 +2,17 @@ import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
 
 import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js"; 
 
+import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
+
 // Update the SidebarController
 class SidebarController {
     constructor() {
         this.buttons = {}; // Store button references for easy access
         this.artyomAssistant = new ArtyomAssistant(this); // Initialize ArtyomAssistant with SidebarController instance
+        this.imageCaptionHandler = new ImageCaptionHandler(); // Add this line
+        document.getElementById('confirm-caption-type').addEventListener('click', this.handleCaptionTypeConfirm.bind(this));
         this.initialize(); // Set up event listeners and initial state
+       
     }
 
   // Initialize sidebar
@@ -96,10 +101,45 @@ class SidebarController {
         alert("Sign Language Translator activated"); // Placeholder for sign language functionality
     }
 
-    // Handle Image Captioning button click
-    handleImageCaption() {
-        console.log("Image Captioning button clicked");
-        alert("Image Captioning activated"); // Placeholder for image captioning functionality
+     // Handle Image Captioning button click - Updated
+    // Handle Image Captioning button click - Updated
+   // Modify handleImageCaption to show/hide type selector
+    async handleImageCaption() {
+        const menu = document.getElementById('caption-type-menu');
+        const btn = this.buttons.imageCaption;
+        
+        if (!this.imageCaptionHandler.isActive) {
+            // Show type selection
+            menu.style.display = 'block';
+            btn.textContent = "Select Caption Type";
+        } else {
+            // Deactivate if already active
+            await this.imageCaptionHandler.deactivate();
+            menu.style.display = 'none';
+            btn.textContent = "Image Captioning";
+            btn.classList.remove('active');
+        }
+    }
+
+    // Add new method for confirming selection
+    handleCaptionTypeConfirm() {
+        const select = document.getElementById('caption-type-select');
+        const type = select.value;
+        
+        console.log('[SIDEBAR] Selected caption type:', type);
+        
+        this.imageCaptionHandler.setCaptionType(type);
+        
+        // Send activation command to content script
+        this.sendMessageToActiveTab({ 
+            action: "activateImageCaptioning",
+            captionType: type 
+        });
+        
+        // Update UI
+        this.buttons.imageCaption.textContent = "Captioning Active";
+        this.buttons.imageCaption.classList.add('active');
+        document.getElementById('caption-type-menu').style.display = 'none';
     }
 
     // Send a message to the active tab

@@ -39,13 +39,17 @@
         "icons/*",
         "TTS/*",
         "*.wasm",
-        "assets/*"
+        "assets/*",
+        "Florence-2-base-ft/config.json",
+        "onnx-runtime/*",
+        "Florence-2-base-ft/*"
+
       ],
       "matches": ["<all_urls>"]
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:8080; object-src 'self'"
+    "extension_pages": " script-src 'self' 'wasm-unsafe-eval' http://localhost:8080; object-src 'self'"
   },
   "commands": {
     "skip-next": {

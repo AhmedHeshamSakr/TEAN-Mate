@@ -2,6 +2,7 @@ import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
 import LinkHandler from "../2-features/TTS/LinkHandler.js";
+import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
 
 class ContentHandler {
     constructor() {
@@ -13,6 +14,8 @@ class ContentHandler {
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
+        this.imageCaptionHandler = new ImageCaptionHandler(); 
+
         this.currentElement = null;
         this.currentLink = null;
         this.walker = document.createTreeWalker(
@@ -114,6 +117,7 @@ class ContentHandler {
         return { elementsToReturn, text };
     }
 
+    // In the ContentHandler class
     async speakCurrentSection() {
         if (!this.currentElement) {
             this.currentElement = this.getNextElement();
@@ -122,32 +126,86 @@ class ContentHandler {
         if (!this.currentElement || !elementsToReturn) {
             return;
         }
-
+    
         for (let i = 0; i < elementsToReturn.length; i++) {
-            // Wait for the previous speech/highlight to complete before starting the next
             await new Promise(async (resolve) => {
-              try {
-                // Add highlight first
-                this.highlightBox.addHighlight(elementsToReturn[i]);
-      
-                // Wait for speech to complete
-                await this.speechHandler.speak(text[i], ()=>{});
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
-                
-                resolve();
-              } catch (error) {
-                console.error('Error in sequence:', error);
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
-                //resolve(); // Continue to next item even if there's an error
-              }
+                try {
+                    const element = elementsToReturn[i];
+                    let speechText = text[i];
+                    
+                    if (element.tagName?.toLowerCase() === 'img') {
+                        console.log('🖼️ Detected image element:', element);
+                        const originalBorder = element.style.border;
+                        element.style.border = "2px solid #ffd700";
+                        
+                        try {
+                            // Generate caption
+                            const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src);
+                            speechText = `Image description: ${caption}`;
+                        } catch (error) {
+                            console.error('Caption generation failed:', error);
+                            speechText = "Image description unavailable";
+                        } finally {
+                            // Remove loading indicator
+                            element.style.border = originalBorder;
+                        }
+                    }
+    
+                    // Highlight and process speech
+                    this.highlightBox.addHighlight(element);
+                    await this.speechHandler.speak(speechText, () => {});
+                    this.highlightBox.removeHighlight(element);
+                    
+                    resolve();
+                } catch (error) {
+                    console.error('Element processing error:', error);
+                    if (element) this.highlightBox.removeHighlight(element);
+                    resolve();
+                }
             });
         }
-        this.currentElement = null; // Prepare for the next element
+        this.currentElement = null;
         this.speakCurrentSection();
     }
 
+    // Add helper method for image loading overlay
+    createImageLoader(imgElement) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        
+        const loaderDiv = document.createElement('div');
+        loaderDiv.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        `;
+        
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner-border text-light';
+        spinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
+        
+        loaderDiv.appendChild(spinner);
+        wrapper.appendChild(imgElement.cloneNode(true));
+        wrapper.appendChild(loaderDiv);
+        
+        imgElement.parentNode.replaceChild(wrapper, imgElement);
+        return wrapper;
+    }
+
     handleMessage(request) {
-        if (request.action === "extractText") {
+        if (request.action === "activateImageCaptioning") {
+            console.log('[CONTENT] Received captioning activation');
+            this.imageCaptionHandler.setCaptionType(request.captionType);
+            this.imageCaptionHandler.activate();
+        } else if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) return;
             this.currentElement = null;
             this.speakCurrentSection();
@@ -211,6 +269,20 @@ class ContentHandler {
                 }
                 this.speakCurrentSection();
             }
+        } else if (request.action === "toggleImageCaptioning") {
+            // Handle image captioning toggle
+            this.toggleImageCaptioning();
+        }
+    }
+
+    async toggleImageCaptioning() {
+        try {
+            const isActive = await this.imageCaptionHandler.toggle();
+            console.log(`Image captioning ${isActive ? 'activated' : 'deactivated'}`);
+            return isActive;
+        } catch (error) {
+            console.error("Error toggling image captioning:", error);
+            return false;
         }
     }
 

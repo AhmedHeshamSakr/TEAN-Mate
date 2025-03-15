@@ -154,12 +154,34 @@ body {
     padding-bottom: 10px;
 }
 
+
+
 #recognizedText {
     font-style: italic;
     color: #555;
     min-height: 50px;
     display: flex;
     align-items: center;
+}
+
+#caption-type-menu {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Loading spinner styling */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.25em;
+}
+
+/* Ensure images are block elements for proper overlay */
+img[data-caption-loading] {
+    border: 2px solid #ffd700 !important;
+    transition: border-color 0.3s ease;
 }
 
 /* Responsive Design */

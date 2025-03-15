@@ -51,6 +51,10 @@ export default class TextExtractor {
             }
             text += node.textContent.trim();
         }
+        // Identify images
+        else if (tagName === 'img' && node.src) {
+            text += '[Image]';
+        }
         return text.trim();
     }
 
