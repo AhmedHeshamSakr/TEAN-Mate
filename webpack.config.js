@@ -10,7 +10,8 @@ export default {
   entry: {
     content: './4-content/content.js',
     background: './3-background/background.js',
-    sidebar: './1-sidebar/sidebar.js'
+    sidebar: './1-sidebar/sidebar.js',
+    options: './6-settings/options.js'
   },
   output: {
     path: resolve(__dirname, 'dist'),
@@ -118,6 +119,10 @@ export default {
         {
           from: '1-sidebar/sidebar.css',
           to: 'sidebar.css'
+        },
+        {
+          from: '6-settings/options.html',
+          to: 'options.html'
         },
         {
           from: 'manifest.json',

@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAN Mate Settings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Match the color palette from sidebar.css */
+        :root {
+            --primary-color: #2196f3;
+            --secondary-color: #4caf50;
+            --info-color: #00bcd4;
+            --warning-color: #ff9800;
+            --background-gradient-start: #e3f2fd;
+            --background-gradient-end: #bbdefb;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --danger-color: #f44336;
+            --success-color: #4caf50;
+            --neutral-color: #9e9e9e;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .settings-container {
+            max-width: 900px;
+            width: 95%;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(33, 150, 243, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .settings-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: -1px;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid rgba(33, 150, 243, 0.2);
+            margin-bottom: 25px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .tab-pane {
+            padding: 20px 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .settings-section {
+            background: rgba(249, 249, 249, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .settings-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .settings-row {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .settings-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .settings-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .form-select, .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            margin-right: 10px;
+        }
+
+        .form-switch .form-check-input:focus {
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .icon-tts {
+            background-color: var(--primary-color);
+        }
+
+        .icon-stt {
+            background-color: var(--secondary-color);
+        }
+
+        .icon-sign {
+            background-color: var(--info-color);
+        }
+
+        .icon-caption {
+            background-color: var(--warning-color);
+        }
+
+        .icon-general {
+            background-color: var(--neutral-color);
+        }
+
+        .btn-save {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2);
+        }
+
+        .btn-save:hover {
+            background-color: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-reset {
+            background-color: #f5f5f5;
+            color: #666;
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: #e0e0e0;
+        }
+
+        .shortcut-key {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(33, 150, 243, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .settings-container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .settings-title {
+                font-size: 1.8rem;
+            }
+
+            .settings-section {
+                padding: 15px;
+            }
+        }
+
+        /* Range slider styling */
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        /* Reset buttons section styling */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Keyboard shortcut styling */
+        .keyboard-shortcut {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(249, 249, 249, 0.9);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .shortcut-action {
+            font-weight: 600;
+        }
+
+        .keyboard-key {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            margin: 0 3px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        .shortcut-editing {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .profile-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .profile-info h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .profile-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        
+        .badge-feature {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 30px;
+            margin-right: 5px;
+            font-weight: 600;
+        }
+        
+        .badge-tts {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .badge-stt {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .badge-sign {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: var(--info-color);
+        }
+        
+        .badge-caption {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1 class="settings-title">TEAN Mate Settings</h1>
+            <div class="version">Version 1.0.2</div>
+        </div>
+        
+        <div class="profile-section">
+            <div class="profile-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h3>Default User Profile</h3>
+                <p>Active Features: 
+                    <span class="badge badge-feature badge-tts">Text to Speech</span>
+                    <span class="badge badge-feature badge-stt">Speech to Text</span>
+                    <span class="badge badge-feature badge-sign">Sign Language</span>
+                    <span class="badge badge-feature badge-caption">Image Captioning</span>
+                </p>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">
+                    <i class="fas fa-cog me-2"></i>General
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tts-tab" data-bs-toggle="tab" data-bs-target="#tts" type="button" role="tab" aria-controls="tts" aria-selected="false">
+                    <i class="fas fa-volume-up me-2"></i>Text to Speech
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="stt-tab" data-bs-toggle="tab" data-bs-target="#stt" type="button" role="tab" aria-controls="stt" aria-selected="false">
+                    <i class="fas fa-microphone me-2"></i>Speech to Text
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="sign-tab" data-bs-toggle="tab" data-bs-target="#sign" type="button" role="tab" aria-controls="sign" aria-selected="false">
+                    <i class="fas fa-sign-language me-2"></i>Sign Language
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="caption-tab" data-bs-toggle="tab" data-bs-target="#caption" type="button" role="tab" aria-controls="caption" aria-selected="false">
+                    <i class="fas fa-image me-2"></i>Image Captioning
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="shortcuts-tab" data-bs-toggle="tab" data-bs-target="#shortcuts" type="button" role="tab" aria-controls="shortcuts" aria-selected="false">
+                    <i class="fas fa-keyboard me-2"></i>Shortcuts
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="settingsTabContent">
+            <!-- General Settings Tab -->
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-general">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">General Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableStartup" checked>
+                                <label class="form-check-label" for="enableStartup">
+                                    <div>Enable at browser startup</div>
+                                    <div class="settings-description">Automatically activate the extension when your browser starts</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showNotifications" checked>
+                                <label class="form-check-label" for="showNotifications">
+                                    <div>Show notifications</div>
+                                    <div class="settings-description">Display notifications when important actions occur</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showIconBadge" checked>
+                                <label class="form-check-label" for="showIconBadge">
+                                    <div>Show icon badge</div>
+                                    <div class="settings-description">Display a badge on the extension icon when features are active</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="defaultLanguage">Default Language</label>
+                                <select class="form-select" id="defaultLanguage">
+                                    <option value="en-US" selected>English (US)</option>
+                                    <option value="en-GB">English (UK)</option>
+                                    <option value="es-ES">Spanish</option>
+                                    <option value="fr-FR">French</option>
+                                    <option value="de-DE">German</option>
+                                    <option value="zh-CN">Chinese (Simplified)</option>
+                                    <option value="ja-JP">Japanese</option>
+                                </select>
+                                <div class="settings-description">Set the default language for all features</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="theme">Interface Theme</label>
+                                <select class="form-select" id="theme">
+                                    <option value="system" selected>Follow System</option>
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="high-contrast">High Contrast</option>
+                                </select>
+                                <div class="settings-description">Change the appearance of the extension interface</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="sidebarPosition">Sidebar Position</label>
+                                <select class="form-select" id="sidebarPosition">
+                                    <option value="right" selected>Right</option>
+                                    <option value="left">Left</option>
+                                </select>
+                                <div class="settings-description">Choose which side of the browser the sidebar appears</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="dataStorage">Data Storage</label>
+                                <select class="form-select" id="dataStorage">
+                                    <option value="local" selected>Local Only</option>
+                                    <option value="sync">Sync Across Devices</option>
+                                </select>
+                                <div class="settings-description">Choose where to store your settings and preferences</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-general" style="background-color: var(--danger-color);">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Privacy Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="anonymousUsage" checked>
+                                <label class="form-check-label" for="anonymousUsage">
+                                    <div>Allow anonymous usage data</div>
+                                    <div class="settings-description">Send anonymous usage statistics to help improve the extension</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="localProcessing" checked>
+                                <label class="form-check-label" for="localProcessing">
+                                    <div>Prefer local processing when possible</div>
+                                    <div class="settings-description">Process data locally when feasible instead of sending to external services</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <button class="btn btn-outline-danger" id="clearData">
+                                <i class="fas fa-trash-alt me-2"></i>Clear Stored Data
+                            </button>
+                            <div class="settings-description mt-2">Remove all saved preferences, history, and cached data from this extension</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text to Speech Tab -->
+            <div class="tab-pane fade" id="tts" role="tabpanel" aria-labelledby="tts-tab">
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-tts">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Text to Speech Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="ttsVoice">Default Voice</label>
+                                <select class="form-select" id="ttsVoice">
+                                    <option value="default-female" selected>Default - Female</option>
+                                    <option value="default-male">Default - Male</option>
+                                    <option value="enhanced-female">Enhanced - Female</option>
+                                    <option value="enhanced-male">Enhanced - Male</option>
+                                </select>
+                                <div class="settings-description">Choose the default voice for text reading</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="ttsRate">Speech Rate</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="ttsRate">
+                                    <span id="ttsRateValue">1.0x</span>
+                                </div>
+                                <div class="settings-description">How fast the text is read (0.5x to 2x normal speed)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="ttsPitch">Voice Pitch</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="ttsPitch">
+                                    <span id="ttsPitchValue">Normal</span>
+                                </div>
+                                <div class="settings-description">Adjust the pitch of the speaking voice</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="ttsVolume">Volume</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" min="0" max="1" step="0.1" value="1" id="ttsVolume">
+                                    <span id="ttsVolumeValue">100%</span>
+                                </div>
+                                <div class="settings-description">Set the volume level for speech output</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="highlightText" checked>
+                                <label class="form-check-label" for="highlightText">
+                                    <div>Highlight text while reading</div>
+                                    <div class="settings-description">Visually highlight text as it's being read aloud</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoReadImages" checked>
+                                <label class="form-check-label" for="autoReadImages">
+                                    <div>Read image descriptions automatically</div>
+                                    <div class="settings-description">Automatically read aloud image captions when encountered</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="skipFootnotes">
+                                <label class="form-check-label" for="skipFootnotes">
+                                    <div>Skip footnotes and citations</div>
+                                    <div class="settings-description">Skip reading footnote numbers and citation references</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="readingElement">Elements to Read</label>
+                                <select class="form-select" id="readingElement">
+                                    <option value="main" selected>Main Content Only</option>
+                                    <option value="all">All Page Content</option>
+                                    <option value="selected">Selected Text Only</option>
+                                    <option value="custom">Custom Elements</option>
+                                </select>
+                                <div class="settings-description">Choose which parts of the page should be read aloud</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row" id="customElementsRow" style="display: none;">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="customElements">Custom Elements CSS Selector</label>
+                                <input type="text" class="form-control" id="customElements" placeholder="article, .content, #main">
+                                <div class="settings-description">Specify CSS selectors for elements you want to be read</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Speech to Text Tab -->
+            <div class="tab-pane fade" id="stt" role="tabpanel" aria-labelledby="stt-tab">
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-stt">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Speech to Text Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="sttLanguage">Recognition Language</label>
+                                <select class="form-select" id="sttLanguage">
+                                    <option value="en-US" selected>English (US)</option>
+                                    <option value="en-GB">English (UK)</option>
+                                    <option value="es-ES">Spanish</option>
+                                    <option value="fr-FR">French</option>
+                                    <option value="de-DE">German</option>
+                                    <option value="zh-CN">Chinese (Simplified)</option>
+                                    <option value="ja-JP">Japanese</option>
+                                </select>
+                                <div class="settings-description">Set the language for speech recognition</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="sttMode">Default Recognition Mode</label>
+                                <select class="form-select" id="sttMode">
+                                    <option value="continuous" selected>Live Transcription</option>
+                                    <option value="command">Voice Commands</option>
+                                    <option value="input">Text Input</option>
+                                    <option value="file">Save to File</option>
+                                </select>
+                                <div class="settings-description">Choose the default mode for speech recognition</div>
+                            </div>
+                        </div>
+
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoDetectDialect" checked>
+                                <label class="form-check-label" for="autoDetectDialect">
+                                    <div>Auto-detect dialect</div>
+                                    <div class="settings-description">Automatically detect regional accent variations</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="punctuationCorrection" checked>
+                                <label class="form-check-label" for="punctuationCorrection">
+                                    <div>Automatic punctuation</div>
+                                    <div class="settings-description">Add punctuation to transcribed text automatically</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="noiseFiltering" checked>
+                                <label class="form-check-label" for="noiseFiltering">
+                                    <div>Background noise filtering</div>
+                                    <div class="settings-description">Reduce background noise during speech recognition</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="confidenceThreshold">Recognition Confidence Threshold</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" min="0.5" max="0.95" step="0.05" value="0.75" id="confidenceThreshold">
+                                    <span id="confidenceThresholdValue">75%</span>
+                                </div>
+                                <div class="settings-description">Set the minimum confidence level for recognized speech</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showInterimResults" checked>
+                                <label class="form-check-label" for="showInterimResults">
+                                    <div>Show interim results</div>
+                                    <div class="settings-description">Display partial recognition results as you speak</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Speech to Text Modes Section -->
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-stt" style="background-color: #8bc34a;">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Speech to Text Modes</h3>
+                        
+                        <!-- Live Transcription Mode -->
+                        <div class="mode-settings mb-4">
+                            <h4><i class="fas fa-broadcast-tower me-2"></i>Live Transcription Settings</h4>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="showTranscriptionOverlay" checked>
+                                    <label class="form-check-label" for="showTranscriptionOverlay">
+                                        <div>Show overlay with transcriptions</div>
+                                        <div class="settings-description">Display a floating overlay with live transcription results</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="col-md-6">
+                                    <label class="settings-label" for="overlayPosition">Overlay Position</label>
+                                    <select class="form-select" id="overlayPosition">
+                                        <option value="bottom" selected>Bottom</option>
+                                        <option value="top">Top</option>
+                                        <option value="bottom-right">Bottom Right</option>
+                                        <option value="top-right">Top Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="autoScrollTranscript" checked>
+                                    <label class="form-check-label" for="autoScrollTranscript">
+                                        <div>Auto-scroll transcript</div>
+                                        <div class="settings-description">Automatically scroll to keep up with new transcription</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Voice Commands Mode -->
+                        <div class="mode-settings mb-4">
+                            <h4><i class="fas fa-magic me-2"></i>Voice Commands Settings</h4>
+                            
+                            <div class="settings-row">
+                                <div class="col-md-6">
+                                    <label class="settings-label" for="commandWakeWord">Wake Word/Phrase</label>
+                                    <input type="text" class="form-control" id="commandWakeWord" value="Hey Assistant">
+                                    <div class="settings-description">Word or phrase to activate voice commands</div>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="continuousListening" checked>
+                                    <label class="form-check-label" for="continuousListening">
+                                        <div>Continuous listening mode</div>
+                                        <div class="settings-description">Listen continuously for wake word instead of requiring button press</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="showCommandHints" checked>
+                                    <label class="form-check-label" for="showCommandHints">
+                                        <div>Show command hints</div>
+                                        <div class="settings-description">Display available voice commands when activated</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Text Input Mode -->
+                        <div class="mode-settings mb-4">
+                            <h4><i class="fas fa-keyboard me-2"></i>Text Input Settings</h4>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="autoInsertRecognized" checked>
+                                    <label class="form-check-label" for="autoInsertRecognized">
+                                        <div>Auto-insert text at cursor</div>
+                                        <div class="settings-description">Automatically insert recognized text at current cursor position</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="showDictationControls" checked>
+                                    <label class="form-check-label" for="showDictationControls">
+                                        <div>Show dictation controls</div>
+                                        <div class="settings-description">Display floating controls for dictation commands</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="col-md-6">
+                                    <label class="settings-label" for="inputTimeout">Input Timeout</label>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <input type="range" class="form-range" min="1" max="10" step="1" value="5" id="inputTimeout">
+                                        <span id="inputTimeoutValue">5 seconds</span>
+                                    </div>
+                                    <div class="settings-description">Time of silence before input session ends</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Save to File Mode -->
+                        <div class="mode-settings">
+                            <h4><i class="fas fa-file-alt me-2"></i>Save to File Settings</h4>
+                            
+                            <div class="settings-row">
+                                <div class="col-md-6">
+                                    <label class="settings-label" for="defaultFileFormat">Default File Format</label>
+                                    <select class="form-select" id="defaultFileFormat">
+                                        <option value="txt" selected>Plain Text (.txt)</option>
+                                        <option value="docx">Word Document (.docx)</option>
+                                        <option value="srt">Subtitle (.srt)</option>
+                                        <option value="json">JSON (.json)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="includeSpeakerLabels">
+                                    <label class="form-check-label" for="includeSpeakerLabels">
+                                        <div>Include speaker labels</div>
+                                        <div class="settings-description">Attempt to identify and label different speakers</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="includeTimestamps" checked>
+                                    <label class="form-check-label" for="includeTimestamps">
+                                        <div>Include timestamps</div>
+                                        <div class="settings-description">Add timestamp information to saved transcriptions</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-row">
+                                <div class="col-md-6">
+                                    <label class="settings-label" for="defaultSaveLocation">Default Save Location</label>
+                                    <input type="text" class="form-control" id="defaultSaveLocation" value="TEAN Mate Transcriptions">
+                                    <div class="settings-description">Default folder name for saved transcriptions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sign Language Tab -->
+            <div class="tab-pane fade" id="sign" role="tabpanel" aria-labelledby="sign-tab">
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-sign">
+                        <i class="fas fa-sign-language"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Sign Language Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="signLanguageSystem">Sign Language System</label>
+                                <select class="form-select" id="signLanguageSystem">
+                                    <option value="asl" selected>American Sign Language (ASL)</option>
+                                    <option value="bsl">British Sign Language (BSL)</option>
+                                    <option value="auslan">Australian Sign Language (Auslan)</option>
+                                    <option value="lsf">French Sign Language (LSF)</option>
+                                    <option value="dgs">German Sign Language (DGS)</option>
+                                </select>
+                                <div class="settings-description">Select which sign language system to use</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableSignDetection" checked>
+                                <label class="form-check-label" for="enableSignDetection">
+                                    <div>Enable sign language detection</div>
+                                    <div class="settings-description">Detect and interpret sign language from webcam</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showSignTextOverlay" checked>
+                                <label class="form-check-label" for="showSignTextOverlay">
+                                    <div>Show text overlay</div>
+                                    <div class="settings-description">Display interpreted text overlay on video feed</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="speakSignInterpretation">
+                                <label class="form-check-label" for="speakSignInterpretation">
+                                    <div>Speak sign interpretations</div>
+                                    <div class="settings-description">Use text-to-speech to vocalize interpreted signs</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="detectionSensitivity">Detection Sensitivity</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" min="0.1" max="1" step="0.1" value="0.7" id="detectionSensitivity">
+                                    <span id="detectionSensitivityValue">70%</span>
+                                </div>
+                                <div class="settings-description">Adjust sensitivity of sign detection algorithm</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="signCameraSource">Camera Source</label>
+                                <select class="form-select" id="signCameraSource">
+                                    <option value="default" selected>Default Camera</option>
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="external">External Camera</option>
+                                </select>
+                                <div class="settings-description">Select which camera to use for sign detection</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="signResolution">Camera Resolution</label>
+                                <select class="form-select" id="signResolution">
+                                    <option value="hd" selected>HD (720p)</option>
+                                    <option value="fullhd">Full HD (1080p)</option>
+                                    <option value="standard">Standard (480p)</option>
+                                    <option value="low">Low (360p)</option>
+                                </select>
+                                <div class="settings-description">Set camera resolution for sign detection</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableSignGlossary" checked>
+                                <label class="form-check-label" for="enableSignGlossary">
+                                    <div>Use specialized vocabulary</div>
+                                    <div class="settings-description">Enable domain-specific sign vocabularies when detected</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <button class="btn btn-outline-primary" id="calibrateCamera">
+                                <i class="fas fa-camera me-2"></i>Calibrate Camera
+                            </button>
+                            <div class="settings-description mt-2">Optimize camera settings for current lighting and environment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Captioning Tab -->
+            <div class="tab-pane fade" id="caption" role="tabpanel" aria-labelledby="caption-tab">
+                <div class="settings-section d-flex align-items-start">
+                    <div class="feature-icon icon-caption">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="settings-section-title">Image Captioning Settings</h3>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoCaptionImages" checked>
+                                <label class="form-check-label" for="autoCaptionImages">
+                                    <div>Auto-caption images</div>
+                                    <div class="settings-description">Automatically generate captions for images without alt text</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="integrateTTS" checked>
+                                <label class="form-check-label" for="integrateTTS">
+                                    <div>Integrate with text-to-speech</div>
+                                    <div class="settings-description">Allow text-to-speech to read image captions aloud</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="captionLength">Caption Detail Level</label>
+                                <select class="form-select" id="captionLength">
+                                    <option value="brief">Brief (1-2 sentences)</option>
+                                    <option value="standard" selected>Standard (2-3 sentences)</option>
+                                    <option value="detailed">Detailed (4+ sentences)</option>
+                                </select>
+                                <div class="settings-description">Set how detailed image descriptions should be</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="captionStyle">Caption Style</label>
+                                <select class="form-select" id="captionStyle">
+                                    <option value="factual" selected>Factual</option>
+                                    <option value="descriptive">Descriptive</option>
+                                    <option value="technical">Technical</option>
+                                    <option value="simple">Simple Language</option>
+                                </select>
+                                <div class="settings-description">Select the writing style for generated captions</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="includeTechnicalDetails">
+                                <label class="form-check-label" for="includeTechnicalDetails">
+                                    <div>Include technical details</div>
+                                    <div class="settings-description">Include information like image resolution, format, etc.</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="includeOCR" checked>
+                                <label class="form-check-label" for="includeOCR">
+                                    <div>Extract text from images (OCR)</div>
+                                    <div class="settings-description">Include any visible text found in images</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showCaptionOverlay" checked>
+                                <label class="form-check-label" for="showCaptionOverlay">
+                                    <div>Show caption overlay</div>
+                                    <div class="settings-description">Display captions as an overlay on hover</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="processDynamicImages" checked>
+                                <label class="form-check-label" for="processDynamicImages">
+                                    <div>Process dynamically loaded images</div>
+                                    <div class="settings-description">Caption images that load after the page is rendered</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-row">
+                            <div class="col-md-6">
+                                <label class="settings-label" for="captionModel">Caption Model</label>
+                                <select class="form-select" id="captionModel">
+                                    <option value="standard" selected>Standard (Balanced)</option>
+                                    <option value="fast">Fast (Lower quality)</option>
+                                    <option value="enhanced">Enhanced (Higher quality)</option>
+                                </select>
+                                <div class="settings-description">Select the AI model used for caption generation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Keyboard Shortcuts Tab -->
+            <div class="tab-pane fade" id="shortcuts" role="tabpanel" aria-labelledby="shortcuts-tab">
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Keyboard Shortcuts</h3>
+                    
+                    <div class="settings-row">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableShortcuts" checked>
+                            <label class="form-check-label" for="enableShortcuts">
+                                <div>Enable keyboard shortcuts</div>
+                                <div class="settings-description">Allow keyboard shortcuts for quick access to features</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">General Shortcuts</h4>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Toggle TEAN Mate Sidebar</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">T</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Open Settings</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">S</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Toggle All Features</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">A</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Text to Speech Shortcuts</h4>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Start/Stop Reading</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">R</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Pause/Resume Reading</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">P</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Read Selected Text</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">E</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Increase Reading Speed</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">→</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Decrease Reading Speed</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">←</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Speech to Text Shortcuts</h4>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Start/Stop Speech Recognition</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">M</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Switch Recognition Mode</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">Shift</span> + <span class="keyboard-key">M</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Save Transcription to File</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">Shift</span> + <span class="keyboard-key">S</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Sign Language Shortcuts</h4>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Start/Stop Sign Detection</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">L</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Toggle Camera View</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Image Captioning Shortcuts</h4>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Caption Selected Image</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">I</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-shortcut">
+                            <div class="shortcut-action">Caption All Images on Page</div>
+                            <div class="shortcut-keys">
+                                <span class="keyboard-key">Alt</span> + <span class="keyboard-key">Shift</span> + <span class="keyboard-key">I</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <button class="btn btn-outline-primary" id="editShortcuts">
+                            <i class="fas fa-keyboard me-2"></i>Customize Shortcuts
+                        </button>
+                        <div class="settings-description mt-2">Define your own custom keyboard shortcuts</div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <button class="btn btn-outline-secondary" id="resetShortcuts">
+                            <i class="fas fa-undo me-2"></i>Reset to Defaults
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-reset" id="resetAll">
+                <i class="fas fa-undo me-2"></i>Reset All Settings
+            </button>
+            <button class="btn btn-save" id="saveSettings">
+                <i class="fas fa-save me-2"></i>Save Settings
+            </button>
+        </div>
+        
+        <div class="footer">
+            <p>TEAN Mate &copy; 2025 | <a href="#" class="text-decoration-none">Privacy Policy</a> | <a href="#" class="text-decoration-none">Terms of Service</a></p>
+            <p>A web extension designed to improve accessibility for everyone</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="options.bundle.js"></script>
+</body>
