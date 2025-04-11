@@ -125,6 +125,10 @@ export default {
           to: 'options.html'
         },
         {
+          from: '6-settings/options.css',
+          to: 'options.css'
+        },
+        {
           from: 'manifest.json',
           to: 'manifest.json'
         },
