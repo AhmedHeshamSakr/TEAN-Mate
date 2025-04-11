@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (readingElementSelect && customElementsRow) {
         readingElementSelect.addEventListener('change', function() {
             customElementsRow.style.display = this.value === 'custom' ? 'block' : 'none';
+            saveSettings();
         });
     }
 
@@ -81,8 +82,10 @@ document.addEventListener('DOMContentLoaded', function() {
         clearDataBtn.addEventListener('click', function() {
             if (confirm('Are you sure you want to clear all stored data? This action cannot be undone.')) {
                 // Clear extension storage
-                chrome.storage.local.clear(() => {
-                    alert('All stored data has been cleared.');
+                chrome.storage.sync.clear(() => {
+                    chrome.storage.local.clear(() => {
+                        alert('All stored data has been cleared.');
+                    });
                 });
             }
         });
@@ -92,6 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const allInputs = document.querySelectorAll('input, select');
     allInputs.forEach(input => {
         input.addEventListener('change', saveSettings);
+        // For range inputs, also save on input event
+        if (input.type === 'range') {
+            input.addEventListener('input', saveSettings);
+        }
     });
 
     // Load saved settings
@@ -111,133 +118,104 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Save to Chrome storage
+        // Save to Chrome storage (both sync and local for redundancy)
         chrome.storage.sync.set({ settings: settings }, function() {
-            console.log('Settings saved');
+            console.log('Settings saved to sync storage');
+            
+            // Also save to local storage as backup
+            chrome.storage.local.set({ settings: settings }, function() {
+                console.log('Settings saved to local storage');
+                
+                // Dispatch an event that settings were updated
+                chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings });
+            });
         });
     }
 
     function loadSettings() {
         chrome.storage.sync.get('settings', function(data) {
             if (data.settings) {
-                // Apply saved settings to inputs
-                Object.keys(data.settings).forEach(id => {
-                    const input = document.getElementById(id);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = data.settings[id];
-                        } else {
-                            input.value = data.settings[id];
-                        }
-                        
-                        // Trigger change event for range inputs to update displays
-                        if (input.type === 'range') {
-                            const event = new Event('input');
-                            input.dispatchEvent(event);
-                        }
-                        
-                        // Handle special case for reading element select
-                        if (id === 'readingElement') {
-                            const customElementsRow = document.getElementById('customElementsRow');
-                            if (customElementsRow) {
-                                customElementsRow.style.display = input.value === 'custom' ? 'block' : 'none';
-                            }
-                        }
+                applySettings(data.settings);
+            } else {
+                // If not in sync, try local storage
+                chrome.storage.local.get('settings', function(localData) {
+                    if (localData.settings) {
+                        applySettings(localData.settings);
                     }
                 });
             }
         });
     }
-});
 
-document.getElementById('readingElement').addEventListener('change', function() {
-    const customElementsRow = document.getElementById('customElementsRow');
-    if (this.value === 'custom') {
-        customElementsRow.style.display = 'block';
-    } else {
-        customElementsRow.style.display = 'none';
+    function applySettings(settings) {
+        // Apply saved settings to inputs
+        Object.keys(settings).forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                if (input.type === 'checkbox') {
+                    input.checked = settings[id];
+                } else {
+                    input.value = settings[id];
+                }
+                
+                // Trigger change event for range inputs to update displays
+                if (input.type === 'range') {
+                    const event = new Event('input');
+                    input.dispatchEvent(event);
+                }
+                
+                // Handle special case for reading element select
+                if (id === 'readingElement') {
+                    const customElementsRow = document.getElementById('customElementsRow');
+                    if (customElementsRow) {
+                        customElementsRow.style.display = input.value === 'custom' ? 'block' : 'none';
+                    }
+                }
+            }
+        });
     }
-});
 
-// Update range slider values in real-time
-document.getElementById('ttsRate').addEventListener('input', function() {
-    document.getElementById('ttsRateValue').textContent = `${this.value}x`;
-});
+        // Save settings function
+    document.getElementById('saveSettings').addEventListener('click', function() {
+        saveSettings();
+            
+            // Show a success message
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed bottom-0 end-0 p-3';
+            toast.style.zIndex = '5';
+            toast.innerHTML = `
+                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">TEAN Mate</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Settings saved successfully!
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            // Remove the toast after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+    });
 
-document.getElementById('ttsPitch').addEventListener('input', function() {
-    const value = parseFloat(this.value);
-    let pitchText = 'Normal';
-    
-    if (value < 0.8) pitchText = 'Lower';
-    else if (value > 1.2) pitchText = 'Higher';
-    
-    document.getElementById('ttsPitchValue').textContent = pitchText;
-});
-
-document.getElementById('ttsVolume').addEventListener('input', function() {
-    document.getElementById('ttsVolumeValue').textContent = `${Math.round(this.value * 100)}%`;
-});
-
-document.getElementById('confidenceThreshold').addEventListener('input', function() {
-    document.getElementById('confidenceThresholdValue').textContent = `${Math.round(this.value * 100)}%`;
-});
-
-document.getElementById('detectionSensitivity').addEventListener('input', function() {
-    document.getElementById('detectionSensitivityValue').textContent = `${Math.round(this.value * 100)}%`;
-});
-
-document.getElementById('inputTimeout').addEventListener('input', function() {
-    document.getElementById('inputTimeoutValue').textContent = `${this.value} seconds`;
-});
-
-// Save settings function
-document.getElementById('saveSettings').addEventListener('click', function() {
-    // Show a success message
-    const toast = document.createElement('div');
-    toast.className = 'position-fixed bottom-0 end-0 p-3';
-    toast.style.zIndex = '5';
-    toast.innerHTML = `
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">TEAN Mate</strong>
-                <small>Just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <i class="fas fa-check-circle text-success me-2"></i>
-                Settings saved successfully!
-            </div>
-        </div>
-    `;
-    document.body.appendChild(toast);
-    
-    // Remove the toast after 3 seconds
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
-    
-    // Here you would actually save the settings to storage
-    // Example:
-    // const settings = {
-    //    general: {
-    //        enableStartup: document.getElementById('enableStartup').checked,
-    //        // ... other settings
-    //    },
-    //    tts: {
-    //        // Text to speech settings
-    //    },
-    //    // ... other categories
-    // };
-    // browser.storage.sync.set(settings);
-});
-
-// Reset All Settings
-document.getElementById('resetAll').addEventListener('click', function() {
-    if (confirm("Are you sure you want to reset all settings to their default values?")) {
-        // Here you would reset all form elements to their defaults
-        // For demonstration, just reload the page
-        location.reload();
-    }
+    // Reset All Settings
+    document.getElementById('resetAll').addEventListener('click', function() {
+        if (confirm("Are you sure you want to reset all settings to their default values?")) {
+            // Clear settings from storage
+            chrome.storage.sync.remove('settings', function() {
+                chrome.storage.local.remove('settings', function() {
+                    // Reload the page to reset all form elements
+                    location.reload();
+                });
+            });
+        }
+    });
 });
 
 // Reset shortcuts
@@ -245,17 +223,6 @@ document.getElementById('resetShortcuts').addEventListener('click', function() {
     if (confirm("Are you sure you want to reset all keyboard shortcuts to their default values?")) {
         // Reset shortcut specific settings
         console.log("Shortcuts have been reset to defaults");
-    }
-});
-
-// Clear stored data
-document.getElementById('clearData').addEventListener('click', function() {
-    if (confirm("Are you sure you want to clear all stored data? This action cannot be undone.")) {
-        // Clear extension storage
-        console.log("All stored data has been cleared");
-        
-        // Show confirmation
-        alert("All stored data has been cleared successfully.");
     }
 });
 
