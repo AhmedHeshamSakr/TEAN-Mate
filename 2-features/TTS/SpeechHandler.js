@@ -3,11 +3,12 @@ import PiperTTS from "./PiperTTS.js";
 export default class SpeechHandler {
     constructor() {
         this.isSpeaking = false;
-        this.piperTTS = new PiperTTS();
         this.currentAudio = null;
         this.abortController = null;
         this.speed = 1.0;
+        this.initializeSettings();
 
+        this.piperTTS = new PiperTTS();
         chrome.runtime.sendMessage({ action: "getVoices" }, (response) => {
             if (response.voices) {
                 this.piperTTS.setVoices(response.voices);
@@ -15,6 +16,32 @@ export default class SpeechHandler {
             } else {
                 console.log("Failed to get voices from background script");
             }
+        });
+    }
+
+    getSettings(callback) {
+        // Try to get settings from sync storage first
+        chrome.storage.sync.get('settings', function(data) {
+            if (data.settings) {
+                callback(data.settings);
+            } else {
+                // Fall back to local storage if not found in sync
+                chrome.storage.local.get('settings', function(localData) {
+                    callback(localData.settings || {});
+                });
+            }
+        });
+    }
+
+    initializeSettings() {
+        const self = this;
+        this.getSettings(function(settings) {
+            // Now you can use the settings
+            console.log('Loaded settings:', settings);
+            self.speed = settings.ttsRate || 1.0;
+            self.volume = settings.ttsVolume || 1.0;
+            
+            self.piperTTS.setVoice(settings.ttsVoice);
         });
     }
 
@@ -44,6 +71,7 @@ export default class SpeechHandler {
                 this.isSpeaking = true;
                 console.log("Playing audio");
                 this.currentAudio.playbackRate = this.speed;
+                this.currentAudio.volume = this.volume;
                 this.currentAudio.play().catch(error => {
                     if (error.name === 'AbortError') {
                         console.log("Audio play aborted");

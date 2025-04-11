@@ -14,6 +14,23 @@ class PiperTTS {
         this.voices = voices;
     }
 
+    setVoice(voice) {
+        if (voice == "EnglishUS-female") {
+            this.voice = "en_US-hfc_female-medium";
+        }
+        else if (voice == "EnglishUS-male") {
+            this.voice = "en_US-lessac-medium"; //not male!!
+        }
+        // else if (voice == "EnglishUK-female") {
+        //     this.voice = "en_US-harper-medium";
+        // }
+        // else if (voice == "EnglishUK-male") {
+        //     this.voice = "en_US-henry-medium";
+        // }
+        // else if (voice == "Arabic-male") {
+        //     this.voice = "en_US-amy-medium";
+    }
+
     async initializeVoices() {
         const voicesUrl = chrome.runtime.getURL("TTS/voices.json");
 

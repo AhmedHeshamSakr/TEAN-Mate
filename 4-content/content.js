@@ -33,6 +33,37 @@ class ContentHandler {
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
         this.wasSpeaking = false;
+
+        this.settings = null;
+        this.initializeSettings();
+    }
+
+    getSettings(callback) {
+        // Try to get settings from sync storage first
+        chrome.storage.sync.get('settings', function(data) {
+            if (data.settings) {
+                callback(data.settings);
+            } else {
+                // Fall back to local storage if not found in sync
+                chrome.storage.local.get('settings', function(localData) {
+                    callback(localData.settings || {});
+                });
+            }
+        });
+    }
+
+    initializeSettings() {
+        const self = this;
+        this.getSettings(function(settings) {
+            // Now you can use the settings
+            console.log('Loaded settings:', settings);
+            self.settings = settings;
+            self.highlightWhileReading = settings.highlightText || false;
+            
+            // Example: Use TTS rate setting
+            const ttsRate = settings.ttsRate || 1.0;
+            console.log('Using TTS rate:', ttsRate);
+        });
     }
 
     getNextElement() {
@@ -128,16 +159,16 @@ class ContentHandler {
             await new Promise(async (resolve) => {
               try {
                 // Add highlight first
-                this.highlightBox.addHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.addHighlight(elementsToReturn[i]) : null;
       
                 // Wait for speech to complete
                 await this.speechHandler.speak(text[i], ()=>{});
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.removeHighlight(elementsToReturn[i]): null;
                 
                 resolve();
               } catch (error) {
                 console.error('Error in sequence:', error);
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                 //resolve(); // Continue to next item even if there's an error
               }
             });
@@ -154,7 +185,7 @@ class ContentHandler {
             this.wasSpeaking = true;
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -163,7 +194,7 @@ class ContentHandler {
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -174,7 +205,7 @@ class ContentHandler {
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
-                if (this.currentElement && this.currentElement.elementsToReturn) {
+                if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                     for (let el of this.currentElement.elementsToReturn) {
                         this.highlightBox.removeHighlight(el);
                     }
@@ -185,7 +216,7 @@ class ContentHandler {
                 this.wasSpeaking = true;
             }
         } else if (request.action === "accessLink") {
-            if (this.currentElement  && this.currentElement.elementsToReturn) {
+            if (this.currentElement  && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -196,7 +227,7 @@ class ContentHandler {
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
         } else if (request.action === "pauseTTS") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -204,7 +235,7 @@ class ContentHandler {
             this.wasSpeaking = false;
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
-                if (this.currentElement && this.currentElement.elementsToReturn) {
+                if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                     for (let el of this.currentElement.elementsToReturn) {
                         this.highlightBox.removeHighlight(el);
                     }
