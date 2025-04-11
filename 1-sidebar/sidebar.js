@@ -43,11 +43,13 @@ class SidebarController {
         this.buttons.stt = buttons[1];
         this.buttons.signLanguage = buttons[2];
         this.buttons.imageCaption = buttons[3];
+        this.buttons.options = document.getElementById('settingsButton');
 
         this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
         this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
         this.addButtonListener(this.buttons.signLanguage, this.handleSignLanguage.bind(this));
         this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
+        this.addButtonListener(this.buttons.options, this.handleOptions.bind(this));
     }
 
     // Add an event listener to a button, with error handling
@@ -100,6 +102,12 @@ class SidebarController {
     handleImageCaption() {
         console.log("Image Captioning button clicked");
         alert("Image Captioning activated"); // Placeholder for image captioning functionality
+    }
+
+    handleOptions() {
+        console.log("Options button clicked");
+        // Open the options page in a new tab
+        chrome.runtime.openOptionsPage();
     }
 
     // Send a message to the active tab
