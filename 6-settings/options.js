@@ -104,6 +104,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load saved settings
     loadSettings();
 
+    chrome.storage.sync.get('settings', function(data) {
+        if (data.settings && data.settings.theme) {
+            applyThemeToOptionsPage(data.settings.theme);
+        } else {
+            // Default to system theme
+            applyThemeToOptionsPage('system');
+        }
+    });
+
     function saveSettings() {
         const settings = {};
         
@@ -117,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+
+        const theme = document.getElementById('theme').value;
+        settings.theme = theme;
+        applyThemeToOptionsPage(theme);
         
         // Save to Chrome storage (both sync and local for redundancy)
         chrome.storage.sync.set({ settings: settings }, function() {
@@ -130,6 +143,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings });
             });
         });
+    }
+
+    function applyThemeToOptionsPage(themeSetting) {
+        const htmlElement = document.documentElement;
+        
+        if (themeSetting === 'system') {
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                htmlElement.setAttribute('data-theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+            }
+        } else {
+            // Apply the selected theme directly
+            htmlElement.setAttribute('data-theme', themeSetting);
+        }
     }
 
     function loadSettings() {

@@ -59,7 +59,7 @@ class ContentHandler {
             console.log('Loaded settings:', settings);
             self.settings = settings;
             self.highlightWhileReading = settings.highlightText || false;
-            
+            self.badge = settings.showIconBadge || false;
             // Example: Use TTS rate setting
             const ttsRate = settings.ttsRate || 1.0;
             console.log('Using TTS rate:', ttsRate);
@@ -183,6 +183,11 @@ class ContentHandler {
             this.currentElement = null;
             this.speakCurrentSection();
             this.wasSpeaking = true;
+            this.badge? chrome.runtime.sendMessage({ 
+                action: "updateBadge", 
+                isActive: true, 
+                text: "TTS" 
+            }) : null;
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
             if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
@@ -211,9 +216,18 @@ class ContentHandler {
                     }
                 }
                 this.wasSpeaking = false;
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: false 
+                }) : null;
             } else {
                 this.speakCurrentSection();
                 this.wasSpeaking = true;
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: true, 
+                    text: "TTS" 
+                }): null;
             }
         } else if (request.action === "accessLink") {
             if (this.currentElement  && this.currentElement.elementsToReturn && this.highlightWhileReading) {
@@ -233,6 +247,10 @@ class ContentHandler {
                 }
             }
             this.wasSpeaking = false;
+            this.badge? chrome.runtime.sendMessage({ 
+                action: "updateBadge", 
+                isActive: false 
+            }): null;
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
                 if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
@@ -241,6 +259,11 @@ class ContentHandler {
                     }
                 }
                 this.speakCurrentSection();
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: true, 
+                    text: "TTS" 
+                }) : null;
             }
         }
     }

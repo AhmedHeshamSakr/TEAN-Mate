@@ -19,6 +19,22 @@ class BackgroundHandler {
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
     chrome.commands.onCommand.addListener(this.onCommand.bind(this));
     chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+      if (changes.settings && changes.settings.newValue) {
+          const newSettings = changes.settings.newValue;
+          
+          // If theme changed, notify all extension pages
+          if (changes.settings.oldValue && 
+              changes.settings.oldValue.theme !== newSettings.theme) {
+              
+              // Send message to all extension pages
+              chrome.runtime.sendMessage({
+                  action: "themeChanged",
+                  theme: newSettings.theme
+              });
+          }
+      }
+  });
     
     // Initialize TTS voices when the background script starts
     this.initializeVoices();
@@ -66,6 +82,18 @@ class BackgroundHandler {
         sendResponse({ voices: result.voices });
       });
       return true; // Required for async response
+    }
+    else if (request.action === "updateBadge") {
+      this.updateBadge(request.isActive, request.text);
+    }
+  }
+
+  updateBadge(isActive, text = "") {
+    if (isActive) {
+      chrome.action.setBadgeText({ text: text || "ON" });
+      chrome.action.setBadgeBackgroundColor({ color: "#4CAF50" }); // Green color
+    } else {
+      chrome.action.setBadgeText({ text: "" }); // Clear the badge
     }
   }
 

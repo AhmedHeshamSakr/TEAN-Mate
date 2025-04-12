@@ -1,5 +1,6 @@
 /* Enhanced Color Palette */
 :root {
+    /* Light theme (default) */
     --primary-color: #2196f3;
     --secondary-color: #4caf50;
     --info-color: #00bcd4;
@@ -8,6 +9,45 @@
     --background-gradient-end: #bbdefb;
     --text-dark: #333333;
     --text-light: #ffffff;
+    --background-color: #ffffff;
+    --sidebar-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #ffffff;
+    --border-color: rgba(33, 150, 243, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --primary-color: #64b5f6;
+    --secondary-color: #81c784;
+    --info-color: #4dd0e1;
+    --warning-color: #ffb74d;
+    --background-gradient-start: #263238;
+    --background-gradient-end: #1a2327;
+    --text-dark: #e0e0e0;
+    --text-light: #f5f5f5;
+    --background-color: #121212;
+    --sidebar-bg: rgba(18, 18, 18, 0.95);
+    --card-bg: #1e1e1e;
+    --border-color: rgba(100, 181, 246, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast theme variables */
+[data-theme="high-contrast"] {
+    --primary-color: #ffffff;
+    --secondary-color: #ffffff;
+    --info-color: #ffffff;
+    --warning-color: #ffffff;
+    --background-gradient-start: #000000;
+    --background-gradient-end: #000000;
+    --text-dark: #ffffff;
+    --text-light: #ffffff;
+    --background-color: #000000;
+    --sidebar-bg: rgba(0, 0, 0, 0.95);
+    --card-bg: #000000;
+    --border-color: rgba(255, 255, 255, 0.8);
+    --shadow-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Modern Typography and Base Styling */
@@ -28,10 +68,10 @@ body {
 .sidebar-MainContainer {
     max-width: 750px;
     width: 95%;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(33, 150, 243, 0.2);
+    background: var(--sidebar-bg);
+    border: 2px solid var(--border-color);
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px var(--shadow-color);
     padding: 40px;
     backdrop-filter: blur(10px);
     transition: all 0.4s ease;
@@ -63,11 +103,11 @@ body {
 
 /* Feature Container */
 .Features-div {
-    background: rgba(249, 249, 249, 0.7);
+    background: var(--card-bg);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 20px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
 /* Enhanced Button Design */
@@ -103,7 +143,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -134,8 +174,8 @@ body {
 
 /* Speech Display Enhancements */
 .speech-display {
-    border: 2px dashed rgba(33, 150, 243, 0.3);
-    background: rgba(255, 255, 255, 0.8);
+    border: 2px dashed var(--border-color);
+    background: var(--card-bg);
     border-radius: 15px;
     padding: 25px;
     margin-top: 25px;
@@ -143,20 +183,20 @@ body {
 }
 
 .speech-display:hover {
-    border-color: rgba(33, 150, 243, 0.6);
+    border-color: var(--primary-color);
 }
 
 .speech-display h3 {
     font-size: 1.4rem;
     color: var(--primary-color);
     margin-bottom: 15px;
-    border-bottom: 2px solid rgba(33, 150, 243, 0.2);
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 10px;
 }
 
 #recognizedText {
     font-style: italic;
-    color: #555;
+    color: var(--text-dark);
     min-height: 50px;
     display: flex;
     align-items: center;
@@ -196,7 +236,7 @@ body {
 
 #settingsButton {
     background-color: transparent;
-    color: var(--text-color);
+    color: var(--text-dark);
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -209,7 +249,7 @@ body {
 }
 
 #settingsButton:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--border-color);
     transform: rotate(30deg);
 }
 

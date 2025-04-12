@@ -11,23 +11,84 @@ class SidebarController {
     }
 
   // Initialize sidebar
-  initialize() {
-      // Check if the sidebar has been opened before
-      // Play the welcome audio
-    //   const audioUrl = chrome.runtime.getURL(welcomeAudio);
-    //   console.log("Welcome audio URL:", audioUrl);
-      const audio = new Audio(welcomeAudio);
-      audio.play().then(() => {
-         console.log("Welcome audio played successfully");
-      }).catch((error) => {
-          console.error("Error playing welcome audio:", error);
-      });
+    initialize() {
+        // Check if the sidebar has been opened before
+        // Play the welcome audio
+        //   const audioUrl = chrome.runtime.getURL(welcomeAudio);
+        //   console.log("Welcome audio URL:", audioUrl);
+        const audio = new Audio(welcomeAudio);
+        audio.play().then(() => {
+            console.log("Welcome audio played successfully");
+        }).catch((error) => {
+            console.error("Error playing welcome audio:", error);
+        });
 
-      // Set sidebar title using the extension's name
-      document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
+        // Set sidebar title using the extension's name
+        document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
 
         // Wait for DOM to load before attaching event listeners
         document.addEventListener("DOMContentLoaded", this.setupEventListeners.bind(this));
+
+        // Get sidebar position and theme preferences
+        const self = this;
+        this.getSettings(function(settings) {
+            // Apply theme
+            self.applyTheme(settings.theme || 'system');
+        });
+        
+        // Listen for system theme changes if using system theme
+        this.setupSystemThemeListener();
+    }
+
+    applyTheme(themeSetting) {
+        // Get the document element (html tag)
+        const htmlElement = document.documentElement;
+        
+        if (themeSetting === 'system') {
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                htmlElement.setAttribute('data-theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+            }
+        } else {
+            // Apply the selected theme directly
+            htmlElement.setAttribute('data-theme', themeSetting);
+        }
+        
+        console.log(`Applied theme: ${themeSetting}`);
+    }
+    
+    // Add this method to listen for system theme changes
+    setupSystemThemeListener() {
+        const self = this;
+        if (window.matchMedia) {
+            const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            // Add listener for theme changes
+            colorSchemeQuery.addEventListener('change', (e) => {
+                self.getSettings(function(settings) {
+                    // Only update if set to system theme
+                    if (settings.theme === 'system') {
+                        self.applyTheme('system');
+                    }
+                });
+            });
+        }
+    }
+
+    getSettings(callback) {
+        // Try to get settings from sync storage first
+        chrome.storage.sync.get('settings', function(data) {
+            if (data.settings) {
+                callback(data.settings);
+            } else {
+                // Fall back to local storage if not found in sync
+                chrome.storage.local.get('settings', function(localData) {
+                    callback(localData.settings || {});
+                });
+            }
+        });
     }
 
     // Set up event listeners for all buttons
