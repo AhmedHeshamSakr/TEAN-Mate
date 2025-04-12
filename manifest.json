@@ -28,7 +28,9 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.bundle.js"]
+      "js": ["content.bundle.js"],
+      "run_at": "document_end", 
+      "all_frames": true        
     }
   ],
   "options_ui": {
@@ -52,24 +54,6 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:8080; object-src 'self'"
   },
   "commands": {
-    "skip-next": {
-      "suggested_key": {
-        "default": "Ctrl+Right"
-      },
-      "description": "Skip to next section"
-    },
-    "skip-previous": {
-      "suggested_key": {
-        "default": "Ctrl+Left"
-      },
-      "description": "Skip to previous section"
-    },
-    "toggle-reading": {
-      "suggested_key": {
-        "default": "Ctrl+Space"
-      },
-      "description": "Pause and continue reading"
-    },
     "access-link": {
       "suggested_key": {
         "default": "Ctrl+Up"
