@@ -123,9 +123,95 @@ class SidebarController {
     }
 
     // Handle Text-to-Speech button click
-    handleTTS() {
-        console.log("Text-to-Speech button clicked");
-        this.sendMessageToActiveTab({ action: "extractText" });
+    async handleTTS() {
+        try {
+            // 1. Get active tab
+            const [tab] = await chrome.tabs.query({ 
+                active: true, 
+                currentWindow: true 
+            });
+    
+            if (!tab?.id) {
+                throw new Error("No active tab found");
+            }
+    
+            // 2. Always inject content script first
+            try {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content.bundle.js']
+                });
+            } catch (injectError) {
+                console.error("Injection failed:", injectError);
+                throw new Error("Failed to load required components");
+            }
+    
+            // 3. Add manual timeout
+            const messagePromise = chrome.tabs.sendMessage(
+                tab.id, 
+                { 
+                    action: "extractText",
+                    timestamp: Date.now() 
+                }
+            );
+    
+            // Implement manual timeout
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error("TTS timeout: No response after 2 seconds")), 2000);
+            });
+    
+            // Race between message and timeout
+            await Promise.race([messagePromise, timeoutPromise]);
+    
+        } catch (error) {
+            console.error("TTS Failed:", error);
+            alert(`TTS Error: ${error.message}\n\nPlease try these steps:\n1. Refresh the page\n2. Click TTS button again`);
+        }
+    }
+
+    async verifyConnection(tabId) {
+        try {
+            const response = await chrome.tabs.sendMessage(
+                tabId,
+                { action: 'ping' },
+                { timeout: 1000 }
+            );
+            return response?.alive === true;
+        } catch {
+            return false;
+        }
+    }
+
+    async injectContentScript(tabId) {
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId },
+                files: ['content.bundle.js']
+            });
+        } catch (error) {
+            throw new Error("Content script injection failed");
+        }
+    }
+
+    async sendWithRetry(tabId, message, maxRetries) {
+        let lastError;
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                return await chrome.tabs.sendMessage(tabId, message);
+            } catch (error) {
+                lastError = error;
+                await new Promise(resolve => setTimeout(resolve, 300 * (i + 1)));
+            }
+        }
+        throw lastError;
+    }
+
+    showTtsError() {
+        const errorElement = document.createElement('div');
+        errorElement.className = 'tts-error';
+        errorElement.textContent = 'Failed to start TTS. Please refresh the page and try again.';
+        document.body.appendChild(errorElement);
+        setTimeout(() => errorElement.remove(), 3000);
     }
 
     // Handle Speech-to-Text button click
