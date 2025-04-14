@@ -18,17 +18,21 @@ class PiperTTS {
         if (voice == "EnglishUS-female") {
             this.voice = "en_US-hfc_female-medium";
         }
-        else if (voice == "EnglishUS-male") {
-            this.voice = "en_US-lessac-medium"; //not male!!
+        else if (voice == "EnglishUS-female2") {
+            this.voice = "en_US-lessac-medium";
         }
-        // else if (voice == "EnglishUK-female") {
-        //     this.voice = "en_US-harper-medium";
-        // }
-        // else if (voice == "EnglishUK-male") {
-        //     this.voice = "en_US-henry-medium";
-        // }
-        // else if (voice == "Arabic-male") {
-        //     this.voice = "en_US-amy-medium";
+        else if (voice == "EnglishUS-male") {
+            this.voice = "en_US-danny-low"; 
+        }
+        else if (voice == "EnglishUK-female") {
+            this.voice = "en_GB-alba-medium";
+        }
+        else if (voice == "EnglishUK-male") {
+            this.voice = "en_GB-northern_english_male-medium";
+        }
+        else if (voice == "Arabic-male") {
+            this.voice = "ar_JO-kareem-low";
+        }
     }
 
     async initializeVoices() {

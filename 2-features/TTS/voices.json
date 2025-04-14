@@ -10,5 +10,35 @@
             "en_US-hfc_female-medium.onnx": "voices_models/en_US-hfc_female-medium.onnx",
             "en_US-hfc_female-medium.onnx.json": "voices_models/en_US-hfc_female-medium.onnx.json"
         }
+    },
+    "en_US-libritts_r-medium": {
+        "files": {
+            "en_US-libritts_r-medium.onnx": "voices_models/en_US-libritts_r-medium.onnx",
+            "en_US-libritts_r-medium.onnx.json": "voices_models/en_US-libritts_r-medium.onnx.json"
+        }
+    },
+    "en_US-danny-low": {
+        "files": {
+            "en_US-danny-low.onnx": "voices_models/en_US-danny-low.onnx",
+            "en_US-danny-low.onnx.json": "voices_models/en_US-danny-low.onnx.json"
+        }
+    },
+    "en_GB-northern_english_male-medium": {
+        "files": {
+            "en_GB-northern_english_male-medium.onnx": "voices_models/en_GB-northern_english_male-medium.onnx",
+            "en_GB-northern_english_male-medium.onnx.json": "voices_models/en_GB-northern_english_male-medium.onnx.json"
+        }
+    },
+    "en_GB-alba-medium": {
+        "files": {
+            "en_GB-alba-medium.onnx": "voices_models/en_GB-alba-medium.onnx",
+            "en_GB-alba-medium.onnx.json": "voices_models/en_GB-alba-medium.onnx.json"
+        }
+    },
+    "ar_JO-kareem-low": {
+        "files": {
+            "ar_JO-kareem-low.onnx": "voices_models/ar_JO-kareem-low.onnx",
+            "ar_JO-kareem-low.onnx.json": "voices_models/ar_JO-kareem-low.onnx.json"
+        }
     }
 }
