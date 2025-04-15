@@ -3503,6 +3503,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/bind */ ".
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js ***!
+  \************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/starts-with */ "./node_modules/core-js-pure/stable/instance/starts-with.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/regeneratorRuntime.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/regeneratorRuntime.js ***!
@@ -4322,6 +4332,28 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/instance/starts-with.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/starts-with.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../string/virtual/starts-with */ "./node_modules/core-js-pure/es/string/virtual/starts-with.js");
+
+var StringPrototype = String.prototype;
+
+module.exports = function (it) {
+  var own = it.startsWith;
+  return typeof it == 'string' || it === StringPrototype
+    || (isPrototypeOf(StringPrototype, it) && own === StringPrototype.startsWith) ? method : own;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/create.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/create.js ***!
@@ -4417,6 +4449,22 @@ __webpack_require__(/*! ../../modules/es.string.iterator */ "./node_modules/core
 var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
 
 module.exports = path.Promise;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/string/virtual/starts-with.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/string/virtual/starts-with.js ***!
+  \********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.string.starts-with */ "./node_modules/core-js-pure/modules/es.string.starts-with.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('String', 'startsWith');
 
 
 /***/ }),
@@ -5522,6 +5570,33 @@ module.exports = function (target, source, exceptions) {
       defineProperty(target, key, getOwnPropertyDescriptor(source, key));
     }
   }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/correct-is-regexp-logic.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/correct-is-regexp-logic.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js-pure/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+module.exports = function (METHOD_NAME) {
+  var regexp = /./;
+  try {
+    '/./'[METHOD_NAME](regexp);
+  } catch (error1) {
+    try {
+      regexp[MATCH] = false;
+      return '/./'[METHOD_NAME](regexp);
+    } catch (error2) { /* empty */ }
+  } return false;
 };
 
 
@@ -7061,6 +7136,30 @@ module.exports = true;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/internals/is-regexp.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/is-regexp.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js-pure/internals/is-object.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js-pure/internals/classof-raw.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js-pure/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+// `IsRegExp` abstract operation
+// https://tc39.es/ecma262/#sec-isregexp
+module.exports = function (it) {
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) === 'RegExp');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/internals/is-symbol.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js-pure/internals/is-symbol.js ***!
@@ -7589,6 +7688,27 @@ var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules
 
 module.exports = function (argument, $default) {
   return argument === undefined ? arguments.length < 2 ? '' : $default : toString(argument);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/not-a-regexp.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/not-a-regexp.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isRegExp = __webpack_require__(/*! ../internals/is-regexp */ "./node_modules/core-js-pure/internals/is-regexp.js");
+
+var $TypeError = TypeError;
+
+module.exports = function (it) {
+  if (isRegExp(it)) {
+    throw new $TypeError("The method doesn't accept regular expressions");
+  } return it;
 };
 
 
@@ -10721,6 +10841,49 @@ defineIterator(String, 'String', function (iterated) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.string.starts-with.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.string.starts-with.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this-clause */ "./node_modules/core-js-pure/internals/function-uncurry-this-clause.js");
+var getOwnPropertyDescriptor = (__webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js-pure/internals/object-get-own-property-descriptor.js").f);
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js-pure/internals/to-length.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js-pure/internals/to-string.js");
+var notARegExp = __webpack_require__(/*! ../internals/not-a-regexp */ "./node_modules/core-js-pure/internals/not-a-regexp.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js-pure/internals/require-object-coercible.js");
+var correctIsRegExpLogic = __webpack_require__(/*! ../internals/correct-is-regexp-logic */ "./node_modules/core-js-pure/internals/correct-is-regexp-logic.js");
+var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js-pure/internals/is-pure.js");
+
+var stringSlice = uncurryThis(''.slice);
+var min = Math.min;
+
+var CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic('startsWith');
+// https://github.com/zloirock/core-js/pull/702
+var MDN_POLYFILL_BUG = !IS_PURE && !CORRECT_IS_REGEXP_LOGIC && !!function () {
+  var descriptor = getOwnPropertyDescriptor(String.prototype, 'startsWith');
+  return descriptor && !descriptor.writable;
+}();
+
+// `String.prototype.startsWith` method
+// https://tc39.es/ecma262/#sec-string.prototype.startswith
+$({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC }, {
+  startsWith: function startsWith(searchString /* , position = 0 */) {
+    var that = toString(requireObjectCoercible(this));
+    notARegExp(searchString);
+    var index = toLength(min(arguments.length > 1 ? arguments[1] : undefined, that.length));
+    var search = toString(searchString);
+    return stringSlice(that, index, index + search.length) === search;
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.symbol.async-iterator.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.symbol.async-iterator.js ***!
@@ -11834,6 +11997,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/instance/starts-with.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/starts-with.js ***!
+  \******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/starts-with */ "./node_modules/core-js-pure/es/instance/starts-with.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/create.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/create.js ***!
@@ -12357,7 +12535,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
 /* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/starts-with */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js");
+/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+
 
 
 
@@ -12368,6 +12548,7 @@ __webpack_require__.r(__webpack_exports__);
 var BackgroundHandler = /*#__PURE__*/function () {
   function BackgroundHandler() {
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, BackgroundHandler);
+    this.shortcutManager = new ShortcutManager();
     // Define keyboard shortcut commands and their corresponding actions
     this.commands = {
       "skip-next": "skipToNext",
@@ -12380,61 +12561,123 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(BackgroundHandler, [{
     key: "initialize",
-    value: function initialize() {
-      var _context, _context2, _context3, _context4;
-      // Set up all event listeners
-      chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onInstalled).call(_context, this));
-      chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onActionClicked).call(_context2, this));
-      chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.onCommand).call(_context3, this));
-      chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context4 = this.onMessage).call(_context4, this));
-      chrome.storage.onChanged.addListener(function (changes, namespace) {
-        if (changes.settings && changes.settings.newValue) {
-          var newSettings = changes.settings.newValue;
-
-          // If theme changed, notify all extension pages
-          if (changes.settings.oldValue && changes.settings.oldValue.theme !== newSettings.theme) {
-            // Send message to all extension pages
-            chrome.runtime.sendMessage({
-              action: "themeChanged",
-              theme: newSettings.theme
-            });
-          }
-        }
-      });
-
-      // Initialize TTS voices when the background script starts
-      this.initializeVoices();
-    }
-  }, {
-    key: "initializeVoices",
     value: function () {
-      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
-        var voices;
+      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
+        var _context, _context2, _context3, _context4;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              _context5.prev = 0;
-              _context5.next = 3;
-              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_6__.initializeVoices)();
+              _context5.next = 2;
+              return this.shortcutManager.initialize();
+            case 2:
+              // Set up all event listeners
+              chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onInstalled).call(_context, this));
+              chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onActionClicked).call(_context2, this));
+              chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.onCommand).call(_context3, this));
+              chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context4 = this.onMessage).call(_context4, this));
+              chrome.storage.onChanged.addListener(function (changes, namespace) {
+                if (changes.settings && changes.settings.newValue) {
+                  var newSettings = changes.settings.newValue;
+
+                  // If theme changed, notify all extension pages
+                  if (changes.settings.oldValue && changes.settings.oldValue.theme !== newSettings.theme) {
+                    // Send message to all extension pages
+                    chrome.runtime.sendMessage({
+                      action: "themeChanged",
+                      theme: newSettings.theme
+                    });
+                  }
+                }
+              });
+
+              // Initialize TTS voices when the background script starts
+              this.initializeVoices();
+            case 8:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee, this);
+      }));
+      function initialize() {
+        return _initialize.apply(this, arguments);
+      }
+      return initialize;
+    }() // Add this new method
+  }, {
+    key: "handleShortcutCustomization",
+    value: function () {
+      var _handleShortcutCustomization = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2(request, sender, sendResponse) {
+        var shortcuts;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              if (!(request.action === "get-shortcuts")) {
+                _context6.next = 7;
+                break;
+              }
+              _context6.next = 3;
+              return this.shortcutManager.currentShortcuts;
             case 3:
-              voices = _context5.sent;
-              _context5.next = 6;
+              shortcuts = _context6.sent;
+              sendResponse({
+                shortcuts: shortcuts
+              });
+              _context6.next = 11;
+              break;
+            case 7:
+              if (!(request.action === "update-shortcuts")) {
+                _context6.next = 11;
+                break;
+              }
+              _context6.next = 10;
+              return this.shortcutManager.saveShortcuts(request.newShortcuts);
+            case 10:
+              sendResponse({
+                success: true
+              });
+            case 11:
+              return _context6.abrupt("return", true);
+            case 12:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee2, this);
+      }));
+      function handleShortcutCustomization(_x, _x2, _x3) {
+        return _handleShortcutCustomization.apply(this, arguments);
+      }
+      return handleShortcutCustomization;
+    }()
+  }, {
+    key: "initializeVoices",
+    value: function () {
+      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3() {
+        var voices;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.prev = 0;
+              _context7.next = 3;
+              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_7__.initializeVoices)();
+            case 3:
+              voices = _context7.sent;
+              _context7.next = 6;
               return chrome.storage.local.set({
                 voices: voices
               });
             case 6:
               console.log("Voices initialized:", voices);
-              _context5.next = 12;
+              _context7.next = 12;
               break;
             case 9:
-              _context5.prev = 9;
-              _context5.t0 = _context5["catch"](0);
-              console.error("Failed to initialize voices:", _context5.t0);
+              _context7.prev = 9;
+              _context7.t0 = _context7["catch"](0);
+              console.error("Failed to initialize voices:", _context7.t0);
             case 12:
             case "end":
-              return _context5.stop();
+              return _context7.stop();
           }
-        }, _callee, null, [[0, 9]]);
+        }, _callee3, null, [[0, 9]]);
       }));
       function initializeVoices() {
         return _initializeVoices2.apply(this, arguments);
@@ -12444,28 +12687,28 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "onInstalled",
     value: function () {
-      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee4() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee4$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
             case 0:
-              _context6.prev = 0;
-              _context6.next = 3;
+              _context8.prev = 0;
+              _context8.next = 3;
               return chrome.storage.local.set({
                 sidebarOpened: false
               });
             case 3:
               console.log("Extension installed and state initialized");
-              _context6.next = 9;
+              _context8.next = 9;
               break;
             case 6:
-              _context6.prev = 6;
-              _context6.t0 = _context6["catch"](0);
-              console.error("Error during installation:", _context6.t0);
+              _context8.prev = 6;
+              _context8.t0 = _context8["catch"](0);
+              console.error("Error during installation:", _context8.t0);
             case 9:
             case "end":
-              return _context6.stop();
+              return _context8.stop();
           }
-        }, _callee2, null, [[0, 6]]);
+        }, _callee4, null, [[0, 6]]);
       }));
       function onInstalled() {
         return _onInstalled.apply(this, arguments);
@@ -12496,6 +12739,7 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "onMessage",
     value: function onMessage(request, sender, sendResponse) {
+      var _context9;
       if (request.action === "getVoices") {
         // Handle voice retrieval request
         chrome.storage.local.get("voices", function (result) {
@@ -12506,6 +12750,8 @@ var BackgroundHandler = /*#__PURE__*/function () {
         return true; // Required for async response
       } else if (request.action === "updateBadge") {
         this.updateBadge(request.isActive, request.text);
+      } else if (_babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_6__(_context9 = request.action).call(_context9, "shortcut-")) {
+        return this.handleShortcutCustomization(request, sender, sendResponse);
       }
     }
   }, {
@@ -12528,46 +12774,46 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "sendMessageToActiveTab",
     value: function () {
-      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3(message) {
+      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee5(message) {
         var _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee5$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              _context7.prev = 0;
-              _context7.next = 3;
+              _context10.prev = 0;
+              _context10.next = 3;
               return chrome.tabs.query({
                 active: true,
                 currentWindow: true
               });
             case 3:
-              _yield$chrome$tabs$qu = _context7.sent;
+              _yield$chrome$tabs$qu = _context10.sent;
               _yield$chrome$tabs$qu2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_yield$chrome$tabs$qu, 1);
               tab = _yield$chrome$tabs$qu2[0];
               if (!tab) {
-                _context7.next = 11;
+                _context10.next = 11;
                 break;
               }
-              _context7.next = 9;
+              _context10.next = 9;
               return chrome.tabs.sendMessage(tab.id, message);
             case 9:
-              _context7.next = 12;
+              _context10.next = 12;
               break;
             case 11:
               console.warn("No active tab found");
             case 12:
-              _context7.next = 17;
+              _context10.next = 17;
               break;
             case 14:
-              _context7.prev = 14;
-              _context7.t0 = _context7["catch"](0);
-              console.error("Error sending message to tab:", _context7.t0);
+              _context10.prev = 14;
+              _context10.t0 = _context10["catch"](0);
+              console.error("Error sending message to tab:", _context10.t0);
             case 17:
             case "end":
-              return _context7.stop();
+              return _context10.stop();
           }
-        }, _callee3, null, [[0, 14]]);
+        }, _callee5, null, [[0, 14]]);
       }));
-      function sendMessageToActiveTab(_x) {
+      function sendMessageToActiveTab(_x4) {
         return _sendMessageToActiveTab.apply(this, arguments);
       }
       return sendMessageToActiveTab;
@@ -12657,7 +12903,7 @@ new BackgroundHandler();
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("552c1f7476b1a4119232")
+/******/ 		__webpack_require__.h = () => ("63e323dcf85db5efaffc")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

@@ -2,6 +2,7 @@ import { initializeVoices } from "../2-features/TTS/initializeVoices.js";
 
 class BackgroundHandler {
   constructor() {
+    this.shortcutManager = new ShortcutManager();
     // Define keyboard shortcut commands and their corresponding actions
     this.commands = {
       "skip-next": "skipToNext",
@@ -13,7 +14,8 @@ class BackgroundHandler {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
+    await this.shortcutManager.initialize();
     // Set up all event listeners
     chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
@@ -39,6 +41,19 @@ class BackgroundHandler {
     // Initialize TTS voices when the background script starts
     this.initializeVoices();
   }
+
+    // Add this new method
+    async handleShortcutCustomization(request, sender, sendResponse) {
+      if (request.action === "get-shortcuts") {
+        const shortcuts = await this.shortcutManager.currentShortcuts;
+        sendResponse({ shortcuts });
+      } 
+      else if (request.action === "update-shortcuts") {
+        await this.shortcutManager.saveShortcuts(request.newShortcuts);
+        sendResponse({ success: true });
+      }
+      return true; // Required for async sendResponse
+    }
 
   async initializeVoices() {
     try {
@@ -85,6 +100,9 @@ class BackgroundHandler {
     }
     else if (request.action === "updateBadge") {
       this.updateBadge(request.isActive, request.text);
+    }
+    else if (request.action.startsWith("shortcut-")) {
+      return this.handleShortcutCustomization(request, sender, sendResponse);
     }
   }
 

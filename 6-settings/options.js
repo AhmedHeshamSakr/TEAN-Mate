@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    if (typeof bootstrap === 'undefined') {
+        console.error('Bootstrap not loaded! Check your CSP settings');
+        return;
+      }
     // Initialize Bootstrap tabs
     const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
     tabEls.forEach(tabEl => {
@@ -245,6 +249,34 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    function initBootstrapComponents() {
+        if (typeof bootstrap !== 'undefined') {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            if (tooltipTriggerList.length > 0) {
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => 
+                    new bootstrap.Tooltip(tooltipTriggerEl)
+                );
+            }
+
+            // Initialize the tabs
+            const triggerTabList = document.querySelectorAll('#settingsTabs button');
+            if (triggerTabList.length > 0) {
+                triggerTabList.forEach(triggerEl => {
+                    const tabTrigger = new bootstrap.Tab(triggerEl);
+                    triggerEl.addEventListener('click', event => {
+                        event.preventDefault();
+                        tabTrigger.show();
+                    });
+                });
+            }
+        } else {
+            console.warn('Bootstrap library not loaded. Some UI components may not function properly.');
+        }
+    }
+
+    // Try to initialize Bootstrap components after a short delay to ensure the script is loaded
+    setTimeout(initBootstrapComponents, 100);
 });
 
 // Reset shortcuts

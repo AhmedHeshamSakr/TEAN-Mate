@@ -5,6 +5,7 @@
   "version": "1.0",
   "permissions": [
     "storage",
+    "commands",
     "activeTab",
     "scripting",
     "tabs",
@@ -48,8 +49,8 @@
       "matches": ["<all_urls>"]
     }
   ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:8080; object-src 'self'"
+"content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:8080/; object-src 'self'"
   },
   "commands": {
     "skip-next": {

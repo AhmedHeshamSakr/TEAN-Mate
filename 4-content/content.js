@@ -36,7 +36,74 @@ class ContentHandler {
 
         this.settings = null;
         this.initializeSettings();
+
+        this.keyState = {
+            alt: false,
+            ctrl: false,
+            shift: false,
+            meta: false
+          };
+          this.shortcutMap = {};
+          
+          this.initializeKeyListeners();
+          this.loadShortcuts();
     }
+
+    async loadShortcuts() {
+        return new Promise((resolve) => {
+          chrome.runtime.sendMessage(
+            { action: "shortcut-get-shortcuts" },
+            (response) => {
+              this.shortcutMap = response.shortcuts;
+              resolve();
+            }
+          );
+        });
+      }
+    
+      initializeKeyListeners() {
+        document.addEventListener('keydown', (e) => {
+          this.updateModifierState(e, true);
+          this.checkForShortcut(e);
+        });
+    
+        document.addEventListener('keyup', (e) => {
+          this.updateModifierState(e, false);
+        });
+      }
+    
+      updateModifierState(e, isPressed) {
+        this.keyState.alt = e.altKey;
+        this.keyState.ctrl = e.ctrlKey;
+        this.keyState.shift = e.shiftKey;
+        this.keyState.meta = e.metaKey;
+      }
+      checkForShortcut(e) {
+        // Ignore modifier-only keys
+        if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+        
+        const pressedKey = e.key.toLowerCase();
+        const activeModifiers = Object.entries(this.keyState)
+          .filter(([_, isActive]) => isActive)
+          .map(([mod]) => mod);
+    
+        // Check each shortcut
+        for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
+          if (shortcut.key === pressedKey && 
+              shortcut.modifiers.length === activeModifiers.length &&
+              shortcut.modifiers.every(m => activeModifiers.includes(m))) {
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Trigger the corresponding action
+            this.handleMessage({ action });
+            break;
+          }
+        }
+      }
+    
+
 
     getSettings(callback) {
         // Try to get settings from sync storage first
