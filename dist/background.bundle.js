@@ -3513,6 +3513,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/starts-wit
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js ***!
+  \***********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/promise */ "./node_modules/core-js-pure/stable/promise/index.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/regeneratorRuntime.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/regeneratorRuntime.js ***!
@@ -12537,6 +12547,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/starts-with */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js");
 /* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+/* harmony import */ var _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../6-settings/shortcutManager.js */ "./6-settings/shortcutManager.js");
+
 
 
 
@@ -12548,7 +12560,7 @@ __webpack_require__.r(__webpack_exports__);
 var BackgroundHandler = /*#__PURE__*/function () {
   function BackgroundHandler() {
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, BackgroundHandler);
-    this.shortcutManager = new ShortcutManager();
+    this.shortcutManager = new _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_8__.ShortcutManager();
     // Define keyboard shortcut commands and their corresponding actions
     this.commands = {
       "skip-next": "skipToNext",
@@ -12822,6 +12834,143 @@ var BackgroundHandler = /*#__PURE__*/function () {
 }(); // Initialize the background handler
 new BackgroundHandler();
 
+/***/ }),
+
+/***/ "./6-settings/shortcutManager.js":
+/*!***************************************!*\
+  !*** ./6-settings/shortcutManager.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ShortcutManager: () => (/* binding */ ShortcutManager)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+
+
+
+
+
+var ShortcutManager = /*#__PURE__*/function () {
+  function ShortcutManager() {
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, ShortcutManager);
+    this.defaultShortcuts = {
+      "skip-next": {
+        key: "ArrowDown",
+        modifiers: ["alt"]
+      },
+      "skip-previous": {
+        key: "ArrowUp",
+        modifiers: ["alt"]
+      },
+      "toggle-reading": {
+        key: " ",
+        modifiers: ["alt"]
+      },
+      "access-link": {
+        key: "Enter",
+        modifiers: ["alt"]
+      },
+      "toggle-stt": {
+        key: "s",
+        modifiers: ["alt", "shift"]
+      }
+    };
+    this.currentShortcuts = {};
+  }
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(ShortcutManager, [{
+    key: "initialize",
+    value: function () {
+      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.loadShortcuts();
+            case 2:
+              this.setupCommandListener();
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function initialize() {
+        return _initialize.apply(this, arguments);
+      }
+      return initialize;
+    }()
+  }, {
+    key: "loadShortcuts",
+    value: function () {
+      var _loadShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2() {
+        var _this = this;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              return _context2.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_3__(function (resolve) {
+                chrome.storage.sync.get(['shortcuts'], function (result) {
+                  _this.currentShortcuts = result.shortcuts || _this.defaultShortcuts;
+                  resolve();
+                });
+              }));
+            case 1:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      function loadShortcuts() {
+        return _loadShortcuts.apply(this, arguments);
+      }
+      return loadShortcuts;
+    }()
+  }, {
+    key: "saveShortcuts",
+    value: function () {
+      var _saveShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3(newShortcuts) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              this.currentShortcuts = newShortcuts;
+              _context3.next = 3;
+              return chrome.storage.sync.set({
+                shortcuts: newShortcuts
+              });
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this);
+      }));
+      function saveShortcuts(_x) {
+        return _saveShortcuts.apply(this, arguments);
+      }
+      return saveShortcuts;
+    }()
+  }, {
+    key: "setupCommandListener",
+    value: function setupCommandListener() {
+      chrome.commands.onCommand.addListener(function (command) {
+        if (command === 'dynamic-shortcut') {
+          // This will be handled by the content script's key detection
+        }
+      });
+    }
+  }, {
+    key: "getShortcutForAction",
+    value: function getShortcutForAction(action) {
+      return this.currentShortcuts[action];
+    }
+  }]);
+}();
+
 /***/ })
 
 /******/ 	});
@@ -12903,7 +13052,7 @@ new BackgroundHandler();
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("63e323dcf85db5efaffc")
+/******/ 		__webpack_require__.h = () => ("4283c631929b6345e972")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

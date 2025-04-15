@@ -1,4 +1,5 @@
 import { initializeVoices } from "../2-features/TTS/initializeVoices.js";
+import { ShortcutManager } from "../6-settings/shortcutManager.js";
 
 class BackgroundHandler {
   constructor() {

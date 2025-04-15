@@ -1,4 +1,4 @@
-class ShortcutManager {
+export class ShortcutManager {
     constructor() {
       this.defaultShortcuts = {
         "skip-next": { key: "ArrowDown", modifiers: ["alt"] },
