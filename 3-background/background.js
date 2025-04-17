@@ -37,24 +37,62 @@ class BackgroundHandler {
               });
           }
       }
+      if (changes.shortcuts && changes.shortcuts.newValue) {
+        this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
+      }
   });
     
     // Initialize TTS voices when the background script starts
     this.initializeVoices();
   }
 
-    // Add this new method
-    async handleShortcutCustomization(request, sender, sendResponse) {
-      if (request.action === "get-shortcuts") {
-        const shortcuts = await this.shortcutManager.currentShortcuts;
-        sendResponse({ shortcuts });
-      } 
-      else if (request.action === "update-shortcuts") {
-        await this.shortcutManager.saveShortcuts(request.newShortcuts);
-        sendResponse({ success: true });
+  // Broadcast shortcut updates to all active tabs
+  async broadcastShortcutsUpdate(shortcuts) {
+    try {
+      const tabs = await chrome.tabs.query({});
+      for (const tab of tabs) {
+        try {
+          await chrome.tabs.sendMessage(tab.id, {
+            action: "shortcuts-updated",
+            shortcuts: shortcuts
+          });
+        } catch (error) {
+          // Ignore errors for inactive tabs
+        }
       }
-      return true; // Required for async sendResponse
+    } catch (error) {
+      console.error("Error broadcasting shortcut updates:", error);
     }
+  }
+
+ // Handle shortcut customization requests
+ async handleShortcutCustomization(request, sender, sendResponse) {
+  try {
+    if (request.action === "shortcut-get-shortcuts") {
+      sendResponse({ shortcuts: this.shortcutManager.shortcuts });
+    } 
+    else if (request.action === "shortcut-update-shortcuts") {
+      const success = await this.shortcutManager.saveShortcuts(request.newShortcuts);
+      sendResponse({ success });
+    }
+    else if (request.action === "shortcut-reset-defaults") {
+      const success = await this.shortcutManager.resetToDefaults();
+      sendResponse({ success });
+    }
+    return true; // Required for async sendResponse
+  } catch (error) {
+    console.error("Error handling shortcut customization:", error);
+    sendResponse({ error: error.message });
+    return true;
+  }
+}
+
+notifyShortcutChange() {
+  chrome.runtime.sendMessage({
+    action: "shortcuts-updated",
+    shortcuts: this.currentShortcuts
+  });
+}
 
   async initializeVoices() {
     try {
@@ -70,6 +108,12 @@ class BackgroundHandler {
     try {
       // Initialize extension state
       await chrome.storage.local.set({ sidebarOpened: false });
+
+// Ensure default shortcuts are saved if they don't exist
+if (!await this.shortcutManager.loadShortcuts()) {
+  await this.shortcutManager.resetToDefaults();
+}
+
       console.log("Extension installed and state initialized");
     } catch (error) {
       console.error("Error during installation:", error);
@@ -105,6 +149,7 @@ class BackgroundHandler {
     else if (request.action.startsWith("shortcut-")) {
       return this.handleShortcutCustomization(request, sender, sendResponse);
     }
+    return false; // For synchronous responses
   }
 
   updateBadge(isActive, text = "") {

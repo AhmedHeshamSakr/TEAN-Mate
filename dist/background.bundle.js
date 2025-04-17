@@ -3493,6 +3493,26 @@ module.exports.formatError = function (err) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js ***!
+  \**************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/array/from */ "./node_modules/core-js-pure/stable/array/from.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/array/is-array */ "./node_modules/core-js-pure/stable/array/is-array.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js ***!
@@ -3500,6 +3520,46 @@ module.exports.formatError = function (err) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/instance/bind */ "./node_modules/core-js-pure/stable/instance/bind.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/every */ "./node_modules/core-js-pure/stable/instance/every.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js ***!
+  \*******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/filter */ "./node_modules/core-js-pure/stable/instance/filter.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js ***!
+  \*********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/for-each */ "./node_modules/core-js-pure/stable/instance/for-each.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/slice */ "./node_modules/core-js-pure/stable/instance/slice.js");
 
 /***/ }),
 
@@ -3513,6 +3573,66 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/starts-wit
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js ***!
+  \****************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/define-properties */ "./node_modules/core-js-pure/stable/object/define-properties.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js ***!
+  \**************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/define-property */ "./node_modules/core-js-pure/stable/object/define-property.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js ***!
+  \**************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-descriptor */ "./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js ***!
+  \***************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-descriptors */ "./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js ***!
+  \***********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-symbols */ "./node_modules/core-js-pure/stable/object/get-own-property-symbols.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js ***!
+  \***************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/keys */ "./node_modules/core-js-pure/stable/object/keys.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js ***!
@@ -3520,6 +3640,26 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/starts-wit
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/promise */ "./node_modules/core-js-pure/stable/promise/index.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js ***!
+  \**********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/symbol */ "./node_modules/core-js-pure/stable/symbol/index.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/features/get-iterator-method */ "./node_modules/core-js-pure/features/get-iterator-method.js");
 
 /***/ }),
 
@@ -4161,6 +4301,38 @@ module.exports = path.Array.isArray;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/array/virtual/every.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/every.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.every */ "./node_modules/core-js-pure/modules/es.array.every.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'every');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/array/virtual/filter.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/filter.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.filter */ "./node_modules/core-js-pure/modules/es.array.filter.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'filter');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/array/virtual/for-each.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js-pure/es/array/virtual/for-each.js ***!
@@ -4279,6 +4451,48 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/instance/every.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/every.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/every */ "./node_modules/core-js-pure/es/array/virtual/every.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.every;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.every) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/filter.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/filter.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/filter */ "./node_modules/core-js-pure/es/array/virtual/filter.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.filter;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.filter) ? method : own;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/instance/push.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js-pure/es/instance/push.js ***!
@@ -4384,6 +4598,28 @@ module.exports = function create(P, D) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/object/define-properties.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/define-properties.js ***!
+  \******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.define-properties */ "./node_modules/core-js-pure/modules/es.object.define-properties.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+var Object = path.Object;
+
+var defineProperties = module.exports = function defineProperties(T, D) {
+  return Object.defineProperties(T, D);
+};
+
+if (Object.defineProperties.sham) defineProperties.sham = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/define-property.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/define-property.js ***!
@@ -4406,6 +4642,60 @@ if (Object.defineProperty.sham) defineProperty.sham = true;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-descriptor.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-descriptor.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.get-own-property-descriptor */ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+var Object = path.Object;
+
+var getOwnPropertyDescriptor = module.exports = function getOwnPropertyDescriptor(it, key) {
+  return Object.getOwnPropertyDescriptor(it, key);
+};
+
+if (Object.getOwnPropertyDescriptor.sham) getOwnPropertyDescriptor.sham = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-descriptors.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-descriptors.js ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.get-own-property-descriptors */ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.getOwnPropertyDescriptors;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-symbols.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-symbols.js ***!
+  \*************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.symbol */ "./node_modules/core-js-pure/modules/es.symbol.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.getOwnPropertySymbols;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/get-prototype-of.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/get-prototype-of.js ***!
@@ -4418,6 +4708,22 @@ __webpack_require__(/*! ../../modules/es.object.get-prototype-of */ "./node_modu
 var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
 
 module.exports = path.Object.getPrototypeOf;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/keys.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/keys.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.keys */ "./node_modules/core-js-pure/modules/es.object.keys.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.keys;
 
 
 /***/ }),
@@ -4546,6 +4852,19 @@ __webpack_require__(/*! ../../modules/es.symbol.to-primitive */ "./node_modules/
 var WrappedWellKnownSymbolModule = __webpack_require__(/*! ../../internals/well-known-symbol-wrapped */ "./node_modules/core-js-pure/internals/well-known-symbol-wrapped.js");
 
 module.exports = WrappedWellKnownSymbolModule.f('toPrimitive');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/features/get-iterator-method.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js-pure/features/get-iterator-method.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+module.exports = __webpack_require__(/*! ../full/get-iterator-method */ "./node_modules/core-js-pure/full/get-iterator-method.js");
 
 
 /***/ }),
@@ -9498,6 +9817,57 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.array.every.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.array.every.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $every = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js-pure/internals/array-iteration.js").every);
+var arrayMethodIsStrict = __webpack_require__(/*! ../internals/array-method-is-strict */ "./node_modules/core-js-pure/internals/array-method-is-strict.js");
+
+var STRICT_METHOD = arrayMethodIsStrict('every');
+
+// `Array.prototype.every` method
+// https://tc39.es/ecma262/#sec-array.prototype.every
+$({ target: 'Array', proto: true, forced: !STRICT_METHOD }, {
+  every: function every(callbackfn /* , thisArg */) {
+    return $every(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.array.filter.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.array.filter.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $filter = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js-pure/internals/array-iteration.js").filter);
+var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js-pure/internals/array-method-has-species-support.js");
+
+var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
+
+// `Array.prototype.filter` method
+// https://tc39.es/ecma262/#sec-array.prototype.filter
+// with adding support of @@species
+$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
+  filter: function filter(callbackfn /* , thisArg */) {
+    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.array.for-each.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.array.for-each.js ***!
@@ -9949,6 +10319,28 @@ $({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.object.define-properties.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.define-properties.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+var defineProperties = (__webpack_require__(/*! ../internals/object-define-properties */ "./node_modules/core-js-pure/internals/object-define-properties.js").f);
+
+// `Object.defineProperties` method
+// https://tc39.es/ecma262/#sec-object.defineproperties
+// eslint-disable-next-line es/no-object-defineproperties -- safe
+$({ target: 'Object', stat: true, forced: Object.defineProperties !== defineProperties, sham: !DESCRIPTORS }, {
+  defineProperties: defineProperties
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.object.define-property.js":
 /*!************************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.object.define-property.js ***!
@@ -9966,6 +10358,69 @@ var defineProperty = (__webpack_require__(/*! ../internals/object-define-propert
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 $({ target: 'Object', stat: true, forced: Object.defineProperty !== defineProperty, sham: !DESCRIPTORS }, {
   defineProperty: defineProperty
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js-pure/internals/to-indexed-object.js");
+var nativeGetOwnPropertyDescriptor = (__webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js-pure/internals/object-get-own-property-descriptor.js").f);
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+
+var FORCED = !DESCRIPTORS || fails(function () { nativeGetOwnPropertyDescriptor(1); });
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+$({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
+    return nativeGetOwnPropertyDescriptor(toIndexedObject(it), key);
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+var ownKeys = __webpack_require__(/*! ../internals/own-keys */ "./node_modules/core-js-pure/internals/own-keys.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js-pure/internals/to-indexed-object.js");
+var getOwnPropertyDescriptorModule = __webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js-pure/internals/object-get-own-property-descriptor.js");
+var createProperty = __webpack_require__(/*! ../internals/create-property */ "./node_modules/core-js-pure/internals/create-property.js");
+
+// `Object.getOwnPropertyDescriptors` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
+$({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = toIndexedObject(object);
+    var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+    var keys = ownKeys(O);
+    var result = {};
+    var index = 0;
+    var key, descriptor;
+    while (keys.length > index) {
+      descriptor = getOwnPropertyDescriptor(O, key = keys[index++]);
+      if (descriptor !== undefined) createProperty(result, key, descriptor);
+    }
+    return result;
+  }
 });
 
 
@@ -10025,6 +10480,32 @@ $({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES, sham: !CORRECT_PR
   }
 });
 
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.keys.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.keys.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js-pure/internals/to-object.js");
+var nativeKeys = __webpack_require__(/*! ../internals/object-keys */ "./node_modules/core-js-pure/internals/object-keys.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeKeys(1); });
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+$({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
+  keys: function keys(it) {
+    return nativeKeys(toObject(it));
+  }
+});
 
 
 /***/ }),
@@ -11932,6 +12413,36 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/instance/every.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/every.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/every */ "./node_modules/core-js-pure/es/instance/every.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/instance/filter.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/filter.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/filter */ "./node_modules/core-js-pure/es/instance/filter.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/instance/for-each.js":
 /*!***************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/instance/for-each.js ***!
@@ -12037,6 +12548,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/object/define-properties.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/define-properties.js ***!
+  \**********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/define-properties */ "./node_modules/core-js-pure/es/object/define-properties.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/define-property.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/define-property.js ***!
@@ -12052,6 +12578,51 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-descriptor */ "./node_modules/core-js-pure/es/object/get-own-property-descriptor.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js ***!
+  \*********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-descriptors */ "./node_modules/core-js-pure/es/object/get-own-property-descriptors.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-symbols.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-symbols.js ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-symbols */ "./node_modules/core-js-pure/es/object/get-own-property-symbols.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/get-prototype-of.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/get-prototype-of.js ***!
@@ -12061,6 +12632,21 @@ module.exports = parent;
 "use strict";
 
 var parent = __webpack_require__(/*! ../../es/object/get-prototype-of */ "./node_modules/core-js-pure/es/object/get-prototype-of.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/keys.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/keys.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/keys */ "./node_modules/core-js-pure/es/object/keys.js");
 
 module.exports = parent;
 
@@ -12270,6 +12856,33 @@ function _createClass(e, r, t) {
   return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__(e, "prototype", {
     writable: !1
   }), e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/object/define-property.js */ "./node_modules/core-js-pure/full/object/define-property.js");
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/toPropertyKey.js");
+
+
+function _defineProperty(e, r, t) {
+  return (r = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r)) in e ? core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__(e, r, {
+    value: t,
+    enumerable: !0,
+    configurable: !0,
+    writable: !0
+  }) : e[r] = t, e;
 }
 
 
@@ -12539,19 +13152,32 @@ function _initializeVoices() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/starts-with */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js");
-/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
-/* harmony import */ var _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../6-settings/shortcutManager.js */ "./6-settings/shortcutManager.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/starts-with */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/starts-with.js");
+/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+/* harmony import */ var _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../6-settings/shortcutManager.js */ "./6-settings/shortcutManager.js");
 
 
 
 
+
+
+
+
+
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context12; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context12 = {}.toString.call(r)).call(_context12, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 
 
 
@@ -12559,8 +13185,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var BackgroundHandler = /*#__PURE__*/function () {
   function BackgroundHandler() {
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, BackgroundHandler);
-    this.shortcutManager = new _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_8__.ShortcutManager();
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__["default"])(this, BackgroundHandler);
+    this.shortcutManager = new _6_settings_shortcutManager_js__WEBPACK_IMPORTED_MODULE_13__.ShortcutManager();
     // Define keyboard shortcut commands and their corresponding actions
     this.commands = {
       "skip-next": "skipToNext",
@@ -12571,22 +13197,22 @@ var BackgroundHandler = /*#__PURE__*/function () {
     };
     this.initialize();
   }
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(BackgroundHandler, [{
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__["default"])(BackgroundHandler, [{
     key: "initialize",
     value: function () {
-      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
+      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee() {
         var _context, _context2, _context3, _context4;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context5) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.next = 2;
               return this.shortcutManager.initialize();
             case 2:
               // Set up all event listeners
-              chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onInstalled).call(_context, this));
-              chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onActionClicked).call(_context2, this));
-              chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.onCommand).call(_context3, this));
-              chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context4 = this.onMessage).call(_context4, this));
+              chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context = this.onInstalled).call(_context, this));
+              chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context2 = this.onActionClicked).call(_context2, this));
+              chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context3 = this.onCommand).call(_context3, this));
+              chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context4 = this.onMessage).call(_context4, this));
               chrome.storage.onChanged.addListener(function (changes, namespace) {
                 if (changes.settings && changes.settings.newValue) {
                   var newSettings = changes.settings.newValue;
@@ -12599,6 +13225,9 @@ var BackgroundHandler = /*#__PURE__*/function () {
                       theme: newSettings.theme
                     });
                   }
+                }
+                if (changes.shortcuts && changes.shortcuts.newValue) {
+                  this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
                 }
               });
 
@@ -12614,82 +13243,176 @@ var BackgroundHandler = /*#__PURE__*/function () {
         return _initialize.apply(this, arguments);
       }
       return initialize;
-    }() // Add this new method
+    }() // Broadcast shortcut updates to all active tabs
   }, {
-    key: "handleShortcutCustomization",
+    key: "broadcastShortcutsUpdate",
     value: function () {
-      var _handleShortcutCustomization = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2(request, sender, sendResponse) {
-        var shortcuts;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context6) {
+      var _broadcastShortcutsUpdate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee2(shortcuts) {
+        var tabs, _iterator, _step, tab;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee2$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              if (!(request.action === "get-shortcuts")) {
-                _context6.next = 7;
+              _context6.prev = 0;
+              _context6.next = 3;
+              return chrome.tabs.query({});
+            case 3:
+              tabs = _context6.sent;
+              _iterator = _createForOfIteratorHelper(tabs);
+              _context6.prev = 5;
+              _iterator.s();
+            case 7:
+              if ((_step = _iterator.n()).done) {
+                _context6.next = 18;
                 break;
               }
-              _context6.next = 3;
-              return this.shortcutManager.currentShortcuts;
-            case 3:
-              shortcuts = _context6.sent;
-              sendResponse({
+              tab = _step.value;
+              _context6.prev = 9;
+              _context6.next = 12;
+              return chrome.tabs.sendMessage(tab.id, {
+                action: "shortcuts-updated",
                 shortcuts: shortcuts
               });
-              _context6.next = 11;
-              break;
-            case 7:
-              if (!(request.action === "update-shortcuts")) {
-                _context6.next = 11;
-                break;
-              }
-              _context6.next = 10;
-              return this.shortcutManager.saveShortcuts(request.newShortcuts);
-            case 10:
-              sendResponse({
-                success: true
-              });
-            case 11:
-              return _context6.abrupt("return", true);
             case 12:
+              _context6.next = 16;
+              break;
+            case 14:
+              _context6.prev = 14;
+              _context6.t0 = _context6["catch"](9);
+            case 16:
+              _context6.next = 7;
+              break;
+            case 18:
+              _context6.next = 23;
+              break;
+            case 20:
+              _context6.prev = 20;
+              _context6.t1 = _context6["catch"](5);
+              _iterator.e(_context6.t1);
+            case 23:
+              _context6.prev = 23;
+              _iterator.f();
+              return _context6.finish(23);
+            case 26:
+              _context6.next = 31;
+              break;
+            case 28:
+              _context6.prev = 28;
+              _context6.t2 = _context6["catch"](0);
+              console.error("Error broadcasting shortcut updates:", _context6.t2);
+            case 31:
             case "end":
               return _context6.stop();
           }
-        }, _callee2, this);
+        }, _callee2, null, [[0, 28], [5, 20, 23, 26], [9, 14]]);
       }));
-      function handleShortcutCustomization(_x, _x2, _x3) {
+      function broadcastShortcutsUpdate(_x) {
+        return _broadcastShortcutsUpdate.apply(this, arguments);
+      }
+      return broadcastShortcutsUpdate;
+    }() // Handle shortcut customization requests
+  }, {
+    key: "handleShortcutCustomization",
+    value: function () {
+      var _handleShortcutCustomization = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee3(request, sender, sendResponse) {
+        var success, _success;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee3$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.prev = 0;
+              if (!(request.action === "shortcut-get-shortcuts")) {
+                _context7.next = 5;
+                break;
+              }
+              sendResponse({
+                shortcuts: this.shortcutManager.shortcuts
+              });
+              _context7.next = 17;
+              break;
+            case 5:
+              if (!(request.action === "shortcut-update-shortcuts")) {
+                _context7.next = 12;
+                break;
+              }
+              _context7.next = 8;
+              return this.shortcutManager.saveShortcuts(request.newShortcuts);
+            case 8:
+              success = _context7.sent;
+              sendResponse({
+                success: success
+              });
+              _context7.next = 17;
+              break;
+            case 12:
+              if (!(request.action === "shortcut-reset-defaults")) {
+                _context7.next = 17;
+                break;
+              }
+              _context7.next = 15;
+              return this.shortcutManager.resetToDefaults();
+            case 15:
+              _success = _context7.sent;
+              sendResponse({
+                success: _success
+              });
+            case 17:
+              return _context7.abrupt("return", true);
+            case 20:
+              _context7.prev = 20;
+              _context7.t0 = _context7["catch"](0);
+              console.error("Error handling shortcut customization:", _context7.t0);
+              sendResponse({
+                error: _context7.t0.message
+              });
+              return _context7.abrupt("return", true);
+            case 25:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee3, this, [[0, 20]]);
+      }));
+      function handleShortcutCustomization(_x2, _x3, _x4) {
         return _handleShortcutCustomization.apply(this, arguments);
       }
       return handleShortcutCustomization;
     }()
   }, {
+    key: "notifyShortcutChange",
+    value: function notifyShortcutChange() {
+      chrome.runtime.sendMessage({
+        action: "shortcuts-updated",
+        shortcuts: this.currentShortcuts
+      });
+    }
+  }, {
     key: "initializeVoices",
     value: function () {
-      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3() {
+      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee4() {
         var voices;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee4$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
             case 0:
-              _context7.prev = 0;
-              _context7.next = 3;
-              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_7__.initializeVoices)();
+              _context8.prev = 0;
+              _context8.next = 3;
+              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_12__.initializeVoices)();
             case 3:
-              voices = _context7.sent;
-              _context7.next = 6;
+              voices = _context8.sent;
+              _context8.next = 6;
               return chrome.storage.local.set({
                 voices: voices
               });
             case 6:
               console.log("Voices initialized:", voices);
-              _context7.next = 12;
+              _context8.next = 12;
               break;
             case 9:
-              _context7.prev = 9;
-              _context7.t0 = _context7["catch"](0);
-              console.error("Failed to initialize voices:", _context7.t0);
+              _context8.prev = 9;
+              _context8.t0 = _context8["catch"](0);
+              console.error("Failed to initialize voices:", _context8.t0);
             case 12:
             case "end":
-              return _context7.stop();
+              return _context8.stop();
           }
-        }, _callee3, null, [[0, 9]]);
+        }, _callee4, null, [[0, 9]]);
       }));
       function initializeVoices() {
         return _initializeVoices2.apply(this, arguments);
@@ -12699,28 +13422,38 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "onInstalled",
     value: function () {
-      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee4() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee4$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
+      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee5() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee5$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
             case 0:
-              _context8.prev = 0;
-              _context8.next = 3;
+              _context9.prev = 0;
+              _context9.next = 3;
               return chrome.storage.local.set({
                 sidebarOpened: false
               });
             case 3:
+              _context9.next = 5;
+              return this.shortcutManager.loadShortcuts();
+            case 5:
+              if (_context9.sent) {
+                _context9.next = 8;
+                break;
+              }
+              _context9.next = 8;
+              return this.shortcutManager.resetToDefaults();
+            case 8:
               console.log("Extension installed and state initialized");
-              _context8.next = 9;
+              _context9.next = 14;
               break;
-            case 6:
-              _context8.prev = 6;
-              _context8.t0 = _context8["catch"](0);
-              console.error("Error during installation:", _context8.t0);
-            case 9:
+            case 11:
+              _context9.prev = 11;
+              _context9.t0 = _context9["catch"](0);
+              console.error("Error during installation:", _context9.t0);
+            case 14:
             case "end":
-              return _context8.stop();
+              return _context9.stop();
           }
-        }, _callee4, null, [[0, 6]]);
+        }, _callee5, this, [[0, 11]]);
       }));
       function onInstalled() {
         return _onInstalled.apply(this, arguments);
@@ -12751,7 +13484,7 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "onMessage",
     value: function onMessage(request, sender, sendResponse) {
-      var _context9;
+      var _context10;
       if (request.action === "getVoices") {
         // Handle voice retrieval request
         chrome.storage.local.get("voices", function (result) {
@@ -12762,9 +13495,10 @@ var BackgroundHandler = /*#__PURE__*/function () {
         return true; // Required for async response
       } else if (request.action === "updateBadge") {
         this.updateBadge(request.isActive, request.text);
-      } else if (_babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_6__(_context9 = request.action).call(_context9, "shortcut-")) {
+      } else if (_babel_runtime_corejs3_core_js_stable_instance_starts_with__WEBPACK_IMPORTED_MODULE_11__(_context10 = request.action).call(_context10, "shortcut-")) {
         return this.handleShortcutCustomization(request, sender, sendResponse);
       }
+      return false; // For synchronous responses
     }
   }, {
     key: "updateBadge",
@@ -12786,46 +13520,46 @@ var BackgroundHandler = /*#__PURE__*/function () {
   }, {
     key: "sendMessageToActiveTab",
     value: function () {
-      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee5(message) {
+      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee6(message) {
         var _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee5$(_context10) {
-          while (1) switch (_context10.prev = _context10.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee6$(_context11) {
+          while (1) switch (_context11.prev = _context11.next) {
             case 0:
-              _context10.prev = 0;
-              _context10.next = 3;
+              _context11.prev = 0;
+              _context11.next = 3;
               return chrome.tabs.query({
                 active: true,
                 currentWindow: true
               });
             case 3:
-              _yield$chrome$tabs$qu = _context10.sent;
-              _yield$chrome$tabs$qu2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_yield$chrome$tabs$qu, 1);
+              _yield$chrome$tabs$qu = _context11.sent;
+              _yield$chrome$tabs$qu2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__["default"])(_yield$chrome$tabs$qu, 1);
               tab = _yield$chrome$tabs$qu2[0];
               if (!tab) {
-                _context10.next = 11;
+                _context11.next = 11;
                 break;
               }
-              _context10.next = 9;
+              _context11.next = 9;
               return chrome.tabs.sendMessage(tab.id, message);
             case 9:
-              _context10.next = 12;
+              _context11.next = 12;
               break;
             case 11:
               console.warn("No active tab found");
             case 12:
-              _context10.next = 17;
+              _context11.next = 17;
               break;
             case 14:
-              _context10.prev = 14;
-              _context10.t0 = _context10["catch"](0);
-              console.error("Error sending message to tab:", _context10.t0);
+              _context11.prev = 14;
+              _context11.t0 = _context11["catch"](0);
+              console.error("Error sending message to tab:", _context11.t0);
             case 17:
             case "end":
-              return _context10.stop();
+              return _context11.stop();
           }
-        }, _callee5, null, [[0, 14]]);
+        }, _callee6, null, [[0, 14]]);
       }));
-      function sendMessageToActiveTab(_x4) {
+      function sendMessageToActiveTab(_x5) {
         return _sendMessageToActiveTab.apply(this, arguments);
       }
       return sendMessageToActiveTab;
@@ -12847,19 +13581,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ShortcutManager: () => (/* binding */ ShortcutManager)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/every */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_12__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_0__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_0__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_1__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_2__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context5, _context6; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_3__(_context5 = ownKeys(Object(t), !0)).call(_context5, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_5__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_3__(_context6 = ownKeys(Object(t))).call(_context6, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_6__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_2__(t, r)); }); } return e; }
 
 var ShortcutManager = /*#__PURE__*/function () {
   function ShortcutManager() {
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, ShortcutManager);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_9__["default"])(this, ShortcutManager);
     this.defaultShortcuts = {
       "skip-next": {
         key: "ArrowDown",
@@ -12884,11 +13642,11 @@ var ShortcutManager = /*#__PURE__*/function () {
     };
     this.currentShortcuts = {};
   }
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(ShortcutManager, [{
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_10__["default"])(ShortcutManager, [{
     key: "initialize",
     value: function () {
-      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context) {
+      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.mark(function _callee() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
@@ -12907,24 +13665,57 @@ var ShortcutManager = /*#__PURE__*/function () {
       return initialize;
     }()
   }, {
-    key: "loadShortcuts",
+    key: "shortcuts",
+    get: function get() {
+      return this.currentShortcuts;
+    }
+  }, {
+    key: "resetToDefaults",
     value: function () {
-      var _loadShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2() {
-        var _this = this;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context2) {
+      var _resetToDefaults = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.mark(function _callee2() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              return _context2.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_3__(function (resolve) {
+              this.currentShortcuts = _objectSpread({}, this.defaultShortcuts);
+              return _context2.abrupt("return", this.saveShortcuts(this.currentShortcuts));
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+      function resetToDefaults() {
+        return _resetToDefaults.apply(this, arguments);
+      }
+      return resetToDefaults;
+    }()
+  }, {
+    key: "loadShortcuts",
+    value: function () {
+      var _loadShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.mark(function _callee3() {
+        var _this = this;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              return _context3.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_11__(function (resolve) {
                 chrome.storage.sync.get(['shortcuts'], function (result) {
-                  _this.currentShortcuts = result.shortcuts || _this.defaultShortcuts;
-                  resolve();
+                  if (chrome.runtime.lastError || !result.shortcuts) {
+                    // Try local storage as fallback
+                    chrome.storage.local.get(['shortcuts'], function (localResult) {
+                      _this.currentShortcuts = localResult.shortcuts || _this.defaultShortcuts;
+                      resolve(_this.currentShortcuts);
+                    });
+                  } else {
+                    _this.currentShortcuts = result.shortcuts;
+                    resolve(_this.currentShortcuts);
+                  }
                 });
               }));
             case 1:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
-        }, _callee2);
+        }, _callee3);
       }));
       function loadShortcuts() {
         return _loadShortcuts.apply(this, arguments);
@@ -12934,20 +13725,40 @@ var ShortcutManager = /*#__PURE__*/function () {
   }, {
     key: "saveShortcuts",
     value: function () {
-      var _saveShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3(newShortcuts) {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+      var _saveShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.mark(function _callee4(newShortcuts) {
+        var requiredActions, hasAllActions;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_15__.wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              this.currentShortcuts = newShortcuts;
-              _context3.next = 3;
-              return chrome.storage.sync.set({
-                shortcuts: newShortcuts
+              // Validate that all required actions have shortcuts
+              requiredActions = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_12__(this.defaultShortcuts);
+              hasAllActions = _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_13__(requiredActions).call(requiredActions, function (action) {
+                return newShortcuts[action] && newShortcuts[action].key && _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_14__(newShortcuts[action].modifiers);
               });
-            case 3:
+              if (hasAllActions) {
+                _context4.next = 5;
+                break;
+              }
+              console.error('Invalid shortcut configuration');
+              return _context4.abrupt("return", false);
+            case 5:
+              this.currentShortcuts = newShortcuts;
+              return _context4.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_11__(function (resolve) {
+                chrome.storage.sync.set({
+                  shortcuts: newShortcuts
+                }, function () {
+                  // Also save to local as backup
+                  chrome.storage.local.set({
+                    shortcuts: newShortcuts
+                  });
+                  resolve(true);
+                });
+              }));
+            case 7:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
       function saveShortcuts(_x) {
         return _saveShortcuts.apply(this, arguments);
@@ -12966,7 +13777,7 @@ var ShortcutManager = /*#__PURE__*/function () {
   }, {
     key: "getShortcutForAction",
     value: function getShortcutForAction(action) {
-      return this.currentShortcuts[action];
+      return this._currentShortcuts[action] || this.defaultShortcuts[action];
     }
   }]);
 }();
@@ -13052,7 +13863,7 @@ var ShortcutManager = /*#__PURE__*/function () {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("4283c631929b6345e972")
+/******/ 		__webpack_require__.h = () => ("201fad813fe409497dc8")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

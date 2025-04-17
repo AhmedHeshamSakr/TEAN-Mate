@@ -14,19 +14,55 @@ export class ShortcutManager {
       await this.loadShortcuts();
       this.setupCommandListener();
     }
+
+    get shortcuts() {
+      return this.currentShortcuts;
+    }
+
+    async resetToDefaults() {
+      this.currentShortcuts = {...this.defaultShortcuts};
+      return this.saveShortcuts(this.currentShortcuts);
+    }
   
     async loadShortcuts() {
       return new Promise((resolve) => {
         chrome.storage.sync.get(['shortcuts'], (result) => {
-          this.currentShortcuts = result.shortcuts || this.defaultShortcuts;
-          resolve();
+          if (chrome.runtime.lastError || !result.shortcuts) {
+            // Try local storage as fallback
+            chrome.storage.local.get(['shortcuts'], (localResult) => {
+              this.currentShortcuts = localResult.shortcuts || this.defaultShortcuts;
+              resolve(this.currentShortcuts);
+            });
+          } else {
+            this.currentShortcuts = result.shortcuts;
+            resolve(this.currentShortcuts);
+          }
         });
       });
     }
   
     async saveShortcuts(newShortcuts) {
+      // Validate that all required actions have shortcuts
+      const requiredActions = Object.keys(this.defaultShortcuts);
+      const hasAllActions = requiredActions.every(action => 
+        newShortcuts[action] && 
+        newShortcuts[action].key && 
+        Array.isArray(newShortcuts[action].modifiers)
+      );
+      
+      if (!hasAllActions) {
+        console.error('Invalid shortcut configuration');
+        return false;
+      }
+      
       this.currentShortcuts = newShortcuts;
-      await chrome.storage.sync.set({ shortcuts: newShortcuts });
+      return new Promise((resolve) => {
+        chrome.storage.sync.set({ shortcuts: newShortcuts }, () => {
+          // Also save to local as backup
+          chrome.storage.local.set({ shortcuts: newShortcuts });
+          resolve(true);
+        });
+      });
     }
   
     setupCommandListener() {
@@ -38,6 +74,6 @@ export class ShortcutManager {
     }
   
     getShortcutForAction(action) {
-      return this.currentShortcuts[action];
+      return this._currentShortcuts[action] || this.defaultShortcuts[action];
     }
   }

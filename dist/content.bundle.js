@@ -25074,28 +25074,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/entries */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/entries.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/every */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/entries */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/entries.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/every */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
 
 
 
 
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_4__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_5__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_6__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context15; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_7__(_context15 = {}.toString.call(r)).call(_context15, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context16; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_7__(_context16 = {}.toString.call(r)).call(_context16, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
 
 
 
@@ -25117,15 +25119,17 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 
 var ContentHandler = /*#__PURE__*/function () {
   function ContentHandler() {
-    var _context2;
+    var _context2,
+      _context3,
+      _this = this;
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, ContentHandler);
     this.sections = [];
     this.pastBorderStyle = "";
     this.pastBackgroundStyle = "";
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"]();
     this.currentElement = null;
     this.currentLink = null;
     this.walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
@@ -25151,26 +25155,43 @@ var ContentHandler = /*#__PURE__*/function () {
     this.shortcutMap = {};
     this.initializeKeyListeners();
     this.loadShortcuts();
+
+    // Listen for messages from the background script
+    chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_11__(_context3 = this.handleMessage).call(_context3, this));
+
+    // Listen for shortcut updates
+    chrome.runtime.onMessage.addListener(function (message) {
+      if (message.action === "shortcuts-updated" && message.shortcuts) {
+        _this.shortcutMap = message.shortcuts;
+        console.log("Shortcuts updated in content script:", _this.shortcutMap);
+      }
+      return false;
+    });
   }
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(ContentHandler, [{
     key: "loadShortcuts",
     value: function () {
       var _loadShortcuts = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee() {
-        var _this = this;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        var _this2 = this;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              return _context3.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_12__(function (resolve) {
+              return _context4.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_12__(function (resolve) {
                 chrome.runtime.sendMessage({
                   action: "shortcut-get-shortcuts"
                 }, function (response) {
-                  _this.shortcutMap = response.shortcuts;
+                  if (response && response.shortcuts) {
+                    _this2.shortcutMap = response.shortcuts;
+                    console.log("Shortcuts loaded in content script:", _this2.shortcutMap);
+                  } else {
+                    console.error('Failed to load shortcuts');
+                  }
                   resolve();
                 });
               }));
             case 1:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }, _callee);
       }));
@@ -25182,13 +25203,35 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "initializeKeyListeners",
     value: function initializeKeyListeners() {
-      var _this2 = this;
+      var _this3 = this;
+      // Improved key event listener with better error handling
       document.addEventListener('keydown', function (e) {
-        _this2.updateModifierState(e, true);
-        _this2.checkForShortcut(e);
+        try {
+          _this3.updateModifierState(e, true);
+          _this3.checkForShortcut(e);
+        } catch (error) {
+          console.error("Error in keydown handler:", error);
+        }
       });
       document.addEventListener('keyup', function (e) {
-        _this2.updateModifierState(e, false);
+        try {
+          _this3.updateModifierState(e, false);
+        } catch (error) {
+          console.error("Error in keyup handler:", error);
+        }
+      });
+
+      // Handle page visibility changes to reset modifier state
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+          // Reset modifier keys when page loses focus
+          _this3.keyState = {
+            alt: false,
+            ctrl: false,
+            shift: false,
+            meta: false
+          };
+        }
       });
     }
   }, {
@@ -25202,36 +25245,49 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "checkForShortcut",
     value: function checkForShortcut(e) {
-      var _context4, _context5, _context6;
+      var _context5, _context6, _context7;
       // Ignore modifier-only keys
-      if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__(_context4 = ['Alt', 'Control', 'Shift', 'Meta']).call(_context4, e.key)) return;
+      if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__(_context5 = ['Alt', 'Control', 'Shift', 'Meta']).call(_context5, e.key)) return;
+      if (!this.shortcutMap || _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_13__(this.shortcutMap).length === 0) {
+        return; // Skip if shortcuts aren't loaded yet
+      }
       var pressedKey = e.key.toLowerCase();
-      var activeModifiers = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_13__(_context5 = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_14__(_context6 = _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_15__(this.keyState)).call(_context6, function (_ref) {
+      var activeModifiers = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_14__(_context6 = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_15__(_context7 = _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_16__(this.keyState)).call(_context7, function (_ref) {
         var _ref2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref, 2),
           _ = _ref2[0],
           isActive = _ref2[1];
         return isActive;
-      })).call(_context5, function (_ref3) {
+      })).call(_context6, function (_ref3) {
         var _ref4 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref3, 1),
           mod = _ref4[0];
         return mod;
       });
 
       // Check each shortcut
-      for (var _i = 0, _Object$entries2 = _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_15__(this.shortcutMap); _i < _Object$entries2.length; _i++) {
-        var _context7;
+      for (var _i = 0, _Object$entries2 = _babel_runtime_corejs3_core_js_stable_object_entries__WEBPACK_IMPORTED_MODULE_16__(this.shortcutMap); _i < _Object$entries2.length; _i++) {
+        var _context8;
         var _Object$entries2$_i = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_Object$entries2[_i], 2),
           action = _Object$entries2$_i[0],
           shortcut = _Object$entries2$_i[1];
-        if (shortcut.key === pressedKey && shortcut.modifiers.length === activeModifiers.length && _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_16__(_context7 = shortcut.modifiers).call(_context7, function (m) {
+        if (!shortcut || !shortcut.key) continue;
+        if (shortcut.key.toLowerCase() === pressedKey && shortcut.modifiers.length === activeModifiers.length && _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_17__(_context8 = shortcut.modifiers).call(_context8, function (m) {
           return _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__(activeModifiers).call(activeModifiers, m);
         })) {
           e.preventDefault();
           e.stopPropagation();
 
+          // Convert technical action name to handler action
+          var actionMap = {
+            'skip-next': 'skipToNext',
+            'skip-previous': 'skipToPrevious',
+            'toggle-reading': 'toggleReading',
+            'access-link': 'accessLink',
+            'toggle-stt': 'toggleSTT'
+          };
+
           // Trigger the corresponding action
           this.handleMessage({
-            action: action
+            action: actionMap[action] || action
           });
           break;
         }
@@ -25274,17 +25330,17 @@ var ContentHandler = /*#__PURE__*/function () {
       var text = [];
       while (this.walker.nextNode()) {
         var element = this.walker.currentNode;
-        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
+        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
         if (this.isElementVisible(element)) {
           var _element$tagName;
           var tagName = (_element$tagName = element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (element.tagName.toLowerCase() === 'a' && element.href) {
-            var _context8, _context9;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_17__(element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(_context8 = element.textContent).call(_context8) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(_context9 = element.textContent).call(_context9)) : "Link to ".concat(domain));
+            var _context9, _context10;
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_18__(element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_19__(_context9 = element.textContent).call(_context9) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_19__(_context10 = element.textContent).call(_context10)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processAllDescendants(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processAllDescendants(element);
           } else {
             var _iterator = _createForOfIteratorHelper(element.childNodes),
               _step;
@@ -25293,8 +25349,8 @@ var ContentHandler = /*#__PURE__*/function () {
                 var child = _step.value;
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
-                  var _context10;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(_context10 = child.textContent).call(_context10);
+                  var _context11;
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_19__(_context11 = child.textContent).call(_context11);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(element);
@@ -25316,7 +25372,7 @@ var ContentHandler = /*#__PURE__*/function () {
               _iterator.f();
             }
           }
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(element);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(element);
         }
         if (text.length > 0) {
           return {
@@ -25347,9 +25403,9 @@ var ContentHandler = /*#__PURE__*/function () {
               var child = _step2.value;
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
-                var _context11;
-                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(_context11 = child.textContent).call(_context11);
+                var _context12;
+                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_19__(_context12 = child.textContent).call(_context12);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(element);
@@ -25387,52 +25443,52 @@ var ContentHandler = /*#__PURE__*/function () {
     key: "speakCurrentSection",
     value: function () {
       var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee3() {
-        var _this3 = this;
+        var _this4 = this;
         var _this$currentElement, elementsToReturn, text, _loop, i;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee3$(_context14) {
-          while (1) switch (_context14.prev = _context14.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee3$(_context15) {
+          while (1) switch (_context15.prev = _context15.next) {
             case 0:
               if (!this.currentElement) {
                 this.currentElement = this.getNextElement();
               }
               _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
               if (!(!this.currentElement || !elementsToReturn)) {
-                _context14.next = 4;
+                _context15.next = 4;
                 break;
               }
-              return _context14.abrupt("return");
+              return _context15.abrupt("return");
             case 4:
               _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _loop(i) {
-                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _loop$(_context13) {
-                  while (1) switch (_context13.prev = _context13.next) {
+                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _loop$(_context14) {
+                  while (1) switch (_context14.prev = _context14.next) {
                     case 0:
-                      _context13.next = 2;
+                      _context14.next = 2;
                       return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_12__(/*#__PURE__*/function () {
                         var _ref5 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee2(resolve) {
-                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee2$(_context12) {
-                            while (1) switch (_context12.prev = _context12.next) {
+                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee2$(_context13) {
+                            while (1) switch (_context13.prev = _context13.next) {
                               case 0:
-                                _context12.prev = 0;
+                                _context13.prev = 0;
                                 // Add highlight first
-                                _this3.highlightWhileReading ? _this3.highlightBox.addHighlight(elementsToReturn[i]) : null;
+                                _this4.highlightWhileReading ? _this4.highlightBox.addHighlight(elementsToReturn[i]) : null;
 
                                 // Wait for speech to complete
-                                _context12.next = 4;
-                                return _this3.speechHandler.speak(text[i], function () {});
+                                _context13.next = 4;
+                                return _this4.speechHandler.speak(text[i], function () {});
                               case 4:
-                                _this3.highlightWhileReading ? _this3.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _this4.highlightWhileReading ? _this4.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 resolve();
-                                _context12.next = 12;
+                                _context13.next = 12;
                                 break;
                               case 8:
-                                _context12.prev = 8;
-                                _context12.t0 = _context12["catch"](0);
-                                console.error('Error in sequence:', _context12.t0);
-                                _this3.highlightWhileReading ? _this3.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _context13.prev = 8;
+                                _context13.t0 = _context13["catch"](0);
+                                console.error('Error in sequence:', _context13.t0);
+                                _this4.highlightWhileReading ? _this4.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 //resolve(); // Continue to next item even if there's an error
                               case 12:
                               case "end":
-                                return _context12.stop();
+                                return _context13.stop();
                             }
                           }, _callee2, null, [[0, 8]]);
                         }));
@@ -25442,27 +25498,27 @@ var ContentHandler = /*#__PURE__*/function () {
                       }());
                     case 2:
                     case "end":
-                      return _context13.stop();
+                      return _context14.stop();
                   }
                 }, _loop);
               });
               i = 0;
             case 6:
               if (!(i < elementsToReturn.length)) {
-                _context14.next = 11;
+                _context15.next = 11;
                 break;
               }
-              return _context14.delegateYield(_loop(i), "t0", 8);
+              return _context15.delegateYield(_loop(i), "t0", 8);
             case 8:
               i++;
-              _context14.next = 6;
+              _context15.next = 6;
               break;
             case 11:
               this.currentElement = null; // Prepare for the next element
               this.speakCurrentSection();
             case 13:
             case "end":
-              return _context14.stop();
+              return _context15.stop();
           }
         }, _callee3, this);
       }));
@@ -27565,7 +27621,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("4283c631929b6345e972")
+/******/ 		__webpack_require__.h = () => ("201fad813fe409497dc8")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

@@ -47,31 +47,69 @@ class ContentHandler {
           
           this.initializeKeyListeners();
           this.loadShortcuts();
+
+           // Listen for messages from the background script
+        chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+        
+        // Listen for shortcut updates
+        chrome.runtime.onMessage.addListener((message) => {
+            if (message.action === "shortcuts-updated" && message.shortcuts) {
+                this.shortcutMap = message.shortcuts;
+                console.log("Shortcuts updated in content script:", this.shortcutMap);
+            }
+            return false;
+        });
     }
 
     async loadShortcuts() {
         return new Promise((resolve) => {
-          chrome.runtime.sendMessage(
-            { action: "shortcut-get-shortcuts" },
-            (response) => {
-              this.shortcutMap = response.shortcuts;
-              resolve();
-            }
-          );
+            chrome.runtime.sendMessage(
+                { action: "shortcut-get-shortcuts" },
+                (response) => {
+                    if (response && response.shortcuts) {
+                        this.shortcutMap = response.shortcuts;
+                        console.log("Shortcuts loaded in content script:", this.shortcutMap);
+                    } else {
+                        console.error('Failed to load shortcuts');
+                    }
+                    resolve();
+                }
+            );
         });
-      }
-    
-      initializeKeyListeners() {
+    }
+
+    initializeKeyListeners() {
+        // Improved key event listener with better error handling
         document.addEventListener('keydown', (e) => {
-          this.updateModifierState(e, true);
-          this.checkForShortcut(e);
+            try {
+                this.updateModifierState(e, true);
+                this.checkForShortcut(e);
+            } catch (error) {
+                console.error("Error in keydown handler:", error);
+            }
         });
-    
+
         document.addEventListener('keyup', (e) => {
-          this.updateModifierState(e, false);
+            try {
+                this.updateModifierState(e, false);
+            } catch (error) {
+                console.error("Error in keyup handler:", error);
+            }
         });
-      }
-    
+
+        // Handle page visibility changes to reset modifier state
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                // Reset modifier keys when page loses focus
+                this.keyState = {
+                    alt: false,
+                    ctrl: false,
+                    shift: false,
+                    meta: false
+                };
+            }
+        });
+    }
       updateModifierState(e, isPressed) {
         this.keyState.alt = e.altKey;
         this.keyState.ctrl = e.ctrlKey;
@@ -81,7 +119,9 @@ class ContentHandler {
       checkForShortcut(e) {
         // Ignore modifier-only keys
         if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
-        
+        if (!this.shortcutMap || Object.keys(this.shortcutMap).length === 0) {
+            return; // Skip if shortcuts aren't loaded yet
+        }
         const pressedKey = e.key.toLowerCase();
         const activeModifiers = Object.entries(this.keyState)
           .filter(([_, isActive]) => isActive)
@@ -89,19 +129,30 @@ class ContentHandler {
     
         // Check each shortcut
         for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
-          if (shortcut.key === pressedKey && 
-              shortcut.modifiers.length === activeModifiers.length &&
-              shortcut.modifiers.every(m => activeModifiers.includes(m))) {
+            if (!shortcut || !shortcut.key) continue;
             
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Trigger the corresponding action
-            this.handleMessage({ action });
-            break;
-          }
+            if (shortcut.key.toLowerCase() === pressedKey && 
+                shortcut.modifiers.length === activeModifiers.length &&
+                shortcut.modifiers.every(m => activeModifiers.includes(m))) {
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Convert technical action name to handler action
+                const actionMap = {
+                    'skip-next': 'skipToNext',
+                    'skip-previous': 'skipToPrevious',
+                    'toggle-reading': 'toggleReading',
+                    'access-link': 'accessLink',
+                    'toggle-stt': 'toggleSTT'
+                };
+                
+                // Trigger the corresponding action
+                this.handleMessage({ action: actionMap[action] || action });
+                break;
+            }
         }
-      }
+    }
     
 
 
