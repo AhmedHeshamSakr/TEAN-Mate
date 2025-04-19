@@ -39,7 +39,8 @@
         "icons/*",
         "TTS/*",
         "*.wasm",
-        "assets/*"
+        "assets/*",
+        "*.onnx"
       ],
       "matches": ["<all_urls>"]
     }

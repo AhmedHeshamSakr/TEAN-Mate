@@ -151,6 +151,10 @@ export default {
           from: 'node_modules/artyom.js/build/artyom.window.min.js',
           to: 'artyom.window.min.js'
         },
+        {
+          from: '2-features/SignLanguageHandler/rtmpose.onnx',
+          to: 'rtmpose.onnx'
+        }
         // {
         //   from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
         //   to: 'all.min.css'
