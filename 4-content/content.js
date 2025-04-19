@@ -85,6 +85,7 @@ class ContentHandler {
                 return { elementsToReturn, text };
             }
         }
+        console.log('no more elements');
         return { elementsToReturn, text };
     }
 
@@ -128,7 +129,8 @@ class ContentHandler {
             this.currentElement = this.getNextElement();
         }
         let { elementsToReturn, text } = this.currentElement;
-        if (!this.currentElement || !elementsToReturn) {
+        if (!this.currentElement || !elementsToReturn || elementsToReturn.length === 0) {
+            this.currentElement = null;
             return;
         }
 
@@ -152,7 +154,10 @@ class ContentHandler {
             });
         }
         this.currentElement = null; // Prepare for the next element
-        this.speakCurrentSection();
+        if (this.wasSpeaking) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+            await this.speakCurrentSection(); // Add await
+        }
     }
 
     handleMessage(request) {

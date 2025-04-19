@@ -8,8 +8,14 @@ export default class InteractionHandler {
             return;
         }
 
+        const role = element.getAttribute('role');
         const tagName = element.tagName?.toLowerCase();
         
+        if (role === 'option' || tagName === 'option') {
+            this.handleOptionSelection(element);
+            return;
+        }
+
         switch (tagName) {
             case 'button':
                 element.click();
@@ -157,37 +163,30 @@ export default class InteractionHandler {
             // Also try setting aria-expanded
             dropdownContainer.setAttribute('aria-expanded', 'true');
         }
-        
-        // Use a one-time timeout to prevent recursion issues
-        const timeoutId = setTimeout(() => {
-            // Clear the timeout to prevent memory leaks
-            clearTimeout(timeoutId);
-            
-            try {
-                // Find all options
-                const options = dropdownContainer.querySelectorAll('[role="option"]');
-                if (options.length > 0) {
-                    // Find the first non-empty option that isn't "Choose"
-                    for (const option of options) {
-                        const text = option.textContent.trim();
-                        if (text && text !== 'Choose') {
-                            // Click the option
-                            option.click();
-                            return;
-                        }
-                    }
-                    
-                    // If we didn't find a good option, just click the first one
-                    if (options.length > 1) {
-                        options[1].click(); // Skip the first one which might be "Choose"
-                    } else {
-                        options[0].click();
-                    }
-                }
-            } catch (error) {
-                console.error('Error handling custom dropdown:', error);
+    }
+
+    static handleOptionSelection(element) {
+        const container = element.closest('[role="listbox"]');
+        if (!container) return;
+    
+        const options = container.querySelectorAll('[role="option"]');
+        if (options.length === 0) return;
+    
+        let selectedIndex = -1;
+        options.forEach((option, index) => {
+            if (option === element || option.contains(element)) {
+                selectedIndex = index;
             }
-        }, 300); // Wait 300ms for the dropdown to open
+        });
+    
+        if (selectedIndex > -1) {
+            options[selectedIndex].click();
+            options[selectedIndex].setAttribute('aria-selected', 'true');
+        }
+
+        if (container) {
+            container.setAttribute('aria-expanded', 'false');
+        }
     }
 
     static isInteractiveElement(element) {
