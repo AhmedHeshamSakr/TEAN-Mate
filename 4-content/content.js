@@ -51,9 +51,10 @@ class ContentHandler {
                     this.currentLink = element;
                     TextExtractor.processAllDescendants(element);
                 }
-                else if (['button', 'input', 'select', 'textarea', 'option'].includes(tagName)) {
+                else if (InteractionHandler.isInteractiveElement(element)) {
                     const stateText = TextExtractor.getElementState(element);
-                    text += `${stateText}${element.textContent.trim()}`;
+                    text.push(`${stateText}${element.textContent.trim()}`);
+                    elementsToReturn.push(element);
                     TextExtractor.processAllDescendants(element);
                     this.currentLink = element;
                 }
@@ -72,7 +73,7 @@ class ContentHandler {
                                 text.push(textRes);
                                 elementsToReturn.push(child);
                             }
-                            if (['button', 'input', 'select', 'textarea', 'option', 'a'].includes(child.tagName?.toLowerCase())){
+                            if (InteractionHandler.isInteractiveElement(child)) {
                                 this.currentLink = child;
                             } else this.currentLink = null;
                         }
@@ -109,7 +110,7 @@ class ContentHandler {
                             text.push(textRes);
                             elementsToReturn.push(child);
                         }
-                        if (child.tagName.toLowerCase() === "a"){
+                        if (InteractionHandler.isInteractiveElement(child)) {
                             this.currentLink = child;
                         } else this.currentLink = null;
                     }
@@ -193,13 +194,27 @@ class ContentHandler {
                 this.wasSpeaking = true;
             }
         } else if (request.action === "accessLink") {
-            if (this.currentElement  && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
                 this.speechHandler.stop();
-                this.linkHandler.accessLink(this.currentLink);
-                InteractionHandler.handleInteraction(this.currentLink);
+                
+                // Check if the current link is a form element or a link
+                if (this.currentLink) {
+                    const tagName = this.currentLink.tagName?.toLowerCase();
+                    if (tagName === 'a') {
+                        this.linkHandler.accessLink(this.currentLink);
+                    } else {
+                        // Always handle interaction regardless of element type
+                        InteractionHandler.handleInteraction(this.currentLink);
+                        
+                        // Only check for custom dropdown if it's not a text field
+                        if (InteractionHandler.isCustomDropdown(this.currentLink)) {
+                            InteractionHandler.handleCustomDropdown(this.currentLink);
+                        }
+                    }
+                }
             }
         }else if (request.action === "performSearch"){
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
