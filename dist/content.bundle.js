@@ -698,36 +698,6 @@ try {
 
 /***/ }),
 
-/***/ "./node_modules/core-js-pure/actual/array/from.js":
-/*!********************************************************!*\
-  !*** ./node_modules/core-js-pure/actual/array/from.js ***!
-  \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var parent = __webpack_require__(/*! ../../stable/array/from */ "./node_modules/core-js-pure/stable/array/from.js");
-
-module.exports = parent;
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/actual/array/is-array.js":
-/*!************************************************************!*\
-  !*** ./node_modules/core-js-pure/actual/array/is-array.js ***!
-  \************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var parent = __webpack_require__(/*! ../../stable/array/is-array */ "./node_modules/core-js-pure/stable/array/is-array.js");
-
-module.exports = parent;
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js-pure/actual/get-iterator-method.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/actual/get-iterator-method.js ***!
@@ -2108,36 +2078,6 @@ module.exports = __webpack_require__(/*! ../../full/symbol */ "./node_modules/co
 "use strict";
 
 module.exports = __webpack_require__(/*! ../../full/symbol/iterator */ "./node_modules/core-js-pure/full/symbol/iterator.js");
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/full/array/from.js":
-/*!******************************************************!*\
-  !*** ./node_modules/core-js-pure/full/array/from.js ***!
-  \******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var parent = __webpack_require__(/*! ../../actual/array/from */ "./node_modules/core-js-pure/actual/array/from.js");
-
-module.exports = parent;
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/full/array/is-array.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/core-js-pure/full/array/is-array.js ***!
-  \**********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var parent = __webpack_require__(/*! ../../actual/array/is-array */ "./node_modules/core-js-pure/actual/array/is-array.js");
-
-module.exports = parent;
 
 
 /***/ }),
@@ -14250,46 +14190,6 @@ module.exports = path.URL;
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
-/* harmony export */ });
-function _arrayLikeToArray(r, a) {
-  (null == a || a > r.length) && (a = r.length);
-  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
-  return n;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
-/* harmony export */ });
-/* harmony import */ var core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js-pure/features/array/is-array.js */ "./node_modules/core-js-pure/full/array/is-array.js");
-
-function _arrayWithHoles(r) {
-  if (core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_0__(r)) return r;
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js ***!
@@ -14407,98 +14307,6 @@ function _defineProperty(e, r, t) {
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
-/* harmony export */ });
-/* harmony import */ var core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js-pure/features/symbol/index.js */ "./node_modules/core-js-pure/full/symbol/index.js");
-/* harmony import */ var core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/get-iterator-method.js */ "./node_modules/core-js-pure/full/get-iterator-method.js");
-/* harmony import */ var core_js_pure_features_instance_push_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js-pure/features/instance/push.js */ "./node_modules/core-js-pure/full/instance/push.js");
-
-
-
-function _iterableToArrayLimit(r, l) {
-  var t = null == r ? null : "undefined" != typeof core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ && core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__(r) || r["@@iterator"];
-  if (null != t) {
-    var e,
-      n,
-      i,
-      u,
-      a = [],
-      f = !0,
-      o = !1;
-    try {
-      if (i = (t = t.call(r)).next, 0 === l) {
-        if (Object(t) !== t) return;
-        f = !1;
-      } else for (; !(f = (e = i.call(t)).done) && (core_js_pure_features_instance_push_js__WEBPACK_IMPORTED_MODULE_2__(a).call(a, e.value), a.length !== l); f = !0);
-    } catch (r) {
-      o = !0, n = r;
-    } finally {
-      try {
-        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
-      } finally {
-        if (o) throw n;
-      }
-    }
-    return a;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
-/* harmony export */ });
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _slicedToArray)
-/* harmony export */ });
-/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js");
-/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js");
-/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js");
-/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js");
-
-
-
-
-function _slicedToArray(r, e) {
-  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/toPrimitive.js":
 /*!************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/toPrimitive.js ***!
@@ -14576,715 +14384,6 @@ function _typeof(o) {
   }, _typeof(o);
 }
 
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js ***!
-  \***************************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
-/* harmony export */ });
-/* harmony import */ var core_js_pure_features_instance_slice_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/instance/slice.js */ "./node_modules/core-js-pure/full/instance/slice.js");
-/* harmony import */ var core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js-pure/features/array/from.js */ "./node_modules/core-js-pure/full/array/from.js");
-/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js");
-
-
-
-function _unsupportedIterableToArray(r, a) {
-  if (r) {
-    var _context;
-    if ("string" == typeof r) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a);
-    var t = core_js_pure_features_instance_slice_js__WEBPACK_IMPORTED_MODULE_1__(_context = {}.toString.call(r)).call(_context, 8, -1);
-    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a) : void 0;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./2-features/SignLanguageHandler/RTMPoseLive.js":
-/*!*******************************************************!*\
-  !*** ./2-features/SignLanguageHandler/RTMPoseLive.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/fill */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js");
-/* harmony import */ var onnxruntime_web__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! onnxruntime-web */ "./node_modules/onnxruntime-web/dist/ort.bundle.min.mjs");
-
-
-
-
-
-
-
-
-
-
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context4; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context4 = {}.toString.call(r)).call(_context4, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
-
-
-
-var RTMPose = /*#__PURE__*/function () {
-  function RTMPose() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_8__["default"])(this, RTMPose);
-    // Configuration options with defaults
-    this.modelPath = options.modelPath || "rtmpose.onnx";
-    this.inputSize = options.inputSize || [192, 256]; // (Width, Height)
-    this.tensorSize = [1, 3, this.inputSize[1], this.inputSize[0]]; // (Batch Size, Channels, Height, Width)
-    this.session = null;
-    this.isLoaded = false;
-
-    // Model constants
-    this.targetWidth = 384;
-    this.targetHeight = 512;
-    this.pixelCount = this.inputSize[0] * this.inputSize[1];
-
-    // Pre-allocate all buffers
-    this.resizedCanvas = document.createElement('canvas');
-    this.resizedCanvas.width = this.targetWidth;
-    this.resizedCanvas.height = this.targetHeight;
-    this.resizedCtx = this.resizedCanvas.getContext('2d', {
-      alpha: false,
-      // Disable alpha for performance
-      willReadFrequently: true // Optimize for frequent reads
-    });
-
-    // Pre-allocate image data buffer to avoid allocation in loops
-    this.imageData = this.resizedCtx.createImageData(this.targetWidth, this.targetHeight);
-    this.imageDataBuffer = new Uint8ClampedArray(this.targetWidth * this.targetHeight * 4);
-
-    // Pre-allocate tensor memory - reuse this for all frames
-    this.tensorMemory = new Float32Array(3 * this.inputSize[0] * this.inputSize[1]);
-    this.imageTensor = new onnxruntime_web__WEBPACK_IMPORTED_MODULE_13__.Tensor("float32", this.tensorMemory, this.tensorSize);
-
-    // Pre-compute affine transformation constants for faster processing
-    this.invMatBuffer = new Float32Array(6); // Flat array for [a,b,c,d,e,f]
-
-    // ImageNet normalization constants
-    this.mean = [123.675, 116.28, 103.53];
-    this.std = [58.395, 57.12, 57.375];
-
-    // Pre-compute color normalization lookup tables (dramatically speeds up normalization)
-    this.normLUT = new Float32Array(768); // 256 values * 3 channels
-    for (var i = 0; i < 256; i++) {
-      this.normLUT[i] = (i - this.mean[0]) / this.std[0];
-      this.normLUT[i + 256] = (i - this.mean[1]) / this.std[1];
-      this.normLUT[i + 512] = (i - this.mean[2]) / this.std[2];
-    }
-
-    // Pre-compute constants for coordinate transformation
-    this.padding = 1.25;
-    this.aspectRatio = this.inputSize[0] / this.inputSize[1];
-
-    // Pre-allocate keypoints array
-    this.keypoints = [];
-    this.transformedKeypoints = [];
-
-    // Performance tracking
-    this.fpsCounter = 0;
-    this.lastFpsUpdate = performance.now();
-    this.fps = 0;
-
-    // WebWorker for processing (optional)
-    this.useWorker = options.useWorker || false;
-    this.worker = null;
-    if (this.useWorker) this.initWorker();
-  }
-
-  /**
-   * Initialize worker for parallel processing
-   */
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_9__["default"])(RTMPose, [{
-    key: "initWorker",
-    value: function initWorker() {
-      var workerCode = "\n      self.onmessage = function(e) {\n        const { data, invMat, width, height, pixelCount } = e.data;\n        const result = new Float32Array(3 * pixelCount);\n        processImageData(data, result, invMat, width, height, pixelCount);\n        self.postMessage({ result }, [result.buffer]);\n      };\n      \n      function processImageData(data, result, invMat, width, height, pixelCount) {\n        // Image processing code here\n      }\n    ";
-      var blob = new Blob([workerCode], {
-        type: 'application/javascript'
-      });
-      this.worker = new Worker(_babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__.createObjectURL(blob));
-    }
-
-    /**
-     * Load the RTMPose model
-     * @returns {Promise<void>}
-     */
-  }, {
-    key: "loadModel",
-    value: (function () {
-      var _loadModel = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.mark(function _callee() {
-        var onnxruntimeBase, sessionOptions;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              if (!this.isLoaded) {
-                _context.next = 2;
-                break;
-              }
-              return _context.abrupt("return");
-            case 2:
-              _context.prev = 2;
-              console.log("Loading RTMPose model...");
-              onnxruntimeBase = chrome.runtime.getURL("./"); // Use all available CPU threads
-              onnxruntime_web__WEBPACK_IMPORTED_MODULE_13__.env.wasm.numThreads = navigator.hardwareConcurrency || 4;
-              onnxruntime_web__WEBPACK_IMPORTED_MODULE_13__.env.wasm.wasmPaths = onnxruntimeBase;
-
-              // Set execution mode to sequential for better performance
-              sessionOptions = {
-                executionProviders: ['wasm'],
-                graphOptimizationLevel: 'all',
-                executionMode: 'sequential',
-                enableCpuMemArena: true,
-                enableMemPattern: true
-              };
-              _context.next = 10;
-              return onnxruntime_web__WEBPACK_IMPORTED_MODULE_13__.InferenceSession.create(this.modelPath, sessionOptions);
-            case 10:
-              this.session = _context.sent;
-              this.isLoaded = true;
-              console.log("Model loaded successfully.");
-              _context.next = 19;
-              break;
-            case 15:
-              _context.prev = 15;
-              _context.t0 = _context["catch"](2);
-              console.error("Failed to load model:", _context.t0);
-              throw _context.t0;
-            case 19:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, this, [[2, 15]]);
-      }));
-      function loadModel() {
-        return _loadModel.apply(this, arguments);
-      }
-      return loadModel;
-    }()
-    /**
-     * Fast frame processing with batched operations
-     * @param {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} frame - Input frame
-     * @returns {Promise<Object>} - Detection results
-     */
-    )
-  }, {
-    key: "processFrame",
-    value: (function () {
-      var _processFrame = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.mark(function _callee2(frame) {
-        var startTime, imageData, center, scale, startInferenceTime, results, inferenceTime, processTime;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              if (this.isLoaded) {
-                _context2.next = 3;
-                break;
-              }
-              _context2.next = 3;
-              return this.loadModel();
-            case 3:
-              startTime = performance.now(); // Resize and extract pixels in one operation
-              this.resizedCtx.drawImage(frame, 0, 0, this.targetWidth, this.targetHeight);
-              imageData = this.resizedCtx.getImageData(0, 0, this.targetWidth, this.targetHeight); // Generate transformation matrix (only when frame size changes)
-              center = [this.targetWidth / 2, this.targetHeight / 2];
-              scale = [this.targetWidth, this.targetHeight];
-              this.updateAffineMatrix(center, scale);
-
-              // Process image data in one batch operation
-              this.processImageDataFast(imageData.data);
-
-              // Run inference with pre-allocated tensor
-              startInferenceTime = performance.now();
-              _context2.next = 13;
-              return this.runInference();
-            case 13:
-              results = _context2.sent;
-              inferenceTime = performance.now() - startInferenceTime;
-              console.log("Inference time: ".concat(inferenceTime, " ms"));
-
-              // Fast keypoint decoding
-              this.decodeKeypointsFast(results.simcc_x, results.simcc_y);
-
-              // Transform keypoints back to original coordinates
-              this.transformKeypointsFast(center, scale);
-
-              // Update FPS counter
-              this.updateFPS();
-              processTime = performance.now() - startTime;
-              return _context2.abrupt("return", {
-                keypoints: this.transformedKeypoints,
-                processingTime: processTime,
-                fps: this.fps
-              });
-            case 21:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2, this);
-      }));
-      function processFrame(_x) {
-        return _processFrame.apply(this, arguments);
-      }
-      return processFrame;
-    }()
-    /**
-     * Update FPS counter
-     */
-    )
-  }, {
-    key: "updateFPS",
-    value: function updateFPS() {
-      this.fpsCounter++;
-      var now = performance.now();
-      var elapsed = now - this.lastFpsUpdate;
-      if (elapsed >= 1000) {
-        this.fps = Math.round(this.fpsCounter * 1000 / elapsed);
-        this.fpsCounter = 0;
-        this.lastFpsUpdate = now;
-      }
-    }
-
-    /**
-     * Ultra-fast image data processing with SIMD-like optimizations
-     * @param {Uint8ClampedArray} data - Raw image data
-     */
-  }, {
-    key: "processImageDataFast",
-    value: function processImageDataFast(data) {
-      var srcWidth = this.targetWidth;
-      var dstWidth = this.inputSize[0];
-      var dstHeight = this.inputSize[1];
-      var pixelCount = this.pixelCount;
-
-      // Extract matrix values
-      var a = this.invMatBuffer[0];
-      var b = this.invMatBuffer[1];
-      var c = this.invMatBuffer[2];
-      var d = this.invMatBuffer[3];
-      var e = this.invMatBuffer[4];
-      var f = this.invMatBuffer[5];
-
-      // Process 4 pixels at once when possible (manual vectorization)
-      var limit = dstWidth * dstHeight & ~3; // Round down to multiple of 4
-      var destIdxR = 0;
-      var destIdxG = pixelCount;
-      var destIdxB = 2 * pixelCount;
-
-      // Fast path with unrolled loops
-      for (var i = 0; i < limit; i += 4) {
-        var y1 = Math.floor(i / dstWidth);
-        var x1 = i % dstWidth;
-        var y2 = Math.floor((i + 1) / dstWidth);
-        var x2 = (i + 1) % dstWidth;
-        var y3 = Math.floor((i + 2) / dstWidth);
-        var x3 = (i + 2) % dstWidth;
-        var y4 = Math.floor((i + 3) / dstWidth);
-        var x4 = (i + 3) % dstWidth;
-
-        // Compute source coordinates
-        var srcX1 = Math.round(a * x1 + b * y1 + c);
-        var srcY1 = Math.round(d * x1 + e * y1 + f);
-        var srcX2 = Math.round(a * x2 + b * y2 + c);
-        var srcY2 = Math.round(d * x2 + e * y2 + f);
-        var srcX3 = Math.round(a * x3 + b * y3 + c);
-        var srcY3 = Math.round(d * x3 + e * y3 + f);
-        var srcX4 = Math.round(a * x4 + b * y4 + c);
-        var srcY4 = Math.round(d * x4 + e * y4 + f);
-
-        // Get indices for lookup
-        var idx1 = srcY1 >= 0 && srcY1 < this.targetHeight && srcX1 >= 0 && srcX1 < srcWidth ? (srcY1 * srcWidth + srcX1) * 4 : -1;
-        var idx2 = srcY2 >= 0 && srcY2 < this.targetHeight && srcX2 >= 0 && srcX2 < srcWidth ? (srcY2 * srcWidth + srcX2) * 4 : -1;
-        var idx3 = srcY3 >= 0 && srcY3 < this.targetHeight && srcX3 >= 0 && srcX3 < srcWidth ? (srcY3 * srcWidth + srcX3) * 4 : -1;
-        var idx4 = srcY4 >= 0 && srcY4 < this.targetHeight && srcX4 >= 0 && srcX4 < srcWidth ? (srcY4 * srcWidth + srcX4) * 4 : -1;
-
-        // Use lookup tables for normalization - much faster than arithmetic
-        this.tensorMemory[destIdxR++] = idx1 >= 0 ? this.normLUT[data[idx1]] : this.normLUT[0];
-        this.tensorMemory[destIdxR++] = idx2 >= 0 ? this.normLUT[data[idx2]] : this.normLUT[0];
-        this.tensorMemory[destIdxR++] = idx3 >= 0 ? this.normLUT[data[idx3]] : this.normLUT[0];
-        this.tensorMemory[destIdxR++] = idx4 >= 0 ? this.normLUT[data[idx4]] : this.normLUT[0];
-        this.tensorMemory[destIdxG++] = idx1 >= 0 ? this.normLUT[data[idx1 + 1] + 256] : this.normLUT[256];
-        this.tensorMemory[destIdxG++] = idx2 >= 0 ? this.normLUT[data[idx2 + 1] + 256] : this.normLUT[256];
-        this.tensorMemory[destIdxG++] = idx3 >= 0 ? this.normLUT[data[idx3 + 1] + 256] : this.normLUT[256];
-        this.tensorMemory[destIdxG++] = idx4 >= 0 ? this.normLUT[data[idx4 + 1] + 256] : this.normLUT[256];
-        this.tensorMemory[destIdxB++] = idx1 >= 0 ? this.normLUT[data[idx1 + 2] + 512] : this.normLUT[512];
-        this.tensorMemory[destIdxB++] = idx2 >= 0 ? this.normLUT[data[idx2 + 2] + 512] : this.normLUT[512];
-        this.tensorMemory[destIdxB++] = idx3 >= 0 ? this.normLUT[data[idx3 + 2] + 512] : this.normLUT[512];
-        this.tensorMemory[destIdxB++] = idx4 >= 0 ? this.normLUT[data[idx4 + 2] + 512] : this.normLUT[512];
-      }
-
-      // Handle remaining pixels
-      for (var _i = limit; _i < dstWidth * dstHeight; _i++) {
-        var y = Math.floor(_i / dstWidth);
-        var x = _i % dstWidth;
-
-        // Compute source coordinates
-        var srcX = Math.round(a * x + b * y + c);
-        var srcY = Math.round(d * x + e * y + f);
-
-        // Get source pixel
-        if (srcX >= 0 && srcX < srcWidth && srcY >= 0 && srcY < this.targetHeight) {
-          var srcIdx = (srcY * srcWidth + srcX) * 4;
-          this.tensorMemory[_i] = this.normLUT[data[srcIdx]];
-          this.tensorMemory[_i + pixelCount] = this.normLUT[data[srcIdx + 1] + 256];
-          this.tensorMemory[_i + 2 * pixelCount] = this.normLUT[data[srcIdx + 2] + 512];
-        } else {
-          // Out of bounds
-          this.tensorMemory[_i] = this.normLUT[0];
-          this.tensorMemory[_i + pixelCount] = this.normLUT[256];
-          this.tensorMemory[_i + 2 * pixelCount] = this.normLUT[512];
-        }
-      }
-    }
-
-    /**
-     * Update affine transformation matrix 
-     * @param {Array} center - Center point [x, y]
-     * @param {Array} scale - Scale [width, height]
-     */
-  }, {
-    key: "updateAffineMatrix",
-    value: function updateAffineMatrix(center, scale) {
-      // Fix aspect ratio
-      var fixedScale = this.fixAspectRatio(scale);
-
-      // Simplified transform calculation
-      var srcHalfW = fixedScale[0] * 0.5;
-      var srcHalfH = fixedScale[1] * 0.5;
-      var dstHalfW = this.inputSize[0] * 0.5;
-      var dstHalfH = this.inputSize[1] * 0.5;
-
-      // Calculate scale factors directly
-      var scaleX = dstHalfW / srcHalfW;
-      var scaleY = dstHalfH / srcHalfH;
-
-      // Directly compute inverse matrix for sampling (avoid matrix multiplication)
-      this.invMatBuffer[0] = 1.0 / scaleX; // a
-      this.invMatBuffer[1] = 0; // b
-      this.invMatBuffer[2] = center[0] - this.inputSize[0] * 0.5 / scaleX; // c
-      this.invMatBuffer[3] = 0; // d
-      this.invMatBuffer[4] = 1.0 / scaleY; // e
-      this.invMatBuffer[5] = center[1] - this.inputSize[1] * 0.5 / scaleY; // f
-    }
-
-    /**
-     * Fix aspect ratio (inline implementation for speed)
-     * @param {Array} scale - Input scale [width, height]
-     * @returns {Array} - Fixed scale
-     */
-  }, {
-    key: "fixAspectRatio",
-    value: function fixAspectRatio(scale) {
-      var _scale = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__["default"])(scale, 2),
-        w = _scale[0],
-        h = _scale[1];
-      // Use pre-computed aspect ratio
-      if (w > h * this.aspectRatio) {
-        return [w, w / this.aspectRatio];
-      } else {
-        return [h * this.aspectRatio, h];
-      }
-    }
-
-    /**
-     * Run inference with pre-allocated tensor
-     * @returns {Promise<Object>} - Results
-     */
-  }, {
-    key: "runInference",
-    value: (function () {
-      var _runInference = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.mark(function _callee3() {
-        var feeds, results;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_10__.wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              feeds = (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_5__["default"])({}, this.session.inputNames[0], this.imageTensor);
-              _context3.prev = 1;
-              _context3.next = 4;
-              return this.session.run(feeds);
-            case 4:
-              results = _context3.sent;
-              return _context3.abrupt("return", {
-                simcc_x: results['simcc_x'].data,
-                simcc_y: results['simcc_y'].data
-              });
-            case 8:
-              _context3.prev = 8;
-              _context3.t0 = _context3["catch"](1);
-              console.error("Inference error:", _context3.t0);
-              return _context3.abrupt("return", {
-                simcc_x: new Float32Array(0),
-                simcc_y: new Float32Array(0)
-              });
-            case 12:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3, this, [[1, 8]]);
-      }));
-      function runInference() {
-        return _runInference.apply(this, arguments);
-      }
-      return runInference;
-    }()
-    /**
-     * Ultra-fast keypoint decoding with SIMD-like optimizations
-     * @param {Float32Array} simcc_x - X heatmap
-     * @param {Float32Array} simcc_y - Y heatmap
-     */
-    )
-  }, {
-    key: "decodeKeypointsFast",
-    value: function decodeKeypointsFast(simcc_x, simcc_y) {
-      var numKeypoints = simcc_x.length / this.targetWidth;
-
-      // Resize keypoints array if needed
-      if (this.keypoints.length !== numKeypoints) {
-        this.keypoints = new Array(numKeypoints);
-        for (var i = 0; i < numKeypoints; i++) {
-          this.keypoints[i] = {
-            x: 0,
-            y: 0
-          };
-        }
-      }
-
-      // Batch-process keypoints
-      for (var _i2 = 0; _i2 < numKeypoints; _i2++) {
-        var xOffset = _i2 * this.targetWidth;
-        var yOffset = _i2 * this.targetHeight;
-
-        // Find max X (unrolled for performance)
-        var maxXIdx = 0;
-        var maxXVal = simcc_x[xOffset];
-
-        // Use block processing with loop unrolling
-        var blockSize = 8;
-        var blockLimit = this.targetWidth - this.targetWidth % blockSize;
-
-        // Process in blocks of 8
-        for (var j = 0; j < blockLimit; j += blockSize) {
-          // Unrolled comparison - much faster than a single loop
-          if (simcc_x[xOffset + j] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j];
-            maxXIdx = j;
-          }
-          if (simcc_x[xOffset + j + 1] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 1];
-            maxXIdx = j + 1;
-          }
-          if (simcc_x[xOffset + j + 2] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 2];
-            maxXIdx = j + 2;
-          }
-          if (simcc_x[xOffset + j + 3] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 3];
-            maxXIdx = j + 3;
-          }
-          if (simcc_x[xOffset + j + 4] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 4];
-            maxXIdx = j + 4;
-          }
-          if (simcc_x[xOffset + j + 5] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 5];
-            maxXIdx = j + 5;
-          }
-          if (simcc_x[xOffset + j + 6] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 6];
-            maxXIdx = j + 6;
-          }
-          if (simcc_x[xOffset + j + 7] > maxXVal) {
-            maxXVal = simcc_x[xOffset + j + 7];
-            maxXIdx = j + 7;
-          }
-        }
-
-        // Handle remaining elements
-        for (var _j = blockLimit; _j < this.targetWidth; _j++) {
-          if (simcc_x[xOffset + _j] > maxXVal) {
-            maxXVal = simcc_x[xOffset + _j];
-            maxXIdx = _j;
-          }
-        }
-
-        // Find max Y (similar unrolling)
-        var maxYIdx = 0;
-        var maxYVal = simcc_y[yOffset];
-
-        // Process Y in blocks of 8
-        var yBlockLimit = this.targetHeight - this.targetHeight % blockSize;
-        for (var _j2 = 0; _j2 < yBlockLimit; _j2 += blockSize) {
-          if (simcc_y[yOffset + _j2] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2];
-            maxYIdx = _j2;
-          }
-          if (simcc_y[yOffset + _j2 + 1] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 1];
-            maxYIdx = _j2 + 1;
-          }
-          if (simcc_y[yOffset + _j2 + 2] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 2];
-            maxYIdx = _j2 + 2;
-          }
-          if (simcc_y[yOffset + _j2 + 3] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 3];
-            maxYIdx = _j2 + 3;
-          }
-          if (simcc_y[yOffset + _j2 + 4] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 4];
-            maxYIdx = _j2 + 4;
-          }
-          if (simcc_y[yOffset + _j2 + 5] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 5];
-            maxYIdx = _j2 + 5;
-          }
-          if (simcc_y[yOffset + _j2 + 6] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 6];
-            maxYIdx = _j2 + 6;
-          }
-          if (simcc_y[yOffset + _j2 + 7] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j2 + 7];
-            maxYIdx = _j2 + 7;
-          }
-        }
-
-        // Handle remaining elements
-        for (var _j3 = yBlockLimit; _j3 < this.targetHeight; _j3++) {
-          if (simcc_y[yOffset + _j3] > maxYVal) {
-            maxYVal = simcc_y[yOffset + _j3];
-            maxYIdx = _j3;
-          }
-        }
-
-        // Store result
-        this.keypoints[_i2].x = maxXIdx;
-        this.keypoints[_i2].y = maxYIdx;
-      }
-    }
-
-    /**
-     * Ultra-fast keypoint transformation
-     * @param {Array} center - Center point
-     * @param {Array} scale - Scale
-     */
-  }, {
-    key: "transformKeypointsFast",
-    value: function transformKeypointsFast(center, scale) {
-      // Pre-compute offsets once
-      var centerX = Math.round(center[0]);
-      var centerY = Math.round(center[1]);
-      var scaleX = Math.round(scale[0] / 2);
-      var scaleY = Math.round(scale[1] / 2);
-      var offsetX = centerX - scaleX;
-      var offsetY = centerY - scaleY;
-
-      // Resize output array if needed
-      if (this.transformedKeypoints.length !== this.keypoints.length) {
-        this.transformedKeypoints = new Array(this.keypoints.length);
-        for (var i = 0; i < this.keypoints.length; i++) {
-          this.transformedKeypoints[i] = {
-            x: 0,
-            y: 0
-          };
-        }
-      }
-
-      // Fast transform with pre-computed constants
-      for (var _i3 = 0; _i3 < this.keypoints.length; _i3++) {
-        this.transformedKeypoints[_i3].x = Math.round(this.keypoints[_i3].x + offsetX);
-        this.transformedKeypoints[_i3].y = Math.round(this.keypoints[_i3].y + offsetY);
-      }
-    }
-
-    /**
-     * Visualize keypoints on canvas
-     * @param {HTMLCanvasElement} canvas - Canvas element
-     * @param {Array} keypoints - Detected keypoints
-     * @param {Object} options - Visualization options
-     */
-  }, {
-    key: "visualize",
-    value: function visualize(canvas, keypoints) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var ctx = canvas.getContext('2d');
-      var pointSize = options.pointSize || 3;
-      var lineWidth = options.lineWidth || 2;
-      var pointColor = options.pointColor || 'red';
-
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw keypoints
-      ctx.fillStyle = pointColor;
-      var _iterator = _createForOfIteratorHelper(keypoints),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var point = _step.value;
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, pointSize, 0, Math.PI * 2);
-          _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_12__(ctx).call(ctx);
-        }
-
-        // Display FPS if enabled
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      if (options.showFPS) {
-        ctx.font = '16px Arial';
-        ctx.fillStyle = 'white';
-        ctx.fillText("FPS: ".concat(this.fps), 10, 20);
-      }
-    }
-
-    /**
-     * Clean up resources when done
-     */
-  }, {
-    key: "dispose",
-    value: function dispose() {
-      if (this.session) {
-        try {
-          this.session.release();
-        } catch (e) {
-          console.error("Error disposing model session:", e);
-        }
-      }
-      if (this.worker) {
-        this.worker.terminate();
-      }
-      this.isLoaded = false;
-      this.session = null;
-    }
-  }]);
-}();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RTMPose);
 
 /***/ }),
 
@@ -24001,26 +23100,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/fill */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/find */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/find.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
-/* harmony import */ var _2_features_SignLanguageHandler_RTMPoseLive_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../2-features/SignLanguageHandler/RTMPoseLive.js */ "./2-features/SignLanguageHandler/RTMPoseLive.js");
-
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/fill */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
 
 
 
@@ -24031,8 +23129,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context17; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context17 = {}.toString.call(r)).call(_context17, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context16; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context16 = {}.toString.call(r)).call(_context16, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
 
 
 
@@ -24050,62 +23149,83 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 var ContentHandler = /*#__PURE__*/function () {
   function ContentHandler() {
     var _context2, _context3;
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__["default"])(this, ContentHandler);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__["default"])(this, ContentHandler);
     this.sections = [];
     this.pastBorderStyle = "";
     this.pastBackgroundStyle = "";
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
-    ;
-    this.rtmPose = new _2_features_SignLanguageHandler_RTMPoseLive_js__WEBPACK_IMPORTED_MODULE_23__["default"]({
-      modelPath: chrome.runtime.getURL("rtmpose.onnx"),
-      inputSize: [192, 256]
-    });
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"]();
     this.currentElement = null;
     this.currentLink = null;
     this.walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
       acceptNode: function acceptNode(node) {
         var _node$tagName, _context;
         var tagName = (_node$tagName = node.tagName) === null || _node$tagName === void 0 ? void 0 : _node$tagName.toLowerCase();
-        if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_10__(_context = ["script", "style", "noscript"]).call(_context, tagName)) {
+        if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__(_context = ["script", "style", "noscript"]).call(_context, tagName)) {
           return NodeFilter.FILTER_REJECT;
         }
         return NodeFilter.FILTER_ACCEPT;
       }
     }, false);
-    chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_11__(_context2 = this.handleMessage).call(_context2, this));
+    chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context2 = this.handleMessage).call(_context2, this));
     this.wasSpeaking = false;
     this.captureStream = null;
     this.videoElement = null;
     this.canvasElement = null;
     this.animationFrameId = null;
     this.isCapturing = false;
-    this.frameProcessor = null;
     this.debugMode = false;
     this.debugOverlay = null;
     this.debugContext = null;
-    this.processFrames = _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_11__(_context3 = this.processFrames).call(_context3, this);
+    this.processFrames = _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context3 = this.processFrames).call(_context3, this);
+
+    // MediaPipe server settings
+    this.serverUrl = 'http://localhost:5000/process_frame';
+    this.serverConnected = false;
+    this.lastDetectedGesture = null;
+
+    // Performance optimizations
+    this.processingQueue = [];
+    this.isProcessingFrame = false;
+    this.frameSkipThreshold = 5; // Process every 6th frame (increased from 2)
+    this.frameSkipCount = 0;
+    this.frameScale = 0.5; // Scale down frames to 50% of original size
+    this.lastFrameTime = 0;
+
+    // Frame size constraints
+    this.maxFrameWidth = 640;
+    this.maxFrameHeight = 480;
+
+    // Throttle server checks to reduce overhead
+    this.serverCheckInterval = 10000; // Check server every 10 seconds
+    this.lastServerCheck = 0;
+
+    // WebSocket connection (faster than HTTP)
+    this.ws = null;
+    this.useWebSocket = true; // Try to use WebSocket if available
+    this.wsReconnectAttempts = 0;
+    this.maxReconnectAttempts = 3;
   }
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__["default"])(ContentHandler, [{
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__["default"])(ContentHandler, [{
     key: "getNextElement",
     value: function getNextElement() {
       var elementsToReturn = [];
       var text = [];
       while (this.walker.nextNode()) {
         var element = this.walker.currentNode;
-        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
+        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
         if (this.isElementVisible(element)) {
           var _element$tagName;
           var tagName = (_element$tagName = element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (element.tagName.toLowerCase() === 'a' && element.href) {
             var _context4, _context5;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__(element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context4 = element.textContent).call(_context4) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context5 = element.textContent).call(_context5)) : "Link to ".concat(domain));
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__(element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context4 = element.textContent).call(_context4) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context5 = element.textContent).call(_context5)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processAllDescendants(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processAllDescendants(element);
           } else {
             var _iterator = _createForOfIteratorHelper(element.childNodes),
               _step;
@@ -24115,7 +23235,7 @@ var ContentHandler = /*#__PURE__*/function () {
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
                   var _context6;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context6 = child.textContent).call(_context6);
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context6 = child.textContent).call(_context6);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(element);
@@ -24137,7 +23257,7 @@ var ContentHandler = /*#__PURE__*/function () {
               _iterator.f();
             }
           }
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(element);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(element);
         }
         if (text.length > 0) {
           return {
@@ -24169,8 +23289,8 @@ var ContentHandler = /*#__PURE__*/function () {
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
                 var _context7;
-                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context7 = child.textContent).call(_context7);
+                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context7 = child.textContent).call(_context7);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(element);
@@ -24207,10 +23327,10 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "speakCurrentSection",
     value: function () {
-      var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee2() {
+      var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee2() {
         var _this = this;
         var _this$currentElement, elementsToReturn, text, _loop, i;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee2$(_context10) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context10) {
           while (1) switch (_context10.prev = _context10.next) {
             case 0:
               if (!this.currentElement) {
@@ -24223,14 +23343,14 @@ var ContentHandler = /*#__PURE__*/function () {
               }
               return _context10.abrupt("return");
             case 4:
-              _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _loop(i) {
-                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _loop$(_context9) {
+              _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _loop(i) {
+                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context9) {
                   while (1) switch (_context9.prev = _context9.next) {
                     case 0:
                       _context9.next = 2;
-                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__(/*#__PURE__*/function () {
-                        var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee(resolve) {
-                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context8) {
+                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__(/*#__PURE__*/function () {
+                        var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee(resolve) {
+                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context8) {
                             while (1) switch (_context8.prev = _context8.next) {
                               case 0:
                                 _context8.prev = 0;
@@ -24307,7 +23427,12 @@ var ContentHandler = /*#__PURE__*/function () {
       this.debugOverlay.style.borderRadius = '5px';
       this.debugOverlay.style.zIndex = '9999'; // Make sure it's on top
       this.debugOverlay.style.backgroundColor = '#000';
-      this.debugContext = this.debugOverlay.getContext('2d');
+      this.debugContext = this.debugOverlay.getContext('2d', {
+        alpha: false
+      });
+
+      // Performance improvement: Use a more efficient canvas context
+      this.debugContext.imageSmoothingEnabled = false;
 
       // Add a close button
       var closeBtn = document.createElement('button');
@@ -24340,7 +23465,209 @@ var ContentHandler = /*#__PURE__*/function () {
       wrapper.appendChild(this.debugOverlay);
       wrapper.appendChild(closeBtn);
       document.body.appendChild(wrapper);
+
+      // Add server status indicator
+      var statusIndicator = document.createElement('div');
+      statusIndicator.id = 'server-status';
+      statusIndicator.style.position = 'absolute';
+      statusIndicator.style.bottom = '5px';
+      statusIndicator.style.left = '5px';
+      statusIndicator.style.padding = '2px 6px';
+      statusIndicator.style.borderRadius = '10px';
+      statusIndicator.style.fontSize = '10px';
+      statusIndicator.style.backgroundColor = 'red';
+      statusIndicator.textContent = 'Server: Disconnected';
+      wrapper.appendChild(statusIndicator);
+
+      // Add FPS counter
+      var fpsCounter = document.createElement('div');
+      fpsCounter.id = 'fps-counter';
+      fpsCounter.style.position = 'absolute';
+      fpsCounter.style.top = '5px';
+      fpsCounter.style.left = '5px';
+      fpsCounter.style.padding = '2px 6px';
+      fpsCounter.style.borderRadius = '10px';
+      fpsCounter.style.fontSize = '10px';
+      fpsCounter.style.backgroundColor = 'rgba(0,0,0,0.5)';
+      fpsCounter.style.color = 'white';
+      fpsCounter.textContent = 'FPS: 0';
+      wrapper.appendChild(fpsCounter);
+
+      // Check server connection
+      this.checkServerConnection();
     }
+  }, {
+    key: "initializeWebSocket",
+    value: function () {
+      var _initializeWebSocket = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee3() {
+        var _this3 = this;
+        var wsUrl;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee3$(_context11) {
+          while (1) switch (_context11.prev = _context11.next) {
+            case 0:
+              // Convert from HTTP to WebSocket URL
+              wsUrl = this.serverUrl.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws';
+              try {
+                this.ws = new WebSocket(wsUrl);
+                this.ws.onopen = function () {
+                  console.log('WebSocket connection established');
+                  _this3.serverConnected = true;
+                  _this3.wsReconnectAttempts = 0;
+                  var statusIndicator = document.getElementById('server-status');
+                  if (statusIndicator) {
+                    statusIndicator.style.backgroundColor = 'green';
+                    statusIndicator.textContent = 'Server: WebSocket Connected';
+                  }
+                };
+                this.ws.onmessage = function (event) {
+                  try {
+                    var results = JSON.parse(event.data);
+
+                    // Process the received data
+                    if (results && results.success) {
+                      if (_this3.debugMode && _this3.debugContext) {
+                        _this3.drawLandmarks(results.keypoints);
+                      }
+
+                      // Process gesture detection
+                      if (results.gestures && results.gestures.length > 0) {
+                        _this3.lastDetectedGesture = results.gestures[0].name;
+                        console.log("Detected gesture:", _this3.lastDetectedGesture);
+                      }
+                    }
+
+                    // Indicate that processing is complete
+                    _this3.isProcessingFrame = false;
+                  } catch (error) {
+                    console.error('Error parsing WebSocket message:', error);
+                    _this3.isProcessingFrame = false;
+                  }
+                };
+                this.ws.onerror = function (error) {
+                  console.error('WebSocket error:', error);
+                  _this3.serverConnected = false;
+                  var statusIndicator = document.getElementById('server-status');
+                  if (statusIndicator) {
+                    statusIndicator.style.backgroundColor = 'red';
+                    statusIndicator.textContent = 'Server: Error';
+                  }
+                };
+                this.ws.onclose = function () {
+                  console.log('WebSocket connection closed');
+                  _this3.serverConnected = false;
+                  var statusIndicator = document.getElementById('server-status');
+                  if (statusIndicator) {
+                    statusIndicator.style.backgroundColor = 'red';
+                    statusIndicator.textContent = 'Server: Disconnected';
+                  }
+
+                  // Try to reconnect if we haven't exceeded the max attempts
+                  if (_this3.wsReconnectAttempts < _this3.maxReconnectAttempts) {
+                    _this3.wsReconnectAttempts++;
+                    _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_14__(function () {
+                      return _this3.initializeWebSocket();
+                    }, 2000 * _this3.wsReconnectAttempts);
+                  } else {
+                    _this3.useWebSocket = false; // Fall back to HTTP
+                    console.log('Falling back to HTTP connection');
+                  }
+                };
+              } catch (error) {
+                console.error('Error initializing WebSocket:', error);
+                this.useWebSocket = false; // Fall back to HTTP
+              }
+            case 2:
+            case "end":
+              return _context11.stop();
+          }
+        }, _callee3, this);
+      }));
+      function initializeWebSocket() {
+        return _initializeWebSocket.apply(this, arguments);
+      }
+      return initializeWebSocket;
+    }()
+  }, {
+    key: "checkServerConnection",
+    value: function () {
+      var _checkServerConnection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee4() {
+        var _this4 = this;
+        var now, statusIndicator, response;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee4$(_context12) {
+          while (1) switch (_context12.prev = _context12.next) {
+            case 0:
+              now = _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_15__();
+              statusIndicator = document.getElementById('server-status'); // Throttle server checks
+              if (!(now - this.lastServerCheck < this.serverCheckInterval)) {
+                _context12.next = 4;
+                break;
+              }
+              return _context12.abrupt("return");
+            case 4:
+              this.lastServerCheck = now;
+              if (statusIndicator) {
+                _context12.next = 7;
+                break;
+              }
+              return _context12.abrupt("return");
+            case 7:
+              if (!(this.useWebSocket && (!this.ws || this.ws.readyState !== WebSocket.OPEN))) {
+                _context12.next = 10;
+                break;
+              }
+              this.initializeWebSocket();
+              return _context12.abrupt("return");
+            case 10:
+              if (this.useWebSocket) {
+                _context12.next = 23;
+                break;
+              }
+              _context12.prev = 11;
+              _context12.next = 14;
+              return fetch(this.serverUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_16__({
+                  action: 'ping'
+                })
+              });
+            case 14:
+              response = _context12.sent;
+              if (response.ok) {
+                this.serverConnected = true;
+                statusIndicator.style.backgroundColor = 'green';
+                statusIndicator.textContent = 'Server: HTTP Connected';
+              } else {
+                this.serverConnected = false;
+                statusIndicator.style.backgroundColor = 'red';
+                statusIndicator.textContent = 'Server: Error';
+              }
+              _context12.next = 23;
+              break;
+            case 18:
+              _context12.prev = 18;
+              _context12.t0 = _context12["catch"](11);
+              this.serverConnected = false;
+              statusIndicator.style.backgroundColor = 'red';
+              statusIndicator.textContent = 'Server: Disconnected';
+            case 23:
+              // Schedule next check
+              _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_14__(function () {
+                return _this4.checkServerConnection();
+              }, this.serverCheckInterval);
+            case 24:
+            case "end":
+              return _context12.stop();
+          }
+        }, _callee4, this, [[11, 18]]);
+      }));
+      function checkServerConnection() {
+        return _checkServerConnection.apply(this, arguments);
+      }
+      return checkServerConnection;
+    }()
   }, {
     key: "toggleDebugOverlay",
     value: function toggleDebugOverlay() {
@@ -24366,6 +23693,15 @@ var ContentHandler = /*#__PURE__*/function () {
       this.canvasElement = document.createElement('canvas');
       this.canvasElement.style.display = 'none';
       document.body.appendChild(this.canvasElement);
+
+      // Create offscreen canvas for pre-processing (faster)
+      this.offscreenCanvas = document.createElement('canvas');
+      this.offscreenCanvas.width = this.maxFrameWidth;
+      this.offscreenCanvas.height = this.maxFrameHeight;
+      this.offscreenContext = this.offscreenCanvas.getContext('2d', {
+        alpha: false
+      });
+      this.offscreenContext.imageSmoothingEnabled = false;
       if (this.debugMode) {
         this.initializeDebugOverlay();
       }
@@ -24373,69 +23709,84 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "startCapture",
     value: function () {
-      var _startCapture = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee3() {
-        var _this3 = this;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee3$(_context11) {
-          while (1) switch (_context11.prev = _context11.next) {
+      var _startCapture = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee5() {
+        var _this5 = this;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee5$(_context13) {
+          while (1) switch (_context13.prev = _context13.next) {
             case 0:
               if (!this.isCapturing) {
-                _context11.next = 2;
+                _context13.next = 2;
                 break;
               }
-              return _context11.abrupt("return");
+              return _context13.abrupt("return");
             case 2:
-              if (this.rtmPose.isLoaded) {
-                _context11.next = 6;
-                break;
-              }
-              _context11.next = 5;
-              return this.rtmPose.loadModel();
-            case 5:
-              console.log("Model loaded");
-            case 6:
-              _context11.prev = 6;
+              _context13.prev = 2;
               // Initialize elements if not already done
               if (!this.videoElement) this.initializeElements();
 
               // Request display media (screen sharing)
-              _context11.next = 10;
+              _context13.next = 6;
               return navigator.mediaDevices.getDisplayMedia({
                 video: {
                   cursor: "never",
-                  displaySurface: "window"
+                  displaySurface: "window",
+                  frameRate: {
+                    ideal: 15,
+                    max: 30
+                  } // Lower frame rate for better performance
                 },
                 audio: false
               });
-            case 10:
-              this.captureStream = _context11.sent;
+            case 6:
+              this.captureStream = _context13.sent;
               // Connect stream to video element
               this.videoElement.srcObject = this.captureStream;
 
-              // Set canvas size based on video dimensions
+              // Set canvas size based on video dimensions, but constrain to max size
               this.videoElement.onloadedmetadata = function () {
-                _this3.canvasElement.width = _this3.videoElement.videoWidth;
-                _this3.canvasElement.height = _this3.videoElement.videoHeight;
+                // Calculate appropriate size while maintaining aspect ratio
+                var videoAspect = _this5.videoElement.videoWidth / _this5.videoElement.videoHeight;
+                var width, height;
+                if (videoAspect > 1) {
+                  // Wider than tall
+                  width = Math.min(_this5.videoElement.videoWidth, _this5.maxFrameWidth);
+                  height = width / videoAspect;
+                } else {
+                  // Taller than wide
+                  height = Math.min(_this5.videoElement.videoHeight, _this5.maxFrameHeight);
+                  width = height * videoAspect;
+                }
+
+                // Set canvas dimensions
+                _this5.canvasElement.width = width;
+                _this5.canvasElement.height = height;
 
                 // Start the frame processing loop
-                _this3.isCapturing = true;
-                _this3.processFrames();
+                _this5.isCapturing = true;
+                _this5.lastFrameTime = performance.now();
+                _this5.processFrames();
               };
 
               // Handle stream ending (user stops sharing)
               this.captureStream.getVideoTracks()[0].onended = function () {
-                _this3.stopCapture();
+                _this5.stopCapture();
               };
-              _context11.next = 19;
+
+              // Initialize WebSocket connection if enabled
+              if (this.useWebSocket) {
+                this.initializeWebSocket();
+              }
+              _context13.next = 16;
               break;
+            case 13:
+              _context13.prev = 13;
+              _context13.t0 = _context13["catch"](2);
+              console.error("Error starting capture:", _context13.t0);
             case 16:
-              _context11.prev = 16;
-              _context11.t0 = _context11["catch"](6);
-              console.error("Error starting capture:", _context11.t0);
-            case 19:
             case "end":
-              return _context11.stop();
+              return _context13.stop();
           }
-        }, _callee3, this, [[6, 16]]);
+        }, _callee5, this, [[2, 13]]);
       }));
       function startCapture() {
         return _startCapture.apply(this, arguments);
@@ -24455,8 +23806,8 @@ var ContentHandler = /*#__PURE__*/function () {
 
       // Stop all tracks in the stream
       if (this.captureStream) {
-        var _context12;
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context12 = this.captureStream.getTracks()).call(_context12, function (track) {
+        var _context14;
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_17__(_context14 = this.captureStream.getTracks()).call(_context14, function (track) {
           return track.stop();
         });
         this.captureStream = null;
@@ -24466,236 +23817,270 @@ var ContentHandler = /*#__PURE__*/function () {
       if (this.videoElement) {
         this.videoElement.srcObject = null;
       }
+
+      // Close WebSocket connection
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        this.ws.close();
+      }
       this.isCapturing = false;
     }
 
-    // Function to process video frames
+    // Function to process video frames - optimized version
   }, {
     key: "processFrames",
     value: function processFrames() {
-      var _this4 = this;
       if (!this.isCapturing) return;
+      var now = performance.now();
+      var deltaTime = now - this.lastFrameTime;
+      this.lastFrameTime = now;
 
-      // Draw current video frame to canvas
-      var ctx = this.canvasElement.getContext('2d');
-      ctx.drawImage(this.videoElement, 0, 0, this.canvasElement.width, this.canvasElement.height);
+      // Calculate and display FPS
+      var fps = 1000 / deltaTime;
+      var fpsCounter = document.getElementById('fps-counter');
+      if (fpsCounter) {
+        fpsCounter.textContent = "FPS: ".concat(fps.toFixed(1));
+      }
 
-      // Get image data from canvas
-      var imageData = ctx.getImageData(0, 0, this.canvasElement.width, this.canvasElement.height);
+      // Skip frames to reduce server load
+      this.frameSkipCount = (this.frameSkipCount + 1) % (this.frameSkipThreshold + 1);
+      if (this.frameSkipCount === 0) {
+        // Draw current video frame to canvas with downscaling
+        this.drawScaledVideoFrame();
+
+        // Check if we should process this frame
+        if (!this.isProcessingFrame && this.serverConnected) {
+          this.isProcessingFrame = true;
+          this.processFrame();
+        }
+      }
 
       // Update debug overlay if enabled
-      if (this.debugMode && this.debugContext) {
+      if (this.debugMode && this.debugContext && this.frameSkipCount === 0) {
         // Draw a scaled version of the frame to the debug overlay
         this.debugContext.drawImage(this.canvasElement, 0, 0, this.canvasElement.width, this.canvasElement.height, 0, 0, this.debugOverlay.width, this.debugOverlay.height);
-
-        // Optional: Add frame info text
-        this.debugContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        this.debugContext.fillRect(0, 0, 150, 20);
-        this.debugContext.fillStyle = 'white';
-        this.debugContext.font = '12px Arial';
-        this.debugContext.fillText("Frame: ".concat(new Date().toISOString().substr(11, 8)), 5, 15);
       }
-      this.processFrame();
 
-      // Continue the loop
-      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_16__(function () {
-        _this4.animationFrameId = requestAnimationFrame(_this4.processFrames);
-      }, 30);
+      // Continue the loop - use requestAnimationFrame for better performance
+      this.animationFrameId = requestAnimationFrame(this.processFrames);
+    }
+
+    // Draw scaled video frame to canvas - optimized
+  }, {
+    key: "drawScaledVideoFrame",
+    value: function drawScaledVideoFrame() {
+      if (!this.videoElement || !this.canvasElement || !this.videoElement.videoWidth || !this.videoElement.videoHeight) {
+        return;
+      }
+      var ctx = this.canvasElement.getContext('2d', {
+        alpha: false
+      });
+      ctx.imageSmoothingEnabled = false; // Faster rendering
+
+      // Clear canvas with black background (faster than clearRect)
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+
+      // Draw the frame at the constrained size
+      ctx.drawImage(this.videoElement, 0, 0, this.videoElement.videoWidth, this.videoElement.videoHeight, 0, 0, this.canvasElement.width, this.canvasElement.height);
     }
   }, {
     key: "processFrame",
     value: function () {
-      var _processFrame = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee4() {
-        var startTime, results, endTime, processingTime, fps;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee4$(_context13) {
-          while (1) switch (_context13.prev = _context13.next) {
+      var _processFrame = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee6() {
+        var _this6 = this;
+        var startTime, imageData, response, results, endTime, latency;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee6$(_context15) {
+          while (1) switch (_context15.prev = _context15.next) {
             case 0:
-              _context13.prev = 0;
-              if (!(!this.videoElement || !this.videoElement.videoWidth || !this.videoElement.videoHeight)) {
-                _context13.next = 4;
+              _context15.prev = 0;
+              if (!(!this.canvasElement || !this.canvasElement.width || !this.canvasElement.height)) {
+                _context15.next = 5;
                 break;
               }
-              console.log('Video element not ready yet');
-              return _context13.abrupt("return");
-            case 4:
-              // console.log("before processing the frame");
-              // // Create a temporary canvas with the exact dimensions of the video
-              // if(!this.    ){
-              //     this.tempCanvas = document.createElement('canvas');
-              //     this.tempCanvas.width = this.videoElement.videoWidth;
-              //     this.tempCanvas.height = this.videoElement.videoHeight;
-              //     this.tempCtx = this.tempCanvas.getContext('2d');
-              // }
-              // this.tempCanvas.clearRect(0, 0, targetWidth, targetHeight);
-              // // Draw the current video frame to the canvas
-              // tempCtx.drawImage(this.videoElement, 0, 0, tempCanvas.width, tempCanvas.height);
-              // // Get the image data from the canvas
-              // const tempImageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-              startTime = performance.now(); // Process a single image
-              _context13.next = 7;
-              return this.rtmPose.processFrame(this.videoElement);
-            case 7:
-              results = _context13.sent;
-              endTime = performance.now();
-              processingTime = endTime - startTime;
-              console.log("Processing time:", processingTime, "ms");
-              //FPS
-              fps = 1000 / processingTime;
-              console.log("FPS:", fps.toFixed(2));
+              console.log('Canvas element not ready yet');
+              this.isProcessingFrame = false;
+              return _context15.abrupt("return");
+            case 5:
+              // Start measuring end-to-end latency
+              startTime = performance.now(); // Use more efficient image encoding
+              imageData = this.canvasElement.toDataURL('image/webp', 0.6); // Send frame for processing
+              if (!(this.useWebSocket && this.ws && this.ws.readyState === WebSocket.OPEN)) {
+                _context15.next = 12;
+                break;
+              }
+              // WebSocket processing (more efficient)
+              this.ws.send(_babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_16__({
+                image: imageData.split(',')[1],
+                width: this.canvasElement.width,
+                height: this.canvasElement.height
+              }));
 
-              // Access detected keypoints
-              // console.log("Results:", results.keypoints);
-              // console.log(this.debugOverlay.width, this.debugOverlay.height, this.canvasElement.width, this.canvasElement.height);
+              // Note: WebSocket response is handled in the `onmessage` event
+              this.ws.onmessage = function (event) {
+                var endTime = performance.now(); // End time for WebSocket response
+                var latency = endTime - startTime;
+                console.log("End-to-end latency (WebSocket): ".concat(latency.toFixed(2), " ms"));
+                // Display FPS in console
+                var fps = 1000 / latency;
+                console.log("FPS: ".concat(fps.toFixed(1)));
 
-              //this.processHandGestures(hands)
-              if (this.debugMode && this.debugContext) {
-                this.drawLandmarks(results.keypoints);
+                // Process the received data
+                try {
+                  var results = JSON.parse(event.data);
+                  if (results && results.success) {
+                    if (_this6.debugMode && _this6.debugContext) {
+                      _this6.drawLandmarks(results.keypoints);
+                    }
+                  }
+                } catch (error) {
+                  console.error('Error parsing WebSocket message:', error);
+                }
+
+                // Mark processing as complete
+                _this6.isProcessingFrame = false;
+              };
+              _context15.next = 25;
+              break;
+            case 12:
+              _context15.next = 14;
+              return fetch(this.serverUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_16__({
+                  image: imageData.split(',')[1],
+                  width: this.canvasElement.width,
+                  height: this.canvasElement.height
+                })
+              });
+            case 14:
+              response = _context15.sent;
+              if (response.ok) {
+                _context15.next = 17;
+                break;
+              }
+              throw new Error("Server error: ".concat(response.status));
+            case 17:
+              _context15.next = 19;
+              return response.json();
+            case 19:
+              results = _context15.sent;
+              endTime = performance.now(); // End time for HTTP response
+              latency = endTime - startTime;
+              console.log("End-to-end latency (HTTP): ".concat(latency.toFixed(2), " ms"));
+
+              // Process results
+              if (results && results.success) {
+                if (this.debugMode && this.debugContext) {
+                  this.drawLandmarks(results.keypoints);
+                }
               }
 
-              // // Clean up the temporary canvas
-              // tempCanvas.remove();
-              _context13.next = 19;
+              // Mark processing as complete
+              this.isProcessingFrame = false;
+            case 25:
+              _context15.next = 31;
               break;
-            case 16:
-              _context13.prev = 16;
-              _context13.t0 = _context13["catch"](0);
-              console.error('Error in pose detection:', _context13.t0);
-            case 19:
+            case 27:
+              _context15.prev = 27;
+              _context15.t0 = _context15["catch"](0);
+              console.error('Error in pose detection:', _context15.t0);
+              this.isProcessingFrame = false;
+            case 31:
             case "end":
-              return _context13.stop();
+              return _context15.stop();
           }
-        }, _callee4, this, [[0, 16]]);
+        }, _callee6, this, [[0, 27]]);
       }));
       function processFrame() {
         return _processFrame.apply(this, arguments);
       }
       return processFrame;
-    }()
+    }() // Optimized landmark drawing function
   }, {
     key: "drawLandmarks",
     value: function drawLandmarks(keypoints) {
+      if (!keypoints || keypoints.length === 0 || !this.debugContext) return;
+
       // Scale factors to map from original image to debug overlay
-      var scaleX = this.debugOverlay.width / 384;
-      var scaleY = this.debugOverlay.height / 512;
+      var scaleX = this.debugOverlay.width / this.canvasElement.width;
+      var scaleY = this.debugOverlay.height / this.canvasElement.height;
 
-      // Clear previous drawings
-      this.debugContext.clearRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
-      this.debugContext.fillStyle = 'red';
-      this.debugContext.strokeStyle = 'red';
-      this.debugContext.lineWidth = 1;
+      // Group keypoints by type for batch rendering
+      var pointsByType = {
+        pose: [],
+        hand: [],
+        face: []
+      };
 
-      // Redraw the frame
-      this.debugContext.drawImage(this.canvasElement, 0, 0, this.canvasElement.width, this.canvasElement.height, 0, 0, this.debugOverlay.width, this.debugOverlay.height);
-      // Draw hand landmarks
+      // Collect points by type
       var _iterator3 = _createForOfIteratorHelper(keypoints),
         _step3;
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var _context14;
           var point = _step3.value;
-          ;
-          var x = point.x * scaleX;
-          var y = point.y * scaleY;
-          this.debugContext.beginPath();
-          this.debugContext.arc(x, y, 2, 0, 2 * Math.PI);
-          _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_17__(_context14 = this.debugContext).call(_context14);
+          if (!point || point.visibility && point.visibility < 0.1) continue;
+          var x = point.x * this.debugOverlay.width;
+          var y = point.y * this.debugOverlay.height;
+          if (point.type && pointsByType[point.type]) {
+            pointsByType[point.type].push({
+              x: x,
+              y: y,
+              connections: point.connections
+            });
+          }
         }
 
-        // Add text showing detected gesture if any
+        // Draw points by type in batches (more efficient than individual circles)
       } catch (err) {
         _iterator3.e(err);
       } finally {
         _iterator3.f();
       }
+      this.debugContext.fillStyle = 'red';
+      this.batchDrawPoints(pointsByType.pose);
+      this.debugContext.fillStyle = 'lime';
+      this.batchDrawPoints(pointsByType.hand);
+      this.debugContext.fillStyle = 'cyan';
+      this.batchDrawPoints(pointsByType.face, true); // Limit face points
+
+      // Draw connections
+      this.batchDrawConnections(pointsByType);
+
+      // Add text showing detected gesture if any
       if (this.lastDetectedGesture) {
+        this.debugContext.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        this.debugContext.fillRect(5, 5, 160, 30);
         this.debugContext.fillStyle = 'white';
         this.debugContext.font = '16px Arial';
-        this.debugContext.fillText("Gesture: ".concat(this.lastDetectedGesture), 10, 30);
+        this.debugContext.fillText("Gesture: ".concat(this.lastDetectedGesture), 10, 25);
       }
     }
-  }, {
-    key: "drawHandConnections",
-    value: function drawHandConnections(landmarks, scaleX, scaleY) {
-      var _this5 = this;
-      // Define connections between landmarks (simplified)
-      var connections = [
-      // Thumb
-      ['wrist', 'thumb_cmc'], ['thumb_cmc', 'thumb_mcp'], ['thumb_mcp', 'thumb_ip'], ['thumb_ip', 'thumb_tip'],
-      // Index finger
-      ['wrist', 'index_finger_mcp'], ['index_finger_mcp', 'index_finger_pip'], ['index_finger_pip', 'index_finger_dip'], ['index_finger_dip', 'index_finger_tip'],
-      // Middle finger
-      ['wrist', 'middle_finger_mcp'], ['middle_finger_mcp', 'middle_finger_pip'], ['middle_finger_pip', 'middle_finger_dip'], ['middle_finger_dip', 'middle_finger_tip'],
-      // Ring finger
-      ['wrist', 'ring_finger_mcp'], ['ring_finger_mcp', 'ring_finger_pip'], ['ring_finger_pip', 'ring_finger_dip'], ['ring_finger_dip', 'ring_finger_tip'],
-      // Pinky
-      ['wrist', 'pinky_mcp'], ['pinky_mcp', 'pinky_pip'], ['pinky_pip', 'pinky_dip'], ['pinky_dip', 'pinky_tip'],
-      // Palm
-      ['index_finger_mcp', 'middle_finger_mcp'], ['middle_finger_mcp', 'ring_finger_mcp'], ['ring_finger_mcp', 'pinky_mcp']];
-      var _loop2 = function _loop2() {
-        var _connections$_i = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__["default"])(_connections[_i], 2),
-          start = _connections$_i[0],
-          end = _connections$_i[1];
-        var startPoint = _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_18__(landmarks).call(landmarks, function (lm) {
-          return lm.name === start;
-        });
-        var endPoint = _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_18__(landmarks).call(landmarks, function (lm) {
-          return lm.name === end;
-        });
-        if (startPoint && endPoint) {
-          _this5.debugContext.beginPath();
-          _this5.debugContext.moveTo(startPoint.x * scaleX, startPoint.y * scaleY);
-          _this5.debugContext.lineTo(endPoint.x * scaleX, endPoint.y * scaleY);
-          _this5.debugContext.stroke();
-        }
-      };
-      for (var _i = 0, _connections = connections; _i < _connections.length; _i++) {
-        _loop2();
-      }
-    }
-  }, {
-    key: "drawFaceLandmarks",
-    value: function drawFaceLandmarks(faces) {
-      // Scale factors to map from original image to debug overlay
-      var scaleX = this.debugOverlay.width / this.canvasElement.width;
-      var scaleY = this.debugOverlay.height / this.canvasElement.height;
 
-      // Draw face landmarks
-      var _iterator4 = _createForOfIteratorHelper(faces),
+    // Batch draw points for better performance
+  }, {
+    key: "batchDrawPoints",
+    value: function batchDrawPoints(points) {
+      var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!points.length) return;
+      var ctx = this.debugContext;
+      var pointSize = limit ? 2 : 3;
+
+      // For face landmarks, only draw a subset
+      if (limit) {
+        points = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_18__(points).call(points, function (_, i) {
+          return i % 5 === 0;
+        });
+      }
+      var _iterator4 = _createForOfIteratorHelper(points),
         _step4;
       try {
         for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-          var face = _step4.value;
-          var keypoints = face.keypoints;
-
-          // Set color for face landmarks
-          this.debugContext.fillStyle = 'green';
-          this.debugContext.strokeStyle = 'green';
-          this.debugContext.lineWidth = 1;
-
-          // Draw each landmark
-          var _iterator5 = _createForOfIteratorHelper(keypoints),
-            _step5;
-          try {
-            for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-              var _context15;
-              var keypoint = _step5.value;
-              var x = keypoint.x * scaleX;
-              var y = keypoint.y * scaleY;
-              this.debugContext.beginPath();
-              this.debugContext.arc(x, y, 1, 0, 2 * Math.PI);
-              _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_17__(_context15 = this.debugContext).call(_context15);
-            }
-
-            // Draw face bounding box if available
-          } catch (err) {
-            _iterator5.e(err);
-          } finally {
-            _iterator5.f();
-          }
-          if (face.box) {
-            var box = face.box;
-            this.debugContext.strokeRect(box.xMin * scaleX, box.yMin * scaleY, (box.xMax - box.xMin) * scaleX, (box.yMax - box.yMin) * scaleY);
-          }
+          var point = _step4.value;
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI);
+          _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_19__(ctx).call(ctx);
         }
       } catch (err) {
         _iterator4.e(err);
@@ -24703,88 +24088,67 @@ var ContentHandler = /*#__PURE__*/function () {
         _iterator4.f();
       }
     }
+
+    // Batch draw connections for better performance
   }, {
-    key: "drawPoseLandmarks",
-    value: function drawPoseLandmarks(poses) {
-      // Scale factors to map from original image to debug overlay
-      var scaleX = this.debugOverlay.width / this.canvasElement.width;
-      var scaleY = this.debugOverlay.height / this.canvasElement.height;
+    key: "batchDrawConnections",
+    value: function batchDrawConnections(pointsByType) {
+      if (!this.debugContext) return;
 
-      // Draw pose landmarks
-      var _iterator6 = _createForOfIteratorHelper(poses),
-        _step6;
+      // Draw connections for each body part with appropriate styling
+      this.debugContext.lineWidth = 2;
+      this.debugContext.strokeStyle = 'red';
+      this.drawConnectionLines(pointsByType.pose);
+      this.debugContext.lineWidth = 1;
+      this.debugContext.strokeStyle = 'lime';
+      this.drawConnectionLines(pointsByType.hand);
+      this.debugContext.lineWidth = 0.5;
+      this.debugContext.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+      this.drawConnectionLines(pointsByType.face, true);
+    }
+
+    // Helper method to draw connection lines efficiently
+  }, {
+    key: "drawConnectionLines",
+    value: function drawConnectionLines(points) {
+      var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!points.length) return;
+      var ctx = this.debugContext;
+
+      // For face connections, limit them to reduce visual clutter
+      var pointsToProcess = limit ? _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_18__(points).call(points, function (_, i) {
+        return i % 5 === 0;
+      }) : points;
+      ctx.beginPath();
+      var _iterator5 = _createForOfIteratorHelper(pointsToProcess),
+        _step5;
       try {
-        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-          var pose = _step6.value;
-          var keypoints = pose.keypoints;
-
-          // Set color for pose landmarks
-          this.debugContext.fillStyle = 'yellow';
-          this.debugContext.strokeStyle = 'yellow';
-          this.debugContext.lineWidth = 2;
-
-          // Draw each landmark
-          var _iterator7 = _createForOfIteratorHelper(keypoints),
-            _step7;
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          var point = _step5.value;
+          if (!point.connections) continue;
+          var _iterator6 = _createForOfIteratorHelper(point.connections),
+            _step6;
           try {
-            for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-              var keypoint = _step7.value;
-              if (keypoint.score > 0.3) {
-                var _context16;
-                // Only draw high-confidence keypoints
-                var x = keypoint.x * scaleX;
-                var y = keypoint.y * scaleY;
-                this.debugContext.beginPath();
-                this.debugContext.arc(x, y, 3, 0, 2 * Math.PI);
-                _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_17__(_context16 = this.debugContext).call(_context16);
-
-                // Optionally add keypoint name
-                this.debugContext.fillText(keypoint.name, x + 5, y - 5);
+            for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+              var connIdx = _step6.value;
+              var connPoint = points[connIdx];
+              if (connPoint) {
+                ctx.moveTo(point.x, point.y);
+                ctx.lineTo(connPoint.x, connPoint.y);
               }
             }
-
-            // Draw connections between pose keypoints
           } catch (err) {
-            _iterator7.e(err);
+            _iterator6.e(err);
           } finally {
-            _iterator7.f();
+            _iterator6.f();
           }
-          this.drawPoseConnections(keypoints, scaleX, scaleY);
         }
       } catch (err) {
-        _iterator6.e(err);
+        _iterator5.e(err);
       } finally {
-        _iterator6.f();
+        _iterator5.f();
       }
-    }
-  }, {
-    key: "drawPoseConnections",
-    value: function drawPoseConnections(keypoints, scaleX, scaleY) {
-      var _this6 = this;
-      // Define connections between pose keypoints
-      var connections = [['nose', 'left_eye'], ['nose', 'right_eye'], ['left_eye', 'left_ear'], ['right_eye', 'right_ear'], ['nose', 'left_shoulder'], ['nose', 'right_shoulder'], ['left_shoulder', 'left_elbow'], ['left_elbow', 'left_wrist'], ['right_shoulder', 'right_elbow'], ['right_elbow', 'right_wrist'], ['left_shoulder', 'right_shoulder'], ['left_shoulder', 'left_hip'], ['right_shoulder', 'right_hip'], ['left_hip', 'right_hip'], ['left_hip', 'left_knee'], ['left_knee', 'left_ankle'], ['right_hip', 'right_knee'], ['right_knee', 'right_ankle']];
-      this.debugContext.strokeStyle = 'yellow';
-      this.debugContext.lineWidth = 2;
-      var _loop3 = function _loop3() {
-        var _connections2$_i = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__["default"])(_connections2[_i2], 2),
-          startName = _connections2$_i[0],
-          endName = _connections2$_i[1];
-        var startPoint = _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_18__(keypoints).call(keypoints, function (kp) {
-          return kp.name === startName;
-        });
-        var endPoint = _babel_runtime_corejs3_core_js_stable_instance_find__WEBPACK_IMPORTED_MODULE_18__(keypoints).call(keypoints, function (kp) {
-          return kp.name === endName;
-        });
-        if (startPoint && endPoint && startPoint.score > 0.3 && endPoint.score > 0.3) {
-          _this6.debugContext.beginPath();
-          _this6.debugContext.moveTo(startPoint.x * scaleX, startPoint.y * scaleY);
-          _this6.debugContext.lineTo(endPoint.x * scaleX, endPoint.y * scaleY);
-          _this6.debugContext.stroke();
-        }
-      };
-      for (var _i2 = 0, _connections2 = connections; _i2 < _connections2.length; _i2++) {
-        _loop3();
-      }
+      ctx.stroke();
     }
   }, {
     key: "handleMessage",
@@ -24797,17 +24161,17 @@ var ContentHandler = /*#__PURE__*/function () {
       } else if (request.action === "skipToNext") {
         this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator8 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step8;
+          var _iterator7 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step7;
           try {
-            for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-              var el = _step8.value;
+            for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+              var el = _step7.value;
               this.highlightBox.removeHighlight(el);
             }
           } catch (err) {
-            _iterator8.e(err);
+            _iterator7.e(err);
           } finally {
-            _iterator8.f();
+            _iterator7.f();
           }
         }
         this.currentElement = null;
@@ -24815,17 +24179,17 @@ var ContentHandler = /*#__PURE__*/function () {
       } else if (request.action === "skipToPrevious") {
         this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator9 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step9;
+          var _iterator8 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step8;
           try {
-            for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-              var _el = _step9.value;
+            for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+              var _el = _step8.value;
               this.highlightBox.removeHighlight(_el);
             }
           } catch (err) {
-            _iterator9.e(err);
+            _iterator8.e(err);
           } finally {
-            _iterator9.f();
+            _iterator8.f();
           }
         }
         this.textExtractor.clearProcessedElements();
@@ -24835,17 +24199,17 @@ var ContentHandler = /*#__PURE__*/function () {
         if (this.speechHandler.isSpeaking) {
           this.speechHandler.stop();
           if (this.currentElement && this.currentElement.elementsToReturn) {
-            var _iterator10 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-              _step10;
+            var _iterator9 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+              _step9;
             try {
-              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
-                var _el2 = _step10.value;
+              for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+                var _el2 = _step9.value;
                 this.highlightBox.removeHighlight(_el2);
               }
             } catch (err) {
-              _iterator10.e(err);
+              _iterator9.e(err);
             } finally {
-              _iterator10.f();
+              _iterator9.f();
             }
           }
           this.wasSpeaking = false;
@@ -24855,17 +24219,17 @@ var ContentHandler = /*#__PURE__*/function () {
         }
       } else if (request.action === "accessLink") {
         if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator11 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step11;
+          var _iterator10 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step10;
           try {
-            for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
-              var _el3 = _step11.value;
+            for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+              var _el3 = _step10.value;
               this.highlightBox.removeHighlight(_el3);
             }
           } catch (err) {
-            _iterator11.e(err);
+            _iterator10.e(err);
           } finally {
-            _iterator11.f();
+            _iterator10.f();
           }
           this.speechHandler.stop();
           this.linkHandler.accessLink(this.currentLink);
@@ -24875,34 +24239,34 @@ var ContentHandler = /*#__PURE__*/function () {
       } else if (request.action === "pauseTTS") {
         this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator12 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step12;
+          var _iterator11 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step11;
           try {
-            for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
-              var _el4 = _step12.value;
+            for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
+              var _el4 = _step11.value;
               this.highlightBox.removeHighlight(_el4);
             }
           } catch (err) {
-            _iterator12.e(err);
+            _iterator11.e(err);
           } finally {
-            _iterator12.f();
+            _iterator11.f();
           }
         }
         this.wasSpeaking = false;
       } else if (request.action === "resumeTTS") {
         if (this.wasSpeaking) {
           if (this.currentElement && this.currentElement.elementsToReturn) {
-            var _iterator13 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-              _step13;
+            var _iterator12 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+              _step12;
             try {
-              for (_iterator13.s(); !(_step13 = _iterator13.n()).done;) {
-                var _el5 = _step13.value;
+              for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
+                var _el5 = _step12.value;
                 this.highlightBox.removeHighlight(_el5);
               }
             } catch (err) {
-              _iterator13.e(err);
+              _iterator12.e(err);
             } finally {
-              _iterator13.f();
+              _iterator12.f();
             }
           }
           this.speakCurrentSection();
@@ -24929,7 +24293,7 @@ var ContentHandler = /*#__PURE__*/function () {
       return isNotHidden;
     }
   }]);
-}(); // // Instantiate the content handler
+}(); // Instantiate the content handler
 new ContentHandler();
 })();
 
