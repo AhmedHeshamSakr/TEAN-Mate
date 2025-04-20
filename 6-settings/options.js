@@ -180,6 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    new ShortcutEditor();
+
     function applySettings(settings) {
         // Apply saved settings to inputs
         Object.keys(settings).forEach(id => {
@@ -305,20 +307,20 @@ document.getElementById('calibrateCamera').addEventListener('click', function() 
     }, 3000);
 });
 
-// Edit shortcuts (mock functionality)
-document.getElementById('editShortcuts').addEventListener('click', function() {
-    // For demonstration, toggle "editing" class on first shortcut
-    const firstShortcut = document.querySelector('.keyboard-shortcut');
-    firstShortcut.classList.toggle('shortcut-editing');
+// // Edit shortcuts (mock functionality)
+// document.getElementById('editShortcuts').addEventListener('click', function() {
+//     // For demonstration, toggle "editing" class on first shortcut
+//     const firstShortcut = document.querySelector('.keyboard-shortcut');
+//     firstShortcut.classList.toggle('shortcut-editing');
     
-    if (firstShortcut.classList.contains('shortcut-editing')) {
-        firstShortcut.querySelector('.shortcut-keys').innerHTML = 
-            '<span class="keyboard-key text-muted">Press new shortcut...</span>';
-    } else {
-        firstShortcut.querySelector('.shortcut-keys').innerHTML = 
-            '<span class="keyboard-key">Alt</span> + <span class="keyboard-key">T</span>';
-    }
-});
+//     if (firstShortcut.classList.contains('shortcut-editing')) {
+//         firstShortcut.querySelector('.shortcut-keys').innerHTML = 
+//             '<span class="keyboard-key text-muted">Press new shortcut...</span>';
+//     } else {
+//         firstShortcut.querySelector('.shortcut-keys').innerHTML = 
+//             '<span class="keyboard-key">Alt</span> + <span class="keyboard-key">T</span>';
+//     }
+// });
 
 // Initialize Bootstrap tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');

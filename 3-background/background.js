@@ -22,25 +22,44 @@ class BackgroundHandler {
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
     chrome.commands.onCommand.addListener(this.onCommand.bind(this));
     chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
-    chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if (changes.settings && changes.settings.newValue) {
-          const newSettings = changes.settings.newValue;
+  //   chrome.storage.onChanged.addListener(function(changes, namespace) {
+  //     if (changes.settings && changes.settings.newValue) {
+  //         const newSettings = changes.settings.newValue;
           
-          // If theme changed, notify all extension pages
-          if (changes.settings.oldValue && 
-              changes.settings.oldValue.theme !== newSettings.theme) {
+  //         // If theme changed, notify all extension pages
+  //         if (changes.settings.oldValue && 
+  //             changes.settings.oldValue.theme !== newSettings.theme) {
               
-              // Send message to all extension pages
-              chrome.runtime.sendMessage({
-                  action: "themeChanged",
-                  theme: newSettings.theme
-              });
-          }
+  //             // Send message to all extension pages
+  //             chrome.runtime.sendMessage({
+  //                 action: "themeChanged",
+  //                 theme: newSettings.theme
+  //             });
+  //         }
+  //     }
+  //     if (changes.shortcuts && changes.shortcuts.newValue) {
+  //       this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
+  //     }
+  // });
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (changes.settings && changes.settings.newValue) {
+      const newSettings = changes.settings.newValue;
+  
+      // If theme changed, notify all extension pages
+      if (changes.settings.oldValue &&
+          changes.settings.oldValue.theme !== newSettings.theme) {
+        chrome.runtime.sendMessage({
+          action: "themeChanged",
+          theme: newSettings.theme
+        });
       }
-      if (changes.shortcuts && changes.shortcuts.newValue) {
-        this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
-      }
+    }
+  
+    if (changes.shortcuts && changes.shortcuts.newValue) {
+      this.broadcastShortcutsUpdate(changes.shortcuts.newValue); // ✅ Works now
+    }
   });
+  
     
     // Initialize TTS voices when the background script starts
     this.initializeVoices();

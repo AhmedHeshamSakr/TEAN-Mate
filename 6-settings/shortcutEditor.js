@@ -1,5 +1,9 @@
+console.log("ShortcutEditor.js is loaded and executing!"); // Add this line
+
 class ShortcutEditor {
     constructor() {
+      console.log("ShortcutEditor constructor called!"); // Debug log
+
       this.recording = false;
       this.currentAction = null;
       this.shortcuts = {};
@@ -20,9 +24,40 @@ class ShortcutEditor {
         this.cacheKeyElements();
         this.setupEventListeners();
         this.setupResetButton();
+        console.log("ShortcutEditor constructor called2!"); // Debug log
+
+        this.setupEditButton();
+        console.log("ShortcutEditor constructor called3!"); // Debug log
+
       } catch (error) {
         console.error("Error initializing ShortcutEditor:", error);
         this.showError("Failed to initialize shortcut editor. Please try reloading the page.");
+      }
+    }
+
+    setupEditButton() {
+      console.log("ShortcutEditor constructor called4!"); // Debug log
+
+      const editButton = document.getElementById('editShortcuts');
+      if (editButton) {
+        editButton.addEventListener('click', () => {
+          // Toggle the shortcut editing UI
+          const shortcutContainer = document.querySelector('.keyboard-shortcuts-container');
+          if (shortcutContainer) {
+            shortcutContainer.classList.toggle('editing-mode');
+             
+            // Update button text
+            editButton.textContent = shortcutContainer.classList.contains('editing-mode') 
+              ? 'Done' 
+              : 'Edit Shortcuts';
+            
+            // You might want to add some visual indication that shortcuts are editable
+            const shortcutItems = document.querySelectorAll('.keyboard-item');
+            shortcutItems.forEach(item => {
+              item.classList.toggle('editable', shortcutContainer.classList.contains('editing-mode'));
+            });
+          }
+        });
       }
     }
   
@@ -48,29 +83,40 @@ class ShortcutEditor {
         }
       });
     }
-  
     async loadShortcuts() {
-      return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage(
-          { action: "shortcut-get-shortcuts" },
-          (response) => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-              return;
+      try {
+        return new Promise((resolve, reject) => {
+          chrome.runtime.sendMessage(
+            { action: "shortcut-get-shortcuts" },
+            (response) => {
+              if (chrome.runtime.lastError) {
+                console.error("Error loading shortcuts:", chrome.runtime.lastError);
+                reject(chrome.runtime.lastError);
+                return;
+              }
+              
+              if (response && response.shortcuts) {
+                // this.shortcutMap = response.shortcuts;
+                this.shortcuts = response?.shortcuts || {}; // critical fix
+                this.shortcutMap = response.shortcuts; // optional, if used elsewhere
+ 
+                console.log("Shortcuts loaded in content script:", this.shortcutMap);
+                resolve(this.shortcutMap);
+              } else {
+                const error = new Error('Failed to load shortcuts');
+                console.error(error);
+                reject(error);
+              }
             }
-            
-            if (response && response.shortcuts) {
-              this.shortcuts = response.shortcuts;
-              this.updateShortcutDisplay();
-              resolve();
-            } else {
-              reject(new Error("Failed to load shortcuts"));
-            }
-          }
-        );
-      });
+          );
+        });
+      } catch (error) {
+        console.error("Exception in loadShortcuts:", error);
+        // Fall back to empty shortcuts
+        this.shortcutMap = {};
+        return {};
+      }
     }
-  
     // // Maps technical action names to display names
     // mapActionNamesToKeys(shortcuts) {
     //   return {
@@ -94,6 +140,11 @@ class ShortcutEditor {
     // }
   
     updateShortcutDisplay() {
+      if (!this.shortcuts || typeof this.shortcuts !== 'object') {
+        console.warn("Shortcuts not ready, skipping display update");
+        return;
+      }
+    
       Object.entries(this.shortcuts).forEach(([actionName, shortcut]) => {
         const keyData = this.keyElements.get(actionName);
         if (!keyData) return;
@@ -203,6 +254,69 @@ setupResetButton() {
     });
   }
 }
+// startRecording(item) {
+//   this.recording = true;
+//   const originalContent = item.innerHTML;
+//   item.innerHTML = '<div class="recording-prompt">Press key combination...</div>';
+//   item.classList.add('recording');
+
+//   // Overlay to block clicks outside
+//   const overlay = document.createElement('div');
+//   overlay.className = 'shortcut-overlay';
+//   Object.assign(overlay.style, {
+//     position: 'fixed',
+//     top: '0',
+//     left: '0',
+//     width: '100%',
+//     height: '100%',
+//     zIndex: '9999'
+//   });
+//   document.body.appendChild(overlay);
+
+//   const escapeInfo = document.createElement('div');
+//   escapeInfo.className = 'escape-info';
+//   escapeInfo.textContent = 'Press Escape to cancel';
+//   Object.assign(escapeInfo.style, {
+//     position: 'fixed',
+//     bottom: '20px',
+//     left: '50%',
+//     transform: 'translateX(-50%)',
+//     padding: '8px 16px',
+//     backgroundColor: 'rgba(0,0,0,0.7)',
+//     color: 'white',
+//     borderRadius: '4px',
+//     zIndex: '10000'
+//   });
+//   document.body.appendChild(escapeInfo);
+
+//   const handler = (e) => {
+//     e.preventDefault();
+//     e.stopPropagation();
+
+//     if (e.key === 'Escape') {
+//       this.cancelRecording(item, originalContent, handler, overlay, escapeInfo);
+//       return;
+//     }
+
+//     if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+
+//     const modifiers = [];
+//     if (e.ctrlKey) modifiers.push('ctrl');
+//     if (e.altKey) modifiers.push('alt');
+//     if (e.shiftKey) modifiers.push('shift');
+//     if (e.metaKey) modifiers.push('meta');
+
+//     this.shortcuts[this.currentAction] = {
+//       key: e.key.toLowerCase(),
+//       modifiers
+//     };
+
+//     this.saveShortcuts();
+//     this.cancelRecording(item, originalContent, handler, overlay, escapeInfo);
+//   };
+
+//   window.addEventListener('keydown', handler, { capture: true });
+// }
 startRecording(item) {
   this.recording = true;
   const originalContent = item.innerHTML;
@@ -238,7 +352,9 @@ startRecording(item) {
   });
   document.body.appendChild(escapeInfo);
 
+  // This handler function processes keyboard input
   const handler = (e) => {
+    console.log("Key pressed:", e.key); // Debugging
     e.preventDefault();
     e.stopPropagation();
 
@@ -255,34 +371,97 @@ startRecording(item) {
     if (e.shiftKey) modifiers.push('shift');
     if (e.metaKey) modifiers.push('meta');
 
+    console.log("Recording shortcut:", e.key, modifiers); // Debugging
+
     this.shortcuts[this.currentAction] = {
       key: e.key.toLowerCase(),
       modifiers
     };
 
-    this.saveShortcuts();
+    this.saveShortcuts(this.shortcuts);
     this.cancelRecording(item, originalContent, handler, overlay, escapeInfo);
   };
 
-  window.addEventListener('keydown', handler, { capture: true });
+  // Use a setTimeout to ensure the listener is attached after the current event completes
+  setTimeout(() => {
+    // Add a message to the console to confirm we're waiting for keys
+    console.log("Waiting for key presses...");
+    
+    // Attach to document for broadest capture
+    document.addEventListener('keydown', handler, { capture: true });
+  }, 100);
 }
 
 cancelRecording(item, originalContent, handler, overlay, escapeInfo) {
+  console.log("Canceling recording"); // Debugging
+
   this.recording = false;
   item.innerHTML = originalContent;
   item.classList.remove('recording');
   window.removeEventListener('keydown', handler, { capture: true });
 
-  if (overlay) document.body.removeChild(overlay);
-  if (escapeInfo) document.body.removeChild(escapeInfo);
+  if (overlay && overlay.parentNode === document.body) {
+    document.body.removeChild(overlay);
+}
+
+if (escapeInfo && escapeInfo.parentNode === document.body) {
+    document.body.removeChild(escapeInfo);
+}
+
 
   this.updateShortcutDisplay();
 }
 
-saveShortcuts() {
-  chrome.runtime.sendMessage({
-    action: "shortcut-update-shortcuts",
-    newShortcuts: this.shortcuts
+// saveShortcuts() {
+//   chrome.runtime.sendMessage({
+//     action: "shortcut-update-shortcuts",
+//     newShortcuts: this.shortcuts
+//   });
+// }
+
+async saveShortcuts(newShortcuts) {
+  // Validate that all required actions have shortcuts
+  const requiredActions = this.defaultShortcuts ? Object.keys(this.defaultShortcuts) : [];
+  
+  // Check that all required shortcuts exist
+  const hasAllActions = requiredActions.every(action =>
+    newShortcuts[action] &&
+    newShortcuts[action].key &&
+    Array.isArray(newShortcuts[action].modifiers)
+  );
+  
+  if (!hasAllActions) {
+    console.error('Invalid shortcut configuration - missing required shortcuts');
+    return false;
+  }
+  
+  // Check for conflicts between shortcuts
+  const shortcutMap = new Map();
+  for (const [action, shortcut] of Object.entries(newShortcuts)) {
+    const key = shortcut.key.toLowerCase();
+    const modifiers = shortcut.modifiers.sort().join(',');
+    const shortcutKey = `${modifiers}+${key}`;
+    
+    if (shortcutMap.has(shortcutKey)) {
+      console.error(`Shortcut conflict: ${action} and ${shortcutMap.get(shortcutKey)} use the same combination`);
+      return false;
+    }
+    
+    shortcutMap.set(shortcutKey, action);
+  }
+  
+  this.currentShortcuts = newShortcuts;
+  return new Promise((resolve) => {
+    chrome.storage.sync.set({ shortcuts: newShortcuts }, () => {
+      // Also save to local as backup
+      chrome.storage.local.set({ shortcuts: newShortcuts });
+      // Notify other parts of the extension
+      chrome.runtime.sendMessage({
+        action: "shortcuts-updated",
+        shortcuts: newShortcuts
+      });
+      resolve(true);
+    });
   });
 }
 

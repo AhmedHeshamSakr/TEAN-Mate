@@ -74,6 +74,6 @@ export class ShortcutManager {
     }
   
     getShortcutForAction(action) {
-      return this._currentShortcuts[action] || this.defaultShortcuts[action];
+      return this.currentShortcuts[action] || this.defaultShortcuts[action];
     }
   }

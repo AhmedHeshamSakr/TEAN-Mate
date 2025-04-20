@@ -47,9 +47,6 @@ class ContentHandler {
           
           this.initializeKeyListeners();
           this.loadShortcuts();
-
-           // Listen for messages from the background script
-        chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
         
         // Listen for shortcut updates
         chrome.runtime.onMessage.addListener((message) => {
@@ -116,43 +113,90 @@ class ContentHandler {
         this.keyState.shift = e.shiftKey;
         this.keyState.meta = e.metaKey;
       }
-      checkForShortcut(e) {
+    //   checkForShortcut(e) {
+    //     // Ignore modifier-only keys
+    //     if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+    //     if (!this.shortcutMap || Object.keys(this.shortcutMap).length === 0) {
+    //         return; // Skip if shortcuts aren't loaded yet
+    //     }
+    //     const pressedKey = e.key.toLowerCase();
+    //     const activeModifiers = Object.entries(this.keyState)
+    //       .filter(([_, isActive]) => isActive)
+    //       .map(([mod]) => mod);
+    
+    //     // Check each shortcut
+    //     for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
+    //         if (!shortcut || !shortcut.key) continue;
+            
+    //         if (shortcut.key.toLowerCase() === pressedKey && 
+    //             shortcut.modifiers.length === activeModifiers.length &&
+    //             shortcut.modifiers.every(m => activeModifiers.includes(m))) {
+                
+    //             e.preventDefault();
+    //             e.stopPropagation();
+                
+    //             // Convert technical action name to handler action
+    //             const actionMap = {
+    //                 'skip-next': 'skipToNext',
+    //                 'skip-previous': 'skipToPrevious',
+    //                 'toggle-reading': 'toggleReading',
+    //                 'access-link': 'accessLink',
+    //                 'toggle-stt': 'toggleSTT'
+    //             };
+                
+    //             // Trigger the corresponding action
+    //             this.handleMessage({ action: actionMap[action] || action });
+    //             break;
+    //         }
+    //     }
+    // }
+    checkForShortcut(e) {
+        // Ignore if within form elements that need key events
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || 
+            e.target.getAttribute('contenteditable') === 'true') {
+          return;
+        }
+      
         // Ignore modifier-only keys
         if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+        
         if (!this.shortcutMap || Object.keys(this.shortcutMap).length === 0) {
-            return; // Skip if shortcuts aren't loaded yet
+          return; // Skip if shortcuts aren't loaded yet
         }
+        
         const pressedKey = e.key.toLowerCase();
-        const activeModifiers = Object.entries(this.keyState)
-          .filter(([_, isActive]) => isActive)
-          .map(([mod]) => mod);
-    
+        const activeModifiers = [];
+        if (e.ctrlKey) activeModifiers.push('ctrl');
+        if (e.altKey) activeModifiers.push('alt');
+        if (e.shiftKey) activeModifiers.push('shift');
+        if (e.metaKey) activeModifiers.push('meta');
+        
+        // Sort modifiers to ensure consistent comparison
+        activeModifiers.sort();
+        
         // Check each shortcut
         for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
-            if (!shortcut || !shortcut.key) continue;
+          if (!shortcut || !shortcut.key) continue;
+          
+          // Sort modifiers for consistent comparison
+          const shortcutModifiers = [...shortcut.modifiers].sort();
+          
+          if (shortcut.key.toLowerCase() === pressedKey &&
+              shortcutModifiers.length === activeModifiers.length &&
+              shortcutModifiers.every((m, i) => m === activeModifiers[i])) {
             
-            if (shortcut.key.toLowerCase() === pressedKey && 
-                shortcut.modifiers.length === activeModifiers.length &&
-                shortcut.modifiers.every(m => activeModifiers.includes(m))) {
-                
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Convert technical action name to handler action
-                const actionMap = {
-                    'skip-next': 'skipToNext',
-                    'skip-previous': 'skipToPrevious',
-                    'toggle-reading': 'toggleReading',
-                    'access-link': 'accessLink',
-                    'toggle-stt': 'toggleSTT'
-                };
-                
-                // Trigger the corresponding action
-                this.handleMessage({ action: actionMap[action] || action });
-                break;
-            }
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Get the corresponding handler action from the mapping
+            const handlerAction = ACTION_HANDLER_METHODS[action] || action;
+            
+            // Trigger the corresponding action
+            this.handleMessage({ action: handlerAction });
+            break;
+          }
         }
-    }
+      }
     
 
 

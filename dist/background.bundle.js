@@ -13201,7 +13201,11 @@ var BackgroundHandler = /*#__PURE__*/function () {
     key: "initialize",
     value: function () {
       var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee() {
-        var _context, _context2, _context3, _context4;
+        var _context,
+          _context2,
+          _context3,
+          _context4,
+          _this = this;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
@@ -13213,13 +13217,31 @@ var BackgroundHandler = /*#__PURE__*/function () {
               chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context2 = this.onActionClicked).call(_context2, this));
               chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context3 = this.onCommand).call(_context3, this));
               chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context4 = this.onMessage).call(_context4, this));
+              //   chrome.storage.onChanged.addListener(function(changes, namespace) {
+              //     if (changes.settings && changes.settings.newValue) {
+              //         const newSettings = changes.settings.newValue;
+
+              //         // If theme changed, notify all extension pages
+              //         if (changes.settings.oldValue && 
+              //             changes.settings.oldValue.theme !== newSettings.theme) {
+
+              //             // Send message to all extension pages
+              //             chrome.runtime.sendMessage({
+              //                 action: "themeChanged",
+              //                 theme: newSettings.theme
+              //             });
+              //         }
+              //     }
+              //     if (changes.shortcuts && changes.shortcuts.newValue) {
+              //       this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
+              //     }
+              // });
               chrome.storage.onChanged.addListener(function (changes, namespace) {
                 if (changes.settings && changes.settings.newValue) {
                   var newSettings = changes.settings.newValue;
 
                   // If theme changed, notify all extension pages
                   if (changes.settings.oldValue && changes.settings.oldValue.theme !== newSettings.theme) {
-                    // Send message to all extension pages
                     chrome.runtime.sendMessage({
                       action: "themeChanged",
                       theme: newSettings.theme
@@ -13227,7 +13249,7 @@ var BackgroundHandler = /*#__PURE__*/function () {
                   }
                 }
                 if (changes.shortcuts && changes.shortcuts.newValue) {
-                  this.broadcastShortcutsUpdate(changes.shortcuts.newValue);
+                  _this.broadcastShortcutsUpdate(changes.shortcuts.newValue); // ✅ Works now
                 }
               });
 
@@ -13777,7 +13799,7 @@ var ShortcutManager = /*#__PURE__*/function () {
   }, {
     key: "getShortcutForAction",
     value: function getShortcutForAction(action) {
-      return this._currentShortcuts[action] || this.defaultShortcuts[action];
+      return this.currentShortcuts[action] || this.defaultShortcuts[action];
     }
   }]);
 }();
@@ -13863,7 +13885,7 @@ var ShortcutManager = /*#__PURE__*/function () {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("201fad813fe409497dc8")
+/******/ 		__webpack_require__.h = () => ("2c106453ce338c14b8e1")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

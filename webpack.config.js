@@ -11,7 +11,8 @@ export default {
     content: './4-content/content.js',
     background: './3-background/background.js',
     sidebar: './1-sidebar/sidebar.js',
-    options: './6-settings/options.js'
+    options: './6-settings/options.js',
+    shortcutEditor: './6-settings/shortcutEditor.js',
   },
   output: {
     path: resolve(__dirname, 'dist'),
