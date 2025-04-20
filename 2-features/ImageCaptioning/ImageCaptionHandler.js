@@ -1,8 +1,11 @@
 import { ImageProcessor } from "./ImageProcessor.js";
+// Import audio files
+import processingAudio from '../TTS/messages/lol.wav';
+import loadingBeepAudio from '../TTS/messages/Loading.wav';
 
 class ImageCaptionHandler {
     constructor(modelBasePath = null) {
-        // Keep only essential properties
+        // Keep existing properties
         this.imageProcessor = null;
         this.isActive = false;
         this.captionType = '<MORE_DETAILED_CAPTION>';
@@ -11,56 +14,161 @@ class ImageCaptionHandler {
         this.MAX_CONCURRENT = 1;
         this.modelBasePath = modelBasePath || chrome.runtime.getURL('Florence-2-base-ft');
         
+        // Add new properties for audio
+        this.processingSound = new Audio(processingAudio);
+        this.loadingBeepSound = new Audio(loadingBeepAudio);
+        this.loadingBeepSound.loop = true; // Make the beep loop continuously
+        this.currentOverlay = null;
     }
 
-    // Update deactivate to clean queue
-    async deactivate() {
-        this.isActive = false;
-        this.processingQueue = [];
+    // Create an overlay for the image
+    createLoadingOverlay(imgElement) {
+        // First remove any existing overlay
+        if (this.currentOverlay) {
+            this.removeLoadingOverlay();
+        }
         
-        // Release the reference to the image processor
-        // Note: Current ImageProcessor doesn't have cleanup method
-        this.imageProcessor = null;
+        // Create a wrapper div
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.className = 'image-caption-wrapper';
         
-        console.log("Image captioning deactivated");
+        // Create the overlay div
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+            font-weight: bold;
+        `;
+        
+        // Create spinner
+        const spinner = document.createElement('div');
+        spinner.className = 'caption-spinner';
+        spinner.style.cssText = `
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ffffff;
+            animation: spin 1s linear infinite;
+        `;
+        
+        // Add animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add "Processing Image" text
+        const text = document.createElement('div');
+        text.textContent = 'Processing Image...';
+        text.style.marginTop = '10px';
+        
+        // Add elements to overlay
+        overlay.appendChild(spinner);
+        overlay.appendChild(text);
+        
+        // Save original position and parent
+        const originalParent = imgElement.parentNode;
+        const nextSibling = imgElement.nextSibling;
+        const originalPos = {parent: originalParent, nextSibling: nextSibling};
+        
+        // Create wrapper structure
+        wrapper.appendChild(imgElement.cloneNode(true));
+        wrapper.appendChild(overlay);
+        
+        // Replace original image with wrapper
+        originalParent.replaceChild(wrapper, imgElement);
+        
+        // Store references for later removal
+        this.currentOverlay = {wrapper, originalImg: imgElement, originalPos};
+        
+        return wrapper;
     }
     
-    setCaptionType(type) {
-        if (['<CAPTION>', '<DETAILED_CAPTION>', '<MORE_DETAILED_CAPTION>'].includes(type)) {
-            this.captionType = type;
-            console.log(`Caption type set to: ${this.captionType}`);
+    // Remove the overlay and restore original image
+    removeLoadingOverlay() {
+        if (!this.currentOverlay) return;
+        
+        const {wrapper, originalImg, originalPos} = this.currentOverlay;
+        
+        if (originalPos.nextSibling) {
+            originalPos.parent.insertBefore(originalImg, originalPos.nextSibling);
         } else {
-            console.error(`Invalid caption type: ${type}`);
-        }
-    }
-
-    async generateCaptionForImage(imageUrl) {
-        if (!this.isActive) {
-            console.warn('Caption handler is not active. Please activate it first.');
-            return "Caption handler not active";
+            originalPos.parent.appendChild(originalImg);
         }
         
-        console.log('⏳ Starting caption generation for:', imageUrl);
-        return new Promise((resolve) => {
-            // Add to queue and process
-            this.processingQueue.push({ 
-                imageUrl, 
-                resolve: (caption) => {
-                    console.log('✅ Caption generated for:', imageUrl, '->', caption);
-                    resolve(caption);
-                }
-            });
-            this.processQueue();
-        });
+        if (wrapper.parentNode) {
+            wrapper.parentNode.removeChild(wrapper);
+        }
+        
+        this.currentOverlay = null;
     }
+
+   // In ImageCaptionHandler.js - consolidate the generateCaptionForImage methods
+
+async generateCaptionForImage(imageUrl, imgElement = null) {
+    if (!this.isActive) {
+        console.warn('Caption handler is not active. Please activate it first.');
+        return "Caption handler not active";
+    }
+    
+    // Play the "processing image" audio
+    this.processingSound.play().catch(err => console.error('Error playing processing audio:', err));
+    
+    // Create overlay if image element is provided
+    if (imgElement && imgElement instanceof HTMLImageElement) {
+        this.createLoadingOverlay(imgElement);
+        
+        // Start the loading beep sound after a short delay
+        setTimeout(() => {
+            this.loadingBeepSound.play().catch(err => console.error('Error playing beep audio:', err));
+        }, 1000); // Start beeping after the announcement finishes
+    }
+    
+    console.log('⏳ Starting caption generation for:', imageUrl);
+    return new Promise((resolve) => {
+        // Add to queue and process
+        this.processingQueue.push({ 
+            imageUrl,
+            imgElement,
+            resolve: (caption) => {
+                // Stop the loading sound
+                this.loadingBeepSound.pause();
+                this.loadingBeepSound.currentTime = 0;
+                
+                // Remove overlay if it exists
+                this.removeLoadingOverlay();
+                
+                console.log('✅ Caption generated for:', imageUrl, '->', caption);
+                resolve(caption);
+            }
+        });
+        this.processQueue();
+    });
+}
     
     async processQueue() {
         console.log('[QUEUE] Processing queue, items:', this.processingQueue.length);
-        
         if (this.isProcessing || !this.processingQueue.length) return;
         
         this.isProcessing = true;
-        const { imageUrl, resolve } = this.processingQueue.shift();
+        const { imageUrl, imgElement, resolve } = this.processingQueue.shift();
         
         console.log('[QUEUE] Processing image:', imageUrl);
         
@@ -80,17 +188,89 @@ class ImageCaptionHandler {
             this.processQueue();
         }
     }
+
+    // Update deactivate to clean queue and stop sounds
+    async deactivate() {
+        this.isActive = false;
+        this.processingQueue = [];
+        
+        // Stop any playing sounds
+        this.processingSound.pause();
+        this.processingSound.currentTime = 0;
+        this.loadingBeepSound.pause();
+        this.loadingBeepSound.currentTime = 0;
+        
+        // Remove any active overlays
+        this.removeLoadingOverlay();
+        
+        // Release the reference to the image processor
+        this.imageProcessor = null;
+        
+        console.log("Image captioning deactivated");
+    }
+    
+    setCaptionType(type) {
+        if (['<CAPTION>', '<DETAILED_CAPTION>', '<MORE_DETAILED_CAPTION>'].includes(type)) {
+            this.captionType = type;
+            console.log(`Caption type set to: ${this.captionType}`);
+        } else {
+            console.error(`Invalid caption type: ${type}`);
+        }
+    }
+
+    // async generateCaptionForImage(imageUrl) {
+    //     if (!this.isActive) {
+    //         console.warn('Caption handler is not active. Please activate it first.');
+    //         return "Caption handler not active";
+    //     }
+        
+    //     console.log('⏳ Starting caption generation for:', imageUrl);
+    //     return new Promise((resolve) => {
+    //         // Add to queue and process
+    //         this.processingQueue.push({ 
+    //             imageUrl, 
+    //             resolve: (caption) => {
+    //                 console.log('✅ Caption generated for:', imageUrl, '->', caption);
+    //                 resolve(caption);
+    //             }
+    //         });
+    //         this.processQueue();
+    //     });
+    // }
+    
+    // async processQueue() {
+    //     console.log('[QUEUE] Processing queue, items:', this.processingQueue.length);
+    //     if (this.isProcessing || !this.processingQueue.length) return;
+        
+    //     this.isProcessing = true;
+    //     const { imageUrl, resolve } = this.processingQueue.shift();
+        
+    //     console.log('[QUEUE] Processing image:', imageUrl);
+        
+    //     try {
+    //         const captionResult = await this.imageProcessor.generateCaptionFromUrl(
+    //             imageUrl,
+    //             this.captionType
+    //         );
+    //         const caption = this.extractCaptionText(captionResult);
+    //         console.log('[QUEUE] Success:', caption);
+    //         resolve(caption);
+    //     } catch (error) {
+    //         console.error('[QUEUE] Failed:', error);
+    //         resolve("Caption error: " + error.message);
+    //     } finally {
+    //         this.isProcessing = false;
+    //         this.processQueue();
+    //     }
+    // }
     
     async initialize() {
         try {
             // Initialize the image processor with the model base path
             this.imageProcessor = new ImageProcessor(this.modelBasePath);
-            
             // Log the path to help with debugging
             console.log('Model base path:', this.modelBasePath);
-            
             const initialized = await this.imageProcessor.initialize();
-            
             if (!initialized) {
                 console.error("Failed to initialize image processor");
                 return false;

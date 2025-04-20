@@ -3,6 +3,8 @@ import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
 import LinkHandler from "../2-features/TTS/LinkHandler.js";
 import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
+import VideoOverlayManager from "../2-features/STT/VideoOverlayManager.js";
+
 
 class ContentHandler {
     constructor() {
@@ -14,7 +16,11 @@ class ContentHandler {
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
-        this.imageCaptionHandler = new ImageCaptionHandler(); 
+        // this.imageCaptionHandler = new ImageCaptionHandler(); 
+        this.videoOverlayManager = new VideoOverlayManager();
+        this.imageCaptionHandler = new ImageCaptionHandler(chrome.runtime.getURL('Florence-2-base-ft'));
+        console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
+
 
         this.currentElement = null;
         this.currentLink = null;
@@ -36,6 +42,31 @@ class ContentHandler {
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
         this.wasSpeaking = false;
+        
+        // Add speech event listeners for notification
+        this.speechHandler.addEventListener('speechstart', () => {
+            this.notifySpeechStarted();
+        });
+        
+        this.speechHandler.addEventListener('speechend', () => {
+            this.notifySpeechStopped();
+        });
+    }
+
+    
+
+    // Notify sidebar that speech has started
+    notifySpeechStarted() {
+        chrome.runtime.sendMessage({
+            action: "ttsStarted"
+        });
+    }
+    
+    // Notify sidebar that speech has stopped
+    notifySpeechStopped() {
+        chrome.runtime.sendMessage({
+            action: "ttsStopped"
+        });
     }
 
     getNextElement() {
@@ -117,15 +148,19 @@ class ContentHandler {
         return { elementsToReturn, text };
     }
 
-    // In the ContentHandler class
     async speakCurrentSection() {
         if (!this.currentElement) {
             this.currentElement = this.getNextElement();
         }
         let { elementsToReturn, text } = this.currentElement;
         if (!this.currentElement || !elementsToReturn) {
+            // Send a notification that speech has finished completely
+            this.notifySpeechStopped();
             return;
         }
+    
+        // Notify that speech has started
+        this.notifySpeechStarted();
     
         for (let i = 0; i < elementsToReturn.length; i++) {
             await new Promise(async (resolve) => {
@@ -135,19 +170,15 @@ class ContentHandler {
                     
                     if (element.tagName?.toLowerCase() === 'img') {
                         console.log('🖼️ Detected image element:', element);
-                        const originalBorder = element.style.border;
-                        element.style.border = "2px solid #ffd700";
                         
                         try {
-                            // Generate caption
-                            const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src);
+                            // Pass both the URL and the element to the caption generator
+                            // This will trigger the processing sound and overlay
+                            const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src, element);
                             speechText = `Image description: ${caption}`;
                         } catch (error) {
                             console.error('Caption generation failed:', error);
                             speechText = "Image description unavailable";
-                        } finally {
-                            // Remove loading indicator
-                            element.style.border = originalBorder;
                         }
                     }
     
@@ -167,6 +198,69 @@ class ContentHandler {
         this.currentElement = null;
         this.speakCurrentSection();
     }
+    // async speakCurrentSection() {
+    //     if (!this.currentElement) {
+    //         this.currentElement = this.getNextElement();
+    //     }
+    //     let { elementsToReturn, text } = this.currentElement;
+    //     if (!this.currentElement || !elementsToReturn) {
+    //         // Send a notification that speech has finished completely
+    //         this.notifySpeechStopped();
+    //         return;
+    //     }
+    
+    //     // Notify that speech has started
+    //     this.notifySpeechStarted();
+    
+    //     for (let i = 0; i < elementsToReturn.length; i++) {
+    //         await new Promise(async (resolve) => {
+    //             try {
+    //                 const element = elementsToReturn[i];
+    //                 let speechText = text[i];
+                    
+    //                 if (element.tagName?.toLowerCase() === 'img') {
+    //                     console.log('🖼️ Detected image element:', element);
+    //                     const originalBorder = element.style.border;
+    //                     // element.style.border = "2px solid #ffd700";
+                        
+    //                     // try {
+    //                     //     // Generate caption
+    //                     //     const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src);
+    //                     //     speechText = `Image description: ${caption}`;
+    //                     // } catch (error) {
+    //                     //     console.error('Caption generation failed:', error);
+    //                     //     speechText = "Image description unavailable";
+    //                     // } finally {
+    //                     //     // Remove loading indicator
+    //                     //     element.style.border = originalBorder;
+    //                     // }
+
+    //                     try {
+    //                         // Pass both the URL and the element to the caption generator
+    //                         const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src, element);
+    //                         speechText = `Image description: ${caption}`;
+    //                     } catch (error) {
+    //                         console.error('Caption generation failed:', error);
+    //                         speechText = "Image description unavailable";
+    //                     }
+    //                 }
+    
+    //                 // Highlight and process speech
+    //                 this.highlightBox.addHighlight(element);
+    //                 await this.speechHandler.speak(speechText, () => {});
+    //                 this.highlightBox.removeHighlight(element);
+                    
+    //                 resolve();
+    //             } catch (error) {
+    //                 console.error('Element processing error:', error);
+    //                 if (element) this.highlightBox.removeHighlight(element);
+    //                 resolve();
+    //             }
+    //         });
+    //     }
+    //     this.currentElement = null;
+    //     this.speakCurrentSection();
+    // }
 
     // Add helper method for image loading overlay
     createImageLoader(imgElement) {
@@ -200,16 +294,62 @@ class ContentHandler {
         return wrapper;
     }
 
+    displayOverlayText(text, isFinal = false) {
+        if (!this.videoOverlayManager) {
+            console.error('VideoOverlayManager not initialized!');
+            return;
+        }
+        
+        console.log('ContentHandler: Sending text to overlay:', text, isFinal);
+        this.videoOverlayManager.displayText(text, isFinal);
+    }
+    
+   
     handleMessage(request) {
         if (request.action === "activateImageCaptioning") {
             console.log('[CONTENT] Received captioning activation');
             this.imageCaptionHandler.setCaptionType(request.captionType);
             this.imageCaptionHandler.activate();
-        } else if (request.action === "extractText") {
-            if (this.speechHandler.isSpeaking) return;
+        } else if (request.action === "deactivateImageCaptioning") {
+            console.log('[CONTENT] Received captioning deactivation');
+            this.imageCaptionHandler.deactivate();
+        } else if (request.action === "toggleVideoOverlay") {
+            console.log('[CONTENT] Toggle video overlay:', request.enabled);
+            // Enable/disable the overlay
+            this.videoOverlayManager.setActive(request.enabled);
+            // Notify background script to disable/enable commands
+            chrome.runtime.sendMessage({
+                action: "setCommandsEnabled",
+                enabled: !request.enabled
+            });
+        } else if (request.action === "displayOverlayText") {
+            console.log('[CONTENT] Received text for overlay:', request.text);
+            this.displayOverlayText(request.text, request.isFinal);
+        }else if (request.action === "extractText") {
+            if (this.speechHandler.isSpeaking) {
+                // If already speaking, stop it first
+                this.speechHandler.stop();
+                if (this.currentElement && this.currentElement.elementsToReturn) {
+                    for (let el of this.currentElement.elementsToReturn) {
+                        this.highlightBox.removeHighlight(el);
+                    }
+                }
+                this.notifySpeechStopped();
+                return;
+            }
             this.currentElement = null;
             this.speakCurrentSection();
             this.wasSpeaking = true;
+        } else if (request.action === "stopTTS") {
+            // Complete stop of TTS
+            this.speechHandler.stop();
+            if (this.currentElement && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
+            }
+            this.wasSpeaking = false;
+            this.notifySpeechStopped();
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
             if (this.currentElement && this.currentElement.elementsToReturn) {
@@ -238,6 +378,7 @@ class ContentHandler {
                     }
                 }
                 this.wasSpeaking = false;
+                this.notifySpeechStopped();
             } else {
                 this.speakCurrentSection();
                 this.wasSpeaking = true;
@@ -248,6 +389,7 @@ class ContentHandler {
                     this.highlightBox.removeHighlight(el);
                 }
                 this.speechHandler.stop();
+                this.notifySpeechStopped();
                 this.linkHandler.accessLink(this.currentLink);
             }
         }else if (request.action === "performSearch"){
@@ -260,6 +402,7 @@ class ContentHandler {
                 }
             }
             this.wasSpeaking = false;
+            this.notifySpeechStopped();
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
                 if (this.currentElement && this.currentElement.elementsToReturn) {

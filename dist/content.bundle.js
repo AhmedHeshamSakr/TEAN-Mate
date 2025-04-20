@@ -726,6 +726,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./2-features/TTS/messages/Loading.wav":
+/*!*********************************************!*\
+  !*** ./2-features/TTS/messages/Loading.wav ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/Loading.b0039970a45586ec09f51fdf2a280a70.wav");
+
+/***/ }),
+
+/***/ "./2-features/TTS/messages/lol.wav":
+/*!*****************************************!*\
+  !*** ./2-features/TTS/messages/lol.wav ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/lol.ae513f3e0673f49df76dc7f28be3f74c.wav");
+
+/***/ }),
+
 /***/ "./node_modules/html-entities/lib/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/html-entities/lib/index.js ***!
@@ -3604,6 +3634,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/ends-with 
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/entries.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/entries.js ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/entries */ "./node_modules/core-js-pure/stable/instance/entries.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js":
 /*!*******************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js ***!
@@ -3754,6 +3794,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/json/stringify */ "
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/map.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/map.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/map */ "./node_modules/core-js-pure/stable/map/index.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/assign.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/assign.js ***!
@@ -3841,6 +3891,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/object/values */ ".
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/promise */ "./node_modules/core-js-pure/stable/promise/index.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/set-interval */ "./node_modules/core-js-pure/stable/set-interval.js");
 
 /***/ }),
 
@@ -4266,6 +4326,36 @@ try {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/actual/array/from.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js-pure/actual/array/from.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../stable/array/from */ "./node_modules/core-js-pure/stable/array/from.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/actual/array/is-array.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js-pure/actual/array/is-array.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../stable/array/is-array */ "./node_modules/core-js-pure/stable/array/is-array.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/actual/get-iterator-method.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/actual/get-iterator-method.js ***!
@@ -4530,6 +4620,23 @@ __webpack_require__(/*! ../../../modules/es.array.copy-within */ "./node_modules
 var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
 
 module.exports = getBuiltInPrototypeMethod('Array', 'copyWithin');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/array/virtual/entries.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/entries.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.iterator */ "./node_modules/core-js-pure/modules/es.array.iterator.js");
+__webpack_require__(/*! ../../../modules/es.object.to-string */ "./node_modules/core-js-pure/modules/es.object.to-string.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'entries');
 
 
 /***/ }),
@@ -5164,6 +5271,26 @@ module.exports = function stringify(it, replacer, space) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/map/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/core-js-pure/es/map/index.js ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.array.iterator */ "./node_modules/core-js-pure/modules/es.array.iterator.js");
+__webpack_require__(/*! ../../modules/es.map */ "./node_modules/core-js-pure/modules/es.map.js");
+__webpack_require__(/*! ../../modules/es.map.group-by */ "./node_modules/core-js-pure/modules/es.map.group-by.js");
+__webpack_require__(/*! ../../modules/es.object.to-string */ "./node_modules/core-js-pure/modules/es.object.to-string.js");
+__webpack_require__(/*! ../../modules/es.string.iterator */ "./node_modules/core-js-pure/modules/es.string.iterator.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Map;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/assign.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/assign.js ***!
@@ -5716,6 +5843,36 @@ module.exports = __webpack_require__(/*! ../../full/symbol */ "./node_modules/co
 "use strict";
 
 module.exports = __webpack_require__(/*! ../../full/symbol/iterator */ "./node_modules/core-js-pure/full/symbol/iterator.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/full/array/from.js":
+/*!******************************************************!*\
+  !*** ./node_modules/core-js-pure/full/array/from.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../actual/array/from */ "./node_modules/core-js-pure/actual/array/from.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/full/array/is-array.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js-pure/full/array/is-array.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../actual/array/is-array */ "./node_modules/core-js-pure/actual/array/is-array.js");
+
+module.exports = parent;
 
 
 /***/ }),
@@ -9340,6 +9497,31 @@ var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules
 // https://tc39.es/ecma262/#sec-lengthofarraylike
 module.exports = function (obj) {
   return toLength(obj.length);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/map-helpers.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/map-helpers.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "./node_modules/core-js-pure/internals/get-built-in.js");
+var caller = __webpack_require__(/*! ../internals/caller */ "./node_modules/core-js-pure/internals/caller.js");
+
+var Map = getBuiltIn('Map');
+
+module.exports = {
+  Map: Map,
+  set: caller('set', 2),
+  get: caller('get', 1),
+  has: caller('has', 1),
+  remove: caller('delete', 1),
+  proto: Map.prototype
 };
 
 
@@ -13036,6 +13218,89 @@ var setToStringTag = __webpack_require__(/*! ../internals/set-to-string-tag */ "
 // JSON[@@toStringTag] property
 // https://tc39.es/ecma262/#sec-json-@@tostringtag
 setToStringTag(globalThis.JSON, 'JSON', true);
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.map.constructor.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.map.constructor.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var collection = __webpack_require__(/*! ../internals/collection */ "./node_modules/core-js-pure/internals/collection.js");
+var collectionStrong = __webpack_require__(/*! ../internals/collection-strong */ "./node_modules/core-js-pure/internals/collection-strong.js");
+
+// `Map` constructor
+// https://tc39.es/ecma262/#sec-map-objects
+collection('Map', function (init) {
+  return function Map() { return init(this, arguments.length ? arguments[0] : undefined); };
+}, collectionStrong);
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.map.group-by.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.map.group-by.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+var aCallable = __webpack_require__(/*! ../internals/a-callable */ "./node_modules/core-js-pure/internals/a-callable.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js-pure/internals/require-object-coercible.js");
+var iterate = __webpack_require__(/*! ../internals/iterate */ "./node_modules/core-js-pure/internals/iterate.js");
+var MapHelpers = __webpack_require__(/*! ../internals/map-helpers */ "./node_modules/core-js-pure/internals/map-helpers.js");
+var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js-pure/internals/is-pure.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+
+var Map = MapHelpers.Map;
+var has = MapHelpers.has;
+var get = MapHelpers.get;
+var set = MapHelpers.set;
+var push = uncurryThis([].push);
+
+var DOES_NOT_WORK_WITH_PRIMITIVES = IS_PURE || fails(function () {
+  return Map.groupBy('ab', function (it) {
+    return it;
+  }).get('a').length !== 1;
+});
+
+// `Map.groupBy` method
+// https://tc39.es/ecma262/#sec-map.groupby
+$({ target: 'Map', stat: true, forced: IS_PURE || DOES_NOT_WORK_WITH_PRIMITIVES }, {
+  groupBy: function groupBy(items, callbackfn) {
+    requireObjectCoercible(items);
+    aCallable(callbackfn);
+    var map = new Map();
+    var k = 0;
+    iterate(items, function (value) {
+      var key = callbackfn(value, k++);
+      if (!has(map, key)) set(map, key, [value]);
+      else push(get(map, key), value);
+    });
+    return map;
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.map.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.map.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// TODO: Remove this module from `core-js@4` since it's replaced to module below
+__webpack_require__(/*! ../modules/es.map.constructor */ "./node_modules/core-js-pure/modules/es.map.constructor.js");
 
 
 /***/ }),
@@ -17302,6 +17567,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/array/virtual/entries.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/array/virtual/entries.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../../es/array/virtual/entries */ "./node_modules/core-js-pure/es/array/virtual/entries.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/array/virtual/for-each.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/array/virtual/for-each.js ***!
@@ -17419,6 +17699,36 @@ module.exports = parent;
 var parent = __webpack_require__(/*! ../../es/instance/ends-with */ "./node_modules/core-js-pure/es/instance/ends-with.js");
 
 module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/instance/entries.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/entries.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/web.dom-collections.iterator */ "./node_modules/core-js-pure/modules/web.dom-collections.iterator.js");
+var classof = __webpack_require__(/*! ../../internals/classof */ "./node_modules/core-js-pure/internals/classof.js");
+var hasOwn = __webpack_require__(/*! ../../internals/has-own-property */ "./node_modules/core-js-pure/internals/has-own-property.js");
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/entries */ "./node_modules/core-js-pure/stable/array/virtual/entries.js");
+
+var ArrayPrototype = Array.prototype;
+
+var DOMIterables = {
+  DOMTokenList: true,
+  NodeList: true
+};
+
+module.exports = function (it) {
+  var own = it.entries;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.entries)
+    || hasOwn(DOMIterables, classof(it)) ? method : own;
+};
 
 
 /***/ }),
@@ -17693,6 +18003,22 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/map/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/map/index.js ***!
+  \*******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/map */ "./node_modules/core-js-pure/es/map/index.js");
+__webpack_require__(/*! ../../modules/web.dom-collections.iterator */ "./node_modules/core-js-pure/modules/web.dom-collections.iterator.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/assign.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/assign.js ***!
@@ -17874,6 +18200,22 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/set-interval.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/set-interval.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../modules/web.timers */ "./node_modules/core-js-pure/modules/web.timers.js");
+var path = __webpack_require__(/*! ../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.setInterval;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/set-timeout.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/set-timeout.js ***!
@@ -18007,6 +18349,46 @@ module.exports = path.URL;
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
+/* harmony export */ });
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js-pure/features/array/is-array.js */ "./node_modules/core-js-pure/full/array/is-array.js");
+
+function _arrayWithHoles(r) {
+  if (core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_0__(r)) return r;
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js ***!
@@ -18124,6 +18506,98 @@ function _defineProperty(e, r, t) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js-pure/features/symbol/index.js */ "./node_modules/core-js-pure/full/symbol/index.js");
+/* harmony import */ var core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/get-iterator-method.js */ "./node_modules/core-js-pure/full/get-iterator-method.js");
+/* harmony import */ var core_js_pure_features_instance_push_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js-pure/features/instance/push.js */ "./node_modules/core-js-pure/full/instance/push.js");
+
+
+
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ && core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__(r) || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (core_js_pure_features_instance_push_js__WEBPACK_IMPORTED_MODULE_2__(a).call(a, e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
+/* harmony export */ });
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _slicedToArray)
+/* harmony export */ });
+/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithHoles.js");
+/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js");
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js");
+/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableRest.js");
+
+
+
+
+function _slicedToArray(r, e) {
+  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/toPrimitive.js":
 /*!************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/toPrimitive.js ***!
@@ -18199,6 +18673,35 @@ function _typeof(o) {
   } : function (o) {
     return o && "function" == typeof core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ && o.constructor === core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ && o !== core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__.prototype ? "symbol" : typeof o;
   }, _typeof(o);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_instance_slice_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/instance/slice.js */ "./node_modules/core-js-pure/full/instance/slice.js");
+/* harmony import */ var core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js-pure/features/array/from.js */ "./node_modules/core-js-pure/full/array/from.js");
+/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js");
+
+
+
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    var _context;
+    if ("string" == typeof r) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a);
+    var t = core_js_pure_features_instance_slice_js__WEBPACK_IMPORTED_MODULE_1__(_context = {}.toString.call(r)).call(_context, 8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a) : void 0;
+  }
 }
 
 
@@ -59294,12 +59797,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_values__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/values */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/values.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _ImageProcessor_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ImageProcessor.js */ "./2-features/ImageCaptioning/ImageProcessor.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_values__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/values */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/values.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _ImageProcessor_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ImageProcessor.js */ "./2-features/ImageCaptioning/ImageProcessor.js");
+/* harmony import */ var _TTS_messages_lol_wav__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../TTS/messages/lol.wav */ "./2-features/TTS/messages/lol.wav");
+/* harmony import */ var _TTS_messages_Loading_wav__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../TTS/messages/Loading.wav */ "./2-features/TTS/messages/Loading.wav");
 
 
 
@@ -59307,13 +59813,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+// Import audio files
 
 
 var ImageCaptionHandler = /*#__PURE__*/function () {
   function ImageCaptionHandler() {
     var modelBasePath = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, ImageCaptionHandler);
-    // Keep only essential properties
+    // Keep existing properties
     this.imageProcessor = null;
     this.isActive = false;
     this.captionType = '<MORE_DETAILED_CAPTION>';
@@ -59321,77 +59831,155 @@ var ImageCaptionHandler = /*#__PURE__*/function () {
     this.isProcessing = false;
     this.MAX_CONCURRENT = 1;
     this.modelBasePath = modelBasePath || chrome.runtime.getURL('Florence-2-base-ft');
+
+    // Add new properties for audio
+    this.processingSound = new Audio(_TTS_messages_lol_wav__WEBPACK_IMPORTED_MODULE_10__["default"]);
+    this.loadingBeepSound = new Audio(_TTS_messages_Loading_wav__WEBPACK_IMPORTED_MODULE_11__["default"]);
+    this.loadingBeepSound.loop = true; // Make the beep loop continuously
+    this.currentOverlay = null;
   }
 
-  // Update deactivate to clean queue
+  // Create an overlay for the image
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(ImageCaptionHandler, [{
-    key: "deactivate",
-    value: function () {
-      var _deactivate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              this.isActive = false;
-              this.processingQueue = [];
+    key: "createLoadingOverlay",
+    value: function createLoadingOverlay(imgElement) {
+      // First remove any existing overlay
+      if (this.currentOverlay) {
+        this.removeLoadingOverlay();
+      }
 
-              // Release the reference to the image processor
-              // Note: Current ImageProcessor doesn't have cleanup method
-              this.imageProcessor = null;
-              console.log("Image captioning deactivated");
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, this);
-      }));
-      function deactivate() {
-        return _deactivate.apply(this, arguments);
-      }
-      return deactivate;
-    }()
-  }, {
-    key: "setCaptionType",
-    value: function setCaptionType(type) {
-      var _context2;
-      if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_3__(_context2 = ['<CAPTION>', '<DETAILED_CAPTION>', '<MORE_DETAILED_CAPTION>']).call(_context2, type)) {
-        this.captionType = type;
-        console.log("Caption type set to: ".concat(this.captionType));
-      } else {
-        console.error("Invalid caption type: ".concat(type));
-      }
+      // Create a wrapper div
+      var wrapper = document.createElement('div');
+      wrapper.style.position = 'relative';
+      wrapper.style.display = 'inline-block';
+      wrapper.className = 'image-caption-wrapper';
+
+      // Create the overlay div
+      var overlay = document.createElement('div');
+      overlay.style.cssText = "\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            background: rgba(0, 0, 0, 0.5);\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            justify-content: center;\n            z-index: 1000;\n            color: white;\n            font-weight: bold;\n        ";
+
+      // Create spinner
+      var spinner = document.createElement('div');
+      spinner.className = 'caption-spinner';
+      spinner.style.cssText = "\n            width: 40px;\n            height: 40px;\n            border: 4px solid rgba(255, 255, 255, 0.3);\n            border-radius: 50%;\n            border-top: 4px solid #ffffff;\n            animation: spin 1s linear infinite;\n        ";
+
+      // Add animation keyframes
+      var style = document.createElement('style');
+      style.textContent = "\n            @keyframes spin {\n                0% { transform: rotate(0deg); }\n                100% { transform: rotate(360deg); }\n            }\n        ";
+      document.head.appendChild(style);
+
+      // Add "Processing Image" text
+      var text = document.createElement('div');
+      text.textContent = 'Processing Image...';
+      text.style.marginTop = '10px';
+
+      // Add elements to overlay
+      overlay.appendChild(spinner);
+      overlay.appendChild(text);
+
+      // Save original position and parent
+      var originalParent = imgElement.parentNode;
+      var nextSibling = imgElement.nextSibling;
+      var originalPos = {
+        parent: originalParent,
+        nextSibling: nextSibling
+      };
+
+      // Create wrapper structure
+      wrapper.appendChild(imgElement.cloneNode(true));
+      wrapper.appendChild(overlay);
+
+      // Replace original image with wrapper
+      originalParent.replaceChild(wrapper, imgElement);
+
+      // Store references for later removal
+      this.currentOverlay = {
+        wrapper: wrapper,
+        originalImg: imgElement,
+        originalPos: originalPos
+      };
+      return wrapper;
     }
+
+    // Remove the overlay and restore original image
+  }, {
+    key: "removeLoadingOverlay",
+    value: function removeLoadingOverlay() {
+      if (!this.currentOverlay) return;
+      var _this$currentOverlay = this.currentOverlay,
+        wrapper = _this$currentOverlay.wrapper,
+        originalImg = _this$currentOverlay.originalImg,
+        originalPos = _this$currentOverlay.originalPos;
+      if (originalPos.nextSibling) {
+        originalPos.parent.insertBefore(originalImg, originalPos.nextSibling);
+      } else {
+        originalPos.parent.appendChild(originalImg);
+      }
+      if (wrapper.parentNode) {
+        wrapper.parentNode.removeChild(wrapper);
+      }
+      this.currentOverlay = null;
+    }
+
+    // In ImageCaptionHandler.js - consolidate the generateCaptionForImage methods
   }, {
     key: "generateCaptionForImage",
     value: function () {
-      var _generateCaptionForImage = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee2(imageUrl) {
+      var _generateCaptionForImage = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee(imageUrl) {
         var _this = this;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee2$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        var imgElement,
+          _args = arguments;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
             case 0:
+              imgElement = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
               if (this.isActive) {
-                _context3.next = 3;
+                _context.next = 4;
                 break;
               }
               console.warn('Caption handler is not active. Please activate it first.');
-              return _context3.abrupt("return", "Caption handler not active");
-            case 3:
+              return _context.abrupt("return", "Caption handler not active");
+            case 4:
+              // Play the "processing image" audio
+              this.processingSound.play()["catch"](function (err) {
+                return console.error('Error playing processing audio:', err);
+              });
+
+              // Create overlay if image element is provided
+              if (imgElement && imgElement instanceof HTMLImageElement) {
+                this.createLoadingOverlay(imgElement);
+
+                // Start the loading beep sound after a short delay
+                _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_4__(function () {
+                  _this.loadingBeepSound.play()["catch"](function (err) {
+                    return console.error('Error playing beep audio:', err);
+                  });
+                }, 1000); // Start beeping after the announcement finishes
+              }
               console.log('⏳ Starting caption generation for:', imageUrl);
-              return _context3.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_4__(function (_resolve) {
+              return _context.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__(function (_resolve) {
                 // Add to queue and process
                 _this.processingQueue.push({
                   imageUrl: imageUrl,
+                  imgElement: imgElement,
                   resolve: function resolve(caption) {
+                    // Stop the loading sound
+                    _this.loadingBeepSound.pause();
+                    _this.loadingBeepSound.currentTime = 0;
+
+                    // Remove overlay if it exists
+                    _this.removeLoadingOverlay();
                     console.log('✅ Caption generated for:', imageUrl, '->', caption);
                     _resolve(caption);
                   }
                 });
                 _this.processQueue();
               }));
-            case 5:
+            case 8:
             case "end":
-              return _context3.stop();
+              return _context.stop();
           }
-        }, _callee2, this);
+        }, _callee, this);
       }));
       function generateCaptionForImage(_x) {
         return _generateCaptionForImage.apply(this, arguments);
@@ -59401,64 +59989,153 @@ var ImageCaptionHandler = /*#__PURE__*/function () {
   }, {
     key: "processQueue",
     value: function () {
-      var _processQueue = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee3() {
-        var _this$processingQueue, imageUrl, resolve, captionResult, caption;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee3$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+      var _processQueue = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee2() {
+        var _this$processingQueue, imageUrl, imgElement, resolve, captionResult, caption;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               console.log('[QUEUE] Processing queue, items:', this.processingQueue.length);
               if (!(this.isProcessing || !this.processingQueue.length)) {
-                _context4.next = 3;
+                _context2.next = 3;
                 break;
               }
-              return _context4.abrupt("return");
+              return _context2.abrupt("return");
             case 3:
               this.isProcessing = true;
-              _this$processingQueue = this.processingQueue.shift(), imageUrl = _this$processingQueue.imageUrl, resolve = _this$processingQueue.resolve;
+              _this$processingQueue = this.processingQueue.shift(), imageUrl = _this$processingQueue.imageUrl, imgElement = _this$processingQueue.imgElement, resolve = _this$processingQueue.resolve;
               console.log('[QUEUE] Processing image:', imageUrl);
-              _context4.prev = 6;
-              _context4.next = 9;
+              _context2.prev = 6;
+              _context2.next = 9;
               return this.imageProcessor.generateCaptionFromUrl(imageUrl, this.captionType);
             case 9:
-              captionResult = _context4.sent;
+              captionResult = _context2.sent;
               caption = this.extractCaptionText(captionResult);
               console.log('[QUEUE] Success:', caption);
               resolve(caption);
-              _context4.next = 19;
+              _context2.next = 19;
               break;
             case 15:
-              _context4.prev = 15;
-              _context4.t0 = _context4["catch"](6);
-              console.error('[QUEUE] Failed:', _context4.t0);
-              resolve("Caption error: " + _context4.t0.message);
+              _context2.prev = 15;
+              _context2.t0 = _context2["catch"](6);
+              console.error('[QUEUE] Failed:', _context2.t0);
+              resolve("Caption error: " + _context2.t0.message);
             case 19:
-              _context4.prev = 19;
+              _context2.prev = 19;
               this.isProcessing = false;
               this.processQueue();
-              return _context4.finish(19);
+              return _context2.finish(19);
             case 23:
             case "end":
-              return _context4.stop();
+              return _context2.stop();
           }
-        }, _callee3, this, [[6, 15, 19, 23]]);
+        }, _callee2, this, [[6, 15, 19, 23]]);
       }));
       function processQueue() {
         return _processQueue.apply(this, arguments);
       }
       return processQueue;
+    }() // Update deactivate to clean queue and stop sounds
+  }, {
+    key: "deactivate",
+    value: function () {
+      var _deactivate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee3() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              this.isActive = false;
+              this.processingQueue = [];
+
+              // Stop any playing sounds
+              this.processingSound.pause();
+              this.processingSound.currentTime = 0;
+              this.loadingBeepSound.pause();
+              this.loadingBeepSound.currentTime = 0;
+
+              // Remove any active overlays
+              this.removeLoadingOverlay();
+
+              // Release the reference to the image processor
+              this.imageProcessor = null;
+              console.log("Image captioning deactivated");
+            case 9:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this);
+      }));
+      function deactivate() {
+        return _deactivate.apply(this, arguments);
+      }
+      return deactivate;
     }()
+  }, {
+    key: "setCaptionType",
+    value: function setCaptionType(type) {
+      var _context4;
+      if (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_6__(_context4 = ['<CAPTION>', '<DETAILED_CAPTION>', '<MORE_DETAILED_CAPTION>']).call(_context4, type)) {
+        this.captionType = type;
+        console.log("Caption type set to: ".concat(this.captionType));
+      } else {
+        console.error("Invalid caption type: ".concat(type));
+      }
+    }
+
+    // async generateCaptionForImage(imageUrl) {
+    //     if (!this.isActive) {
+    //         console.warn('Caption handler is not active. Please activate it first.');
+    //         return "Caption handler not active";
+    //     }
+
+    //     console.log('⏳ Starting caption generation for:', imageUrl);
+    //     return new Promise((resolve) => {
+    //         // Add to queue and process
+    //         this.processingQueue.push({ 
+    //             imageUrl, 
+    //             resolve: (caption) => {
+    //                 console.log('✅ Caption generated for:', imageUrl, '->', caption);
+    //                 resolve(caption);
+    //             }
+    //         });
+    //         this.processQueue();
+    //     });
+    // }
+
+    // async processQueue() {
+    //     console.log('[QUEUE] Processing queue, items:', this.processingQueue.length);
+    //     if (this.isProcessing || !this.processingQueue.length) return;
+
+    //     this.isProcessing = true;
+    //     const { imageUrl, resolve } = this.processingQueue.shift();
+
+    //     console.log('[QUEUE] Processing image:', imageUrl);
+
+    //     try {
+    //         const captionResult = await this.imageProcessor.generateCaptionFromUrl(
+    //             imageUrl,
+    //             this.captionType
+    //         );
+    //         const caption = this.extractCaptionText(captionResult);
+    //         console.log('[QUEUE] Success:', caption);
+    //         resolve(caption);
+    //     } catch (error) {
+    //         console.error('[QUEUE] Failed:', error);
+    //         resolve("Caption error: " + error.message);
+    //     } finally {
+    //         this.isProcessing = false;
+    //         this.processQueue();
+    //     }
+    // }
   }, {
     key: "initialize",
     value: function () {
-      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee4() {
+      var _initialize = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee4() {
         var initialized;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee4$(_context5) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee4$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.prev = 0;
               // Initialize the image processor with the model base path
-              this.imageProcessor = new _ImageProcessor_js__WEBPACK_IMPORTED_MODULE_8__.ImageProcessor(this.modelBasePath);
-
+              this.imageProcessor = new _ImageProcessor_js__WEBPACK_IMPORTED_MODULE_9__.ImageProcessor(this.modelBasePath);
               // Log the path to help with debugging
               console.log('Model base path:', this.modelBasePath);
               _context5.next = 5;
@@ -59492,8 +60169,8 @@ var ImageCaptionHandler = /*#__PURE__*/function () {
   }, {
     key: "toggle",
     value: function () {
-      var _toggle = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee5() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee5$(_context6) {
+      var _toggle = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee5() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee5$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               if (!this.isActive) {
@@ -59524,9 +60201,9 @@ var ImageCaptionHandler = /*#__PURE__*/function () {
   }, {
     key: "activate",
     value: function () {
-      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee6() {
+      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee6() {
         var initialized;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee6$(_context7) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee6$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               console.log('[CAPTION] Starting activation...');
@@ -59593,13 +60270,13 @@ var ImageCaptionHandler = /*#__PURE__*/function () {
       }
 
       // If the specific format isn't found, try to extract any string value
-      var values = _babel_runtime_corejs3_core_js_stable_object_values__WEBPACK_IMPORTED_MODULE_5__(captionResult);
+      var values = _babel_runtime_corejs3_core_js_stable_object_values__WEBPACK_IMPORTED_MODULE_7__(captionResult);
       if (values.length > 0 && typeof values[0] === 'string') {
         return values[0];
       }
 
       // Last resort: convert the object to a string
-      return _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__(captionResult);
+      return _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_8__(captionResult);
     }
   }]);
 }();
@@ -59825,10 +60502,8 @@ var ImageProcessor = /*#__PURE__*/function () {
       if (typeof document === 'undefined') {
         throw new Error('Document object is required. This function must run in a browser environment.');
       }
-
       // Query all images on the page
       var allImages = document.querySelectorAll('img');
-
       // Map each image to an object containing its metadata
       return _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_14__(_context5 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_12__(allImages)).call(_context5, function (img) {
         var _context6;
@@ -59871,6 +60546,382 @@ _huggingface_transformers__WEBPACK_IMPORTED_MODULE_0__.env.allowLocalModels = tr
 
 _huggingface_transformers__WEBPACK_IMPORTED_MODULE_0__.env.allowRemoteModels = false;
 _huggingface_transformers__WEBPACK_IMPORTED_MODULE_0__.env.backends.onnx.wasm.wasmPaths = chrome.runtime.getURL('onnx-runtime/');
+
+/***/ }),
+
+/***/ "./2-features/STT/VideoOverlayManager.js":
+/*!***********************************************!*\
+  !*** ./2-features/STT/VideoOverlayManager.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_entries__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/entries */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/entries.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_values__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/values */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/values.js");
+
+
+
+
+
+
+
+
+
+
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context11; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context11 = {}.toString.call(r)).call(_context11, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
+
+
+
+
+
+
+
+// VideoOverlayManager.js - Handles displaying speech text overlays on videos
+var VideoOverlayManager = /*#__PURE__*/function () {
+  function VideoOverlayManager() {
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_7__["default"])(this, VideoOverlayManager);
+    // Overlay configuration
+    this.config = {
+      active: false,
+      fontSize: '16px',
+      textColor: '#FFFFFF',
+      bgColor: 'rgba(0, 0, 0, 0.7)',
+      position: 'bottom',
+      // Keep this as 'bottom'
+      duration: Infinity,
+      // This change makes the text stay until cleared
+      maxLines: 5
+    };
+    this.overlays = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_10__(); // Map to track overlays for each video
+    this.textQueue = []; // Queue of text segments to display
+    this.processingQueue = false; // Flag to prevent multiple queue processors
+    this.currentText = null;
+  }
+
+  // Activate or deactivate overlay system
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_8__["default"])(VideoOverlayManager, [{
+    key: "setActive",
+    value: function setActive(active) {
+      var _this = this;
+      console.log("VideoOverlayManager: Setting active state to ".concat(active));
+      this.config.active = active;
+      if (!active) {
+        // Remove all overlays when deactivating
+        this.removeAllOverlays();
+        console.log('All video overlays removed');
+      } else {
+        console.log('Looking for videos to overlay...');
+        // Find videos and create overlays when activating
+        // Use a slight delay to ensure content is loaded
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_11__(function () {
+          return _this.setupOverlaysForVisibleVideos();
+        }, 500);
+
+        // Also periodically check for new videos
+        this.videoCheckInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_12__(function () {
+          _this.setupOverlaysForVisibleVideos();
+        }, 2000);
+      }
+    }
+
+    // Find videos on the page and create overlays for them
+  }, {
+    key: "setupOverlaysForVisibleVideos",
+    value: function setupOverlaysForVisibleVideos() {
+      var _this2 = this;
+      if (!this.config.active) return;
+      var videos = document.querySelectorAll('video');
+      console.log("Found ".concat(videos.length, " video elements on page"));
+      if (videos.length === 0) {
+        // If no videos found with standard query, try iframe videos
+        var iframes = document.querySelectorAll('iframe');
+        console.log("Looking for videos in ".concat(iframes.length, " iframes"));
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_13__(iframes).call(iframes, function (iframe) {
+          try {
+            var _iframe$contentDocume;
+            // Try to access iframe content if from same origin
+            var iframeVideos = (_iframe$contentDocume = iframe.contentDocument) === null || _iframe$contentDocume === void 0 ? void 0 : _iframe$contentDocume.querySelectorAll('video');
+            if (iframeVideos && iframeVideos.length > 0) {
+              console.log("Found ".concat(iframeVideos.length, " videos in iframe"));
+              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_13__(iframeVideos).call(iframeVideos, function (video) {
+                if (_this2.isElementVisible(video) && !_this2.overlays.has(video)) {
+                  _this2.createOverlayForVideo(video);
+                }
+              });
+            }
+          } catch (e) {
+            // Cross-origin iframe, can't access content
+            console.log('Cannot access cross-origin iframe content');
+          }
+        });
+      }
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_13__(videos).call(videos, function (video) {
+        // Check if video is visible
+        if (_this2.isElementVisible(video) && !_this2.overlays.has(video)) {
+          console.log('Creating overlay for visible video:', video);
+          _this2.createOverlayForVideo(video);
+        }
+      });
+    }
+
+    // Create an overlay container for a specific video
+  }, {
+    key: "createOverlayForVideo",
+    value: function createOverlayForVideo(video) {
+      var _context, _context2, _context3, _context4, _context5;
+      if (!video || !this.isElementVisible(video)) return;
+      console.log('Creating overlay for video:', video);
+
+      // Create overlay container that positions over the video
+      var overlay = document.createElement('div');
+      var videoRect = video.getBoundingClientRect();
+
+      // Style the overlay to position it at the bottom of the video
+      overlay.className = 'speech-text-overlay';
+      overlay.style.cssText = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__(_context = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__(_context2 = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__(_context3 = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__(_context4 = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_14__(_context5 = "\n            position: fixed;\n            left: ".concat(videoRect.left, "px;\n            bottom: ")).call(_context5, window.innerHeight - videoRect.bottom + 10, "px; // Correctly position at bottom\n            width: ")).call(_context4, videoRect.width, "px;\n            padding: 10px;\n            background-color: ")).call(_context3, this.config.bgColor, ";\n            color: ")).call(_context2, this.config.textColor, ";\n            font-size: ")).call(_context, this.config.fontSize, ";\n            text-align: center;\n            z-index: 2147483647;\n            pointer-events: none;\n            opacity: 1;\n            transition: color 0.2s ease; // Smooth transition for color changes\n        ");
+
+      // Add the overlay directly to the document body
+      document.body.appendChild(overlay);
+      console.log('Overlay added to DOM:', overlay);
+
+      // Store reference to the overlay
+      this.overlays.set(video, overlay);
+
+      // Add resize listener to keep overlay positioned correctly
+      this.addResizeListener(video, overlay);
+      return overlay;
+    }
+
+    // Add listener to update overlay position when window is resized
+  }, {
+    key: "addResizeListener",
+    value:
+    // Add listener to update overlay position when window is resized
+    function addResizeListener(video, overlay) {
+      var updatePosition = function updatePosition() {
+        if (!video || !overlay) return;
+        var videoRect = video.getBoundingClientRect();
+        overlay.style.left = "".concat(videoRect.left + window.scrollX, "px");
+        overlay.style.bottom = "".concat(videoRect.bottom + window.scrollY - 50, "px");
+        overlay.style.width = "".concat(videoRect.width, "px");
+      };
+
+      // Update on scroll and resize
+      window.addEventListener('resize', updatePosition);
+      window.addEventListener('scroll', updatePosition);
+
+      // Store the update function for potential future removal
+      overlay.updatePosition = updatePosition;
+    }
+
+    // Process text queue sequentially
+  }, {
+    key: "displayText",
+    value:
+    // Display text on all active video overlays
+    function displayText(text) {
+      var _context6;
+      var isFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!this.config.active || !_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_15__(text).call(text)) return;
+      console.log('VideoOverlayManager: Displaying text on overlay:', text);
+
+      // Update the current text
+      this.currentText = text;
+
+      // Display the text on all overlays
+      var _iterator = _createForOfIteratorHelper(_babel_runtime_corejs3_core_js_stable_instance_entries__WEBPACK_IMPORTED_MODULE_16__(_context6 = this.overlays).call(_context6)),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var _step$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__["default"])(_step.value, 2),
+            video = _step$value[0],
+            overlay = _step$value[1];
+          if (!this.isElementVisible(video)) {
+            // Skip if video is not visible
+            continue;
+          }
+
+          // Update text content
+          overlay.textContent = text;
+
+          // Apply different styles for interim vs final results
+          if (isFinal) {
+            overlay.style.color = this.config.textColor;
+          } else {
+            // Use a slightly different color for interim results
+            overlay.style.color = '#cccccc';
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "processTextQueue",
+    value: function () {
+      var _processTextQueue = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.mark(function _callee() {
+        var _this3 = this;
+        var _context7, _context8, text, _iterator2, _step2, _step2$value, video, overlay, _iterator3, _step3, _overlay;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_9__.wrap(function _callee$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
+            case 0:
+              this.processingQueue = true;
+            case 1:
+              if (!(this.textQueue.length > 0)) {
+                _context9.next = 31;
+                break;
+              }
+              text = this.textQueue.shift(); // If there are no active overlays, check for new videos
+              if (this.overlays.size === 0) {
+                this.setupOverlaysForVisibleVideos();
+              }
+
+              // Show text on all overlays
+              _iterator2 = _createForOfIteratorHelper(_babel_runtime_corejs3_core_js_stable_instance_entries__WEBPACK_IMPORTED_MODULE_16__(_context7 = this.overlays).call(_context7));
+              _context9.prev = 5;
+              _iterator2.s();
+            case 7:
+              if ((_step2 = _iterator2.n()).done) {
+                _context9.next = 15;
+                break;
+              }
+              _step2$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__["default"])(_step2.value, 2), video = _step2$value[0], overlay = _step2$value[1];
+              if (this.isElementVisible(video)) {
+                _context9.next = 11;
+                break;
+              }
+              return _context9.abrupt("continue", 13);
+            case 11:
+              // Update text content
+              overlay.textContent = text;
+              overlay.style.opacity = '1';
+            case 13:
+              _context9.next = 7;
+              break;
+            case 15:
+              _context9.next = 20;
+              break;
+            case 17:
+              _context9.prev = 17;
+              _context9.t0 = _context9["catch"](5);
+              _iterator2.e(_context9.t0);
+            case 20:
+              _context9.prev = 20;
+              _iterator2.f();
+              return _context9.finish(20);
+            case 23:
+              _context9.next = 25;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_17__(function (resolve) {
+                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_11__(resolve, _this3.config.duration);
+              });
+            case 25:
+              // Hide overlays
+              _iterator3 = _createForOfIteratorHelper(_babel_runtime_corejs3_core_js_stable_instance_values__WEBPACK_IMPORTED_MODULE_18__(_context8 = this.overlays).call(_context8));
+              try {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                  _overlay = _step3.value;
+                  _overlay.style.opacity = '0';
+                }
+
+                // Small delay between text segments
+              } catch (err) {
+                _iterator3.e(err);
+              } finally {
+                _iterator3.f();
+              }
+              _context9.next = 29;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_17__(function (resolve) {
+                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_11__(resolve, 300);
+              });
+            case 29:
+              _context9.next = 1;
+              break;
+            case 31:
+              this.processingQueue = false;
+            case 32:
+            case "end":
+              return _context9.stop();
+          }
+        }, _callee, this, [[5, 17, 20, 23]]);
+      }));
+      function processTextQueue() {
+        return _processTextQueue.apply(this, arguments);
+      }
+      return processTextQueue;
+    }() // Remove a specific overlay
+  }, {
+    key: "removeOverlay",
+    value: function removeOverlay(video) {
+      var overlay = this.overlays.get(video);
+      if (overlay) {
+        // Remove the overlay element
+        document.body.removeChild(overlay);
+        this.overlays["delete"](video);
+      }
+    }
+
+    // Remove all overlays
+  }, {
+    key: "removeAllOverlays",
+    value: function removeAllOverlays() {
+      var _context10;
+      var _iterator4 = _createForOfIteratorHelper(_babel_runtime_corejs3_core_js_stable_instance_entries__WEBPACK_IMPORTED_MODULE_16__(_context10 = this.overlays).call(_context10)),
+        _step4;
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var _step4$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_6__["default"])(_step4.value, 2),
+            video = _step4$value[0],
+            overlay = _step4$value[1];
+          document.body.removeChild(overlay);
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      this.overlays.clear();
+      this.textQueue = [];
+    }
+
+    // Check if element is visible
+  }, {
+    key: "isElementVisible",
+    value: function isElementVisible(element) {
+      if (!element) return false;
+      var style = window.getComputedStyle(element);
+      var rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+    }
+  }]);
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VideoOverlayManager);
 
 /***/ }),
 
@@ -66633,6 +67684,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
 /* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
 /* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
+/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
 
 
 
@@ -66655,9 +67707,11 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 
 
 
+
 var ContentHandler = /*#__PURE__*/function () {
   function ContentHandler() {
-    var _context2;
+    var _context2,
+      _this = this;
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__["default"])(this, ContentHandler);
     this.sections = [];
     this.pastBorderStyle = "";
@@ -66666,7 +67720,10 @@ var ContentHandler = /*#__PURE__*/function () {
     this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"]();
     this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_16__["default"]();
     this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_17__["default"]();
-    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_18__["default"]();
+    // this.imageCaptionHandler = new ImageCaptionHandler(); 
+    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
+    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_18__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
+    console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
     this.currentElement = null;
     this.currentLink = null;
     this.walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
@@ -66681,8 +67738,34 @@ var ContentHandler = /*#__PURE__*/function () {
     }, false);
     chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__(_context2 = this.handleMessage).call(_context2, this));
     this.wasSpeaking = false;
+
+    // Add speech event listeners for notification
+    this.speechHandler.addEventListener('speechstart', function () {
+      _this.notifySpeechStarted();
+    });
+    this.speechHandler.addEventListener('speechend', function () {
+      _this.notifySpeechStopped();
+    });
   }
+
+  // Notify sidebar that speech has started
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__["default"])(ContentHandler, [{
+    key: "notifySpeechStarted",
+    value: function notifySpeechStarted() {
+      chrome.runtime.sendMessage({
+        action: "ttsStarted"
+      });
+    }
+
+    // Notify sidebar that speech has stopped
+  }, {
+    key: "notifySpeechStopped",
+    value: function notifySpeechStopped() {
+      chrome.runtime.sendMessage({
+        action: "ttsStopped"
+      });
+    }
+  }, {
     key: "getNextElement",
     value: function getNextElement() {
       var elementsToReturn = [];
@@ -66798,13 +67881,11 @@ var ContentHandler = /*#__PURE__*/function () {
         text: text
       };
     }
-
-    // In the ContentHandler class
   }, {
     key: "speakCurrentSection",
     value: function () {
       var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee2() {
-        var _this = this;
+        var _this2 = this;
         var _this$currentElement, elementsToReturn, text, _loop, i;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context9) {
           while (1) switch (_context9.prev = _context9.next) {
@@ -66814,11 +67895,15 @@ var ContentHandler = /*#__PURE__*/function () {
               }
               _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
               if (!(!this.currentElement || !elementsToReturn)) {
-                _context9.next = 4;
+                _context9.next = 5;
                 break;
               }
+              // Send a notification that speech has finished completely
+              this.notifySpeechStopped();
               return _context9.abrupt("return");
-            case 4:
+            case 5:
+              // Notify that speech has started
+              this.notifySpeechStarted();
               _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _loop(i) {
                 return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context8) {
                   while (1) switch (_context8.prev = _context8.next) {
@@ -66826,7 +67911,7 @@ var ContentHandler = /*#__PURE__*/function () {
                       _context8.next = 2;
                       return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__(/*#__PURE__*/function () {
                         var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee(resolve) {
-                          var _element3$tagName, _element3, speechText, originalBorder, caption;
+                          var _element3$tagName, _element3, speechText, caption;
                           return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context7) {
                             while (1) switch (_context7.prev = _context7.next) {
                               case 0:
@@ -66834,51 +67919,44 @@ var ContentHandler = /*#__PURE__*/function () {
                                 _element3 = elementsToReturn[i];
                                 speechText = text[i];
                                 if (!(((_element3$tagName = _element3.tagName) === null || _element3$tagName === void 0 ? void 0 : _element3$tagName.toLowerCase()) === 'img')) {
-                                  _context7.next = 21;
+                                  _context7.next = 16;
                                   break;
                                 }
                                 console.log('🖼️ Detected image element:', _element3);
-                                originalBorder = _element3.style.border;
-                                _element3.style.border = "2px solid #ffd700";
-                                _context7.prev = 7;
-                                _context7.next = 10;
-                                return _this.imageCaptionHandler.generateCaptionForImage(_element3.src);
-                              case 10:
+                                _context7.prev = 5;
+                                _context7.next = 8;
+                                return _this2.imageCaptionHandler.generateCaptionForImage(_element3.src, _element3);
+                              case 8:
                                 caption = _context7.sent;
                                 speechText = "Image description: ".concat(caption);
-                                _context7.next = 18;
+                                _context7.next = 16;
                                 break;
-                              case 14:
-                                _context7.prev = 14;
-                                _context7.t0 = _context7["catch"](7);
+                              case 12:
+                                _context7.prev = 12;
+                                _context7.t0 = _context7["catch"](5);
                                 console.error('Caption generation failed:', _context7.t0);
                                 speechText = "Image description unavailable";
-                              case 18:
-                                _context7.prev = 18;
-                                // Remove loading indicator
-                                _element3.style.border = originalBorder;
-                                return _context7.finish(18);
-                              case 21:
+                              case 16:
                                 // Highlight and process speech
-                                _this.highlightBox.addHighlight(_element3);
-                                _context7.next = 24;
-                                return _this.speechHandler.speak(speechText, function () {});
-                              case 24:
-                                _this.highlightBox.removeHighlight(_element3);
+                                _this2.highlightBox.addHighlight(_element3);
+                                _context7.next = 19;
+                                return _this2.speechHandler.speak(speechText, function () {});
+                              case 19:
+                                _this2.highlightBox.removeHighlight(_element3);
                                 resolve();
-                                _context7.next = 33;
+                                _context7.next = 28;
                                 break;
-                              case 28:
-                                _context7.prev = 28;
+                              case 23:
+                                _context7.prev = 23;
                                 _context7.t1 = _context7["catch"](0);
                                 console.error('Element processing error:', _context7.t1);
-                                if (element) _this.highlightBox.removeHighlight(element);
+                                if (element) _this2.highlightBox.removeHighlight(element);
                                 resolve();
-                              case 33:
+                              case 28:
                               case "end":
                                 return _context7.stop();
                             }
-                          }, _callee, null, [[0, 28], [7, 14, 18, 21]]);
+                          }, _callee, null, [[0, 23], [5, 12]]);
                         }));
                         return function (_x) {
                           return _ref.apply(this, arguments);
@@ -66891,20 +67969,20 @@ var ContentHandler = /*#__PURE__*/function () {
                 }, _loop);
               });
               i = 0;
-            case 6:
+            case 8:
               if (!(i < elementsToReturn.length)) {
-                _context9.next = 11;
+                _context9.next = 13;
                 break;
               }
-              return _context9.delegateYield(_loop(i), "t0", 8);
-            case 8:
+              return _context9.delegateYield(_loop(i), "t0", 10);
+            case 10:
               i++;
-              _context9.next = 6;
+              _context9.next = 8;
               break;
-            case 11:
+            case 13:
               this.currentElement = null;
               this.speakCurrentSection();
-            case 13:
+            case 15:
             case "end":
               return _context9.stop();
           }
@@ -66914,7 +67992,63 @@ var ContentHandler = /*#__PURE__*/function () {
         return _speakCurrentSection.apply(this, arguments);
       }
       return speakCurrentSection;
-    }() // Add helper method for image loading overlay
+    }() // async speakCurrentSection() {
+    //     if (!this.currentElement) {
+    //         this.currentElement = this.getNextElement();
+    //     }
+    //     let { elementsToReturn, text } = this.currentElement;
+    //     if (!this.currentElement || !elementsToReturn) {
+    //         // Send a notification that speech has finished completely
+    //         this.notifySpeechStopped();
+    //         return;
+    //     }
+    //     // Notify that speech has started
+    //     this.notifySpeechStarted();
+    //     for (let i = 0; i < elementsToReturn.length; i++) {
+    //         await new Promise(async (resolve) => {
+    //             try {
+    //                 const element = elementsToReturn[i];
+    //                 let speechText = text[i];
+    //                 if (element.tagName?.toLowerCase() === 'img') {
+    //                     console.log('🖼️ Detected image element:', element);
+    //                     const originalBorder = element.style.border;
+    //                     // element.style.border = "2px solid #ffd700";
+    //                     // try {
+    //                     //     // Generate caption
+    //                     //     const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src);
+    //                     //     speechText = `Image description: ${caption}`;
+    //                     // } catch (error) {
+    //                     //     console.error('Caption generation failed:', error);
+    //                     //     speechText = "Image description unavailable";
+    //                     // } finally {
+    //                     //     // Remove loading indicator
+    //                     //     element.style.border = originalBorder;
+    //                     // }
+    //                     try {
+    //                         // Pass both the URL and the element to the caption generator
+    //                         const caption = await this.imageCaptionHandler.generateCaptionForImage(element.src, element);
+    //                         speechText = `Image description: ${caption}`;
+    //                     } catch (error) {
+    //                         console.error('Caption generation failed:', error);
+    //                         speechText = "Image description unavailable";
+    //                     }
+    //                 }
+    //                 // Highlight and process speech
+    //                 this.highlightBox.addHighlight(element);
+    //                 await this.speechHandler.speak(speechText, () => {});
+    //                 this.highlightBox.removeHighlight(element);
+    //                 resolve();
+    //             } catch (error) {
+    //                 console.error('Element processing error:', error);
+    //                 if (element) this.highlightBox.removeHighlight(element);
+    //                 resolve();
+    //             }
+    //         });
+    //     }
+    //     this.currentElement = null;
+    //     this.speakCurrentSection();
+    // }
+    // Add helper method for image loading overlay
   }, {
     key: "createImageLoader",
     value: function createImageLoader(imgElement) {
@@ -66933,36 +68067,64 @@ var ContentHandler = /*#__PURE__*/function () {
       return wrapper;
     }
   }, {
+    key: "displayOverlayText",
+    value: function displayOverlayText(text) {
+      var isFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!this.videoOverlayManager) {
+        console.error('VideoOverlayManager not initialized!');
+        return;
+      }
+      console.log('ContentHandler: Sending text to overlay:', text, isFinal);
+      this.videoOverlayManager.displayText(text, isFinal);
+    }
+  }, {
     key: "handleMessage",
     value: function handleMessage(request) {
       if (request.action === "activateImageCaptioning") {
         console.log('[CONTENT] Received captioning activation');
         this.imageCaptionHandler.setCaptionType(request.captionType);
         this.imageCaptionHandler.activate();
+      } else if (request.action === "deactivateImageCaptioning") {
+        console.log('[CONTENT] Received captioning deactivation');
+        this.imageCaptionHandler.deactivate();
+      } else if (request.action === "toggleVideoOverlay") {
+        console.log('[CONTENT] Toggle video overlay:', request.enabled);
+        // Enable/disable the overlay
+        this.videoOverlayManager.setActive(request.enabled);
+        // Notify background script to disable/enable commands
+        chrome.runtime.sendMessage({
+          action: "setCommandsEnabled",
+          enabled: !request.enabled
+        });
+      } else if (request.action === "displayOverlayText") {
+        console.log('[CONTENT] Received text for overlay:', request.text);
+        this.displayOverlayText(request.text, request.isFinal);
       } else if (request.action === "extractText") {
-        if (this.speechHandler.isSpeaking) return;
-        this.currentElement = null;
-        this.speakCurrentSection();
-        this.wasSpeaking = true;
-      } else if (request.action === "skipToNext") {
-        this.speechHandler.stop();
-        if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator3 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step3;
-          try {
-            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-              var el = _step3.value;
-              this.highlightBox.removeHighlight(el);
+        if (this.speechHandler.isSpeaking) {
+          // If already speaking, stop it first
+          this.speechHandler.stop();
+          if (this.currentElement && this.currentElement.elementsToReturn) {
+            var _iterator3 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+              _step3;
+            try {
+              for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                var el = _step3.value;
+                this.highlightBox.removeHighlight(el);
+              }
+            } catch (err) {
+              _iterator3.e(err);
+            } finally {
+              _iterator3.f();
             }
-          } catch (err) {
-            _iterator3.e(err);
-          } finally {
-            _iterator3.f();
           }
+          this.notifySpeechStopped();
+          return;
         }
         this.currentElement = null;
         this.speakCurrentSection();
-      } else if (request.action === "skipToPrevious") {
+        this.wasSpeaking = true;
+      } else if (request.action === "stopTTS") {
+        // Complete stop of TTS
         this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
           var _iterator4 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
@@ -66978,32 +68140,28 @@ var ContentHandler = /*#__PURE__*/function () {
             _iterator4.f();
           }
         }
-        this.textExtractor.clearProcessedElements();
-        this.currentElement = this.prevElement();
-        this.speakCurrentSection();
-      } else if (request.action === "toggleReading") {
-        if (this.speechHandler.isSpeaking) {
-          this.speechHandler.stop();
-          if (this.currentElement && this.currentElement.elementsToReturn) {
-            var _iterator5 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-              _step5;
-            try {
-              for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-                var _el2 = _step5.value;
-                this.highlightBox.removeHighlight(_el2);
-              }
-            } catch (err) {
-              _iterator5.e(err);
-            } finally {
-              _iterator5.f();
+        this.wasSpeaking = false;
+        this.notifySpeechStopped();
+      } else if (request.action === "skipToNext") {
+        this.speechHandler.stop();
+        if (this.currentElement && this.currentElement.elementsToReturn) {
+          var _iterator5 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step5;
+          try {
+            for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+              var _el2 = _step5.value;
+              this.highlightBox.removeHighlight(_el2);
             }
+          } catch (err) {
+            _iterator5.e(err);
+          } finally {
+            _iterator5.f();
           }
-          this.wasSpeaking = false;
-        } else {
-          this.speakCurrentSection();
-          this.wasSpeaking = true;
         }
-      } else if (request.action === "accessLink") {
+        this.currentElement = null;
+        this.speakCurrentSection();
+      } else if (request.action === "skipToPrevious") {
+        this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
           var _iterator6 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
             _step6;
@@ -67017,7 +68175,49 @@ var ContentHandler = /*#__PURE__*/function () {
           } finally {
             _iterator6.f();
           }
+        }
+        this.textExtractor.clearProcessedElements();
+        this.currentElement = this.prevElement();
+        this.speakCurrentSection();
+      } else if (request.action === "toggleReading") {
+        if (this.speechHandler.isSpeaking) {
           this.speechHandler.stop();
+          if (this.currentElement && this.currentElement.elementsToReturn) {
+            var _iterator7 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+              _step7;
+            try {
+              for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+                var _el4 = _step7.value;
+                this.highlightBox.removeHighlight(_el4);
+              }
+            } catch (err) {
+              _iterator7.e(err);
+            } finally {
+              _iterator7.f();
+            }
+          }
+          this.wasSpeaking = false;
+          this.notifySpeechStopped();
+        } else {
+          this.speakCurrentSection();
+          this.wasSpeaking = true;
+        }
+      } else if (request.action === "accessLink") {
+        if (this.currentElement && this.currentElement.elementsToReturn) {
+          var _iterator8 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step8;
+          try {
+            for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+              var _el5 = _step8.value;
+              this.highlightBox.removeHighlight(_el5);
+            }
+          } catch (err) {
+            _iterator8.e(err);
+          } finally {
+            _iterator8.f();
+          }
+          this.speechHandler.stop();
+          this.notifySpeechStopped();
           this.linkHandler.accessLink(this.currentLink);
         }
       } else if (request.action === "performSearch") {
@@ -67025,34 +68225,35 @@ var ContentHandler = /*#__PURE__*/function () {
       } else if (request.action === "pauseTTS") {
         this.speechHandler.stop();
         if (this.currentElement && this.currentElement.elementsToReturn) {
-          var _iterator7 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-            _step7;
+          var _iterator9 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+            _step9;
           try {
-            for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-              var _el4 = _step7.value;
-              this.highlightBox.removeHighlight(_el4);
+            for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+              var _el6 = _step9.value;
+              this.highlightBox.removeHighlight(_el6);
             }
           } catch (err) {
-            _iterator7.e(err);
+            _iterator9.e(err);
           } finally {
-            _iterator7.f();
+            _iterator9.f();
           }
         }
         this.wasSpeaking = false;
+        this.notifySpeechStopped();
       } else if (request.action === "resumeTTS") {
         if (this.wasSpeaking) {
           if (this.currentElement && this.currentElement.elementsToReturn) {
-            var _iterator8 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
-              _step8;
+            var _iterator10 = _createForOfIteratorHelper(this.currentElement.elementsToReturn),
+              _step10;
             try {
-              for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-                var _el5 = _step8.value;
-                this.highlightBox.removeHighlight(_el5);
+              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+                var _el7 = _step10.value;
+                this.highlightBox.removeHighlight(_el7);
               }
             } catch (err) {
-              _iterator8.e(err);
+              _iterator10.e(err);
             } finally {
-              _iterator8.f();
+              _iterator10.f();
             }
           }
           this.speakCurrentSection();
@@ -69041,7 +70242,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("4eeb9d4cb597a09ed162")
+/******/ 		__webpack_require__.h = () => ("dffb8bbc7d3e196fe2a2")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

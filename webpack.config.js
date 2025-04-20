@@ -10,7 +10,8 @@ export default {
   entry: {
     content: './4-content/content.js',
     background: './3-background/background.js',
-    sidebar: './1-sidebar/sidebar.js'
+    sidebar: './1-sidebar/sidebar.js',
+    options: './6-settings/options.js'
   },
   output: {
     path: resolve(__dirname, 'dist'),
@@ -94,7 +95,7 @@ export default {
       '@features': resolve(__dirname, '2-features'),
       '@background': resolve(__dirname, '3-background'),
       '@content': resolve(__dirname, '4-content'),
-      '@common': resolve(__dirname, '5-common'),
+      '@settings': resolve(__dirname, '6-settings'),
       '@sidebar': resolve(__dirname, '1-sidebar'),
       'artyom.js': path.resolve(__dirname, 'node_modules/artyom.js'),
       // '@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/css/all.min.css'),
@@ -118,6 +119,14 @@ export default {
         {
           from: '1-sidebar/sidebar.css',
           to: 'sidebar.css'
+        },
+        {
+          from: '6-settings/options.html',
+          to: 'options.html'
+        },
+        {
+          from: '6-settings/options.css',
+          to: 'options.css'
         },
         {
           from: 'manifest.json',

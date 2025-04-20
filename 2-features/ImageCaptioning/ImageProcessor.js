@@ -51,25 +51,20 @@ export class ImageProcessor {
     if (!this.model || !this.processor || !this.tokenizer) {
       throw new Error('Models not initialized. Call initialize() first.');
     }
-
     try {
       // Load the image from the URL
       const image = await RawImage.fromURL(imageUrl);
-      
       // Process the image for the model
       const visionInputs = await this.processor(image);
-      
       // Prepare text inputs with the specified task
       const prompts = this.processor.construct_prompts(task);
       const textInputs = this.tokenizer(prompts);
-      
       // Generate text based on the image and prompt
       const generatedIds = await this.model.generate({
         ...textInputs,
         ...visionInputs,
         max_new_tokens: this.maxNewTokens,
       });
-      
       // Decode and post-process the generated text
       const generatedText = this.tokenizer.batch_decode(generatedIds, { skip_special_tokens: false })[0];
       return this.processor.post_process_generation(generatedText, task, image.size);
@@ -107,10 +102,8 @@ export class ImageProcessor {
     if (typeof document === 'undefined') {
       throw new Error('Document object is required. This function must run in a browser environment.');
     }
-
     // Query all images on the page
     const allImages = document.querySelectorAll('img');
-    
     // Map each image to an object containing its metadata
     return Array.from(allImages).map(img => {
       return {
