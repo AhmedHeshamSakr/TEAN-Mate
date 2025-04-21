@@ -60,10 +60,27 @@ class ContentHandler {
             self.settings = settings;
             self.highlightWhileReading = settings.highlightText || false;
             self.badge = settings.showIconBadge || false;
+            self.readSelectedTextOnly = settings.readingElement === 'selected';
             // Example: Use TTS rate setting
             const ttsRate = settings.ttsRate || 1.0;
             console.log('Using TTS rate:', ttsRate);
         });
+    }
+
+    getSelectedText() {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString().trim();
+            
+            if (selectedText) {
+                return { 
+                    elementsToReturn: [], // Empty array to prevent highlighting
+                    text: [selectedText]
+                };
+            }
+        }
+        return null;
     }
 
     getNextElement() {
@@ -147,10 +164,28 @@ class ContentHandler {
 
     async speakCurrentSection() {
         if (!this.currentElement) {
-            this.currentElement = this.getNextElement();
+            if (this.readSelectedTextOnly) {
+                this.currentElement = this.getSelectedText();
+                // If no text is selected, don't read anything
+                if (!this.currentElement) {
+                    console.log('No text selected');
+                    return;
+                }
+            } else {
+                this.currentElement = this.getNextElement();
+            }
         }
         let { elementsToReturn, text } = this.currentElement;
         if (!this.currentElement || !elementsToReturn) {
+            return;
+        }
+
+        const isSelectedText = elementsToReturn.length === 0 && text.length > 0;
+    
+        if (isSelectedText) {
+            // Just speak the text without highlighting
+            await this.speechHandler.speak(text[0], ()=>{});
+            this.currentElement = null;
             return;
         }
 
