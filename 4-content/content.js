@@ -53,8 +53,23 @@ class ContentHandler {
                 }
                 else if (InteractionHandler.isInteractiveElement(element)) {
                     const stateText = TextExtractor.getElementState(element);
-                    text.push(`${stateText}${element.textContent.trim()}`);
-                    elementsToReturn.push(element);
+                    const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
+                    let labelText = isRadio ? this.getRadioLabelText(element) : '';
+                    
+                    // Generic radio text discovery
+                    if (isRadio && !labelText) {
+                        labelText = this.findRadioText(element);
+                    }
+
+                    if (isRadio && labelText) {
+                        const textElement = this.findRadioTextElement(element);
+                        text.push(`${stateText}${labelText}`);
+                        elementsToReturn.push(textElement || element);
+                        if (textElement) elementsToReturn.push(element);
+                    } else {
+                        text.push(`${stateText}${element.textContent.trim()}`);
+                        elementsToReturn.push(element);
+                    }
                     TextExtractor.processAllDescendants(element);
                     this.currentLink = element;
                 }
@@ -158,6 +173,87 @@ class ContentHandler {
             await new Promise(resolve => setTimeout(resolve, 50));
             await this.speakCurrentSection(); // Add await
         }
+    }
+
+    // Modified label text extraction
+    getRadioLabelText(element) {
+        const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
+        if (!isRadio) return '';
+        
+        // Find label using aria-labelledby first
+        if (element.hasAttribute('aria-labelledby')) {
+            const labelElement = document.getElementById(element.getAttribute('aria-labelledby'));
+            if (labelElement) return labelElement.textContent.trim() + ' ';
+        }
+        
+        // Then check standard label associations
+        const label = element.closest('label') || 
+                     document.querySelector(`label[for="${element.id}"]`);
+        
+        if (label) {
+            const clone = label.cloneNode(true);
+            const inputs = clone.querySelectorAll('input, button, select, textarea, [role]');
+            inputs.forEach(input => input.remove());
+            return clone.textContent.trim() + ' ';
+        }
+        return element.getAttribute('aria-label') || element.value || '';
+    }
+
+    findRadioTextElement(radioElement) {
+        // Traverse DOM to find nearest text-containing element
+        let currentElement = radioElement.nextElementSibling || radioElement.parentElement;
+        
+        while (currentElement) {
+            if (currentElement.childNodes.length === 1 && 
+                currentElement.firstChild.nodeType === Node.TEXT_NODE) {
+                return currentElement;
+            }
+            
+            const textElement = currentElement.querySelector(':not(input):not(button):not(select)');
+            if (textElement?.textContent?.trim()) {
+                return textElement;
+            }
+            
+            currentElement = currentElement.parentElement;
+        }
+        return null;
+    }
+    
+    findRadioText(radioElement) {
+        // Check aria attributes first
+        if (radioElement.hasAttribute('aria-labelledby')) {
+            const labelElement = document.getElementById(radioElement.getAttribute('aria-labelledby'));
+            if (labelElement) return labelElement.textContent.trim();
+        }
+        
+        // Check adjacent elements
+        const textElement = radioElement.nextElementSibling?.textContent?.trim() || 
+                          radioElement.parentElement?.textContent?.trim();
+        
+        // Fallback to DOM tree traversal
+        if (!textElement) {
+            const container = radioElement.closest('[role="radiogroup"], [role="group"], .radio-container');
+            if (container) {
+                return container.textContent.replace(radioElement.textContent, '').trim();
+            }
+        }
+        
+        return textElement || radioElement.getAttribute('aria-label') || '';
+    }
+    
+    // Update findAssociatedLabel
+    findAssociatedLabel(element) {
+        const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
+        if (!isRadio) return null;
+        
+        // Check ARIA first
+        if (element.hasAttribute('aria-labelledby')) {
+            return document.getElementById(element.getAttribute('aria-labelledby'));
+        }
+        
+        // Then check standard label associations
+        return element.closest('label') || 
+               document.querySelector(`label[for="${element.id}"]`);
     }
 
     handleMessage(request) {

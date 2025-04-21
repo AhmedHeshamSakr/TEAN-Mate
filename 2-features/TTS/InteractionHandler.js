@@ -8,6 +8,18 @@ export default class InteractionHandler {
             return;
         }
 
+        // Handle array return from findInteractiveElement
+        const interactiveElements = this.findInteractiveElement(element) || [];
+        const targets = Array.isArray(interactiveElements) ? interactiveElements : [interactiveElements];
+        
+        for (const target of targets) {
+            if (target) {
+                console.log('Found interactive element, interacting with it');
+                target.click();
+                return;
+            }
+        }
+
         const role = element.getAttribute('role');
         const tagName = element.tagName?.toLowerCase();
         
@@ -65,6 +77,86 @@ export default class InteractionHandler {
                 }
                 break;
         }
+    }
+
+    static findInteractiveElement(element) {
+        // If the element itself is interactive, return it
+        if (element.getAttribute('role') === 'radio' || 
+            element.getAttribute('role') === 'checkbox' ||
+            element.getAttribute('role') === 'button') {
+            return element;
+        }
+
+        // Handle radio button labels first
+        if (element.tagName?.toLowerCase() === 'label') {
+            const associatedInput = document.getElementById(element.getAttribute('for'));
+            if (associatedInput?.type === 'radio') {
+                console.log('Found radio button label');
+                return associatedInput; // Return the actual radio button
+            }
+        }
+        
+        // Look for interactive elements that are direct children only
+        const directChildren = Array.from(element.children);
+        for (const child of directChildren) {
+            if (child.tagName?.toLowerCase() === 'input' && 
+                (child.type === 'radio' || child.type === 'checkbox')) {
+                console.log('Found direct child input');
+                return child;
+            }
+            
+            if (child.getAttribute('role') === 'radio' || 
+                child.getAttribute('role') === 'checkbox' || 
+                child.getAttribute('role') === 'button') {
+                console.log('Found direct child with role');
+                return child;
+            }
+            
+            if (child.tagName?.toLowerCase() === 'button') {
+                console.log('Found direct child button');
+                return child;
+            }
+        }
+        
+        // Check if this is a label with a for attribute
+        if (element.tagName?.toLowerCase() === 'label' && element.hasAttribute('for')) {
+            const forId = element.getAttribute('for');
+            const associatedInput = document.getElementById(forId);
+            if (associatedInput && 
+                (associatedInput.type === 'radio' || associatedInput.type === 'checkbox')) {
+                console.log('Found associated input through label');
+                return [associatedInput, element];
+            }
+        }
+        
+        // Check parent containers (up to 2 levels only)
+        let parent = element.parentElement;
+        if (parent) {
+            // Check if parent is a label
+            if (parent.tagName?.toLowerCase() === 'label' && parent.hasAttribute('for')) {
+                const forId = parent.getAttribute('for');
+                const associatedInput = document.getElementById(forId);
+                if (associatedInput && 
+                    (associatedInput.type === 'radio' || associatedInput.type === 'checkbox')) {
+                    console.log('Found associated input through parent label');
+                    return associatedInput;
+                }
+            }
+            
+            // Check for siblings that might be the actual interactive element
+            const siblings = Array.from(parent.children);
+            for (const sibling of siblings) {
+                if (sibling === element) continue; // Skip the current element
+                
+                if (sibling.tagName?.toLowerCase() === 'input' && 
+                    (sibling.type === 'radio' || sibling.type === 'checkbox')) {
+                    console.log('Found sibling input');
+                    return sibling;
+                }
+            }
+        }
+        
+        return null;
     }
 
     // New method to find nested input elements
@@ -194,6 +286,16 @@ export default class InteractionHandler {
         
         const tagName = element.tagName.toLowerCase();
         
+        if (['body', 'main', 'article', 'section', 'div'].includes(tagName) && 
+            element.children.length > 3) {
+            // Only process large containers if they have specific interactive attributes
+            if (!element.hasAttribute('role') && 
+                !element.hasAttribute('tabindex') && 
+                !element.hasAttribute('onclick')) {
+                return false;
+            }
+        }
+
         // Basic interactive elements
         if (['button', 'input', 'select', 'textarea', 'option', 'a'].includes(tagName)) {
             return true;
@@ -216,6 +318,23 @@ export default class InteractionHandler {
         // Elements that look like custom dropdowns
         if (element.getAttribute('aria-expanded') !== null || 
             element.getAttribute('aria-controls') !== null) {
+            return true;
+        }
+
+        const children = Array.from(element.children);
+        if (children.length <= 3 && children.some(child => {
+            const childTag = child.tagName?.toLowerCase();
+            const childRole = child.getAttribute('role');
+            return ['button', 'input', 'select'].includes(childTag) || 
+                   (childRole && ['button', 'checkbox', 'radio'].includes(childRole));
+        })) {
+            return true;
+        }
+        
+        // Check for tabindex only on elements that look like they might be interactive
+        if (element.hasAttribute('tabindex') && 
+            element.getAttribute('tabindex') !== '-1' && 
+            (element.textContent.trim() || element.querySelector('img'))) {
             return true;
         }
         

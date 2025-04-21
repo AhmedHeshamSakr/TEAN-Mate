@@ -11,66 +11,113 @@ export default class TextExtractor {
     }
 
     static getElementState(element) {
+        const role = element.getAttribute('role') || '';
         const tagName = element.tagName.toLowerCase();
         let stateText = '';
 
-        switch (tagName) {
+        switch(role.toLowerCase()) {
             case 'button':
-                stateText = element.disabled ? 'Disabled button: ' : 'Button: ';
+                stateText = element.disabled || element.getAttribute('aria-disabled') === 'true' 
+                    ? 'Disabled button: ' : 'Button: ';
                 break;
                 
-            case 'input':
-                switch (element.type.toLowerCase()) {
-                    case 'text':
-                    case 'email':
-                    case 'password':
-                    case 'search':
-                    case 'tel':
-                    case 'url':
-                        stateText = `${element.type} field`;
+            case 'checkbox':
+                const checkedState = element.getAttribute('aria-checked');
+                stateText = `Checkbox ${checkedState === 'mixed' ? 'partially checked' :
+                            checkedState === 'true' ? 'checked' : 'unchecked'}`;
+                if (element.disabled || element.getAttribute('aria-disabled') === 'true') {
+                    stateText += ' (disabled)';
+                }
+                break;
+                
+            case 'radio':
+                const isChecked = element.getAttribute('aria-checked') === 'true';
+                stateText = `Radio button ${isChecked ? 'selected' : 'unselected'}`;
+                if (element.disabled || element.getAttribute('aria-disabled') === 'true') {
+                    stateText += ' (disabled)';
+                }
+                break;
+                
+            case 'option':
+                const isSelected = element.getAttribute('aria-selected') === 'true';
+                stateText = isSelected ? 'Selected option: ' : 'Option: ';
+                break;
+                
+            case 'combobox':
+            case 'listbox':
+                const expanded = element.getAttribute('aria-expanded') === 'true';
+                stateText = `${role} ${expanded ? 'expanded' : 'collapsed'}`;
+                break;
+                
+            default:
+                switch (tagName) {
+                    case 'button':
+                        stateText = element.disabled ? 'Disabled button: ' : 'Button: ';
+                        break;
+                        
+                    case 'input':
+                        switch (element.type.toLowerCase()) {
+                            case 'text':
+                            case 'email':
+                            case 'password':
+                            case 'search':
+                            case 'tel':
+                            case 'url':
+                                stateText = `${element.type} field`;
+                                if (element.value) stateText += ` containing: ${element.value}`;
+                                if (element.placeholder) stateText += ` placeholder: ${element.placeholder}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                if (element.readOnly) stateText += ' (read-only)';
+                                break;
+                                
+                            case 'checkbox':
+                                stateText = `Checkbox ${element.checked ? 'checked' : 'unchecked'}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                                
+                            case 'radio':
+                                stateText = `Radio button ${element.checked ? 'selected' : 'unselected'}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                                
+                            case 'submit':
+                                stateText = 'Submit button';
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                        }
+                        break;
+                        
+                    case 'select':
+                        const selectedOptions = Array.from(element.selectedOptions)
+                            .map(opt => opt.textContent)
+                            .join(', ');
+                        stateText = element.multiple ? 'Multiple select' : 'Dropdown';
+                        if (selectedOptions) stateText += ` selected: ${selectedOptions}`;
+                        if (element.disabled) stateText += ' (disabled)';
+                        break;
+                        
+                    case 'textarea':
+                        stateText = 'Text area';
                         if (element.value) stateText += ` containing: ${element.value}`;
                         if (element.placeholder) stateText += ` placeholder: ${element.placeholder}`;
                         if (element.disabled) stateText += ' (disabled)';
                         if (element.readOnly) stateText += ' (read-only)';
                         break;
                         
-                    case 'checkbox':
-                        stateText = `Checkbox ${element.checked ? 'checked' : 'unchecked'}`;
-                        if (element.disabled) stateText += ' (disabled)';
-                        break;
-                        
-                    case 'radio':
-                        stateText = `Radio button ${element.checked ? 'selected' : 'unselected'}`;
-                        if (element.disabled) stateText += ' (disabled)';
-                        break;
-                        
-                    case 'submit':
-                        stateText = 'Submit button';
-                        if (element.disabled) stateText += ' (disabled)';
+                    case 'option':
+                        stateText = element.selected ? 'Selected option: ' : 'Option: ';
                         break;
                 }
                 break;
-                
-            case 'select':
-                const selectedOptions = Array.from(element.selectedOptions)
-                    .map(opt => opt.textContent)
-                    .join(', ');
-                stateText = element.multiple ? 'Multiple select' : 'Dropdown';
-                if (selectedOptions) stateText += ` selected: ${selectedOptions}`;
-                if (element.disabled) stateText += ' (disabled)';
-                break;
-                
-            case 'textarea':
-                stateText = 'Text area';
-                if (element.value) stateText += ` containing: ${element.value}`;
-                if (element.placeholder) stateText += ` placeholder: ${element.placeholder}`;
-                if (element.disabled) stateText += ' (disabled)';
-                if (element.readOnly) stateText += ' (read-only)';
-                break;
-                
-            case 'option':
-                stateText = element.selected ? 'Selected option: ' : 'Option: ';
-                break;
+        }
+        // Add additional ARIA states for all elements
+        const ariaLabels = [];
+        if (element.getAttribute('aria-busy') === 'true') ariaLabels.push('busy');
+        if (element.getAttribute('aria-expanded')) ariaLabels.push(`expanded=${element.getAttribute('aria-expanded')}`);
+        if (element.getAttribute('aria-haspopup')) ariaLabels.push(`has popup`);
+        
+        if (ariaLabels.length > 0) {
+            stateText += ` (${ariaLabels.join(', ')})`;
         }
 
         return stateText;
