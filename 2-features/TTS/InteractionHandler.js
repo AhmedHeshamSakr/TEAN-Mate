@@ -154,6 +154,111 @@ export default class InteractionHandler {
                     return sibling;
                 }
             }
+
+            // This handles cases where text is in a separate element from the radio button
+            if (element.textContent.trim()) {
+                // Look for radio buttons near this text element
+                const radioNearby = this.findNearbyRadioButton(element);
+                if (radioNearby) {
+                    console.log('Found nearby radio button for text element');
+                    return radioNearby;
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    // NEW: Method to find radio buttons near text elements
+    static findNearbyRadioButton(element) {
+        // First check if we're inside a label container
+        const labelContainer = element.closest('label');
+        if (labelContainer) {
+            // Look for radio input or element with role="radio" inside the label
+            const radioInLabel = labelContainer.querySelector('input[type="radio"], [role="radio"]');
+            if (radioInLabel) {
+                return radioInLabel;
+            }
+        }
+        
+        // Check if we're in a common radio button pattern (like Google Forms)
+        // Look for parent containers that might contain both the text and radio
+        let container = element;
+        for (let i = 0; i < 4 && container; i++) { // Check up to 4 levels up
+            container = container.parentElement;
+            if (!container) break;
+            
+            // Generic approach - look for any radio button in this container
+            const radioInContainer = container.querySelector('input[type="radio"], [role="radio"]');
+            if (radioInContainer) {
+                return radioInContainer;
+            }
+
+            if (container.querySelector('[role="radio"]') || 
+                container.closest('[role="radiogroup"]') ||
+                container.getAttribute('aria-checked') !== null) {
+                
+                // Find the radio button element within this container
+                const radioElement = container.querySelector('[role="radio"], input[type="radio"]');
+                if (radioElement) {
+                    return radioElement;
+                }
+                
+                // If the container itself has radio-like attributes, it might be the radio button
+                if (container.getAttribute('aria-checked') !== null || 
+                    container.getAttribute('role') === 'radio') {
+                    return container;
+                }
+            }
+        }
+        
+        // If we're in a list item that might be part of a radio group
+        const radioGroup = element.closest('[role="radiogroup"]');
+        if (radioGroup) {
+            // Find the closest list item or div that contains this element
+            const listItem = element.closest('li, div');
+            if (listItem) {
+                // Look for a radio button in this list item
+                const radioInListItem = listItem.querySelector('input[type="radio"], [role="radio"]');
+                if (radioInListItem) {
+                    return radioInListItem;
+                }
+                
+                // If no explicit radio button, the list item itself might be acting as a radio
+                if (listItem.getAttribute('aria-checked') !== null) {
+                    return listItem;
+                }
+            }
+        }
+
+        // Check for common structural patterns in forms
+        // Many forms place radio buttons and their labels in adjacent elements
+        const parentElement = element.parentElement;
+        if (parentElement) {
+            // Check siblings for radio buttons
+            const siblings = Array.from(parentElement.children);
+            const elementIndex = siblings.indexOf(element);
+            
+            // Check adjacent siblings (both previous and next)
+            if (elementIndex > 0) {
+                const prevSibling = siblings[elementIndex - 1];
+                if (prevSibling.tagName?.toLowerCase() === 'input' && prevSibling.type === 'radio') {
+                    return prevSibling;
+                }
+                if (prevSibling.getAttribute('role') === 'radio') {
+                    return prevSibling;
+                }
+            }
+            
+            if (elementIndex < siblings.length - 1) {
+                const nextSibling = siblings[elementIndex + 1];
+                if (nextSibling.tagName?.toLowerCase() === 'input' && nextSibling.type === 'radio') {
+                    return nextSibling;
+                }
+                if (nextSibling.getAttribute('role') === 'radio') {
+                    return nextSibling;
+                }
+            }
         }
         
         return null;
@@ -167,9 +272,7 @@ export default class InteractionHandler {
         }
         
         // Check for common Google-style form containers
-        if (element.classList.contains('rFrNMe') || 
-            element.classList.contains('Xb9hP') ||
-            element.hasAttribute('jscontroller')) {
+        if (element.hasAttribute('jscontroller')) {
             
             // Look for input inside
             const input = element.querySelector('input');

@@ -32,7 +32,11 @@ export default class TextExtractor {
                 
             case 'radio':
                 const isChecked = element.getAttribute('aria-checked') === 'true';
-                stateText = `Radio button ${isChecked ? 'selected' : 'unselected'}`;
+                const labelIds = element.getAttribute('aria-labelledby')?.split(' ') || [];
+                const labelText = labelIds.map(id => 
+                    document.getElementById(id)?.textContent.trim()
+                ).filter(Boolean).join(' ');
+                stateText = `Radio button ${isChecked ? 'selected' : 'not selected'}. ${labelText ? `: ${labelText}` : ''}`;
                 if (element.disabled || element.getAttribute('aria-disabled') === 'true') {
                     stateText += ' (disabled)';
                 }

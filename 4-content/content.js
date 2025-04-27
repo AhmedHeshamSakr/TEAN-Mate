@@ -52,23 +52,35 @@ class ContentHandler {
                     TextExtractor.processAllDescendants(element);
                 }
                 else if (InteractionHandler.isInteractiveElement(element)) {
+                    console.log('interactive element found in get next element');
+                    console.log(element);
                     const stateText = TextExtractor.getElementState(element);
                     const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
-                    let labelText = isRadio ? this.getRadioLabelText(element) : '';
                     
                     // Generic radio text discovery
-                    if (isRadio && !labelText) {
-                        labelText = this.findRadioText(element);
-                    }
-
-                    if (isRadio && labelText) {
-                        const textElement = this.findRadioTextElement(element);
+                    if (isRadio) {
+                        console.log('generic radio text discovery');
+                        const labelText = this.getRadioLabelText(element);
                         text.push(`${stateText}${labelText}`);
-                        elementsToReturn.push(textElement || element);
-                        if (textElement) elementsToReturn.push(element);
-                    } else {
-                        text.push(`${stateText}${element.textContent.trim()}`);
                         elementsToReturn.push(element);
+                        this.markRadioLabelProcessed(element);
+                    } else {
+                        // Check if this is a container with a radio button child
+                        const radioChild = element.querySelector('[role="radio"]');
+                        if (radioChild && this.isElementVisible(radioChild) && 
+                            !TextExtractor.processedElements.has(radioChild)) {
+                            console.log('container with radio child found');
+                            const childStateText = TextExtractor.getElementState(radioChild);
+                            const childLabelText = this.getRadioLabelText(radioChild);
+                            text.push(`${childStateText}${childLabelText}`);
+                            elementsToReturn.push(radioChild);
+                            this.currentLink = radioChild;
+                            TextExtractor.processedElements.add(radioChild);
+                        } else {
+                            console.log('non-radio text discovery');
+                            text.push(`${stateText}${element.textContent.trim()}`);
+                            elementsToReturn.push(element);
+                        }
                     }
                     TextExtractor.processAllDescendants(element);
                     this.currentLink = element;
@@ -102,6 +114,28 @@ class ContentHandler {
         }
         console.log('no more elements');
         return { elementsToReturn, text };
+    }
+
+    markRadioLabelProcessed(radioElement) {
+        console.log('markRadioLabelProcessed called');
+        // Try ARIA-labelledby first
+        if (radioElement.hasAttribute('aria-labelledby')) {
+            const ids = radioElement.getAttribute('aria-labelledby').split(' ');
+            ids.forEach(id => {
+                const labelEl = document.getElementById(id);
+                if (labelEl) TextExtractor.processedElements.add(labelEl);
+            });
+        }
+        // Try closest label
+        const label = radioElement.closest('label');
+        if (label) {
+            TextExtractor.processedElements.add(label);
+        }
+        // Try label[for]
+        if (radioElement.id) {
+            const forLabel = document.querySelector(`label[for="${radioElement.id}"]`);
+            if (forLabel) TextExtractor.processedElements.add(forLabel);
+        }
     }
 
     prevElement() {
@@ -177,68 +211,38 @@ class ContentHandler {
 
     // Modified label text extraction
     getRadioLabelText(element) {
-        const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
-        if (!isRadio) return '';
-        
-        // Find label using aria-labelledby first
+        console.log('getRadioLabelText called');
         if (element.hasAttribute('aria-labelledby')) {
-            const labelElement = document.getElementById(element.getAttribute('aria-labelledby'));
-            if (labelElement) return labelElement.textContent.trim() + ' ';
+            const ids = element.getAttribute('aria-labelledby').split(' ');
+            const labelText = ids.map(id => {
+                const labelEl = document.getElementById(id);
+                if (labelEl) {
+                    TextExtractor.processedElements.add(labelEl);
+                    return labelEl.textContent.trim();
+                }
+            }).filter(Boolean).join(' ');
+            if (labelText) return labelText;
         }
-        
-        // Then check standard label associations
-        const label = element.closest('label') || 
-                     document.querySelector(`label[for="${element.id}"]`);
-        
-        if (label) {
-            const clone = label.cloneNode(true);
-            const inputs = clone.querySelectorAll('input, button, select, textarea, [role]');
-            inputs.forEach(input => input.remove());
-            return clone.textContent.trim() + ' ';
+        // 2. aria-label
+        if (element.hasAttribute('aria-label')) {
+            return element.getAttribute('aria-label').trim();
         }
-        return element.getAttribute('aria-label') || element.value || '';
-    }
-
-    findRadioTextElement(radioElement) {
-        // Traverse DOM to find nearest text-containing element
-        let currentElement = radioElement.nextElementSibling || radioElement.parentElement;
-        
-        while (currentElement) {
-            if (currentElement.childNodes.length === 1 && 
-                currentElement.firstChild.nodeType === Node.TEXT_NODE) {
-                return currentElement;
-            }
-            
-            const textElement = currentElement.querySelector(':not(input):not(button):not(select)');
-            if (textElement?.textContent?.trim()) {
-                return textElement;
-            }
-            
-            currentElement = currentElement.parentElement;
-        }
-        return null;
-    }
-    
-    findRadioText(radioElement) {
-        // Check aria attributes first
-        if (radioElement.hasAttribute('aria-labelledby')) {
-            const labelElement = document.getElementById(radioElement.getAttribute('aria-labelledby'));
-            if (labelElement) return labelElement.textContent.trim();
-        }
-        
-        // Check adjacent elements
-        const textElement = radioElement.nextElementSibling?.textContent?.trim() || 
-                          radioElement.parentElement?.textContent?.trim();
-        
-        // Fallback to DOM tree traversal
-        if (!textElement) {
-            const container = radioElement.closest('[role="radiogroup"], [role="group"], .radio-container');
-            if (container) {
-                return container.textContent.replace(radioElement.textContent, '').trim();
+        // 3. <label for="...">
+        if (element.id) {
+            const forLabel = document.querySelector(`label[for="${element.id}"]`);
+            if (forLabel) {
+                TextExtractor.processedElements.add(forLabel);
+                return forLabel.textContent.trim();
             }
         }
-        
-        return textElement || radioElement.getAttribute('aria-label') || '';
+        // 4. Closest wrapping <label>
+        const wrappingLabel = element.closest('label');
+        if (wrappingLabel) {
+            TextExtractor.processedElements.add(wrappingLabel);
+            return wrappingLabel.textContent.trim();
+        }
+        // 5. Fallback to value or empty
+        return element.value || 'no radio label text found';
     }
     
     // Update findAssociatedLabel
