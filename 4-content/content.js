@@ -44,26 +44,37 @@ class ContentHandler {
             meta: false
           };
           this.shortcutMap = {};
+
+          this.actionHandlers = {
+            'skipToNext': () => this.handleMessage({ action: "skipToNext" }),
+            'skipToPrevious': () => this.handleMessage({ action: "skipToPrevious" }),
+            'toggleReading': () => this.handleMessage({ action: "toggleReading" }),
+            'accessLink': () => this.handleMessage({ action: "accessLink" }),
+            'toggleSTT': () => this.handleMessage({ action: "toggleSTT" })
+          };
           
-          this.initializeKeyListeners();
-          this.loadShortcuts();
-        
-        // Listen for shortcut updates
-        chrome.runtime.onMessage.addListener((message) => {
-            if (message.action === "shortcuts-updated" && message.shortcuts) {
-                this.shortcutMap = message.shortcuts;
-                console.log("Shortcuts updated in content script:", this.shortcutMap);
-            }
-            return false;
-        });
+        //   this.initializeKeyListeners();
+          this.initializeShortcuts();
     }
+
+    async initializeShortcuts() {
+        await this.loadShortcuts();
+        this.setupKeyListeners();
+        
+        chrome.runtime.onMessage.addListener((message) => {
+          if (message.action === "shortcuts-updated") {
+            this.shortcutMap = message.shortcuts;
+          }
+          return false;
+        });
+      }
 
     async loadShortcuts() {
         return new Promise((resolve) => {
             chrome.runtime.sendMessage(
                 { action: "shortcut-get-shortcuts" },
                 (response) => {
-                    if (response && response.shortcuts) {
+                    if (response?.shortcuts) {
                         this.shortcutMap = response.shortcuts;
                         console.log("Shortcuts loaded in content script:", this.shortcutMap);
                     } else {
@@ -75,7 +86,7 @@ class ContentHandler {
         });
     }
 
-    initializeKeyListeners() {
+    setupKeyListeners() {
         // Improved key event listener with better error handling
         document.addEventListener('keydown', (e) => {
             try {
@@ -152,54 +163,99 @@ class ContentHandler {
     // }
     checkForShortcut(e) {
         // Ignore if within form elements that need key events
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || 
-            e.target.getAttribute('contenteditable') === 'true') {
-          return;
-        }
-      
+        // if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || 
+        //     e.target.getAttribute('contenteditable') === 'true') {
+        //   return;
+        // }
+
+        // if (e.target.isContentEditable || 
+        //     ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+        //   return;
+        // }
+        if (this.shouldIgnoreKeyEvent(e)) return;
         // Ignore modifier-only keys
-        if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+        // if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
         
-        if (!this.shortcutMap || Object.keys(this.shortcutMap).length === 0) {
-          return; // Skip if shortcuts aren't loaded yet
-        }
+        // if (!this.shortcutMap || Object.keys(this.shortcutMap).length === 0) {
+        //   return; // Skip if shortcuts aren't loaded yet
+        // }
         
-        const pressedKey = e.key.toLowerCase();
-        const activeModifiers = [];
-        if (e.ctrlKey) activeModifiers.push('ctrl');
-        if (e.altKey) activeModifiers.push('alt');
-        if (e.shiftKey) activeModifiers.push('shift');
-        if (e.metaKey) activeModifiers.push('meta');
+        // const pressedKey = e.key.toLowerCase();
+        const pressedKey = this.normalizeKey(e.key);
+        const activeModifiers = this.getActiveModifiers();
+
+        // const activeModifiers = [];
+        // if (e.ctrlKey) activeModifiers.push('ctrl');
+        // if (e.altKey) activeModifiers.push('alt');
+        // if (e.shiftKey) activeModifiers.push('shift');
+        // if (e.metaKey) activeModifiers.push('meta');
         
-        // Sort modifiers to ensure consistent comparison
-        activeModifiers.sort();
+        // // Sort modifiers to ensure consistent comparison
+        // activeModifiers.sort();
         
-        // Check each shortcut
-        for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
-          if (!shortcut || !shortcut.key) continue;
+    //     // Check each shortcut
+    //     for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
+    //     //   if (!shortcut || !shortcut.key) continue;
+    //     if (!shortcut?.key) continue;
+
+    //       // Sort modifiers for consistent comparison
+    //       const shortcutModifiers = [...shortcut.modifiers].sort();
           
-          // Sort modifiers for consistent comparison
-          const shortcutModifiers = [...shortcut.modifiers].sort();
-          
-          if (shortcut.key.toLowerCase() === pressedKey &&
-              shortcutModifiers.length === activeModifiers.length &&
-              shortcutModifiers.every((m, i) => m === activeModifiers[i])) {
+    //       if (shortcut.key.toLowerCase() === pressedKey &&
+    //           shortcutModifiers.length === activeModifiers.length &&
+    //           shortcutModifiers.every((m, i) => m === activeModifiers[i])) {
             
-            e.preventDefault();
-            e.stopPropagation();
+    //         e.preventDefault();
+    //         e.stopPropagation();
             
-            // Get the corresponding handler action from the mapping
-            const handlerAction = ACTION_HANDLER_METHODS[action] || action;
+    //         // Get the corresponding handler action from the mapping
+    //         const handlerAction = ACTION_HANDLER_METHODS[action] || action;
             
-            // Trigger the corresponding action
-            this.handleMessage({ action: handlerAction });
-            break;
-          }
+    //         // Trigger the corresponding action
+    //         this.handleMessage({ action: handlerAction });
+    //         break;
+    //       }
+    //     }
+    //   }
+    for (const [action, shortcut] of Object.entries(this.shortcutMap)) {
+        if (!shortcut?.key) continue;
+        
+        if (this.matchesShortcut(pressedKey, activeModifiers, shortcut)) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.actionHandlers[action]?.();
+          break;
         }
       }
+    }
     
+      shouldIgnoreKeyEvent(e) {
+        return ['Alt', 'Control', 'Shift', 'Meta'].includes(e.key) ||
+               e.target.isContentEditable ||
+               ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
+      }
 
+      normalizeKey(key) {
+        const keyMap = {
+          'ArrowRight': 'Right',
+          'ArrowLeft': 'Left',
+          ' ': 'Space',
+          'Enter': 'Enter'
+        };
+        return keyMap[key] || key;
+      }
+      getActiveModifiers() {
+        return Object.entries(this.keyState)
+          .filter(([_, active]) => active)
+          .map(([mod]) => mod);
+      }
 
+      matchesShortcut(pressedKey, activeModifiers, shortcut) {
+        return pressedKey.toLowerCase() === shortcut.key.toLowerCase() &&
+               activeModifiers.length === shortcut.modifiers.length &&
+               activeModifiers.every(m => shortcut.modifiers.includes(m));
+      }
+    
     getSettings(callback) {
         // Try to get settings from sync storage first
         chrome.storage.sync.get('settings', function(data) {

@@ -5,14 +5,14 @@ class BackgroundHandler {
   constructor() {
     this.shortcutManager = new ShortcutManager();
     // Define keyboard shortcut commands and their corresponding actions
-    this.commands = {
+    this.commandActions = {
       "skip-next": "skipToNext",
       "skip-previous": "skipToPrevious",
       "toggle-reading": "toggleReading",
       "access-link": "accessLink",
       "toggle-stt": "toggleSTT",
     };
-    this.initialize();
+    this.initialize().catch(console.error);
   }
 
   async initialize() {
@@ -20,8 +20,16 @@ class BackgroundHandler {
     // Set up all event listeners
     chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
+
     chrome.commands.onCommand.addListener(this.onCommand.bind(this));
     chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
+    // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    //   this.onMessage(request, sender, sendResponse);
+    // });
+    // chrome.commands.onCommand.addListener((command) => {
+    //   this.onCommand(command);
+    // });
+  
   //   chrome.storage.onChanged.addListener(function(changes, namespace) {
   //     if (changes.settings && changes.settings.newValue) {
   //         const newSettings = changes.settings.newValue;
@@ -64,47 +72,63 @@ class BackgroundHandler {
     // Initialize TTS voices when the background script starts
     this.initializeVoices();
   }
-
-  // Broadcast shortcut updates to all active tabs
-  async broadcastShortcutsUpdate(shortcuts) {
-    try {
-      const tabs = await chrome.tabs.query({});
-      for (const tab of tabs) {
-        try {
-          await chrome.tabs.sendMessage(tab.id, {
-            action: "shortcuts-updated",
-            shortcuts: shortcuts
-          });
-        } catch (error) {
-          // Ignore errors for inactive tabs
-        }
-      }
-    } catch (error) {
-      console.error("Error broadcasting shortcut updates:", error);
-    }
-  }
-
- // Handle shortcut customization requests
- async handleShortcutCustomization(request, sender, sendResponse) {
+async broadcastShortcutsUpdate(shortcuts) {
   try {
-    if (request.action === "shortcut-get-shortcuts") {
-      sendResponse({ shortcuts: this.shortcutManager.shortcuts });
-    } 
-    else if (request.action === "shortcut-update-shortcuts") {
-      const success = await this.shortcutManager.saveShortcuts(request.newShortcuts);
-      sendResponse({ success });
-    }
-    else if (request.action === "shortcut-reset-defaults") {
-      const success = await this.shortcutManager.resetToDefaults();
-      sendResponse({ success });
-    }
-    return true; // Required for async sendResponse
+    // 1. Send to all tabs with content scripts
+    const tabs = await chrome.tabs.query({});
+    await Promise.allSettled(
+      tabs.map(tab => {
+        // Skip special Chrome pages
+        if (tab.url?.startsWith('chrome://')) return;
+        
+        return chrome.tabs.sendMessage(tab.id, {
+          action: "shortcuts-updated",
+          shortcuts
+        }).catch(() => {}); // Silently ignore tabs without content scripts
+      })
+    );
+
+    // 2. Send to extension pages (options/popup)
+    // This will reach any extension page that's listening
+    chrome.runtime.sendMessage({
+      action: "shortcuts-updated",
+      shortcuts
+    }).catch(() => {}); // Silently ignore if no listeners
   } catch (error) {
-    console.error("Error handling shortcut customization:", error);
-    sendResponse({ error: error.message });
-    return true;
+    console.error("Broadcast failed:", error);
+    // Non-fatal error - the shortcuts were still saved
   }
 }
+  
+
+async handleShortcutCustomization(request, sender) {
+  try {
+    if (request.action === "shortcut-get-shortcuts") {
+      return { shortcuts: this.shortcutManager.currentShortcuts };
+    }
+
+    if (request.action === "shortcut-update-shortcuts") {
+      const success = await this.shortcutManager.saveShortcuts(request.newShortcuts);
+      return { success };
+    }
+
+    if (request.action === "shortcut-reset-defaults") {
+      await this.shortcutManager.resetToDefaults();
+      return { success: true };
+    }
+
+    // Handle unknown actions
+    return { error: `Unknown action: ${request.action}` };
+
+  } catch (error) {
+    console.error("Error handling shortcut customization:", error);
+    return {
+      success: false,
+      error: error.message || "Unknown error occurred"
+    };
+  }
+}
+
 
 notifyShortcutChange() {
   chrome.runtime.sendMessage({
@@ -145,12 +169,50 @@ if (!await this.shortcutManager.loadShortcuts()) {
     chrome.sidePanel.open({ windowId: tab.windowId });
   }
 
+  // onCommand(command) {
+  //   const action = this.commands[command];
+  //   if (action) {
+  //     this.sendMessageToActiveTab({ action });
+  //   } else {
+  //     console.warn(`Unknown command: ${command}`);
+  //   }
+  // }
+  // onCommand(command) {
+  //   if (!this.shortcutManager?.currentShortcuts?.[command]) {
+  //     console.error(`Shortcut ${command} not found. Using default behavior.`);
+  //     const action = this.commandActions[command];
+  //     if (action) this.sendMessageToActiveTab({ action });
+  //     return;
+  //   }
+  //   }
   onCommand(command) {
-    const action = this.commands[command];
-    if (action) {
+    try {
+      // 1. Check if this is a known command
+      const action = this.commandActions[command];
+      if (!action) {
+        console.warn(`Unknown command received: ${command}`);
+        return;
+      }
+  
+      // 2. Verify we have a shortcut manager
+      if (!this.shortcutManager) {
+        console.error('ShortcutManager not initialized');
+        this.sendMessageToActiveTab({ action }); // Fallback to default behavior
+        return;
+      }
+  
+      // 3. Check if the command exists in our shortcuts
+      // (Note: This check is just for debugging - we should always have the command)
+      if (!this.shortcutManager.currentShortcuts[command]) {
+        console.warn(`Shortcut mapping missing for command: ${command}`);
+      }
+  
+      // 4. Execute the action regardless of shortcut mapping
+      // (The physical key combo is already handled by Chrome's commands API)
       this.sendMessageToActiveTab({ action });
-    } else {
-      console.warn(`Unknown command: ${command}`);
+      
+    } catch (error) {
+      console.error(`Error handling command ${command}:`, error);
     }
   }
 
@@ -164,10 +226,21 @@ if (!await this.shortcutManager.loadShortcuts()) {
     }
     else if (request.action === "updateBadge") {
       this.updateBadge(request.isActive, request.text);
+      sendResponse({ success: true }); // <- add this
+      return true;
     }
     else if (request.action.startsWith("shortcut-")) {
-      return this.handleShortcutCustomization(request, sender, sendResponse);
-    }
+      // --- FIXED HERE ---
+      this.handleShortcutCustomization(request, sender)
+        .then(response => {
+          sendResponse(response);
+        })
+        .catch(error => {
+          console.error('Shortcut handler error:', error);
+          sendResponse({ success: false, error: error.message });
+        });
+      return true; // Keep port open
+    }  
     return false; // For synchronous responses
   }
 
