@@ -1,0 +1,27 @@
+2025-04-30 12:37:15,438 - MediaPipeWebRTC - INFO - MediaPipe models initialized successfully
+2025-04-30 12:37:36,109 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:37:36 +0200] "OPTIONS /offer HTTP/1.1" 200 313 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:37:37,126 - aioice.ice - INFO - Connection(0) Remote candidate "612a4958-d91b-4ef5-910b-f73d493522e0.local" could not be resolved
+2025-04-30 12:37:37,189 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:37:36 +0200] "POST /offer HTTP/1.1" 200 1434 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:37:37,189 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 56368) -> ('197.52.104.135', 60170)) State.FROZEN -> State.WAITING
+2025-04-30 12:37:37,189 - MediaPipeWebRTC - INFO - Connection state changed to connecting
+2025-04-30 12:37:37,190 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 56368) -> ('197.52.104.135', 60170)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:37:37,191 - aioice.ice - INFO - Connection(0) Discovered peer reflexive candidate Candidate(BY8vIQtGLM 1 udp 1845501695 192.168.100.83 60170 typ prflx)
+2025-04-30 12:37:37,191 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 56368) -> ('192.168.100.83', 60170)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:37:37,191 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 56368) -> ('192.168.100.83', 60170)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-04-30 12:37:37,191 - aioice.ice - INFO - Connection(0) ICE completed
+2025-04-30 12:37:37,220 - MediaPipeWebRTC - INFO - Connection state changed to connected
+2025-04-30 12:37:37,222 - MediaPipeWebRTC - INFO - Data channel created: mediapipe-results
+2025-04-30 12:38:43,082 - MediaPipeWebRTC - INFO - Connection state changed to closed
+2025-04-30 12:38:50,824 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:38:50 +0200] "OPTIONS /offer HTTP/1.1" 200 313 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:38:51,828 - aioice.ice - INFO - Connection(1) Remote candidate "1dd13f12-4d84-47b8-b5d3-38b6841fe246.local" could not be resolved
+2025-04-30 12:38:51,894 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:38:50 +0200] "POST /offer HTTP/1.1" 200 1434 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:38:51,895 - aioice.ice - INFO - Connection(1) Check CandidatePair(('192.168.100.83', 64146) -> ('197.52.104.135', 59158)) State.FROZEN -> State.WAITING
+2025-04-30 12:38:51,895 - MediaPipeWebRTC - INFO - Connection state changed to connecting
+2025-04-30 12:38:51,895 - aioice.ice - INFO - Connection(1) Check CandidatePair(('192.168.100.83', 64146) -> ('197.52.104.135', 59158)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:38:51,896 - aioice.ice - INFO - Connection(1) Discovered peer reflexive candidate Candidate(9D5qjKySCm 1 udp 1845501695 192.168.100.83 59158 typ prflx)
+2025-04-30 12:38:51,896 - aioice.ice - INFO - Connection(1) Check CandidatePair(('192.168.100.83', 64146) -> ('192.168.100.83', 59158)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:38:51,897 - aioice.ice - INFO - Connection(1) Check CandidatePair(('192.168.100.83', 64146) -> ('192.168.100.83', 59158)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-04-30 12:38:51,897 - aioice.ice - INFO - Connection(1) ICE completed
+2025-04-30 12:38:51,919 - MediaPipeWebRTC - INFO - Connection state changed to connected
+2025-04-30 12:38:51,921 - MediaPipeWebRTC - INFO - Data channel created: mediapipe-results
+2025-04-30 12:39:36,232 - MediaPipeWebRTC - INFO - Connection state changed to closed

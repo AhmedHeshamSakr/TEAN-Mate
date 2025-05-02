@@ -167,8 +167,8 @@ export default {
         {
           from: '2-features/ImageCaptioning/onnx-runtime/*',
           to: 'onnx-runtime/[name][ext]'
-        }
-
+        },
+       
         // {
         //   from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
         //   to: 'all.min.css'

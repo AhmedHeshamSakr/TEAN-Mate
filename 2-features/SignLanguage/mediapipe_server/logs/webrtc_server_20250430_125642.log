@@ -1,0 +1,14 @@
+2025-04-30 12:56:43,372 - MediaPipeWebRTC - INFO - MediaPipe models initialized successfully
+2025-04-30 12:57:07,269 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:57:07 +0200] "OPTIONS /offer HTTP/1.1" 200 313 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:57:08,286 - aioice.ice - INFO - Connection(0) Remote candidate "494a9e6d-9986-493b-b75c-398b4e1e3a97.local" could not be resolved
+2025-04-30 12:57:08,347 - aiohttp.access - INFO - ::1 [30/Apr/2025:11:57:07 +0200] "POST /offer HTTP/1.1" 200 3399 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-04-30 12:57:08,347 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 50853) -> ('197.52.104.135', 58967)) State.FROZEN -> State.WAITING
+2025-04-30 12:57:08,347 - MediaPipeWebRTC - INFO - Connection state changed to connecting
+2025-04-30 12:57:08,347 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 50853) -> ('197.52.104.135', 58967)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:57:08,351 - aioice.ice - INFO - Connection(0) Discovered peer reflexive candidate Candidate(ePBFDiy9iJ 1 udp 1845501695 192.168.100.83 58967 typ prflx)
+2025-04-30 12:57:08,352 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 50853) -> ('192.168.100.83', 58967)) State.WAITING -> State.IN_PROGRESS
+2025-04-30 12:57:08,352 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.83', 50853) -> ('192.168.100.83', 58967)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-04-30 12:57:08,352 - aioice.ice - INFO - Connection(0) ICE completed
+2025-04-30 12:57:08,379 - MediaPipeWebRTC - INFO - Connection state changed to connected
+2025-04-30 12:57:08,382 - MediaPipeWebRTC - INFO - Data channel created: mediapipe-results
+2025-04-30 12:58:14,138 - MediaPipeWebRTC - INFO - Connection state changed to closed

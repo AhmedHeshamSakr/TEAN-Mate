@@ -216,6 +216,40 @@ img[data-caption-loading] {
     transition: border-color 0.3s ease;
 }
 
+
+/* Sign language container styles */
+.sign-language-container {
+    position: relative;
+}
+
+.sign-language-controls {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: rgba(0, 188, 212, 0.05);
+    border: 1px solid rgba(0, 188, 212, 0.1);
+}
+
+.sign-language-display {
+    margin-top: 15px;
+}
+
+.sign-display {
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.sign-entry {
+    border-left: 3px solid var(--info-color);
+    padding-left: 10px;
+    margin-bottom: 8px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .sidebar-MainContainer {

@@ -47,7 +47,6 @@
         "Florence-2-base-ft/config.json",
         "onnx-runtime/*",
         "Florence-2-base-ft/*"
-
       ],
       "matches": ["<all_urls>"]
     }

@@ -51,14 +51,6 @@
                     </div>
                 </div>
 
-                <!-- Sign Language button -->
-                <!-- <div>
-                    <button class="accessibility-button btn btn-outline-info">
-                        <i class="fas fa-sign-language"></i>
-                        Sign Language
-                    </button>
-                </div>
-                -->
                 <!-- Image Captioning with simplified selection -->
                 <div class="image-caption-container">
                     <button class="accessibility-button btn btn-outline-warning d-flex justify-content-between align-items-center">
@@ -80,15 +72,16 @@
                     </div>
                 </div>
 
-                <!-- Sign Language button with consistent flex styling -->
-                <div>
+                <!-- Sign Language button with simplified functionality -->
+                <div class="sign-language-container">
                     <button class="accessibility-button btn btn-outline-info d-flex justify-content-between align-items-center">
-                        <i class="fas fa-sign-language"></i>
-                        <span>Sign Language</span>
+                        <span>
+                            <i class="fas fa-sign-language"></i>
+                            Screen Sharing
+                        </span>
+                        <span id="sign-status-indicator" class="badge bg-secondary">Off</span>
                     </button>
                 </div>
-
-                
             </div>
 
             <!-- Status/feedback area -->
