@@ -56,28 +56,29 @@ class ContentHandler {
                     console.log(element);
                     const stateText = TextExtractor.getElementState(element);
                     const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
+                    const isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
                     
-                    // Generic radio text discovery
-                    if (isRadio) {
-                        console.log('generic radio text discovery');
-                        const labelText = this.getRadioLabelText(element);
-                        text.push(`${stateText}${labelText}`);
+                    // Generic radio/checkbox text discovery
+                    if (isRadio || isCheckbox) {
+                        console.log(`generic ${isRadio ? 'radio' : 'checkbox'} text discovery`);
+                        const labelText = this.getInputLabelText(element);
+                        text.push(`${stateText}. ${labelText}`);
                         elementsToReturn.push(element);
-                        this.markRadioLabelProcessed(element);
+                        this.markInputLabelProcessed(element);
                     } else {
-                        // Check if this is a container with a radio button child
-                        const radioChild = element.querySelector('[role="radio"]');
-                        if (radioChild && this.isElementVisible(radioChild) && 
-                            !TextExtractor.processedElements.has(radioChild)) {
-                            console.log('container with radio child found');
-                            const childStateText = TextExtractor.getElementState(radioChild);
-                            const childLabelText = this.getRadioLabelText(radioChild);
-                            text.push(`${childStateText}${childLabelText}`);
-                            elementsToReturn.push(radioChild);
-                            this.currentLink = radioChild;
-                            TextExtractor.processedElements.add(radioChild);
+                        // Check if this is a container with a radio button or checkbox child
+                        const radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
+                        if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && 
+                            !TextExtractor.processedElements.has(radioOrCheckboxChild)) {
+                            console.log('container with radio/checkbox child found');
+                            const childStateText = TextExtractor.getElementState(radioOrCheckboxChild);
+                            const childLabelText = this.getInputLabelText(radioOrCheckboxChild);
+                            text.push(`${childStateText}. ${childLabelText}`);
+                            elementsToReturn.push(radioOrCheckboxChild);
+                            this.currentLink = radioOrCheckboxChild;
+                            TextExtractor.processedElements.add(radioOrCheckboxChild);
                         } else {
-                            console.log('non-radio text discovery');
+                            console.log('non-radio/checkbox text discovery');
                             text.push(`${stateText}${element.textContent.trim()}`);
                             elementsToReturn.push(element);
                         }
@@ -114,28 +115,6 @@ class ContentHandler {
         }
         console.log('no more elements');
         return { elementsToReturn, text };
-    }
-
-    markRadioLabelProcessed(radioElement) {
-        console.log('markRadioLabelProcessed called');
-        // Try ARIA-labelledby first
-        if (radioElement.hasAttribute('aria-labelledby')) {
-            const ids = radioElement.getAttribute('aria-labelledby').split(' ');
-            ids.forEach(id => {
-                const labelEl = document.getElementById(id);
-                if (labelEl) TextExtractor.processedElements.add(labelEl);
-            });
-        }
-        // Try closest label
-        const label = radioElement.closest('label');
-        if (label) {
-            TextExtractor.processedElements.add(label);
-        }
-        // Try label[for]
-        if (radioElement.id) {
-            const forLabel = document.querySelector(`label[for="${radioElement.id}"]`);
-            if (forLabel) TextExtractor.processedElements.add(forLabel);
-        }
     }
 
     prevElement() {
@@ -210,8 +189,9 @@ class ContentHandler {
     }
 
     // Modified label text extraction
-    getRadioLabelText(element) {
-        console.log('getRadioLabelText called');
+    // Renamed from getRadioLabelText to handle both radio buttons and checkboxes
+    getInputLabelText(element) {
+        console.log('getInputLabelText called');
         if (element.hasAttribute('aria-labelledby')) {
             const ids = element.getAttribute('aria-labelledby').split(' ');
             const labelText = ids.map(id => {
@@ -220,6 +200,7 @@ class ContentHandler {
                     TextExtractor.processedElements.add(labelEl);
                     return labelEl.textContent.trim();
                 }
+                return null;
             }).filter(Boolean).join(' ');
             if (labelText) return labelText;
         }
@@ -242,13 +223,40 @@ class ContentHandler {
             return wrappingLabel.textContent.trim();
         }
         // 5. Fallback to value or empty
-        return element.value || 'no radio label text found';
+        const elementType = element.type || element.getAttribute('role');
+        return element.value || `no ${elementType} label text found`;
+    }
+    
+    // Renamed from markRadioLabelProcessed to handle both radio buttons and checkboxes
+    markInputLabelProcessed(inputElement) {
+        console.log('markInputLabelProcessed called');
+        // Try ARIA-labelledby first
+        if (inputElement.hasAttribute('aria-labelledby')) {
+            const ids = inputElement.getAttribute('aria-labelledby').split(' ');
+            ids.forEach(id => {
+                const labelEl = document.getElementById(id);
+                if (labelEl) TextExtractor.processedElements.add(labelEl);
+            });
+        }
+        // Try closest label
+        const label = inputElement.closest('label');
+        if (label) {
+            TextExtractor.processedElements.add(label);
+        }
+        // Try label[for]
+        if (inputElement.id) {
+            const forLabel = document.querySelector(`label[for="${inputElement.id}"]`);
+            if (forLabel) TextExtractor.processedElements.add(forLabel);
+        }
     }
     
     // Update findAssociatedLabel
     findAssociatedLabel(element) {
-        const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
-        if (!isRadio) return null;
+        const isInput = element.getAttribute('role') === 'radio' || 
+                        element.type === 'radio' ||
+                        element.getAttribute('role') === 'checkbox' || 
+                        element.type === 'checkbox';
+        if (!isInput) return null;
         
         // Check ARIA first
         if (element.hasAttribute('aria-labelledby')) {
