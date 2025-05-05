@@ -163,6 +163,13 @@ export default class InteractionHandler {
                     console.log('Found nearby radio button for text element');
                     return radioNearby;
                 }
+
+                // Look for checkboxes near this text element
+                const checkboxNearby = this.findNearbyCheckbox(element);
+                if (checkboxNearby) {
+                    console.log('Found nearby checkbox for text element');
+                    return checkboxNearby;
+                }
             }
         }
         
@@ -256,6 +263,95 @@ export default class InteractionHandler {
                     return nextSibling;
                 }
                 if (nextSibling.getAttribute('role') === 'radio') {
+                    return nextSibling;
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    static findNearbyCheckbox(element) {
+        // First check if we're inside a label container
+        const labelContainer = element.closest('label');
+        if (labelContainer) {
+            // Look for checkbox input or element with role="checkbox" inside the label
+            const checkboxInLabel = labelContainer.querySelector('input[type="checkbox"], [role="checkbox"]');
+            if (checkboxInLabel) {
+                return checkboxInLabel;
+            }
+        }
+        
+        // Check if we're in a common checkbox pattern (like Google Forms)
+        // Look for parent containers that might contain both the text and checkbox
+        let container = element;
+        for (let i = 0; i < 4 && container; i++) { // Check up to 4 levels up
+            container = container.parentElement;
+            if (!container) break;
+            
+            // Generic approach - look for any checkbox in this container
+            const checkboxInContainer = container.querySelector('input[type="checkbox"], [role="checkbox"]');
+            if (checkboxInContainer) {
+                return checkboxInContainer;
+            }
+    
+            if (container.querySelector('[role="checkbox"]') || 
+                container.getAttribute('aria-checked') !== null) {
+                
+                // Find the checkbox element within this container
+                const checkboxElement = container.querySelector('[role="checkbox"], input[type="checkbox"]');
+                if (checkboxElement) {
+                    return checkboxElement;
+                }
+                
+                // If the container itself has checkbox-like attributes, it might be the checkbox
+                if (container.getAttribute('aria-checked') !== null || 
+                    container.getAttribute('role') === 'checkbox') {
+                    return container;
+                }
+            }
+        }
+        
+        // If we're in a list item that might contain a checkbox
+        const listItem = element.closest('li, div[role="listitem"]');
+        if (listItem) {
+            // Look for a checkbox in this list item
+            const checkboxInListItem = listItem.querySelector('input[type="checkbox"], [role="checkbox"]');
+            if (checkboxInListItem) {
+                return checkboxInListItem;
+            }
+            
+            // If no explicit checkbox, the list item itself might be acting as a checkbox
+            if (listItem.getAttribute('aria-checked') !== null) {
+                return listItem;
+            }
+        }
+    
+        // Check for common structural patterns in forms
+        // Many forms place checkboxes and their labels in adjacent elements
+        const parentElement = element.parentElement;
+        if (parentElement) {
+            // Check siblings for checkboxes
+            const siblings = Array.from(parentElement.children);
+            const elementIndex = siblings.indexOf(element);
+            
+            // Check adjacent siblings (both previous and next)
+            if (elementIndex > 0) {
+                const prevSibling = siblings[elementIndex - 1];
+                if (prevSibling.tagName?.toLowerCase() === 'input' && prevSibling.type === 'checkbox') {
+                    return prevSibling;
+                }
+                if (prevSibling.getAttribute('role') === 'checkbox') {
+                    return prevSibling;
+                }
+            }
+            
+            if (elementIndex < siblings.length - 1) {
+                const nextSibling = siblings[elementIndex + 1];
+                if (nextSibling.tagName?.toLowerCase() === 'input' && nextSibling.type === 'checkbox') {
+                    return nextSibling;
+                }
+                if (nextSibling.getAttribute('role') === 'checkbox') {
                     return nextSibling;
                 }
             }

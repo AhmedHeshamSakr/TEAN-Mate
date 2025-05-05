@@ -52,8 +52,6 @@ class ContentHandler {
                     TextExtractor.processAllDescendants(element);
                 }
                 else if (InteractionHandler.isInteractiveElement(element)) {
-                    console.log('interactive element found in get next element');
-                    console.log(element);
                     const stateText = TextExtractor.getElementState(element);
                     const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
                     const isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
@@ -68,7 +66,7 @@ class ContentHandler {
                     } else {
                         // Check if this is a container with a radio button or checkbox child
                         const radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
-                        if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && 
+                        if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) &&
                             !TextExtractor.processedElements.has(radioOrCheckboxChild)) {
                             console.log('container with radio/checkbox child found');
                             const childStateText = TextExtractor.getElementState(radioOrCheckboxChild);
@@ -362,7 +360,8 @@ class ContentHandler {
                             style.opacity !== '0' &&
                             style.height !== '0px' &&
                             style.width !== '0px';
-        return isNotHidden;
+        const isInteractive = InteractionHandler.isInteractiveElement(element);
+        return isNotHidden || isInteractive;
     }
 }
 
