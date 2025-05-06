@@ -1,3 +1,5 @@
+import HighlightBox from "../2-features/TTS/HighlightBox.js";
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Bootstrap tabs
     const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
@@ -300,4 +302,178 @@ triggerTabList.forEach(triggerEl => {
         event.preventDefault();
         tabTrigger.show();
     });
+});
+
+
+function setupTextNavigation() {
+    // Create instance of HighlightBox
+    const highlightBox = new HighlightBox();
+
+    // Get all meaningful elements
+    const elements = [];
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_ELEMENT,
+        {
+            acceptNode: function (node) {
+                const tagName = node.tagName?.toLowerCase();
+                if (["script", "style", "noscript"].includes(tagName)) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+
+                // Exclude container-like elements that have children
+                if (
+                    node.textContent.trim().length > 0 &&
+                    node.children.length === 0
+                ) {
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+
+                return NodeFilter.FILTER_SKIP;
+            }
+        },
+        false
+    );
+
+    // Collect elements
+    while (walker.nextNode()) {
+        elements.push(walker.currentNode);
+    }
+
+    // Current index
+    let currentIndex = 0;
+    let isAutoPlaying = true; // Default to auto-navigation
+    
+    function speak(text, rate = 1.0, callback = null) {
+        if (!window.speechSynthesis) {
+            alert("Speech Synthesis not supported in this browser.");
+            return;
+        }
+
+        // Cancel any ongoing speech
+        speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = rate;
+
+        // When speech ends, move to next element if auto-playing
+        utterance.onend = function() {
+            if (isAutoPlaying) {
+                moveToNext();
+            }
+            if (callback) {
+                callback();
+            }
+        };
+
+        speechSynthesis.speak(utterance);
+    }
+    
+    function moveToNext() {
+        if (currentIndex < elements.length - 1) {
+            highlightBox.removeHighlight(elements[currentIndex]);
+    
+            currentIndex++;
+            processCurrent();
+        } else {
+            // End of page reached
+            speak("End of page reached. Auto-navigation stopped.", 1.0, function() {
+                isAutoPlaying = false;
+            });
+        }
+    }
+
+    function processCurrent() {
+        if (currentIndex >= elements.length) {
+            speak("End of page reached.");
+            currentIndex = elements.length - 1; // Stay at last element
+            isAutoPlaying = false; // Stop auto-navigation
+            return;
+        }
+
+        const element = elements[currentIndex];
+        
+        // Highlight the current element
+        // highlightBox.removeHighlight();
+        highlightBox.addHighlight(element);
+
+        const tagName = element.tagName.toLowerCase();
+        let elemText = element.innerText || element.value || "Unnamed element";
+        elemText = elemText.trim();
+
+        if (
+            tagName === 'button' ||
+            (tagName === 'input' && ['button', 'submit'].includes(element.type)) ||
+            (tagName === 'a' && element.href)
+        ) {
+            let label = `This is a ${tagName}`;
+            if (tagName === 'a') label = 'This is a link';
+            if (tagName === 'button') label = 'This is a button';
+            if (tagName === 'input') label = `This is an input of type ${element.type}`;
+
+            speak(`${label} that says: ${elemText}. Press Enter to click it.`);
+        } else {
+            speak(elemText);
+        }
+        //highlightBox.removeHighlight(element);
+    }
+
+    // Set up keyboard navigation
+    document.addEventListener('keydown', function (e) {
+        switch (e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+                isAutoPlaying = false; // Stop auto-navigation when manual control is used
+                speechSynthesis.cancel();
+                currentIndex = Math.min(currentIndex + 1, elements.length - 1);
+                processCurrent();
+                break;
+
+            case 'ArrowLeft':
+            case 'ArrowUp':
+                isAutoPlaying = false; // Stop auto-navigation when manual control is used
+                speechSynthesis.cancel();
+                currentIndex = Math.max(currentIndex - 1, 0);
+                processCurrent();
+                break;
+
+            case 'Enter':
+                isAutoPlaying = false; // Stop auto-navigation when manual control is used
+                const element = elements[currentIndex];
+                const tagName = element.tagName.toLowerCase();
+                if (
+                    tagName === 'button' ||
+                    (tagName === 'input' && ['button', 'submit'].includes(element.type)) ||
+                    (tagName === 'a' && element.href)
+                ) {
+                    element.click();
+                    speak("Clicked on element.");
+                }
+                break;
+
+            case ' ':
+                // Toggle auto-navigation
+                e.preventDefault(); // Prevent scrolling
+                isAutoPlaying = !isAutoPlaying;
+                speak(isAutoPlaying ? "Auto-navigation resumed." : "Auto-navigation paused.", 1.0, function() {
+                    if (isAutoPlaying) {
+                        moveToNext();
+                    }
+                });
+                break;
+                
+            case 'Escape':
+                // Stop auto-navigation
+                isAutoPlaying = false;
+                speak("Auto-navigation stopped.");
+                break;
+        }
+    });
+
+    // Start with the first element
+    processCurrent();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    setupTextNavigation();
 });
