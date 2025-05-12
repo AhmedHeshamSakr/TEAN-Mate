@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holistic Sign Language Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .video-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 45%;
+            min-width: 400px;
+        }
+        .video-container h2 {
+            text-align: center;
+            color: #444;
+            margin-top: 0;
+        }
+        video {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #000;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .button-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4285f4;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.connecting {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .logs {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            color: #721c24;
+        }
+        .success {
+            color: #155724;
+        }
+        .info {
+            color: #0c5460;
+        }
+        .detection-panel {
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .detection-item {
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-left: 3px solid #4285f4;
+            background-color: #f1f8ff;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #555;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .instructions {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+        }
+        .landmarks-display {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .landmark-box {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .landmark-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .landmark-data {
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .landmark-active {
+            background-color: #d1e7dd;
+            border-color: #a3cfbb;
+        }
+        .landmark-inactive {
+            background-color: #f8d7da;
+            border-color: #f5c2c7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Holistic Sign Language Detection</h1>
+    
+    <div class="instructions">
+        <h3>How to Use:</h3>
+        <ol>
+            <li>Open a video with sign language content in another window</li>
+            <li>Click "Share Screen & Connect" and select the window with the sign language video</li>
+            <li>The system will process the video and detect face, pose, and hand landmarks</li>
+            <li>Detection status will appear in the panel below the processed video</li>
+            <li>Pose landmarks will be logged in the server console</li>
+        </ol>
+    </div>
+    
+    <div class="controls">
+        <div class="status disconnected" id="connectionStatus">Disconnected</div>
+        <div class="button-row">
+            <button id="screenShareButton">Share Screen & Connect</button>
+            <button id="stopButton" disabled>Disconnect</button>
+            <button id="pingButton">Test Server Connection</button>
+        </div>
+        <div class="button-row">
+            <button id="toggleLogsButton">Show/Hide Logs</button>
+        </div>
+    </div>
+    
+    <!-- Stats Container -->
+    <div class="stats-container">
+        <div class="stat-box">
+            <span class="stat-label">Capture FPS:</span>
+            <span id="inputFPS" class="stat-value">0.0 FPS</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Processing FPS:</span>
+            <span id="processingFPS" class="stat-value">0.0 FPS</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Face Detection:</span>
+            <span id="faceStatus" class="stat-value">Not detected</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Pose Detection:</span>
+            <span id="poseStatus" class="stat-value">Not detected</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="video-container">
+            <h2>Screen Share</h2>
+            <video id="localVideo" autoplay muted playsinline></video>
+        </div>
+        <div class="video-container">
+            <h2>Processed Video with Landmarks</h2>
+            <video id="remoteVideo" autoplay playsinline></video>
+            <div class="detection-panel" id="detectionPanel">
+                <div class="info">Detection status will appear here...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Landmarks Display Section -->
+    <h2>Landmark Data (Ready for Sign Language Model)</h2>
+    <div class="landmarks-display">
+        <div class="landmark-box" id="faceLandmarks">
+            <div class="landmark-header">
+                <span>Face Landmarks</span>
+                <span class="landmark-status">Not detected</span>
+            </div>
+            <div class="landmark-data">No data available</div>
+        </div>
+        <div class="landmark-box" id="poseLandmarks">
+            <div class="landmark-header">
+                <span>Pose Landmarks</span>
+                <span class="landmark-status">Not detected</span>
+            </div>
+            <div class="landmark-data">No data available</div>
+        </div>
+        <div class="landmark-box" id="leftHandLandmarks">
+            <div class="landmark-header">
+                <span>Left Hand Landmarks</span>
+                <span class="landmark-status">Not detected</span>
+            </div>
+            <div class="landmark-data">No data available</div>
+        </div>
+        <div class="landmark-box" id="rightHandLandmarks">
+            <div class="landmark-header">
+                <span>Right Hand Landmarks</span>
+                <span class="landmark-status">Not detected</span>
+            </div>
+            <div class="landmark-data">No data available</div>
+        </div>
+    </div>
+    
+    <div class="logs" id="logs">
+        <div class="info">Logs will appear here...</div>
+    </div>
+    
+    <script>
+        // DOM elements
+        const screenShareButton = document.getElementById('screenShareButton');
+        const stopButton = document.getElementById('stopButton');
+        const pingButton = document.getElementById('pingButton');
+        const toggleLogsButton = document.getElementById('toggleLogsButton');
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const logs = document.getElementById('logs');
+        const inputFPSElement = document.getElementById('inputFPS');
+        const processingFPSElement = document.getElementById('processingFPS');
+        const faceStatusElement = document.getElementById('faceStatus');
+        const poseStatusElement = document.getElementById('poseStatus');
+        const detectionPanel = document.getElementById('detectionPanel');
+        
+        // Landmark display elements
+        const faceLandmarksElement = document.getElementById('faceLandmarks');
+        const poseLandmarksElement = document.getElementById('poseLandmarks');
+        const leftHandLandmarksElement = document.getElementById('leftHandLandmarks');
+        const rightHandLandmarksElement = document.getElementById('rightHandLandmarks');
+        
+        // Configuration
+        const serverUrl = 'http://localhost:8080';
+        
+        // State
+        let pc; // RTCPeerConnection
+        let localStream; // MediaStream
+        let dataChannel; // RTCDataChannel
+        let lastPoseInfo = null; // Store the last pose information
+        
+        // FPS Counter class
+        class FPSCounter {
+            constructor(displayElement) {
+                this.frameCount = 0;
+                this.startTime = performance.now();
+                this.fps = 0;
+                this.displayElement = displayElement;
+            }
+            
+            update() {
+                this.frameCount++;
+                
+                const currentTime = performance.now();
+                const elapsed = (currentTime - this.startTime) / 1000; // Convert to seconds
+                
+                // Update FPS calculation once per second
+                if (elapsed >= 1.0) {
+                    this.fps = this.frameCount / elapsed;
+                    
+                    // Update display if element exists
+                    if (this.displayElement) {
+                        this.displayElement.textContent = `${this.fps.toFixed(1)} FPS`;
+                        
+                        // Color coding
+                        if (this.fps >= 20) {
+                            this.displayElement.style.color = '#4CAF50'; // Green for good FPS
+                        } else if (this.fps >= 10) {
+                            this.displayElement.style.color = '#FFC107'; // Yellow for medium FPS
+                        } else {
+                            this.displayElement.style.color = '#F44336'; // Red for low FPS
+                        }
+                    }
+                    
+                    // Reset counters
+                    this.startTime = currentTime;
+                    this.frameCount = 0;
+                }
+                
+                return this.fps;
+            }
+        }
+        
+        // Create FPS counters
+        const inputFpsCounter = new FPSCounter(inputFPSElement);
+        const outputFpsCounter = new FPSCounter(processingFPSElement);
+        
+        // FPS monitoring functions
+        function monitorLocalVideo() {
+            if (localVideo.srcObject && !localVideo.paused) {
+                inputFpsCounter.update();
+            }
+            requestAnimationFrame(monitorLocalVideo);
+        }
+        
+        function monitorRemoteVideo() {
+            if (remoteVideo.srcObject && !remoteVideo.paused) {
+                outputFpsCounter.update();
+            }
+            requestAnimationFrame(monitorRemoteVideo);
+        }
+        
+        // Start FPS monitoring
+        requestAnimationFrame(monitorLocalVideo);
+        requestAnimationFrame(monitorRemoteVideo);
+        
+        // Log function
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logLine = document.createElement('div');
+            logLine.className = type;
+            logLine.textContent = `[${timestamp}] ${message}`;
+            logs.appendChild(logLine);
+            logs.scrollTop = logs.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // Update UI status
+        function updateStatus(state) {
+            connectionStatus.className = `status ${state}`;
+            
+            switch (state) {
+                case 'connected':
+                    connectionStatus.textContent = 'Connected';
+                    screenShareButton.disabled = true;
+                    stopButton.disabled = false;
+                    break;
+                case 'connecting':
+                    connectionStatus.textContent = 'Connecting...';
+                    screenShareButton.disabled = true;
+                    stopButton.disabled = true;
+                    break;
+                case 'disconnected':
+                    connectionStatus.textContent = 'Disconnected';
+                    screenShareButton.disabled = false;
+                    stopButton.disabled = true;
+                    break;
+            }
+        }
+        
+        // Update detection status
+        function updateDetectionStatus(results) {
+            // Update face status
+            if (results.has_face) {
+                faceStatusElement.textContent = 'Detected';
+                faceStatusElement.style.color = '#155724';
+                faceLandmarksElement.className = 'landmark-box landmark-active';
+                faceLandmarksElement.querySelector('.landmark-status').textContent = 'Active';
+            } else {
+                faceStatusElement.textContent = 'Not detected';
+                faceStatusElement.style.color = '#721c24';
+                faceLandmarksElement.className = 'landmark-box landmark-inactive';
+                faceLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            }
+            
+            // Update pose status
+            if (results.has_pose) {
+                poseStatusElement.textContent = 'Detected';
+                poseStatusElement.style.color = '#155724';
+                poseLandmarksElement.className = 'landmark-box landmark-active';
+                poseLandmarksElement.querySelector('.landmark-status').textContent = 'Active';
+                
+                // Update pose data if available
+                if (results.pose_info) {
+                    lastPoseInfo = results.pose_info;
+                    
+                    // Update pose landmarks display
+                    const poseData = poseLandmarksElement.querySelector('.landmark-data');
+                    poseData.textContent = 'Key Points:\n';
+                    poseData.textContent += `  Nose: (${results.pose_info.nose_x.toFixed(2)}, ${results.pose_info.nose_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Left Shoulder: (${results.pose_info.left_shoulder_x.toFixed(2)}, ${results.pose_info.left_shoulder_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Right Shoulder: (${results.pose_info.right_shoulder_x.toFixed(2)}, ${results.pose_info.right_shoulder_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Left Elbow: (${results.pose_info.left_elbow_x.toFixed(2)}, ${results.pose_info.left_elbow_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Right Elbow: (${results.pose_info.right_elbow_x.toFixed(2)}, ${results.pose_info.right_elbow_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Left Wrist: (${results.pose_info.left_wrist_x.toFixed(2)}, ${results.pose_info.left_wrist_y.toFixed(2)})\n`;
+                    poseData.textContent += `  Right Wrist: (${results.pose_info.right_wrist_x.toFixed(2)}, ${results.pose_info.right_wrist_y.toFixed(2)})\n`;
+                    
+                    // Add detection details to panel
+                    addDetectionDetail(results);
+                }
+            } else {
+                poseStatusElement.textContent = 'Not detected';
+                poseStatusElement.style.color = '#721c24';
+                poseLandmarksElement.className = 'landmark-box landmark-inactive';
+                poseLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            }
+            
+            // Update hand status
+            if (results.has_left_hand) {
+                leftHandLandmarksElement.className = 'landmark-box landmark-active';
+                leftHandLandmarksElement.querySelector('.landmark-status').textContent = 'Active';
+                leftHandLandmarksElement.querySelector('.landmark-data').textContent = 'Left hand landmarks detected';
+            } else {
+                leftHandLandmarksElement.className = 'landmark-box landmark-inactive';
+                leftHandLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+                leftHandLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            }
+            
+            if (results.has_right_hand) {
+                rightHandLandmarksElement.className = 'landmark-box landmark-active';
+                rightHandLandmarksElement.querySelector('.landmark-status').textContent = 'Active';
+                rightHandLandmarksElement.querySelector('.landmark-data').textContent = 'Right hand landmarks detected';
+            } else {
+                rightHandLandmarksElement.className = 'landmark-box landmark-inactive';
+                rightHandLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+                rightHandLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            }
+        }
+        
+        // Add detection detail to panel
+        function addDetectionDetail(results) {
+            const timestamp = new Date().toLocaleTimeString();
+            
+            // Only update panel when first detection occurs or detection status changes
+            if (detectionPanel.innerHTML === '<div class="info">Detection status will appear here...</div>') {
+                detectionPanel.innerHTML = '';
+            }
+            
+            // Create detection item (only add new items every few seconds to avoid clutter)
+            const items = detectionPanel.querySelectorAll('.detection-item');
+            if (items.length === 0 || performance.now() - (detectionPanel.lastUpdate || 0) > 2000) {
+                const detectionItem = document.createElement('div');
+                detectionItem.className = 'detection-item';
+                
+                // Create detection content
+                let content = `<strong>[${timestamp}]</strong> `;
+                
+                // Add detected components
+                const detected = [];
+                if (results.has_face) detected.push('Face');
+                if (results.has_pose) detected.push('Pose');
+                if (results.has_left_hand) detected.push('Left Hand');
+                if (results.has_right_hand) detected.push('Right Hand');
+                
+                content += `Detected: ${detected.join(', ')}`;
+                
+                // Add pose details if available
+                if (results.pose_info) {
+                    content += `<br>Pose: Wrists at L(${results.pose_info.left_wrist_x.toFixed(2)}, ${results.pose_info.left_wrist_y.toFixed(2)}), ` +
+                              `R(${results.pose_info.right_wrist_x.toFixed(2)}, ${results.pose_info.right_wrist_y.toFixed(2)})`;
+                }
+                
+                detectionItem.innerHTML = content;
+                
+                // Add to panel (at the beginning)
+                detectionPanel.insertBefore(detectionItem, detectionPanel.firstChild);
+                detectionPanel.lastUpdate = performance.now();
+                
+                // Limit to 10 most recent items
+                if (detectionPanel.children.length > 10) {
+                    detectionPanel.removeChild(detectionPanel.lastChild);
+                }
+            }
+        }
+        
+        // Ping server to test connectivity
+        async function pingServer() {
+            try {
+                log('Testing server connection...', 'info');
+                const response = await fetch(`${serverUrl}/ping`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Server responded: ${data.message}`, 'success');
+                    return true;
+                } else {
+                    log(`Server returned status: ${response.status}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                log(`Server connection test failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        // Start screen sharing and WebRTC connection
+        async function startScreenShare() {
+            try {
+                // Test server connectivity first
+                const serverAvailable = await pingServer();
+                if (!serverAvailable) {
+                    log('Cannot connect - server is not available', 'error');
+                    return;
+                }
+                
+                updateStatus('connecting');
+                
+                // Request screen sharing permission
+                log('Requesting screen sharing permission...', 'info');
+                localStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { 
+                        cursor: 'always',
+                        frameRate: { ideal: 30 }
+                    },
+                    audio: false
+                });
+                
+                // Add track ended handler for screen sharing
+                localStream.getVideoTracks()[0].onended = () => {
+                    log('Screen sharing stopped by user', 'info');
+                    stopConnection();
+                };
+                
+                // Display local stream
+                localVideo.srcObject = localStream;
+                log('Screen sharing started', 'success');
+                
+                // Create peer connection
+                log('Creating peer connection...', 'info');
+                pc = new RTCPeerConnection({
+                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                });
+                
+                // Set up connection state change handler
+                pc.onconnectionstatechange = () => {
+                    log(`Connection state changed to ${pc.connectionState}`, 'info');
+                    
+                    if (pc.connectionState === 'connected') {
+                        updateStatus('connected');
+                    } else if (pc.connectionState === 'disconnected' || 
+                              pc.connectionState === 'failed' ||
+                              pc.connectionState === 'closed') {
+                        updateStatus('disconnected');
+                    }
+                };
+                
+                // Create data channel
+                dataChannel = pc.createDataChannel('holistic-landmarks');
+                
+                // Set up data channel handlers
+                dataChannel.onopen = () => {
+                    log('Data channel opened', 'success');
+                    
+                    // Request landmarks periodically
+                    setInterval(() => {
+                        if (dataChannel.readyState === 'open') {
+                            dataChannel.send('get_landmarks');
+                        }
+                    }, 5000); // Every 5 seconds
+                };
+                
+                dataChannel.onclose = () => {
+                    log('Data channel closed', 'info');
+                };
+                
+                dataChannel.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        
+                        if (data.type === 'holistic_landmarks') {
+                            // Process landmarks data
+                            log(`Received landmarks for frame ${data.frame_id}`, 'info');
+                            updateDetectionStatus(data);
+                        } else if (data.type === 'landmarks_history') {
+                            // Process landmarks history
+                            log(`Received landmarks history with ${data.landmarks.length} frames`, 'info');
+                            
+                            // Display in landmarks section
+                            // (We don't actually display full history here as it would be too much data)
+                        } else if (data.type === 'stats' && data.fps !== undefined) {
+                            // Update processing FPS display
+                            processingFPSElement.textContent = `${parseFloat(data.fps).toFixed(1)} FPS`;
+                            
+                            // Color coding based on FPS value
+                            if (data.fps >= 20) {
+                                processingFPSElement.style.color = '#4CAF50'; // Green for good FPS
+                            } else if (data.fps >= 10) {
+                                processingFPSElement.style.color = '#FFC107'; // Yellow for medium FPS
+                            } else {
+                                processingFPSElement.style.color = '#F44336'; // Red for low FPS
+                            }
+                        }
+                    } catch (error) {
+                        log(`Error parsing data channel message: ${error.message}`, 'error');
+                    }
+                };
+                
+                // Handle incoming tracks
+                pc.ontrack = (event) => {
+                    log(`Received ${event.track.kind} track from server`, 'success');
+                    remoteVideo.srcObject = new MediaStream([event.track]);
+                    
+                    // Debug video element
+                    remoteVideo.onloadedmetadata = () => {
+                        log(`Processed video dimensions: ${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`, 'info');
+                    };
+                    
+                    remoteVideo.onplaying = () => {
+                        log('Processed video started playing', 'success');
+                    };
+                };
+                
+                // Add local stream tracks to peer connection
+                localStream.getTracks().forEach(track => {
+                    log(`Adding ${track.kind} track to peer connection`, 'info');
+                    pc.addTrack(track, localStream);
+                });
+                
+                // Create offer
+                log('Creating offer...', 'info');
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                log('Local description set', 'info');
+                
+                // Wait for ICE gathering to complete
+                await new Promise(resolve => {
+                    if (pc.iceGatheringState === 'complete') {
+                        resolve();
+                    } else {
+                        pc.onicegatheringstatechange = () => {
+                            if (pc.iceGatheringState === 'complete') {
+                                resolve();
+                            }
+                        };
+                    }
+                });
+                
+                log('ICE gathering completed, sending offer to server', 'info');
+                
+                // Send offer to server
+                try {
+                    const response = await fetch(`${serverUrl}/offer`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sdp: {
+                                type: pc.localDescription.type,
+                                sdp: pc.localDescription.sdp
+                            }
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server responded with status: ${response.status}`);
+                    }
+                    
+                    const answer = await response.json();
+                    log('Received answer from server', 'success');
+                    
+                    // Set remote description
+                    await pc.setRemoteDescription(new RTCSessionDescription(answer.sdp));
+                    log('Remote description set', 'success');
+                    log('Holistic sign language detection connection established!', 'success');
+                    
+                } catch (error) {
+                    log(`Error sending offer to server: ${error.message}`, 'error');
+                    stopConnection();
+                }
+                
+            } catch (error) {
+                log(`Error starting screen share: ${error.message}`, 'error');
+                if (error.name === 'NotAllowedError') {
+                    log('Screen sharing permission denied by user', 'error');
+                }
+                updateStatus('disconnected');
+            }
+        }
+        
+        // Stop connection and clean up
+        function stopConnection() {
+            log('Stopping connection...', 'info');
+            
+            // Stop tracks
+            if (localStream) {
+                localStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                localVideo.srcObject = null;
+                remoteVideo.srcObject = null;
+            }
+            
+            // Close peer connection
+            if (pc) {
+                pc.close();
+                pc = null;
+            }
+            
+            // Reset UI elements
+            inputFPSElement.textContent = '0.0 FPS';
+            processingFPSElement.textContent = '0.0 FPS';
+            faceStatusElement.textContent = 'Not detected';
+            faceStatusElement.style.color = '#721c24';
+            poseStatusElement.textContent = 'Not detected';
+            poseStatusElement.style.color = '#721c24';
+            
+            // Reset landmarks displays
+            faceLandmarksElement.className = 'landmark-box landmark-inactive';
+            faceLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            faceLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            
+            poseLandmarksElement.className = 'landmark-box landmark-inactive';
+            poseLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            poseLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            
+            leftHandLandmarksElement.className = 'landmark-box landmark-inactive';
+            leftHandLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            leftHandLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            
+            rightHandLandmarksElement.className = 'landmark-box landmark-inactive';
+            rightHandLandmarksElement.querySelector('.landmark-status').textContent = 'Not detected';
+            rightHandLandmarksElement.querySelector('.landmark-data').textContent = 'No data available';
+            
+            // Reset detection panel
+            detectionPanel.innerHTML = '<div class="info">Detection status will appear here...</div>';
+            
+            updateStatus('disconnected');
+            log('Connection stopped', 'info');
+        }
+        
+        // Set up event listeners
+        screenShareButton.addEventListener('click', startScreenShare);
+        stopButton.addEventListener('click', stopConnection);
+        pingButton.addEventListener('click', pingServer);
+        
+        // Toggle logs visibility
+        toggleLogsButton.addEventListener('click', () => {
+            logs.style.display = logs.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // Initial setup
+        updateStatus('disconnected');
+        log('Holistic Sign Language Detection page loaded. Click "Share Screen & Connect" to begin.', 'info');
+    </script>
+</body>
+</html>

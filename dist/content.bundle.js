@@ -3644,16 +3644,6 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/entries */
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js ***!
-  \*****************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__(/*! core-js-pure/stable/instance/fill */ "./node_modules/core-js-pure/stable/instance/fill.js");
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js":
 /*!*******************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js ***!
@@ -4661,22 +4651,6 @@ module.exports = getBuiltInPrototypeMethod('Array', 'entries');
 
 /***/ }),
 
-/***/ "./node_modules/core-js-pure/es/array/virtual/fill.js":
-/*!************************************************************!*\
-  !*** ./node_modules/core-js-pure/es/array/virtual/fill.js ***!
-  \************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-__webpack_require__(/*! ../../../modules/es.array.fill */ "./node_modules/core-js-pure/modules/es.array.fill.js");
-var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
-
-module.exports = getBuiltInPrototypeMethod('Array', 'fill');
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js-pure/es/array/virtual/filter.js":
 /*!**************************************************************!*\
   !*** ./node_modules/core-js-pure/es/array/virtual/filter.js ***!
@@ -5015,27 +4989,6 @@ module.exports = function (it) {
   var own = it.endsWith;
   return typeof it == 'string' || it === StringPrototype
     || (isPrototypeOf(StringPrototype, it) && own === StringPrototype.endsWith) ? method : own;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/es/instance/fill.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/core-js-pure/es/instance/fill.js ***!
-  \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
-var method = __webpack_require__(/*! ../array/virtual/fill */ "./node_modules/core-js-pure/es/array/virtual/fill.js");
-
-var ArrayPrototype = Array.prototype;
-
-module.exports = function (it) {
-  var own = it.fill;
-  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.fill) ? method : own;
 };
 
 
@@ -6381,34 +6334,6 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
     to += inc;
     from += inc;
   } return O;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/internals/array-fill.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/core-js-pure/internals/array-fill.js ***!
-  \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js-pure/internals/to-object.js");
-var toAbsoluteIndex = __webpack_require__(/*! ../internals/to-absolute-index */ "./node_modules/core-js-pure/internals/to-absolute-index.js");
-var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "./node_modules/core-js-pure/internals/length-of-array-like.js");
-
-// `Array.prototype.fill` method implementation
-// https://tc39.es/ecma262/#sec-array.prototype.fill
-module.exports = function fill(value /* , start = 0, end = @length */) {
-  var O = toObject(this);
-  var length = lengthOfArrayLike(O);
-  var argumentsLength = arguments.length;
-  var index = toAbsoluteIndex(argumentsLength > 1 ? arguments[1] : undefined, length);
-  var end = argumentsLength > 2 ? arguments[2] : undefined;
-  var endPos = end === undefined ? length : toAbsoluteIndex(end, length);
-  while (endPos > index) O[index++] = value;
-  return O;
 };
 
 
@@ -12613,30 +12538,6 @@ addToUnscopables('copyWithin');
 
 /***/ }),
 
-/***/ "./node_modules/core-js-pure/modules/es.array.fill.js":
-/*!************************************************************!*\
-  !*** ./node_modules/core-js-pure/modules/es.array.fill.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
-var fill = __webpack_require__(/*! ../internals/array-fill */ "./node_modules/core-js-pure/internals/array-fill.js");
-var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js-pure/internals/add-to-unscopables.js");
-
-// `Array.prototype.fill` method
-// https://tc39.es/ecma262/#sec-array.prototype.fill
-$({ target: 'Array', proto: true }, {
-  fill: fill
-});
-
-// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-addToUnscopables('fill');
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js-pure/modules/es.array.filter.js":
 /*!**************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.array.filter.js ***!
@@ -17900,21 +17801,6 @@ module.exports = function (it) {
   return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.entries)
     || hasOwn(DOMIterables, classof(it)) ? method : own;
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js-pure/stable/instance/fill.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/core-js-pure/stable/instance/fill.js ***!
-  \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var parent = __webpack_require__(/*! ../../es/instance/fill */ "./node_modules/core-js-pure/es/instance/fill.js");
-
-module.exports = parent;
 
 
 /***/ }),
@@ -61138,18 +61024,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ SignLanguageHandler)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/fill */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/fill.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
-/* harmony import */ var _WebRTCMediaPipeConnector_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./WebRTCMediaPipeConnector.js */ "./2-features/SignLanguage/WebRTCMediaPipeConnector.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
 
 
 
@@ -61160,1080 +61043,529 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
+// SignLanguageHandler.js - With visual display of processed video
 var SignLanguageHandler = /*#__PURE__*/function () {
   function SignLanguageHandler() {
-    var _context, _context2;
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, SignLanguageHandler);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, SignLanguageHandler);
     this.isActive = false;
+    this.serverUrl = 'http://localhost:8765';
+    this.peerConnection = null;
+    this.dataChannel = null;
     this.stream = null;
+
+    // Video elements
     this.videoElement = null;
-    this.canvasElement = null;
-    this.debugMode = false;
-    this.debugOverlay = null;
-    this.debugContext = null;
+    this.displayElement = null;
 
-    // Create WebRTC connector
-    this.mediaPipeConnector = new _WebRTCMediaPipeConnector_js__WEBPACK_IMPORTED_MODULE_12__.WebRTCMediaPipeConnector();
-
-    // Set up callback for landmark detection
-    this.mediaPipeConnector.setLandmarksCallback(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onLandmarksDetected).call(_context, this));
-
-    // Set up callback for connection failures
-    this.mediaPipeConnector.setConnectionFailCallback(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onConnectionFailed).call(_context2, this));
-
-    // Variables for tracking state
-    this.fps = 0;
-    this.lastUpdateTime = 0;
+    // Landmark data
+    this.faceLandmarks = null;
+    this.poseLandmarks = null;
     this.leftHandLandmarks = null;
     this.rightHandLandmarks = null;
+
+    // Performance tracking
+    this.lastFrameTime = 0;
+    this.fps = 0;
+    this.frameCount = 0;
   }
 
-  /**
-   * Callback for connection failures
-   * @param {string} state - The connection state that triggered the failure
-   */
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(SignLanguageHandler, [{
-    key: "onConnectionFailed",
-    value: function onConnectionFailed(state) {
-      console.error("WebRTC connection failed: ".concat(state));
-
-      // Deactivate if active
-      if (this.isActive) {
-        this.deactivate();
-
-        // Notify that screen sharing failed
-        window.dispatchEvent(new CustomEvent('screenSharingFailed', {
-          detail: {
-            reason: "Connection failed: ".concat(state)
-          }
-        }));
-
-        // Send message to the extension
-        chrome.runtime.sendMessage({
-          action: "signLanguageStatus",
-          status: 'Error',
-          message: "Connection failed: ".concat(state)
-        });
-      }
-    }
-
-    /**
-     * Callback for when landmarks are detected
-     * @param {Object} results - The landmark detection results
-     */
-  }, {
-    key: "onLandmarksDetected",
-    value:
-    /**
-     * Callback for when landmarks are detected
-     * @param {Object} results - The landmark detection results
-     */
-    function onLandmarksDetected(results) {
-      // Extract the FPS from the results
-      var fps = results.fps || 0;
-
-      // Update the FPS display
-      this.updateFpsDisplay(fps);
-
-      // Update debug info
-      this.updateDebugInfo(results);
-
-      // Extract and process hand landmarks
-      this.leftHandLandmarks = this.findHandByType(results.results, 'Left');
-      this.rightHandLandmarks = this.findHandByType(results.results, 'Right');
-
-      // Dispatch event with hand landmarks
-      var event = new CustomEvent('handLandmarksDetected', {
-        detail: {
-          leftHand: this.leftHandLandmarks,
-          rightHand: this.rightHandLandmarks,
-          poseLandmarks: results.results.poseLandmarks,
-          timestamp: results.timestamp,
-          fps: fps
-        }
-      });
-
-      // Dispatch the event for other components to use
-      window.dispatchEvent(event);
-    }
-
-    /**
-     * Toggle screen sharing state
-     * @returns {Promise<boolean>} The new active state
-     */
-  }, {
-    key: "findHandByType",
-    value:
-    /**
-     * Find a specific hand by type from results
-     * @param {Object} results - The landmark detection results
-     * @param {string} handType - 'Left' or 'Right'
-     * @returns {Array|null} - The hand landmarks or null if not found
-     */
-    function findHandByType(results, handType) {
-      if (!results || !results.multiHandedness || !results.multiHandLandmarks) {
-        return null;
-      }
-      for (var i = 0; i < results.multiHandedness.length; i++) {
-        if (results.multiHandedness[i].label === handType) {
-          return results.multiHandLandmarks[i];
-        }
-      }
-      return null;
-    }
-
-    /**
-     * Deactivate screen sharing and stop MediaPipe processing
-     */
-  }, {
-    key: "deactivate",
-    value: function deactivate() {
-      if (!this.isActive) {
-        console.log("Screen sharing already inactive");
-        return;
-      }
-      console.log("Deactivating Screen Sharing");
-
-      // Disconnect from MediaPipe server
-      this.mediaPipeConnector.disconnect();
-
-      // Stop all tracks in the stream
-      if (this.stream) {
-        var _context3;
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_6__(_context3 = this.stream.getTracks()).call(_context3, function (track) {
-          return track.stop();
-        });
-        this.stream = null;
-      }
-
-      // Clean up video element
-      if (this.videoElement) {
-        this.videoElement.pause();
-        this.videoElement.srcObject = null;
-        document.body.removeChild(this.videoElement);
-        this.videoElement = null;
-      }
-
-      // Clean up visualization element
-      if (this.visualizationElement && this.visualizationElement.parentNode) {
-        document.body.removeChild(this.visualizationElement.parentNode);
-        this.visualizationElement = null;
-      }
-
-      // Reset hand landmarks
-      this.leftHandLandmarks = null;
-      this.rightHandLandmarks = null;
-      this.isActive = false;
-    }
-    /**
-     * Draw hand landmarks on the debug overlay
-     * @param {Object} results - The hand detection results
-     */
-  }, {
-    key: "drawHandLandmarks",
-    value: function drawHandLandmarks(results) {
-      if (!this.debugContext || !this.debugOverlay) return;
-
-      // Clear the canvas
-      this.debugContext.clearRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
-
-      // Draw a gradient background
-      var gradient = this.debugContext.createLinearGradient(0, 0, 0, this.debugOverlay.height);
-      gradient.addColorStop(0, "rgba(0, 0, 0, 0.8)");
-      gradient.addColorStop(1, "rgba(40, 0, 40, 0.8)");
-      this.debugContext.fillStyle = gradient;
-      this.debugContext.fillRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
-
-      // Draw hand landmarks if available
-      if (results.multiHandLandmarks) {
-        for (var i = 0; i < results.multiHandLandmarks.length; i++) {
-          var handLandmarks = results.multiHandLandmarks[i];
-          var handedness = results.multiHandedness[i];
-
-          // Color based on which hand (left/right)
-          var color = handedness.label === 'Left' ? 'rgba(255, 100, 100, 0.9)' : 'rgba(100, 255, 100, 0.9)';
-
-          // Draw connections between landmarks (fingers)
-          this.drawHandConnectors(handLandmarks, color);
-
-          // Draw landmarks (joints)
-          this.drawHandLandmarkPoints(handLandmarks, handedness.label, color);
-        }
-      }
-
-      // Add timestamp
-      this.debugContext.fillStyle = "white";
-      this.debugContext.font = "10px Arial";
-      this.debugContext.fillText("FPS: ".concat(this.fps), 5, 15);
-      this.debugContext.fillText("Left hand: ".concat(this.leftHandLandmarks ? "Detected" : "None"), 5, 30);
-      this.debugContext.fillText("Right hand: ".concat(this.rightHandLandmarks ? "Detected" : "None"), 5, 45);
-    }
-
-    /**
-     * Draw connections between hand landmarks to form the hand structure
-     * @param {Array} landmarks - Hand landmarks
-     * @param {string} color - Color to use for drawing
-     */
-  }, {
-    key: "drawHandConnectors",
-    value: function drawHandConnectors(landmarks, color) {
-      var _this = this;
-      if (!this.debugContext) return;
-
-      // Define hand connections (fingers and palm)
-      var connections = [
-      // Thumb
-      [0, 1], [1, 2], [2, 3], [3, 4],
-      // Index finger
-      [0, 5], [5, 6], [6, 7], [7, 8],
-      // Middle finger
-      [0, 9], [9, 10], [10, 11], [11, 12],
-      // Ring finger
-      [0, 13], [13, 14], [14, 15], [15, 16],
-      // Pinky
-      [0, 17], [17, 18], [18, 19], [19, 20],
-      // Palm
-      [0, 5], [5, 9], [9, 13], [13, 17]];
-      this.debugContext.strokeStyle = color;
-      this.debugContext.lineWidth = 2;
-
-      // Draw each connection
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_6__(connections).call(connections, function (_ref) {
-        var _ref2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_ref, 2),
-          i = _ref2[0],
-          j = _ref2[1];
-        var x1 = landmarks[i].x * _this.debugOverlay.width;
-        var y1 = landmarks[i].y * _this.debugOverlay.height;
-        var x2 = landmarks[j].x * _this.debugOverlay.width;
-        var y2 = landmarks[j].y * _this.debugOverlay.height;
-        _this.debugContext.beginPath();
-        _this.debugContext.moveTo(x1, y1);
-        _this.debugContext.lineTo(x2, y2);
-        _this.debugContext.stroke();
-      });
-    }
-
-    /**
-     * Draw individual landmark points for the hand
-     * @param {Array} landmarks - Hand landmarks
-     * @param {string} handLabel - Which hand (Left/Right)
-     * @param {string} color - Color to use for drawing
-     */
-  }, {
-    key: "drawHandLandmarkPoints",
-    value: function drawHandLandmarkPoints(landmarks, handLabel, color) {
-      var _this2 = this;
-      if (!this.debugContext) return;
-
-      // Draw each landmark
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_6__(landmarks).call(landmarks, function (landmark, index) {
-        var _context4, _context5;
-        var x = landmark.x * _this2.debugOverlay.width;
-        var y = landmark.y * _this2.debugOverlay.height;
-
-        // Draw circle for the landmark
-        _this2.debugContext.fillStyle = color;
-
-        // Special highlighting for fingertips (landmarks 4, 8, 12, 16, 20)
-        var isFingerTip = _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_7__(_context4 = [4, 8, 12, 16, 20]).call(_context4, index);
-        var radius = isFingerTip ? 5 : 3;
-        _this2.debugContext.beginPath();
-        _this2.debugContext.arc(x, y, radius, 0, 2 * Math.PI);
-        _babel_runtime_corejs3_core_js_stable_instance_fill__WEBPACK_IMPORTED_MODULE_8__(_context5 = _this2.debugContext).call(_context5);
-
-        // Add index number for specific landmarks
-        if (index % 4 === 0 || index === 0) {
-          _this2.debugContext.fillStyle = "white";
-          _this2.debugContext.font = "8px Arial";
-          _this2.debugContext.fillText("".concat(index), x + 5, y);
-        }
-      });
-
-      // Add hand label
-      var firstPoint = landmarks[0];
-      var labelX = firstPoint.x * this.debugOverlay.width;
-      var labelY = firstPoint.y * this.debugOverlay.height - 10;
-      this.debugContext.fillStyle = "white";
-      this.debugContext.font = "10px Arial";
-      this.debugContext.fillText(handLabel, labelX, labelY);
-    }
-
-    /**
-    * Simplified video display initialization with better debugging
-    */
-  }, {
-    key: "initializeVideoDisplay",
-    value: function initializeVideoDisplay() {
-      var _this3 = this;
-      // Create a container for the video
-      var videoContainer = document.createElement("div");
-      videoContainer.id = "sign-language-visualization-container";
-      videoContainer.style.position = "fixed";
-      videoContainer.style.bottom = "20px";
-      videoContainer.style.right = "20px";
-      videoContainer.style.zIndex = "9999";
-      videoContainer.style.borderRadius = "8px";
-      videoContainer.style.overflow = "hidden";
-      videoContainer.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
-      videoContainer.style.backgroundColor = "#111";
-      videoContainer.style.width = "320px";
-
-      // Create a title bar
-      var titleBar = document.createElement("div");
-      titleBar.textContent = "Sign Language Detection";
-      titleBar.style.backgroundColor = "#4285F4";
-      titleBar.style.color = "white";
-      titleBar.style.padding = "8px";
-      titleBar.style.textAlign = "center";
-      titleBar.style.fontWeight = "bold";
-      titleBar.style.fontSize = "14px";
-      titleBar.style.position = "relative";
-
-      // Create close button
-      var closeBtn = document.createElement("button");
-      closeBtn.textContent = "×";
-      closeBtn.style.position = "absolute";
-      closeBtn.style.right = "8px";
-      closeBtn.style.top = "6px";
-      closeBtn.style.backgroundColor = "transparent";
-      closeBtn.style.border = "none";
-      closeBtn.style.color = "white";
-      closeBtn.style.fontSize = "18px";
-      closeBtn.style.cursor = "pointer";
-      closeBtn.style.padding = "0 4px";
-      closeBtn.onclick = function () {
-        document.body.removeChild(videoContainer);
-        _this3.visualizationElement = null;
-      };
-
-      // Create video element
-      this.visualizationElement = document.createElement("video");
-      this.visualizationElement.id = "sign-language-visualization-video";
-      this.visualizationElement.autoplay = true;
-      this.visualizationElement.playsInline = true;
-      this.visualizationElement.muted = true;
-      this.visualizationElement.style.width = "100%";
-      this.visualizationElement.style.display = "block";
-      this.visualizationElement.style.backgroundColor = "#000";
-
-      // Add debug info display
-      this.debugInfo = document.createElement("div");
-      this.debugInfo.id = "sign-language-debug-info";
-      this.debugInfo.textContent = "Initializing...";
-      this.debugInfo.style.padding = "8px";
-      this.debugInfo.style.color = "#aaa";
-      this.debugInfo.style.fontSize = "12px";
-      this.debugInfo.style.fontFamily = "monospace";
-
-      // Add elements to container
-      titleBar.appendChild(closeBtn);
-      videoContainer.appendChild(titleBar);
-      videoContainer.appendChild(this.visualizationElement);
-      videoContainer.appendChild(this.debugInfo);
-
-      // Add to document
-      document.body.appendChild(videoContainer);
-      return this.visualizationElement;
-    }
-
-    /**
-     * Activate screen sharing and MediaPipe processing with improved error handling
-     */
-  }, {
+  // Activate screen sharing and WebRTC connection
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(SignLanguageHandler, [{
     key: "activate",
-    value: (function () {
-      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
-        var _this4 = this;
-        var visualizationElement, connected, success;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+    value: function () {
+      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee() {
+        var _this = this;
+        var _context, serverAvailable, offer, response, answer;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               if (!this.isActive) {
-                _context6.next = 3;
+                _context2.next = 3;
                 break;
               }
-              console.log("Screen sharing already active");
-              return _context6.abrupt("return", true);
+              console.log("[SignLanguageHandler] Already active");
+              return _context2.abrupt("return", true);
             case 3:
-              console.log("Activating Screen Sharing with MediaPipe via WebRTC");
-              _context6.prev = 4;
-              // Initialize video display
-              visualizationElement = this.initializeVideoDisplay();
-              this.updateDebugInfo("Requesting screen access...");
-
-              // Request screen capture permission
-              _context6.next = 9;
+              _context2.prev = 3;
+              console.log("[SignLanguageHandler] Step 1: Testing server connectivity");
+              // Check server connectivity
+              _context2.next = 7;
+              return this.pingServer();
+            case 7:
+              serverAvailable = _context2.sent;
+              if (serverAvailable) {
+                _context2.next = 10;
+                break;
+              }
+              throw new Error("Python MediaPipe server is not available");
+            case 10:
+              console.log("[SignLanguageHandler] Step 2: Creating video elements");
+              // Create video elements for display
+              this.createVideoElements();
+              console.log("[SignLanguageHandler] Step 3: Requesting screen sharing permission");
+              // Request screen sharing
+              _context2.next = 15;
               return navigator.mediaDevices.getDisplayMedia({
                 video: {
-                  frameRate: 30,
-                  cursor: "always"
+                  cursor: 'always',
+                  frameRate: {
+                    ideal: 30
+                  }
                 },
                 audio: false
               });
-            case 9:
-              this.stream = _context6.sent;
-              this.updateDebugInfo("Screen access granted. Setting up connection...");
-
-              // Connect to the MediaPipe server
-              _context6.next = 13;
-              return this.mediaPipeConnector.connect();
-            case 13:
-              connected = _context6.sent;
-              if (connected) {
-                _context6.next = 18;
-                break;
-              }
-              this.updateDebugInfo("Failed to connect to MediaPipe server");
-              console.error("Failed to connect to MediaPipe server");
-              return _context6.abrupt("return", false);
-            case 18:
-              this.updateDebugInfo("Connected to server. Setting up video stream...");
-
-              // Set up video element for the stream
-              this.videoElement = document.createElement("video");
+            case 15:
+              this.stream = _context2.sent;
+              // Display local stream
               this.videoElement.srcObject = this.stream;
-              this.videoElement.style.display = "none"; // Hide the source video element
-              this.videoElement.autoplay = true;
-              this.videoElement.playsInline = true;
-              document.body.appendChild(this.videoElement);
-
-              // Wait for video to be ready
-              _context6.next = 27;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_9__(function (resolve) {
-                _this4.videoElement.onloadedmetadata = function () {
-                  console.log("Video metadata loaded");
-                  resolve();
-                };
-                // If already loaded, resolve immediately
-                if (_this4.videoElement.readyState >= 2) {
-                  console.log("Video already loaded");
-                  resolve();
-                }
-              });
-            case 27:
-              _context6.next = 29;
+              _context2.next = 19;
               return this.videoElement.play();
-            case 29:
-              console.log("Source video playback started");
-              this.updateDebugInfo("Source video ready. Starting detection...");
-
-              // Set up track receive handling
-              this.mediaPipeConnector.pc.ontrack = function (event) {
-                console.log("Received track: ".concat(event.track.kind));
-                _this4.updateDebugInfo("Received ".concat(event.track.kind, " track from server"));
-                if (event.track.kind === 'video') {
-                  // Create a new MediaStream with the track
-                  var stream = new MediaStream([event.track]);
-
-                  // Attach the stream to the visualization element
-                  _this4.visualizationElement.srcObject = stream;
-                  _this4.visualizationElement.play()["catch"](function (err) {
-                    console.error("Error playing visualization video:", err);
-                    _this4.updateDebugInfo("Error playing video: ".concat(err.message));
-                  });
-
-                  // Debug visualization element
-                  console.log("Visualization element:", _this4.visualizationElement);
-                  console.log("Stream tracks:", stream.getTracks());
-                }
-              };
-
-              // Start sending video to the WebRTC server
-              _context6.next = 34;
-              return this.mediaPipeConnector.startVideo(this.videoElement);
-            case 34:
-              success = _context6.sent;
-              if (success) {
-                _context6.next = 38;
-                break;
-              }
-              this.updateDebugInfo("Failed to start video streaming");
-              throw new Error("Failed to start video streaming to server");
-            case 38:
-              this.updateDebugInfo("Video streaming started. Waiting for visualization...");
-
+            case 19:
               // Handle stream ending (user stops sharing)
               this.stream.getVideoTracks()[0].onended = function () {
-                console.log("Screen sharing stopped by user");
-                _this4.deactivate();
-
-                // Notify that screen sharing was stopped
+                console.log("[SignLanguageHandler] Screen sharing stopped by user");
+                _this.deactivate();
                 window.dispatchEvent(new CustomEvent('screenSharingEnded'));
+              };
+              console.log("[SignLanguageHandler] Step 4: Creating WebRTC connection");
+              // Create RTCPeerConnection
+              this.peerConnection = new RTCPeerConnection({
+                iceServers: [{
+                  urls: 'stun:stun.l.google.com:19302'
+                }]
+              });
 
-                // Send message to the extension
-                chrome.runtime.sendMessage({
-                  action: "signLanguageStatus",
-                  status: 'Off'
+              // Handle connection state changes
+              this.peerConnection.onconnectionstatechange = function () {
+                console.log("[SignLanguageHandler] Connection state: ".concat(_this.peerConnection.connectionState));
+                if (_this.peerConnection.connectionState === 'disconnected' || _this.peerConnection.connectionState === 'failed' || _this.peerConnection.connectionState === 'closed') {
+                  _this.deactivate();
+                }
+              };
+
+              // Create data channel
+              this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
+
+              // Set up data channel handlers
+              this.dataChannel.onopen = function () {
+                console.log("[SignLanguageHandler] Data channel opened");
+              };
+              this.dataChannel.onclose = function () {
+                console.log("[SignLanguageHandler] Data channel closed");
+              };
+              this.dataChannel.onmessage = function (event) {
+                try {
+                  var data = JSON.parse(event.data);
+                  if (data.type === 'holistic_landmarks') {
+                    // Process landmarks data
+                    _this.processLandmarks(data);
+                  } else if (data.type === 'stats' && data.fps !== undefined) {
+                    // Update FPS
+                    _this.fps = data.fps;
+                  }
+                } catch (error) {
+                  console.error("[SignLanguageHandler] Error parsing data channel message:", error);
+                }
+              };
+
+              // Handle incoming processed video
+              this.peerConnection.ontrack = function (event) {
+                console.log("[SignLanguageHandler] Received ".concat(event.track.kind, " track from server"));
+
+                // Display the processed video with landmarks
+                _this.displayElement.srcObject = new MediaStream([event.track]);
+                _this.displayElement.play()["catch"](function (e) {
+                  console.error("[SignLanguageHandler] Error playing display video:", e);
                 });
               };
-              this.isActive = true;
-              return _context6.abrupt("return", true);
-            case 44:
-              _context6.prev = 44;
-              _context6.t0 = _context6["catch"](4);
-              console.error("Error activating sign language detection:", _context6.t0);
-              this.updateDebugInfo("Error: ".concat(_context6.t0.message || _context6.t0));
 
-              // If the user cancels the screen sharing prompt
-              if (_context6.t0.name === 'NotAllowedError') {
-                console.log("User denied screen capture permission");
-                this.updateDebugInfo("Screen sharing permission denied");
+              // Add stream tracks to peer connection
+              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context = this.stream.getTracks()).call(_context, function (track) {
+                console.log("[SignLanguageHandler] Adding ".concat(track.kind, " track to peer connection"));
+                _this.peerConnection.addTrack(track, _this.stream);
+              });
+              console.log("[SignLanguageHandler] Step 5: Creating and sending offer");
+              // Create offer
+              _context2.next = 32;
+              return this.peerConnection.createOffer();
+            case 32:
+              offer = _context2.sent;
+              _context2.next = 35;
+              return this.peerConnection.setLocalDescription(offer);
+            case 35:
+              _context2.next = 37;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__(function (resolve) {
+                if (_this.peerConnection.iceGatheringState === 'complete') {
+                  resolve();
+                } else {
+                  _this.peerConnection.onicegatheringstatechange = function () {
+                    if (_this.peerConnection.iceGatheringState === 'complete') {
+                      resolve();
+                    }
+                  };
+                }
+              });
+            case 37:
+              _context2.next = 39;
+              return fetch("".concat(this.serverUrl, "/offer"), {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__({
+                  sdp: {
+                    type: this.peerConnection.localDescription.type,
+                    sdp: this.peerConnection.localDescription.sdp
+                  }
+                })
+              });
+            case 39:
+              response = _context2.sent;
+              if (response.ok) {
+                _context2.next = 42;
+                break;
               }
+              throw new Error("Server responded with status: ".concat(response.status));
+            case 42:
+              _context2.next = 44;
+              return response.json();
+            case 44:
+              answer = _context2.sent;
+              _context2.next = 47;
+              return this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer.sdp));
+            case 47:
+              console.log("[SignLanguageHandler] WebRTC connection established");
+              this.isActive = true;
+
+              // Show the video display container
+              this.showVideoContainer();
+
+              // Request landmarks periodically
+              this.landmarksInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_7__(function () {
+                if (_this.dataChannel && _this.dataChannel.readyState === 'open') {
+                  _this.dataChannel.send('get_landmarks');
+                }
+              }, 5000); // Every 5 seconds
+              return _context2.abrupt("return", true);
+            case 54:
+              _context2.prev = 54;
+              _context2.t0 = _context2["catch"](3);
+              console.error('[SignLanguageHandler] Error activating screen sharing:', _context2.t0);
 
               // Clean up resources
-              this.mediaPipeConnector.disconnect();
-              return _context6.abrupt("return", false);
-            case 51:
+              this.cleanupResources();
+
+              // Dispatch error event
+              window.dispatchEvent(new CustomEvent('screenSharingFailed', {
+                detail: {
+                  reason: _context2.t0.message || _context2.t0.name || "Unknown error"
+                }
+              }));
+              return _context2.abrupt("return", false);
+            case 60:
             case "end":
-              return _context6.stop();
+              return _context2.stop();
           }
-        }, _callee, this, [[4, 44]]);
+        }, _callee, this, [[3, 54]]);
       }));
       function activate() {
         return _activate.apply(this, arguments);
       }
       return activate;
-    }()
-    /**
-     * Update the debug info panel with the latest status
-     */
-    )
+    }() // Create video elements for display
   }, {
-    key: "updateDebugInfo",
-    value: function updateDebugInfo(message) {
-      if (this.debugInfo) {
-        var _context7;
-        var timestamp = new Date().toLocaleTimeString();
-        this.debugInfo.textContent = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_10__(_context7 = "[".concat(timestamp, "] ")).call(_context7, message);
-        console.log("Debug Info: ".concat(message));
+    key: "createVideoElements",
+    value: function createVideoElements() {
+      // Check if container already exists
+      var container = document.getElementById('signLanguageVideoContainer');
+      if (container) {
+        // Remove existing container
+        document.body.removeChild(container);
+      }
+
+      // Create container
+      container = document.createElement('div');
+      container.id = 'signLanguageVideoContainer';
+      container.style.position = 'fixed';
+      container.style.bottom = '20px';
+      container.style.right = '20px';
+      container.style.width = '320px';
+      container.style.height = 'auto';
+      container.style.backgroundColor = '#000';
+      container.style.border = '2px solid #00BCD4';
+      container.style.borderRadius = '8px';
+      container.style.padding = '10px';
+      container.style.zIndex = '9999';
+      container.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
+      container.style.display = 'none'; // Hidden initially
+
+      // Add title
+      var title = document.createElement('div');
+      title.textContent = 'MediaPipe Holistic Detection';
+      title.style.color = 'white';
+      title.style.fontWeight = 'bold';
+      title.style.marginBottom = '5px';
+      title.style.display = 'flex';
+      title.style.justifyContent = 'space-between';
+      title.style.alignItems = 'center';
+
+      // Add close button
+      var closeButton = document.createElement('button');
+      closeButton.textContent = '×';
+      closeButton.style.background = 'none';
+      closeButton.style.border = 'none';
+      closeButton.style.color = 'white';
+      closeButton.style.fontSize = '20px';
+      closeButton.style.cursor = 'pointer';
+      closeButton.style.marginLeft = '10px';
+      closeButton.onclick = function () {
+        container.style.display = 'none';
+      };
+      title.appendChild(closeButton);
+      container.appendChild(title);
+
+      // Create the input video (hidden)
+      this.videoElement = document.createElement('video');
+      this.videoElement.autoplay = true;
+      this.videoElement.muted = true;
+      this.videoElement.playsInline = true;
+      this.videoElement.style.display = 'none';
+      container.appendChild(this.videoElement);
+
+      // Create the display video
+      this.displayElement = document.createElement('video');
+      this.displayElement.autoplay = true;
+      this.displayElement.playsInline = true;
+      this.displayElement.style.width = '100%';
+      this.displayElement.style.borderRadius = '4px';
+      container.appendChild(this.displayElement);
+
+      // Add FPS counter
+      var fpsCounter = document.createElement('div');
+      fpsCounter.id = 'signLanguageFPS';
+      fpsCounter.textContent = 'FPS: 0.0';
+      fpsCounter.style.color = 'white';
+      fpsCounter.style.fontSize = '12px';
+      fpsCounter.style.margin = '5px 0';
+      container.appendChild(fpsCounter);
+
+      // Add detection status
+      var detectionStatus = document.createElement('div');
+      detectionStatus.id = 'signLanguageDetection';
+      detectionStatus.textContent = 'No landmarks detected';
+      detectionStatus.style.color = 'white';
+      detectionStatus.style.fontSize = '12px';
+      detectionStatus.style.margin = '5px 0';
+      container.appendChild(detectionStatus);
+
+      // Add to document
+      document.body.appendChild(container);
+    }
+
+    // Show the video container
+  }, {
+    key: "showVideoContainer",
+    value: function showVideoContainer() {
+      var container = document.getElementById('signLanguageVideoContainer');
+      if (container) {
+        container.style.display = 'block';
       }
     }
 
-    /**
-     * Update the FPS display with the latest value
-     * @param {number} fps - Frames per second value
-     */
+    // Deactivate screen sharing and close WebRTC connection
   }, {
-    key: "updateFpsDisplay",
-    value: function updateFpsDisplay(fps) {
-      if (this.fpsDisplay) {
-        this.fpsDisplay.textContent = "FPS: ".concat(fps.toFixed(1));
+    key: "deactivate",
+    value: function deactivate() {
+      if (!this.isActive) {
+        console.log("[SignLanguageHandler] Already inactive");
+        return;
+      }
+      console.log("[SignLanguageHandler] Deactivating");
 
-        // Change color based on FPS quality
-        if (fps >= 15) {
-          this.fpsDisplay.style.color = "#4CAF50"; // Green for good FPS
-        } else if (fps >= 8) {
-          this.fpsDisplay.style.color = "#FFC107"; // Yellow for medium FPS
+      // Hide video container
+      var container = document.getElementById('signLanguageVideoContainer');
+      if (container) {
+        container.style.display = 'none';
+      }
+
+      // Clear landmarks interval
+      if (this.landmarksInterval) {
+        clearInterval(this.landmarksInterval);
+        this.landmarksInterval = null;
+      }
+
+      // Clean up resources
+      this.cleanupResources();
+      this.isActive = false;
+    }
+
+    // Clean up resources
+  }, {
+    key: "cleanupResources",
+    value: function cleanupResources() {
+      // Close peer connection
+      if (this.peerConnection) {
+        this.peerConnection.close();
+        this.peerConnection = null;
+      }
+
+      // Stop stream tracks
+      if (this.stream) {
+        var _context3;
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context3 = this.stream.getTracks()).call(_context3, function (track) {
+          return track.stop();
+        });
+        this.stream = null;
+      }
+
+      // Clean up video elements
+      if (this.videoElement) {
+        this.videoElement.srcObject = null;
+      }
+      if (this.displayElement) {
+        this.displayElement.srcObject = null;
+      }
+
+      // Reset landmarks data
+      this.faceLandmarks = null;
+      this.poseLandmarks = null;
+      this.leftHandLandmarks = null;
+      this.rightHandLandmarks = null;
+    }
+
+    // Process landmarks data from server
+  }, {
+    key: "processLandmarks",
+    value: function processLandmarks(data) {
+      // Update landmarks status
+      this.faceLandmarks = data.has_face ? {} : null;
+      this.poseLandmarks = data.has_pose ? data.pose_info : null;
+      this.leftHandLandmarks = data.has_left_hand ? {} : null;
+      this.rightHandLandmarks = data.has_right_hand ? {} : null;
+
+      // Update UI
+      this.updateDetectionUI(data);
+
+      // Dispatch event with detection results
+      var event = new CustomEvent('handLandmarksDetected', {
+        detail: {
+          leftHand: this.leftHandLandmarks,
+          rightHand: this.rightHandLandmarks,
+          face: this.faceLandmarks,
+          pose: this.poseLandmarks,
+          fps: this.fps,
+          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__()
+        }
+      });
+      window.dispatchEvent(event);
+    }
+
+    // Update detection UI
+  }, {
+    key: "updateDetectionUI",
+    value: function updateDetectionUI(data) {
+      // Update FPS counter
+      var fpsElement = document.getElementById('signLanguageFPS');
+      if (fpsElement) {
+        fpsElement.textContent = "FPS: ".concat(this.fps.toFixed(1));
+
+        // Color code based on performance
+        if (this.fps >= 20) {
+          fpsElement.style.color = '#4CAF50'; // Green
+        } else if (this.fps >= 10) {
+          fpsElement.style.color = '#FFC107'; // Yellow
         } else {
-          this.fpsDisplay.style.color = "#F44336"; // Red for low FPS
+          fpsElement.style.color = '#F44336'; // Red
+        }
+      }
+
+      // Update detection status
+      var detectionElement = document.getElementById('signLanguageDetection');
+      if (detectionElement) {
+        // Build detection text
+        var detectedParts = [];
+        if (data.has_face) detectedParts.push("Face");
+        if (data.has_pose) detectedParts.push("Pose");
+        if (data.has_left_hand) detectedParts.push("Left Hand");
+        if (data.has_right_hand) detectedParts.push("Right Hand");
+        if (detectedParts.length > 0) {
+          detectionElement.textContent = "Detected: ".concat(detectedParts.join(", "));
+          detectionElement.style.color = '#4CAF50'; // Green
+        } else {
+          detectionElement.textContent = 'No landmarks detected';
+          detectionElement.style.color = '#F44336'; // Red
         }
       }
     }
+
+    // Ping server to test connectivity
   }, {
-    key: "toggle",
-    value: (function () {
-      var _toggle = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
-            case 0:
-              if (!this.isActive) {
-                _context8.next = 5;
-                break;
-              }
-              this.deactivate();
-              return _context8.abrupt("return", false);
-            case 5:
-              _context8.next = 7;
-              return this.activate();
-            case 7:
-              return _context8.abrupt("return", _context8.sent);
-            case 8:
-            case "end":
-              return _context8.stop();
-          }
-        }, _callee2, this);
-      }));
-      function toggle() {
-        return _toggle.apply(this, arguments);
-      }
-      return toggle;
-    }()
-    /**
-     * Toggle debug visualization mode
-     * @returns {boolean} The new debug mode state
-     */
-    )
-  }, {
-    key: "toggleDebugMode",
-    value: function toggleDebugMode() {
-      this.debugMode = !this.debugMode;
-      if (this.debugMode && !this.debugOverlay && this.isActive) {
-        this.initializeDebugOverlay();
-      } else if (this.debugOverlay) {
-        this.debugOverlay.parentNode.style.display = this.debugMode ? "block" : "none";
-      }
-      return this.debugMode;
-    }
-
-    /**
-     * Get debug information about the current state
-     * @returns {Object} Current state information
-     */
-  }, {
-    key: "getDebugInfo",
-    value: function getDebugInfo() {
-      var _context9;
-      return {
-        isActive: this.isActive,
-        serverConnected: this.mediaPipeConnector.isConnected,
-        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_11__(_context9 = this.stream.getVideoTracks()).call(_context9, function (track) {
-          return track.readyState === 'live';
-        }),
-        videoElementActive: this.videoElement !== null,
-        fps: this.fps,
-        lastUpdateTime: this.lastUpdateTime,
-        leftHandDetected: this.leftHandLandmarks !== null,
-        rightHandDetected: this.rightHandLandmarks !== null,
-        debugMode: this.debugMode
-      };
-    }
-  }]);
-}();
-
-
-/***/ }),
-
-/***/ "./2-features/SignLanguage/WebRTCMediaPipeConnector.js":
-/*!*************************************************************!*\
-  !*** ./2-features/SignLanguage/WebRTCMediaPipeConnector.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   WebRTCMediaPipeConnector: () => (/* binding */ WebRTCMediaPipeConnector)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-
-
-
-
-
-
-
-
-
-
-/**
- * WebRTC-based connector for MediaPipe hand landmark detection
- */
-var WebRTCMediaPipeConnector = /*#__PURE__*/function () {
-  function WebRTCMediaPipeConnector() {
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, WebRTCMediaPipeConnector);
-    this.serverUrl = "http://localhost:9000";
-    this.pc = null; // This is null initially
-    this.dataChannel = null;
-    this.isConnected = false;
-    this.onLandmarksDetected = null;
-    this.connectionFailCallback = null;
-    this.videoElement = null;
-    this.localStream = null;
-    this.connectionTimeout = null;
-    this.pingInterval = null;
-    this.visualizationStream = null;
-
-    // We'll set event handlers when we create the connection, not here
-  }
-
-  /**
-   * Connect to the MediaPipe WebRTC server
-   * @returns {Promise<boolean>} Whether connection was successful
-   */
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(WebRTCMediaPipeConnector, [{
-    key: "connect",
-    value: (function () {
-      var _connect = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee2() {
-        var _this = this;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              return _context2.abrupt("return", new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_4__(/*#__PURE__*/function () {
-                var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee(resolve, reject) {
-                  var offer, _checkState;
-                  return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context) {
-                    while (1) switch (_context.prev = _context.next) {
-                      case 0:
-                        // Clean up any existing connection
-                        _this.disconnect();
-                        console.log("Connecting to MediaPipe server via WebRTC...");
-                        _context.prev = 2;
-                        // Create peer connection
-                        _this.pc = new RTCPeerConnection({
-                          iceServers: [{
-                            urls: "stun:stun.l.google.com:19302"
-                          }]
-                        });
-
-                        // Now that this.pc exists, we can set up event handlers
-                        _this.pc.onconnectionstatechange = function () {
-                          console.log("WebRTC connection state: ".concat(_this.pc.connectionState));
-                          if (_this.pc.connectionState === 'connected') {
-                            clearTimeout(_this.connectionTimeout);
-                            _this.isConnected = true;
-                            console.log("WebRTC connected successfully");
-
-                            // Start ping interval to keep connection alive
-                            _this.pingInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_5__(function () {
-                              if (_this.isConnected && _this.dataChannel && _this.dataChannel.readyState === 'open') {
-                                _this.dataChannel.send(_babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__({
-                                  type: 'ping'
-                                }));
-                              }
-                            }, 30000); // Ping every 30 seconds
-
-                            resolve(true);
-                          } else if (_this.pc.connectionState === 'failed' || _this.pc.connectionState === 'disconnected' || _this.pc.connectionState === 'closed') {
-                            clearTimeout(_this.connectionTimeout);
-                            _this.isConnected = false;
-                            console.error("WebRTC connection ".concat(_this.pc.connectionState));
-
-                            // Notify callback if provided
-                            if (_this.connectionFailCallback) {
-                              _this.connectionFailCallback(_this.pc.connectionState);
-                            }
-                            if (!_this.isConnected) {
-                              reject(new Error("Connection ".concat(_this.pc.connectionState)));
-                            }
-                          }
-                        };
-                        _this.pc.oniceconnectionstatechange = function () {
-                          console.log("ICE connection state: ".concat(_this.pc.iceConnectionState));
-                        };
-                        _this.pc.onicegatheringstatechange = function () {
-                          console.log("ICE gathering state: ".concat(_this.pc.iceGatheringState));
-                        };
-
-                        // Set connection timeout
-                        _this.connectionTimeout = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__(function () {
-                          if (!_this.isConnected) {
-                            console.error("WebRTC connection timed out");
-                            _this.disconnect();
-                            reject(new Error("Connection timeout"));
-                          }
-                        }, 10000);
-
-                        // Handle ICE candidate events
-                        _this.pc.onicecandidate = function (event) {
-                          if (event.candidate === null) {
-                            // ICE gathering completed
-                            console.log("ICE gathering completed");
-                          }
-                        };
-
-                        // Create data channel for receiving hand detection results
-                        _this.dataChannel = _this.pc.createDataChannel("mediapipe-results");
-                        _this.dataChannel.onopen = function () {
-                          console.log("Data channel opened");
-                        };
-                        _this.dataChannel.onclose = function () {
-                          console.log("Data channel closed");
-                        };
-                        _this.dataChannel.onmessage = function (event) {
-                          try {
-                            var data = JSON.parse(event.data);
-                            if (data.type === 'hand_detection') {
-                              // Call callback if provided
-                              if (_this.onLandmarksDetected && typeof _this.onLandmarksDetected === 'function') {
-                                _this.onLandmarksDetected(data);
-                              }
-                            } else if (data.type === 'error') {
-                              console.error("MediaPipe server error:", data.message);
-                            }
-                          } catch (error) {
-                            console.error("Error parsing message:", error);
-                          }
-                        };
-
-                        // Handle tracks received from the server
-                        _this.pc.ontrack = function (event) {
-                          console.log("Received ".concat(event.track.kind, " track from server"));
-                          if (event.track.kind === 'video') {
-                            // Create a new MediaStream for the visualization
-                            _this.visualizationStream = new MediaStream([event.track]);
-
-                            // Emit an event that the visualization track is ready
-                            var trackReadyEvent = new CustomEvent('visualizationTrackReady', {
-                              detail: {
-                                stream: _this.visualizationStream
-                              }
-                            });
-                            window.dispatchEvent(trackReadyEvent);
-                          }
-                        };
-
-                        // Create and send offer to the server
-                        _context.next = 16;
-                        return _this.pc.createOffer({
-                          offerToReceiveVideo: true,
-                          // We want to receive video from the server
-                          offerToReceiveAudio: false
-                        });
-                      case 16:
-                        offer = _context.sent;
-                        _context.next = 19;
-                        return _this.pc.setLocalDescription(offer);
-                      case 19:
-                        // Wait for ICE gathering to complete and then send offer
-                        if (_this.pc.iceGatheringState === 'complete') {
-                          _this.sendOfferToServer();
-                        } else {
-                          // Wait for ICE gathering to complete
-                          _checkState = function checkState() {
-                            if (_this.pc.iceGatheringState === 'complete') {
-                              _this.sendOfferToServer();
-                            } else {
-                              _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__(_checkState, 500);
-                            }
-                          };
-                          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__(_checkState, 500);
-                        }
-                        _context.next = 27;
-                        break;
-                      case 22:
-                        _context.prev = 22;
-                        _context.t0 = _context["catch"](2);
-                        console.error("Error creating WebRTC connection:", _context.t0);
-                        _this.disconnect();
-                        reject(_context.t0);
-                      case 27:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }, _callee, null, [[2, 22]]);
-                }));
-                return function (_x, _x2) {
-                  return _ref.apply(this, arguments);
-                };
-              }()));
-            case 1:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }));
-      function connect() {
-        return _connect.apply(this, arguments);
-      }
-      return connect;
-    }()
-    /**
-     * Send the offer to the server and handle the response
-     */
-    )
-  }, {
-    key: "sendOfferToServer",
-    value: (function () {
-      var _sendOfferToServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee3() {
-        var response, answer, remoteDesc, _context3;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee3$(_context4) {
+    key: "pingServer",
+    value: function () {
+      var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee2() {
+        var response, data;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee2$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              console.log("Sending offer to server:", this.pc.localDescription);
-
-              // Send the offer to the server
+              console.log('[SignLanguageHandler] Testing server connection...');
               _context4.next = 4;
-              return fetch("".concat(this.serverUrl, "/offer"), {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Access-Control-Allow-Origin': '*'
-                },
-                credentials: 'omit',
-                // Don't send cookies
-                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__({
-                  sdp: {
-                    type: this.pc.localDescription.type,
-                    sdp: this.pc.localDescription.sdp
-                  }
-                })
-              });
+              return fetch("".concat(this.serverUrl, "/ping"));
             case 4:
               response = _context4.sent;
               if (!response.ok) {
-                _context4.next = 16;
+                _context4.next = 13;
                 break;
               }
               _context4.next = 8;
               return response.json();
             case 8:
-              answer = _context4.sent;
-              console.log("Received answer from server:", answer);
-              remoteDesc = new RTCSessionDescription({
-                type: answer.sdp.type,
-                sdp: answer.sdp.sdp
-              });
-              _context4.next = 13;
-              return this.pc.setRemoteDescription(remoteDesc);
+              data = _context4.sent;
+              console.log("[SignLanguageHandler] Server responded: ".concat(data.message));
+              return _context4.abrupt("return", true);
             case 13:
-              console.log("Remote description set successfully");
-              _context4.next = 17;
+              console.log("[SignLanguageHandler] Server returned status: ".concat(response.status));
+              return _context4.abrupt("return", false);
+            case 15:
+              _context4.next = 21;
               break;
-            case 16:
-              throw new Error(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_8__(_context3 = "Server returned ".concat(response.status, ": ")).call(_context3, response.statusText));
             case 17:
-              _context4.next = 24;
-              break;
-            case 19:
-              _context4.prev = 19;
+              _context4.prev = 17;
               _context4.t0 = _context4["catch"](0);
-              console.error("Error sending offer to server:", _context4.t0);
-              this.disconnect();
-              throw _context4.t0;
-            case 24:
+              console.error("[SignLanguageHandler] Server connection test failed: ".concat(_context4.t0.message));
+              return _context4.abrupt("return", false);
+            case 21:
             case "end":
               return _context4.stop();
           }
-        }, _callee3, this, [[0, 19]]);
+        }, _callee2, this, [[0, 17]]);
       }));
-      function sendOfferToServer() {
-        return _sendOfferToServer.apply(this, arguments);
+      function pingServer() {
+        return _pingServer.apply(this, arguments);
       }
-      return sendOfferToServer;
-    }()
-    /**
-     * Start sending video stream to the server
-     * @param {HTMLVideoElement} videoElement - Video element with the stream to process
-     * @returns {Promise<boolean>} Success status
-     */
-    )
+      return pingServer;
+    }() // Get debug information
   }, {
-    key: "startVideo",
-    value: (function () {
-      var _startVideo = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee4(videoElement) {
-        var _this2 = this;
-        var _context5;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee4$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
-            case 0:
-              if (!(!this.isConnected || !this.pc)) {
-                _context6.next = 3;
-                break;
-              }
-              console.error("Cannot start video - not connected to server");
-              return _context6.abrupt("return", false);
-            case 3:
-              _context6.prev = 3;
-              this.videoElement = videoElement;
-
-              // Get the stream from the video element
-              this.localStream = videoElement.srcObject;
-              if (this.localStream) {
-                _context6.next = 9;
-                break;
-              }
-              console.error("No stream available in video element");
-              return _context6.abrupt("return", false);
-            case 9:
-              console.log("Adding tracks to WebRTC connection");
-              console.log("Tracks:", this.localStream.getTracks());
-
-              // Add tracks to the peer connection
-              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_9__(_context5 = this.localStream.getTracks()).call(_context5, function (track) {
-                console.log("Adding ".concat(track.kind, " track to peer connection:"), track);
-                _this2.pc.addTrack(track, _this2.localStream);
-              });
-              return _context6.abrupt("return", true);
-            case 15:
-              _context6.prev = 15;
-              _context6.t0 = _context6["catch"](3);
-              console.error("Error starting video stream:", _context6.t0);
-              return _context6.abrupt("return", false);
-            case 19:
-            case "end":
-              return _context6.stop();
-          }
-        }, _callee4, this, [[3, 15]]);
-      }));
-      function startVideo(_x3) {
-        return _startVideo.apply(this, arguments);
-      }
-      return startVideo;
-    }()
-    /**
-     * Set callback for when landmarks are detected
-     * @param {Function} callback - Function to call with landmark data
-     */
-    )
-  }, {
-    key: "setLandmarksCallback",
-    value: function setLandmarksCallback(callback) {
-      if (typeof callback === 'function') {
-        this.onLandmarksDetected = callback;
-      }
-    }
-
-    /**
-     * Set callback for connection failures
-     * @param {Function} callback - Function to call on connection failure
-     */
-  }, {
-    key: "setConnectionFailCallback",
-    value: function setConnectionFailCallback(callback) {
-      if (typeof callback === 'function') {
-        this.connectionFailCallback = callback;
-      }
-    }
-
-    /**
-     * Get the visualization stream for displaying hand landmarks
-     * @returns {MediaStream|null} The visualization stream or null if not available
-     */
-  }, {
-    key: "getVisualizationStream",
-    value: function getVisualizationStream() {
-      return this.visualizationStream;
-    }
-
-    /**
-     * Disconnect from the server and clean up resources
-     */
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      clearInterval(this.pingInterval);
-      clearTimeout(this.connectionTimeout);
-
-      // Close data channel
-      if (this.dataChannel) {
-        this.dataChannel.close();
-        this.dataChannel = null;
-      }
-
-      // Close peer connection
-      if (this.pc) {
-        this.pc.close();
-        this.pc = null;
-      }
-      this.isConnected = false;
-      this.visualizationStream = null;
-      console.log("WebRTC connection closed");
+    key: "getDebugInfo",
+    value: function getDebugInfo() {
+      var _context5;
+      return {
+        isActive: this.isActive,
+        connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
+        dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
+        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_9__(_context5 = this.stream.getVideoTracks()).call(_context5, function (track) {
+          return track.readyState === 'live';
+        }),
+        fps: this.fps,
+        faceLandmarks: this.faceLandmarks !== null,
+        poseLandmarks: this.poseLandmarks !== null,
+        leftHandLandmarks: this.leftHandLandmarks !== null,
+        rightHandLandmarks: this.rightHandLandmarks !== null
+      };
     }
   }]);
 }();
+
 
 /***/ }),
 
@@ -68988,16 +68320,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
-/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
-/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
-/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
+/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
+/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
+/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
 
 
 
@@ -69008,8 +68342,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context11; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context11 = {}.toString.call(r)).call(_context11, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context13; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context13 = {}.toString.call(r)).call(_context13, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
 
 
 
@@ -69030,15 +68366,15 @@ var ContentHandler = /*#__PURE__*/function () {
     this.sections = [];
     this.pastBorderStyle = "";
     this.pastBackgroundStyle = "";
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_14__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_16__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_17__["default"]();
-    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_18__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
-    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
-    this.screenSharingHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_16__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_18__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
+    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_20__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
+    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
+    this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
     console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
-    console.log('ScreenSharing handler initialized in content script:', this.screenSharingHandler);
+    console.log('Sign Language handler initialized in content script:', this.signLanguageHandler);
     this.currentElement = null;
     this.currentLink = null;
     this.walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
@@ -69060,6 +68396,50 @@ var ContentHandler = /*#__PURE__*/function () {
     });
     this.speechHandler.addEventListener('speechend', function () {
       _this.notifySpeechStopped();
+    });
+
+    // Listen for hand landmarks detected events from the sign language handler
+    window.addEventListener('handLandmarksDetected', function (event) {
+      var _context3;
+      var _event$detail = event.detail,
+        leftHand = _event$detail.leftHand,
+        rightHand = _event$detail.rightHand,
+        face = _event$detail.face,
+        pose = _event$detail.pose,
+        timestamp = _event$detail.timestamp,
+        fps = _event$detail.fps;
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context3 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] MediaPipe Holistic Detection (")).call(_context3, fps.toFixed(1), " FPS)"), face ? 'Face detected' : 'No face', pose ? 'Pose detected' : 'No pose', leftHand ? 'Left hand detected' : 'No left hand', rightHand ? 'Right hand detected' : 'No right hand');
+
+      // Send to sidebar
+      chrome.runtime.sendMessage({
+        action: "handLandmarksUpdate",
+        face: face !== null,
+        pose: pose !== null,
+        leftHand: leftHand !== null,
+        rightHand: rightHand !== null,
+        fps: fps,
+        timestamp: timestamp
+      });
+    });
+
+    // Listen for screen sharing ended event
+    window.addEventListener('screenSharingEnded', function () {
+      console.log('Screen sharing ended event received');
+      chrome.runtime.sendMessage({
+        action: "screenSharingStatus",
+        status: 'Off'
+      });
+    });
+
+    // Listen for screen sharing failed event
+    window.addEventListener('screenSharingFailed', function (event) {
+      var _event$detail2, _event$detail3;
+      console.error('Screen sharing failed:', ((_event$detail2 = event.detail) === null || _event$detail2 === void 0 ? void 0 : _event$detail2.reason) || 'Unknown error');
+      chrome.runtime.sendMessage({
+        action: "screenSharingStatus",
+        status: 'Error',
+        message: ((_event$detail3 = event.detail) === null || _event$detail3 === void 0 ? void 0 : _event$detail3.reason) || 'Unknown error'
+      });
     });
   }
 
@@ -69087,17 +68467,17 @@ var ContentHandler = /*#__PURE__*/function () {
       var text = [];
       while (this.walker.nextNode()) {
         var _element = this.walker.currentNode;
-        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processedElements.has(_element)) continue;
+        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__["default"].processedElements.has(_element)) continue;
         if (this.isElementVisible(_element)) {
           var _element$tagName;
           var tagName = (_element$tagName = _element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (_element.tagName.toLowerCase() === 'a' && _element.href) {
-            var _context3, _context4;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__(_element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context3 = _element.textContent).call(_context3) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context4 = _element.textContent).call(_context4)) : "Link to ".concat(domain));
+            var _context4, _context5;
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__(_element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context4 = _element.textContent).call(_context4) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context5 = _element.textContent).call(_context5)) : "Link to ".concat(domain));
             elementsToReturn.push(_element);
             this.currentLink = _element;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processAllDescendants(_element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__["default"].processAllDescendants(_element);
           } else {
             var _iterator = _createForOfIteratorHelper(_element.childNodes),
               _step;
@@ -69106,8 +68486,8 @@ var ContentHandler = /*#__PURE__*/function () {
                 var child = _step.value;
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
-                  var _context5;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context5 = child.textContent).call(_context5);
+                  var _context6;
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context6 = child.textContent).call(_context6);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(_element);
@@ -69129,7 +68509,7 @@ var ContentHandler = /*#__PURE__*/function () {
               _iterator.f();
             }
           }
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processedElements.add(_element);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__["default"].processedElements.add(_element);
         }
         if (text.length > 0) {
           return {
@@ -69160,9 +68540,9 @@ var ContentHandler = /*#__PURE__*/function () {
               var child = _step2.value;
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
-                var _context6;
-                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processedElements.has(_element2)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context6 = child.textContent).call(_context6);
+                var _context7;
+                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_17__["default"].processedElements.has(_element2)) continue;
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_13__(_context7 = child.textContent).call(_context7);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(_element2);
@@ -69202,74 +68582,74 @@ var ContentHandler = /*#__PURE__*/function () {
       var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee2() {
         var _this2 = this;
         var _this$currentElement, elementsToReturn, text, _loop, i;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context9) {
-          while (1) switch (_context9.prev = _context9.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
             case 0:
               if (!this.currentElement) {
                 this.currentElement = this.getNextElement();
               }
               _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
               if (!(!this.currentElement || !elementsToReturn)) {
-                _context9.next = 5;
+                _context10.next = 5;
                 break;
               }
               // Send a notification that speech has finished completely
               this.notifySpeechStopped();
-              return _context9.abrupt("return");
+              return _context10.abrupt("return");
             case 5:
               // Notify that speech has started
               this.notifySpeechStarted();
               _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _loop(i) {
-                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context8) {
-                  while (1) switch (_context8.prev = _context8.next) {
+                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context9) {
+                  while (1) switch (_context9.prev = _context9.next) {
                     case 0:
-                      _context8.next = 2;
-                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__(/*#__PURE__*/function () {
+                      _context9.next = 2;
+                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__(/*#__PURE__*/function () {
                         var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee(resolve) {
                           var _element3$tagName, _element3, speechText, caption;
-                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context7) {
-                            while (1) switch (_context7.prev = _context7.next) {
+                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context8) {
+                            while (1) switch (_context8.prev = _context8.next) {
                               case 0:
-                                _context7.prev = 0;
+                                _context8.prev = 0;
                                 _element3 = elementsToReturn[i];
                                 speechText = text[i];
                                 if (!(((_element3$tagName = _element3.tagName) === null || _element3$tagName === void 0 ? void 0 : _element3$tagName.toLowerCase()) === 'img')) {
-                                  _context7.next = 16;
+                                  _context8.next = 16;
                                   break;
                                 }
                                 console.log('🖼️ Detected image element:', _element3);
-                                _context7.prev = 5;
-                                _context7.next = 8;
+                                _context8.prev = 5;
+                                _context8.next = 8;
                                 return _this2.imageCaptionHandler.generateCaptionForImage(_element3.src, _element3);
                               case 8:
-                                caption = _context7.sent;
+                                caption = _context8.sent;
                                 speechText = "Image description: ".concat(caption);
-                                _context7.next = 16;
+                                _context8.next = 16;
                                 break;
                               case 12:
-                                _context7.prev = 12;
-                                _context7.t0 = _context7["catch"](5);
-                                console.error('Caption generation failed:', _context7.t0);
+                                _context8.prev = 12;
+                                _context8.t0 = _context8["catch"](5);
+                                console.error('Caption generation failed:', _context8.t0);
                                 speechText = "Image description unavailable";
                               case 16:
                                 // Highlight and process speech
                                 _this2.highlightBox.addHighlight(_element3);
-                                _context7.next = 19;
+                                _context8.next = 19;
                                 return _this2.speechHandler.speak(speechText, function () {});
                               case 19:
                                 _this2.highlightBox.removeHighlight(_element3);
                                 resolve();
-                                _context7.next = 28;
+                                _context8.next = 28;
                                 break;
                               case 23:
-                                _context7.prev = 23;
-                                _context7.t1 = _context7["catch"](0);
-                                console.error('Element processing error:', _context7.t1);
+                                _context8.prev = 23;
+                                _context8.t1 = _context8["catch"](0);
+                                console.error('Element processing error:', _context8.t1);
                                 if (element) _this2.highlightBox.removeHighlight(element);
                                 resolve();
                               case 28:
                               case "end":
-                                return _context7.stop();
+                                return _context8.stop();
                             }
                           }, _callee, null, [[0, 23], [5, 12]]);
                         }));
@@ -69279,27 +68659,27 @@ var ContentHandler = /*#__PURE__*/function () {
                       }());
                     case 2:
                     case "end":
-                      return _context8.stop();
+                      return _context9.stop();
                   }
                 }, _loop);
               });
               i = 0;
             case 8:
               if (!(i < elementsToReturn.length)) {
-                _context9.next = 13;
+                _context10.next = 13;
                 break;
               }
-              return _context9.delegateYield(_loop(i), "t0", 10);
+              return _context10.delegateYield(_loop(i), "t0", 10);
             case 10:
               i++;
-              _context9.next = 8;
+              _context10.next = 8;
               break;
             case 13:
               this.currentElement = null;
               this.speakCurrentSection();
             case 15:
             case "end":
-              return _context9.stop();
+              return _context10.stop();
           }
         }, _callee2, this);
       }));
@@ -69322,6 +68702,7 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "handleMessage",
     value: function handleMessage(request) {
+      var _this3 = this;
       if (request.action === "activateImageCaptioning") {
         console.log('[CONTENT] Received captioning activation');
         this.imageCaptionHandler.setCaptionType(request.captionType);
@@ -69331,30 +68712,44 @@ var ContentHandler = /*#__PURE__*/function () {
         this.imageCaptionHandler.deactivate();
       } else if (request.action === "startScreenCapture") {
         console.log('[CONTENT] Received screen capture activation');
-        // Activate screen sharing with MediaPipe
-        this.screenSharingHandler.activate().then(function (success) {
-          // Notify sidebar of activation result
-          chrome.runtime.sendMessage({
-            action: "screenSharingStatus",
-            status: success ? 'Active' : 'Error'
-          });
-          if (success) {
-            console.log('[CONTENT] Screen sharing with MediaPipe activated');
 
-            // Listen for hand landmarks events and log them to console
-            window.addEventListener('handLandmarksDetected', function (event) {
-              var _event$detail = event.detail,
-                leftHand = _event$detail.leftHand,
-                rightHand = _event$detail.rightHand,
-                timestamp = _event$detail.timestamp;
-              console.log("[".concat(new Date(timestamp).toLocaleTimeString(), "] Hand Landmarks:"), {
-                leftHand: leftHand,
-                rightHand: rightHand
-              });
+        // Check server connectivity first
+        this.checkServerConnectivity().then(function (serverAvailable) {
+          if (!serverAvailable) {
+            // Server not available, notify about it
+            chrome.runtime.sendMessage({
+              action: "screenSharingStatus",
+              status: 'Error',
+              message: "Python MediaPipe server is not running"
             });
-          } else {
-            console.error('[CONTENT] Failed to activate screen sharing with MediaPipe');
+
+            // Show notification to start server
+            _this3.showServerNotification();
+            return;
           }
+
+          // Proceed with activation if server is available
+          _this3.signLanguageHandler.activate().then(function (success) {
+            // Notify sidebar of activation result
+            chrome.runtime.sendMessage({
+              action: "screenSharingStatus",
+              status: success ? 'Active' : 'Error'
+            });
+            if (success) {
+              console.log('[CONTENT] Screen sharing with MediaPipe Holistic activated successfully');
+            } else {
+              console.error('[CONTENT] Failed to activate screen sharing with MediaPipe Holistic');
+            }
+          });
+        });
+      } else if (request.action === "stopScreenCapture") {
+        console.log('[CONTENT] Received screen capture deactivation');
+        this.signLanguageHandler.deactivate();
+
+        // Notify sidebar of deactivation
+        chrome.runtime.sendMessage({
+          action: "screenSharingStatus",
+          status: 'Off'
         });
       } else if (request.action === "toggleVideoOverlay") {
         console.log('[CONTENT] Toggle video overlay:', request.enabled);
@@ -69364,6 +68759,13 @@ var ContentHandler = /*#__PURE__*/function () {
         chrome.runtime.sendMessage({
           action: "setCommandsEnabled",
           enabled: !request.enabled
+        });
+      } else if (request.action === "toggleDebugMode") {
+        console.log('[CONTENT] Toggle debug mode for MediaPipe visualization');
+        var debugEnabled = this.signLanguageHandler.toggleDebugMode();
+        chrome.runtime.sendMessage({
+          action: "debugModeStatus",
+          enabled: debugEnabled
         });
       } else if (request.action === "displayOverlayText") {
         console.log('[CONTENT] Received text for overlay:', request.text);
@@ -69529,33 +68931,113 @@ var ContentHandler = /*#__PURE__*/function () {
         }
       } else if (request.action === "toggleImageCaptioning") {
         this.toggleImageCaptioning();
+      } else if (request.action === "getScreenSharingStatus") {
+        // Return the current status of screen sharing
+        chrome.runtime.sendMessage({
+          action: "screenSharingStatus",
+          status: this.signLanguageHandler.isActive ? 'Active' : 'Off',
+          fps: this.signLanguageHandler.fps || 0,
+          face: this.signLanguageHandler.faceLandmarks !== null,
+          pose: this.signLanguageHandler.poseLandmarks !== null,
+          leftHand: this.signLanguageHandler.leftHandLandmarks !== null,
+          rightHand: this.signLanguageHandler.rightHandLandmarks !== null
+        });
       }
+    }
+  }, {
+    key: "checkServerConnectivity",
+    value: function () {
+      var _checkServerConnectivity = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee3() {
+        var response;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee3$(_context11) {
+          while (1) switch (_context11.prev = _context11.next) {
+            case 0:
+              _context11.prev = 0;
+              _context11.next = 3;
+              return fetch('http://localhost:8765/ping');
+            case 3:
+              response = _context11.sent;
+              if (!response.ok) {
+                _context11.next = 6;
+                break;
+              }
+              return _context11.abrupt("return", true);
+            case 6:
+              return _context11.abrupt("return", false);
+            case 9:
+              _context11.prev = 9;
+              _context11.t0 = _context11["catch"](0);
+              console.error('[CONTENT] Server connectivity check failed:', _context11.t0);
+              return _context11.abrupt("return", false);
+            case 13:
+            case "end":
+              return _context11.stop();
+          }
+        }, _callee3, null, [[0, 9]]);
+      }));
+      function checkServerConnectivity() {
+        return _checkServerConnectivity.apply(this, arguments);
+      }
+      return checkServerConnectivity;
+    }()
+  }, {
+    key: "showServerNotification",
+    value: function showServerNotification() {
+      // Create a notification to inform user to start the server
+      var notification = document.createElement('div');
+      notification.style.position = 'fixed';
+      notification.style.top = '20px';
+      notification.style.left = '50%';
+      notification.style.transform = 'translateX(-50%)';
+      notification.style.padding = '15px 20px';
+      notification.style.backgroundColor = '#f8d7da';
+      notification.style.color = '#721c24';
+      notification.style.borderRadius = '5px';
+      notification.style.zIndex = '9999';
+      notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+      notification.style.maxWidth = '80%';
+      notification.style.width = '400px';
+      notification.style.textAlign = 'center';
+      notification.innerHTML = "\n            <p><strong>MediaPipe Server Not Running</strong></p>\n            <p>Please start the Python server to use sign language detection.</p>\n            <button id=\"dismissBtn\" style=\"background: #721c24; color: white; border: none; padding: 5px 10px; margin-top: 10px; cursor: pointer; border-radius: 3px;\">Dismiss</button>\n        ";
+      document.body.appendChild(notification);
+
+      // Add event listener to dismiss button
+      document.getElementById('dismissBtn').addEventListener('click', function () {
+        document.body.removeChild(notification);
+      });
+
+      // Auto-dismiss after 10 seconds
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 10000);
     }
   }, {
     key: "toggleImageCaptioning",
     value: function () {
-      var _toggleImageCaptioning = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee3() {
+      var _toggleImageCaptioning = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee4() {
         var isActive;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee3$(_context10) {
-          while (1) switch (_context10.prev = _context10.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee4$(_context12) {
+          while (1) switch (_context12.prev = _context12.next) {
             case 0:
-              _context10.prev = 0;
-              _context10.next = 3;
+              _context12.prev = 0;
+              _context12.next = 3;
               return this.imageCaptionHandler.toggle();
             case 3:
-              isActive = _context10.sent;
+              isActive = _context12.sent;
               console.log("Image captioning ".concat(isActive ? 'activated' : 'deactivated'));
-              return _context10.abrupt("return", isActive);
+              return _context12.abrupt("return", isActive);
             case 8:
-              _context10.prev = 8;
-              _context10.t0 = _context10["catch"](0);
-              console.error("Error toggling image captioning:", _context10.t0);
-              return _context10.abrupt("return", false);
+              _context12.prev = 8;
+              _context12.t0 = _context12["catch"](0);
+              console.error("Error toggling image captioning:", _context12.t0);
+              return _context12.abrupt("return", false);
             case 12:
             case "end":
-              return _context10.stop();
+              return _context12.stop();
           }
-        }, _callee3, this, [[0, 8]]);
+        }, _callee4, this, [[0, 8]]);
       }));
       function toggleImageCaptioning() {
         return _toggleImageCaptioning.apply(this, arguments);
@@ -71510,7 +70992,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("0b487a656ab7474b4d75")
+/******/ 		__webpack_require__.h = () => ("dec96457684dc7b3b5e1")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

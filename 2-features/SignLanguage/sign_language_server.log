@@ -1,0 +1,568 @@
+2025-05-12 13:32:33,311 - HolisticSignLanguage - INFO - Server processing at 13.3 FPS
+2025-05-12 13:32:34,365 - HolisticSignLanguage - INFO - Server processing at 14.2 FPS
+2025-05-12 13:32:35,163 - HolisticSignLanguage - INFO - Frame 840: Pose detected - Wrists: L(0.41, 0.43), R(0.45, 0.44) | Elbows: L(0.54, 0.48), R(0.55, 0.45)
+2025-05-12 13:32:35,395 - HolisticSignLanguage - INFO - Server processing at 12.6 FPS
+2025-05-12 13:32:36,505 - HolisticSignLanguage - INFO - Server processing at 12.6 FPS
+2025-05-12 13:32:37,599 - HolisticSignLanguage - INFO - Server processing at 8.2 FPS
+2025-05-12 13:32:37,994 - HolisticSignLanguage - INFO - Frame 870: Pose detected - Wrists: L(0.56, 0.42), R(0.36, 0.43) | Elbows: L(0.59, 0.48), R(0.34, 0.51)
+2025-05-12 13:32:38,601 - HolisticSignLanguage - INFO - Server processing at 10.0 FPS
+2025-05-12 13:32:39,663 - HolisticSignLanguage - INFO - Server processing at 10.4 FPS
+2025-05-12 13:32:40,666 - HolisticSignLanguage - INFO - Server processing at 12.0 FPS
+2025-05-12 13:32:40,765 - HolisticSignLanguage - INFO - Frame 900: Pose detected - Wrists: L(0.51, 0.49), R(0.33, 0.38) | Elbows: L(0.56, 0.50), R(0.31, 0.52)
+2025-05-12 13:32:41,669 - HolisticSignLanguage - INFO - Server processing at 11.0 FPS
+2025-05-12 13:32:42,769 - HolisticSignLanguage - INFO - Server processing at 12.7 FPS
+2025-05-12 13:32:43,265 - HolisticSignLanguage - INFO - Frame 930: Pose detected - Wrists: L(0.51, 0.46), R(0.42, 0.50) | Elbows: L(0.56, 0.49), R(0.31, 0.51)
+2025-05-12 13:32:43,780 - HolisticSignLanguage - INFO - Server processing at 12.9 FPS
+2025-05-12 13:32:44,816 - HolisticSignLanguage - INFO - Server processing at 16.4 FPS
+2025-05-12 13:32:45,383 - HolisticSignLanguage - INFO - Frame 960: Pose detected - Wrists: L(0.54, 0.49), R(0.42, 0.50) | Elbows: L(0.56, 0.49), R(0.32, 0.51)
+2025-05-12 13:32:45,918 - HolisticSignLanguage - INFO - Server processing at 10.9 FPS
+2025-05-12 13:32:46,987 - HolisticSignLanguage - INFO - Server processing at 10.3 FPS
+2025-05-12 13:32:48,052 - HolisticSignLanguage - INFO - Server processing at 7.5 FPS
+2025-05-12 13:32:48,590 - HolisticSignLanguage - INFO - Frame 990: Pose detected - Wrists: L(0.51, 0.41), R(0.40, 0.25) | Elbows: L(0.53, 0.46), R(0.33, 0.39)
+2025-05-12 13:32:49,054 - HolisticSignLanguage - INFO - Server processing at 10.0 FPS
+2025-05-12 13:32:50,081 - HolisticSignLanguage - INFO - Server processing at 10.7 FPS
+2025-05-12 13:32:51,151 - HolisticSignLanguage - INFO - Server processing at 13.1 FPS
+2025-05-12 13:32:51,188 - HolisticSignLanguage - INFO - Frame 1020: Pose detected - Wrists: L(0.51, 0.50), R(0.33, 0.38) | Elbows: L(0.56, 0.49), R(0.30, 0.50)
+2025-05-12 13:32:52,184 - HolisticSignLanguage - INFO - Server processing at 11.6 FPS
+2025-05-12 13:32:53,250 - HolisticSignLanguage - INFO - Server processing at 12.2 FPS
+2025-05-12 13:32:53,869 - HolisticSignLanguage - INFO - Frame 1050: Pose detected - Wrists: L(0.50, 0.34), R(0.38, 0.29) | Elbows: L(0.53, 0.42), R(0.26, 0.39)
+2025-05-12 13:32:54,331 - HolisticSignLanguage - INFO - Server processing at 9.2 FPS
+2025-05-12 13:32:55,367 - HolisticSignLanguage - INFO - Server processing at 10.6 FPS
+2025-05-12 13:32:56,396 - HolisticSignLanguage - INFO - Server processing at 11.7 FPS
+2025-05-12 13:32:56,564 - HolisticSignLanguage - INFO - Frame 1080: Pose detected - Wrists: L(0.57, 0.58), R(0.40, 0.62) | Elbows: L(0.57, 0.51), R(0.34, 0.52)
+2025-05-12 13:32:57,468 - HolisticSignLanguage - INFO - Server processing at 13.1 FPS
+2025-05-12 13:32:58,498 - HolisticSignLanguage - INFO - Server processing at 13.6 FPS
+2025-05-12 13:32:58,815 - HolisticSignLanguage - INFO - Frame 1110: Pose detected - Wrists: L(0.48, 0.44), R(0.34, 0.37) | Elbows: L(0.55, 0.48), R(0.29, 0.49)
+2025-05-12 13:32:59,561 - HolisticSignLanguage - INFO - Server processing at 18.8 FPS
+2025-05-12 13:33:00,531 - HolisticSignLanguage - INFO - Frame 1140: Pose detected - Wrists: L(0.51, 0.51), R(0.34, 0.38) | Elbows: L(0.54, 0.49), R(0.28, 0.49)
+2025-05-12 13:33:00,563 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:33:01,633 - HolisticSignLanguage - INFO - Server processing at 8.4 FPS
+2025-05-12 13:33:02,703 - HolisticSignLanguage - INFO - Server processing at 5.6 FPS
+2025-05-12 13:33:03,760 - HolisticSignLanguage - INFO - Server processing at 7.6 FPS
+2025-05-12 13:33:04,460 - HolisticSignLanguage - INFO - Frame 1170: Pose detected - Wrists: L(0.65, 0.48), R(0.40, 0.38) | Elbows: L(0.64, 0.40), R(0.34, 0.39)
+2025-05-12 13:33:04,774 - HolisticSignLanguage - INFO - Server processing at 8.9 FPS
+2025-05-12 13:33:05,798 - HolisticSignLanguage - INFO - Server processing at 21.5 FPS
+2025-05-12 13:33:06,009 - HolisticSignLanguage - INFO - Frame 1200: Pose detected - Wrists: L(0.79, 0.50), R(0.60, 0.51) | Elbows: L(0.75, 0.49), R(0.56, 0.51)
+2025-05-12 13:33:06,806 - HolisticSignLanguage - INFO - Server processing at 28.8 FPS
+2025-05-12 13:33:07,836 - HolisticSignLanguage - INFO - Server processing at 28.1 FPS
+2025-05-12 13:33:08,098 - HolisticSignLanguage - INFO - Frame 1260: Pose detected - Wrists: L(0.54, 0.39), R(0.41, 0.41) | Elbows: L(0.55, 0.33), R(0.34, 0.36)
+2025-05-12 13:33:08,870 - HolisticSignLanguage - INFO - Server processing at 29.0 FPS
+2025-05-12 13:33:09,146 - HolisticSignLanguage - INFO - Frame 1290: Pose detected - Wrists: L(0.53, 0.38), R(0.58, 0.35) | Elbows: L(0.47, 0.34), R(0.40, 0.34)
+2025-05-12 13:33:09,881 - HolisticSignLanguage - INFO - Server processing at 28.7 FPS
+2025-05-12 13:33:10,197 - HolisticSignLanguage - INFO - Frame 1320: Pose detected - Wrists: L(0.62, 0.37), R(0.31, 0.28) | Elbows: L(0.61, 0.32), R(0.27, 0.31)
+2025-05-12 13:33:10,884 - HolisticSignLanguage - INFO - Server processing at 27.9 FPS
+2025-05-12 13:33:11,223 - HolisticSignLanguage - INFO - Frame 1350: Pose detected - Wrists: L(0.62, 0.44), R(0.33, 0.44) | Elbows: L(0.59, 0.38), R(0.33, 0.38)
+2025-05-12 13:33:11,896 - HolisticSignLanguage - INFO - Server processing at 29.7 FPS
+2025-05-12 13:33:12,909 - HolisticSignLanguage - INFO - Server processing at 31.6 FPS
+2025-05-12 13:33:13,923 - HolisticSignLanguage - INFO - Server processing at 28.6 FPS
+2025-05-12 13:33:14,248 - HolisticSignLanguage - INFO - Frame 1440: Pose detected - Wrists: L(0.63, 0.44), R(0.28, 0.29) | Elbows: L(0.58, 0.39), R(0.31, 0.34)
+2025-05-12 13:33:14,925 - HolisticSignLanguage - INFO - Server processing at 30.9 FPS
+2025-05-12 13:33:15,939 - HolisticSignLanguage - INFO - Server processing at 21.7 FPS
+2025-05-12 13:33:16,939 - HolisticSignLanguage - INFO - Server processing at 28.0 FPS
+2025-05-12 13:33:17,939 - HolisticSignLanguage - INFO - Server processing at 27.0 FPS
+2025-05-12 13:33:18,975 - HolisticSignLanguage - INFO - Server processing at 23.2 FPS
+2025-05-12 13:33:20,003 - HolisticSignLanguage - INFO - Server processing at 30.1 FPS
+2025-05-12 13:33:21,006 - HolisticSignLanguage - INFO - Server processing at 29.9 FPS
+2025-05-12 13:33:22,007 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:33:23,022 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:33:24,043 - HolisticSignLanguage - INFO - Server processing at 28.4 FPS
+2025-05-12 13:33:24,968 - HolisticSignLanguage - INFO - Frame 1740: Pose detected - Wrists: L(0.65, 0.42), R(0.36, 0.41) | Elbows: L(0.59, 0.38), R(0.34, 0.37)
+2025-05-12 13:33:25,054 - HolisticSignLanguage - INFO - Server processing at 30.7 FPS
+2025-05-12 13:33:26,008 - HolisticSignLanguage - INFO - Frame 1770: Pose detected - Wrists: L(0.52, 0.38), R(0.52, 0.36) | Elbows: L(0.47, 0.35), R(0.35, 0.36)
+2025-05-12 13:33:26,064 - HolisticSignLanguage - INFO - Server processing at 27.7 FPS
+2025-05-12 13:33:27,100 - HolisticSignLanguage - INFO - Server processing at 25.1 FPS
+2025-05-12 13:33:28,114 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:33:29,125 - HolisticSignLanguage - INFO - Server processing at 23.7 FPS
+2025-05-12 13:33:30,156 - HolisticSignLanguage - INFO - Server processing at 18.4 FPS
+2025-05-12 13:33:31,191 - HolisticSignLanguage - INFO - Server processing at 24.2 FPS
+2025-05-12 13:33:32,203 - HolisticSignLanguage - INFO - Server processing at 27.7 FPS
+2025-05-12 13:33:33,204 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:33:34,229 - HolisticSignLanguage - INFO - Server processing at 32.2 FPS
+2025-05-12 13:33:35,257 - HolisticSignLanguage - INFO - Server processing at 30.2 FPS
+2025-05-12 13:33:36,266 - HolisticSignLanguage - INFO - Server processing at 29.7 FPS
+2025-05-12 13:33:37,282 - HolisticSignLanguage - INFO - Server processing at 25.6 FPS
+2025-05-12 13:33:38,299 - HolisticSignLanguage - INFO - Server processing at 29.5 FPS
+2025-05-12 13:33:39,317 - HolisticSignLanguage - INFO - Server processing at 30.5 FPS
+2025-05-12 13:33:40,330 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:33:41,336 - HolisticSignLanguage - INFO - Server processing at 32.8 FPS
+2025-05-12 13:33:42,356 - HolisticSignLanguage - INFO - Server processing at 28.4 FPS
+2025-05-12 13:33:43,388 - HolisticSignLanguage - INFO - Server processing at 23.3 FPS
+2025-05-12 13:33:44,390 - HolisticSignLanguage - INFO - Server processing at 19.0 FPS
+2025-05-12 13:33:45,421 - HolisticSignLanguage - INFO - Server processing at 18.4 FPS
+2025-05-12 13:33:46,422 - HolisticSignLanguage - INFO - Server processing at 24.0 FPS
+2025-05-12 13:33:47,423 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:33:48,454 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:33:49,457 - HolisticSignLanguage - INFO - Server processing at 25.9 FPS
+2025-05-12 13:33:49,486 - HolisticSignLanguage - INFO - Frame 2400: Pose detected - Wrists: L(0.66, 0.36), R(0.37, 0.36) | Elbows: L(0.64, 0.32), R(0.32, 0.34)
+2025-05-12 13:33:50,503 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:33:51,509 - HolisticSignLanguage - INFO - Server processing at 19.9 FPS
+2025-05-12 13:33:52,542 - HolisticSignLanguage - INFO - Server processing at 23.2 FPS
+2025-05-12 13:33:53,210 - HolisticSignLanguage - INFO - Frame 2490: Pose detected - Wrists: L(0.57, 0.38), R(0.38, 0.37) | Elbows: L(0.57, 0.33), R(0.34, 0.34)
+2025-05-12 13:33:53,555 - HolisticSignLanguage - INFO - Server processing at 22.7 FPS
+2025-05-12 13:33:54,607 - HolisticSignLanguage - INFO - Server processing at 17.1 FPS
+2025-05-12 13:33:55,071 - HolisticSignLanguage - INFO - Frame 2520: Pose detected - Wrists: L(0.76, 0.33), R(0.33, 0.46) | Elbows: L(0.65, 0.31), R(0.32, 0.36)
+2025-05-12 13:33:55,608 - HolisticSignLanguage - INFO - Server processing at 11.0 FPS
+2025-05-12 13:33:56,672 - HolisticSignLanguage - INFO - Server processing at 14.1 FPS
+2025-05-12 13:33:57,672 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:33:58,704 - HolisticSignLanguage - INFO - Server processing at 21.3 FPS
+2025-05-12 13:33:59,733 - HolisticSignLanguage - INFO - Server processing at 24.3 FPS
+2025-05-12 13:34:00,754 - HolisticSignLanguage - INFO - Server processing at 28.4 FPS
+2025-05-12 13:34:01,780 - HolisticSignLanguage - INFO - Server processing at 29.2 FPS
+2025-05-12 13:34:02,790 - HolisticSignLanguage - INFO - Server processing at 29.7 FPS
+2025-05-12 13:34:03,066 - HolisticSignLanguage - INFO - Frame 2700: Pose detected - Wrists: L(0.71, 0.35), R(0.49, 0.37) | Elbows: L(0.63, 0.31), R(0.34, 0.35)
+2025-05-12 13:34:03,820 - HolisticSignLanguage - INFO - Server processing at 21.4 FPS
+2025-05-12 13:34:04,826 - HolisticSignLanguage - INFO - Server processing at 16.9 FPS
+2025-05-12 13:34:05,827 - HolisticSignLanguage - INFO - Server processing at 21.0 FPS
+2025-05-12 13:34:06,855 - HolisticSignLanguage - INFO - Server processing at 25.3 FPS
+2025-05-12 13:34:07,900 - HolisticSignLanguage - INFO - Server processing at 27.7 FPS
+2025-05-12 13:34:08,397 - HolisticSignLanguage - INFO - Frame 2820: Pose detected - Wrists: L(0.64, 0.40), R(0.32, 0.36) | Elbows: L(0.58, 0.34), R(0.30, 0.34)
+2025-05-12 13:34:08,920 - HolisticSignLanguage - INFO - Server processing at 24.5 FPS
+2025-05-12 13:34:09,660 - HolisticSignLanguage - INFO - Frame 2850: Pose detected - Wrists: L(0.65, 0.39), R(0.38, 0.37) | Elbows: L(0.58, 0.34), R(0.33, 0.35)
+2025-05-12 13:34:09,953 - HolisticSignLanguage - INFO - Server processing at 25.2 FPS
+2025-05-12 13:34:10,956 - HolisticSignLanguage - INFO - Server processing at 24.9 FPS
+2025-05-12 13:34:11,989 - HolisticSignLanguage - INFO - Server processing at 25.2 FPS
+2025-05-12 13:34:13,020 - HolisticSignLanguage - INFO - Server processing at 30.1 FPS
+2025-05-12 13:34:14,052 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:34:15,065 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:34:16,025 - HolisticSignLanguage - INFO - Frame 3030: Pose detected - Wrists: L(0.54, 0.38), R(0.52, 0.37) | Elbows: L(0.47, 0.32), R(0.38, 0.35)
+2025-05-12 13:34:16,067 - HolisticSignLanguage - INFO - Server processing at 29.9 FPS
+2025-05-12 13:34:17,093 - HolisticSignLanguage - INFO - Server processing at 24.4 FPS
+2025-05-12 13:34:17,245 - HolisticSignLanguage - INFO - Frame 3060: Pose detected - Wrists: L(0.49, 0.42), R(0.54, 0.38) | Elbows: L(0.41, 0.37), R(0.36, 0.36)
+2025-05-12 13:34:18,106 - HolisticSignLanguage - INFO - Server processing at 26.7 FPS
+2025-05-12 13:34:19,121 - HolisticSignLanguage - INFO - Server processing at 19.7 FPS
+2025-05-12 13:34:20,123 - HolisticSignLanguage - INFO - Server processing at 25.0 FPS
+2025-05-12 13:34:21,172 - HolisticSignLanguage - INFO - Server processing at 20.0 FPS
+2025-05-12 13:34:22,174 - HolisticSignLanguage - INFO - Server processing at 18.0 FPS
+2025-05-12 13:34:23,238 - HolisticSignLanguage - INFO - Server processing at 18.8 FPS
+2025-05-12 13:34:24,274 - HolisticSignLanguage - INFO - Server processing at 17.4 FPS
+2025-05-12 13:34:25,320 - HolisticSignLanguage - INFO - Server processing at 25.8 FPS
+2025-05-12 13:34:25,830 - HolisticSignLanguage - INFO - Frame 3240: Pose detected - Wrists: L(0.59, 0.44), R(0.34, 0.36) | Elbows: L(0.58, 0.40), R(0.35, 0.37)
+2025-05-12 13:34:26,322 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:34:27,387 - HolisticSignLanguage - INFO - Server processing at 13.1 FPS
+2025-05-12 13:34:28,097 - HolisticSignLanguage - INFO - Frame 3270: Pose detected - Wrists: L(0.51, 0.37), R(0.51, 0.36) | Elbows: L(0.48, 0.33), R(0.35, 0.34)
+2025-05-12 13:34:28,412 - HolisticSignLanguage - INFO - Server processing at 14.6 FPS
+2025-05-12 13:34:29,435 - HolisticSignLanguage - INFO - Server processing at 14.7 FPS
+2025-05-12 13:34:30,435 - HolisticSignLanguage - INFO - Server processing at 7.0 FPS
+2025-05-12 13:34:30,546 - HolisticSignLanguage - INFO - Frame 3300: Pose detected - Wrists: L(0.59, 0.50), R(0.42, 0.48) | Elbows: L(0.53, 0.44), R(0.33, 0.43)
+2025-05-12 13:34:31,515 - HolisticSignLanguage - INFO - Server processing at 8.3 FPS
+2025-05-12 13:34:32,683 - HolisticSignLanguage - INFO - Server processing at 5.1 FPS
+2025-05-12 13:34:33,895 - HolisticSignLanguage - INFO - Server processing at 7.4 FPS
+2025-05-12 13:34:34,709 - HolisticSignLanguage - INFO - Frame 3330: Pose detected - Wrists: L(0.41, 0.57), R(0.24, 0.25) | Elbows: L(0.39, 0.46), R(0.22, 0.40)
+2025-05-12 13:34:34,931 - HolisticSignLanguage - INFO - Server processing at 9.7 FPS
+2025-05-12 13:34:35,995 - HolisticSignLanguage - INFO - Server processing at 18.8 FPS
+2025-05-12 13:34:36,465 - HolisticSignLanguage - INFO - Frame 3360: Pose detected - Wrists: L(0.38, 0.48), R(0.25, 0.36) | Elbows: L(0.40, 0.47), R(0.22, 0.47)
+2025-05-12 13:34:37,027 - HolisticSignLanguage - INFO - Server processing at 13.6 FPS
+2025-05-12 13:34:38,072 - HolisticSignLanguage - INFO - Server processing at 16.3 FPS
+2025-05-12 13:34:38,400 - HolisticSignLanguage - INFO - Frame 3390: Pose detected - Wrists: L(0.35, 0.41), R(0.29, 0.37) | Elbows: L(0.39, 0.45), R(0.23, 0.44)
+2025-05-12 13:34:39,098 - HolisticSignLanguage - INFO - Server processing at 20.5 FPS
+2025-05-12 13:34:39,996 - HolisticSignLanguage - INFO - Frame 3420: Pose detected - Wrists: L(0.35, 0.41), R(0.30, 0.38) | Elbows: L(0.42, 0.43), R(0.25, 0.45)
+2025-05-12 13:34:40,105 - HolisticSignLanguage - INFO - Server processing at 17.9 FPS
+2025-05-12 13:34:41,138 - HolisticSignLanguage - INFO - Server processing at 15.5 FPS
+2025-05-12 13:34:41,704 - HolisticSignLanguage - INFO - Frame 3450: Pose detected - Wrists: L(0.35, 0.43), R(0.29, 0.40) | Elbows: L(0.42, 0.43), R(0.22, 0.46)
+2025-05-12 13:34:42,162 - HolisticSignLanguage - INFO - Server processing at 19.5 FPS
+2025-05-12 13:34:43,267 - HolisticSignLanguage - INFO - Server processing at 11.8 FPS
+2025-05-12 13:34:44,331 - HolisticSignLanguage - INFO - Server processing at 7.5 FPS
+2025-05-12 13:34:44,372 - HolisticSignLanguage - INFO - Frame 3480: Pose detected - Wrists: L(0.40, 0.54), R(0.28, 0.37) | Elbows: L(0.39, 0.46), R(0.20, 0.43)
+2025-05-12 13:34:45,394 - HolisticSignLanguage - INFO - Server processing at 8.5 FPS
+2025-05-12 13:34:46,398 - HolisticSignLanguage - INFO - Server processing at 9.0 FPS
+2025-05-12 13:34:47,533 - HolisticSignLanguage - INFO - Server processing at 9.7 FPS
+2025-05-12 13:34:47,707 - HolisticSignLanguage - INFO - Frame 3510: Pose detected - Wrists: L(0.40, 0.57), R(0.25, 0.21) | Elbows: L(0.39, 0.45), R(0.21, 0.35)
+2025-05-12 13:34:48,598 - HolisticSignLanguage - INFO - Server processing at 11.3 FPS
+2025-05-12 13:34:49,627 - HolisticSignLanguage - INFO - Server processing at 9.7 FPS
+2025-05-12 13:34:50,605 - HolisticSignLanguage - INFO - Frame 3540: Pose detected - Wrists: L(0.35, 0.33), R(0.24, 0.35) | Elbows: L(0.41, 0.44), R(0.15, 0.40)
+2025-05-12 13:34:50,698 - HolisticSignLanguage - INFO - Server processing at 9.3 FPS
+2025-05-12 13:34:51,729 - HolisticSignLanguage - INFO - Server processing at 11.6 FPS
+2025-05-12 13:34:52,799 - HolisticSignLanguage - INFO - Server processing at 10.3 FPS
+2025-05-12 13:34:53,232 - HolisticSignLanguage - INFO - Frame 3570: Pose detected - Wrists: L(0.34, 0.40), R(0.28, 0.35) | Elbows: L(0.40, 0.45), R(0.20, 0.41)
+2025-05-12 13:34:53,827 - HolisticSignLanguage - INFO - Server processing at 13.6 FPS
+2025-05-12 13:34:54,858 - HolisticSignLanguage - INFO - Server processing at 14.5 FPS
+2025-05-12 13:34:55,279 - HolisticSignLanguage - INFO - Frame 3600: Pose detected - Wrists: L(0.36, 0.38), R(0.31, 0.36) | Elbows: L(0.42, 0.41), R(0.24, 0.44)
+2025-05-12 13:34:55,940 - HolisticSignLanguage - INFO - Server processing at 14.8 FPS
+2025-05-12 13:34:56,942 - HolisticSignLanguage - INFO - Server processing at 13.0 FPS
+2025-05-12 13:34:57,518 - HolisticSignLanguage - INFO - Frame 3630: Pose detected - Wrists: L(0.39, 0.57), R(0.23, 0.59) | Elbows: L(0.38, 0.46), R(0.23, 0.48)
+2025-05-12 13:34:57,981 - HolisticSignLanguage - INFO - Server processing at 16.4 FPS
+2025-05-12 13:34:59,014 - HolisticSignLanguage - INFO - Server processing at 16.5 FPS
+2025-05-12 13:34:59,286 - HolisticSignLanguage - INFO - Frame 3660: Pose detected - Wrists: L(0.39, 0.57), R(0.25, 0.57) | Elbows: L(0.38, 0.46), R(0.23, 0.47)
+2025-05-12 13:35:00,016 - HolisticSignLanguage - INFO - Server processing at 17.0 FPS
+2025-05-12 13:35:01,109 - HolisticSignLanguage - INFO - Server processing at 14.6 FPS
+2025-05-12 13:35:01,282 - HolisticSignLanguage - INFO - Frame 3690: Pose detected - Wrists: L(0.35, 0.46), R(0.27, 0.56) | Elbows: L(0.37, 0.41), R(0.24, 0.47)
+2025-05-12 13:35:02,141 - HolisticSignLanguage - INFO - Server processing at 9.7 FPS
+2025-05-12 13:35:03,182 - HolisticSignLanguage - INFO - Server processing at 8.6 FPS
+2025-05-12 13:35:04,370 - HolisticSignLanguage - INFO - Server processing at 8.4 FPS
+2025-05-12 13:35:04,627 - HolisticSignLanguage - INFO - Frame 3720: Pose detected - Wrists: L(0.35, 0.42), R(0.32, 0.35) | Elbows: L(0.36, 0.43), R(0.26, 0.44)
+2025-05-12 13:35:05,373 - HolisticSignLanguage - INFO - Server processing at 10.0 FPS
+2025-05-12 13:35:06,399 - HolisticSignLanguage - INFO - Server processing at 9.8 FPS
+2025-05-12 13:35:07,434 - HolisticSignLanguage - INFO - Server processing at 9.7 FPS
+2025-05-12 13:35:07,822 - HolisticSignLanguage - INFO - Frame 3750: Pose detected - Wrists: L(0.40, 0.40), R(0.40, 0.40) | Elbows: L(0.32, 0.44), R(0.29, 0.45)
+2025-05-12 13:35:08,533 - HolisticSignLanguage - INFO - Server processing at 7.3 FPS
+2025-05-12 13:35:09,565 - HolisticSignLanguage - INFO - Server processing at 8.7 FPS
+2025-05-12 13:35:10,637 - HolisticSignLanguage - INFO - Server processing at 6.5 FPS
+2025-05-12 13:35:11,394 - HolisticSignLanguage - INFO - Frame 3780: Pose detected - Wrists: L(0.39, 0.40), R(0.34, 0.40) | Elbows: L(0.35, 0.42), R(0.27, 0.44)
+2025-05-12 13:35:11,684 - HolisticSignLanguage - INFO - Server processing at 10.5 FPS
+2025-05-12 13:35:12,744 - HolisticSignLanguage - INFO - Server processing at 12.3 FPS
+2025-05-12 13:35:13,795 - HolisticSignLanguage - INFO - Server processing at 12.4 FPS
+2025-05-12 13:35:13,990 - HolisticSignLanguage - INFO - Frame 3810: Pose detected - Wrists: L(0.40, 0.55), R(0.26, 0.32) | Elbows: L(0.40, 0.45), R(0.22, 0.43)
+2025-05-12 13:35:14,844 - HolisticSignLanguage - INFO - Server processing at 10.5 FPS
+2025-05-12 13:35:16,093 - HolisticSignLanguage - INFO - Server processing at 4.8 FPS
+2025-05-12 13:35:17,312 - HolisticSignLanguage - INFO - Server processing at 2.5 FPS
+2025-05-12 13:35:18,367 - HolisticSignLanguage - INFO - Server processing at 5.7 FPS
+2025-05-12 13:35:19,561 - HolisticSignLanguage - INFO - Server processing at 3.4 FPS
+2025-05-12 13:35:19,860 - HolisticSignLanguage - INFO - Frame 3840: Pose detected - Wrists: L(0.37, 0.48), R(0.28, 0.33) | Elbows: L(0.38, 0.43), R(0.19, 0.39)
+2025-05-12 13:35:20,838 - HolisticSignLanguage - INFO - Server processing at 3.9 FPS
+2025-05-12 13:35:21,893 - HolisticSignLanguage - INFO - Server processing at 7.6 FPS
+2025-05-12 13:35:22,905 - HolisticSignLanguage - INFO - Server processing at 7.9 FPS
+2025-05-12 13:35:23,653 - HolisticSignLanguage - INFO - Frame 3870: Pose detected - Wrists: L(0.34, 0.44), R(0.27, 0.30) | Elbows: L(0.37, 0.43), R(0.21, 0.40)
+2025-05-12 13:35:23,977 - HolisticSignLanguage - INFO - Server processing at 14.9 FPS
+2025-05-12 13:35:25,038 - HolisticSignLanguage - INFO - Server processing at 16.0 FPS
+2025-05-12 13:35:25,445 - HolisticSignLanguage - INFO - Frame 3900: Pose detected - Wrists: L(0.38, 0.48), R(0.24, 0.32) | Elbows: L(0.39, 0.44), R(0.21, 0.43)
+2025-05-12 13:35:26,063 - HolisticSignLanguage - INFO - Server processing at 19.5 FPS
+2025-05-12 13:35:27,082 - HolisticSignLanguage - INFO - Server processing at 12.8 FPS
+2025-05-12 13:35:27,554 - HolisticSignLanguage - INFO - Frame 3930: Pose detected - Wrists: L(0.37, 0.49), R(0.23, 0.32) | Elbows: L(0.39, 0.43), R(0.21, 0.44)
+2025-05-12 13:35:28,098 - HolisticSignLanguage - INFO - Server processing at 10.8 FPS
+2025-05-12 13:35:29,128 - HolisticSignLanguage - INFO - Server processing at 14.6 FPS
+2025-05-12 13:35:29,645 - HolisticSignLanguage - INFO - Frame 3960: Pose detected - Wrists: L(0.43, 0.30), R(0.23, 0.34) | Elbows: L(0.43, 0.42), R(0.21, 0.45)
+2025-05-12 13:35:30,163 - HolisticSignLanguage - INFO - Server processing at 15.5 FPS
+2025-05-12 13:35:31,187 - HolisticSignLanguage - INFO - Server processing at 15.6 FPS
+2025-05-12 13:35:31,581 - HolisticSignLanguage - INFO - Frame 3990: Pose detected - Wrists: L(0.41, 0.58), R(0.23, 0.34) | Elbows: L(0.40, 0.46), R(0.21, 0.45)
+2025-05-12 13:35:32,224 - HolisticSignLanguage - INFO - Server processing at 13.5 FPS
+2025-05-12 13:35:33,224 - HolisticSignLanguage - INFO - Server processing at 14.0 FPS
+2025-05-12 13:35:34,281 - HolisticSignLanguage - INFO - Server processing at 4.7 FPS
+2025-05-12 13:35:34,756 - HolisticSignLanguage - INFO - Frame 4020: Pose detected - Wrists: L(0.39, 0.48), R(0.26, 0.50) | Elbows: L(0.39, 0.38), R(0.24, 0.41)
+2025-05-12 13:35:35,345 - HolisticSignLanguage - INFO - Server processing at 6.6 FPS
+2025-05-12 13:35:36,363 - HolisticSignLanguage - INFO - Server processing at 13.8 FPS
+2025-05-12 13:35:37,077 - HolisticSignLanguage - INFO - Frame 4050: Pose detected - Wrists: L(0.38, 0.49), R(0.28, 0.47) | Elbows: L(0.37, 0.39), R(0.23, 0.40)
+2025-05-12 13:35:37,388 - HolisticSignLanguage - INFO - Server processing at 18.5 FPS
+2025-05-12 13:35:38,421 - HolisticSignLanguage - INFO - Server processing at 17.4 FPS
+2025-05-12 13:35:38,687 - HolisticSignLanguage - INFO - Frame 4080: Pose detected - Wrists: L(0.40, 0.50), R(0.26, 0.50) | Elbows: L(0.38, 0.39), R(0.23, 0.41)
+2025-05-12 13:35:39,424 - HolisticSignLanguage - INFO - Server processing at 16.9 FPS
+2025-05-12 13:35:40,460 - HolisticSignLanguage - INFO - Server processing at 8.7 FPS
+2025-05-12 13:35:41,083 - HolisticSignLanguage - INFO - Frame 4110: Pose detected - Wrists: L(0.39, 0.50), R(0.26, 0.48) | Elbows: L(0.38, 0.39), R(0.23, 0.41)
+2025-05-12 13:35:41,479 - HolisticSignLanguage - INFO - Server processing at 16.7 FPS
+2025-05-12 13:35:42,561 - HolisticSignLanguage - INFO - Server processing at 13.9 FPS
+2025-05-12 13:35:43,858 - HolisticSignLanguage - INFO - Server processing at 4.6 FPS
+2025-05-12 13:35:43,971 - HolisticSignLanguage - INFO - Frame 4140: Pose detected - Wrists: L(0.40, 0.58), R(0.25, 0.33) | Elbows: L(0.40, 0.45), R(0.17, 0.38)
+2025-05-12 13:35:44,869 - HolisticSignLanguage - INFO - Server processing at 5.9 FPS
+2025-05-12 13:35:45,924 - HolisticSignLanguage - INFO - Server processing at 7.6 FPS
+2025-05-12 13:35:46,980 - HolisticSignLanguage - INFO - Server processing at 9.5 FPS
+2025-05-12 13:35:47,608 - HolisticSignLanguage - INFO - Frame 4170: Pose detected - Wrists: L(0.34, 0.41), R(0.27, 0.23) | Elbows: L(0.39, 0.46), R(0.21, 0.34)
+2025-05-12 13:35:48,042 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:35:49,091 - HolisticSignLanguage - INFO - Server processing at 14.3 FPS
+2025-05-12 13:35:49,605 - HolisticSignLanguage - INFO - Frame 4200: Pose detected - Wrists: L(0.33, 0.45), R(0.23, 0.31) | Elbows: L(0.42, 0.46), R(0.19, 0.43)
+2025-05-12 13:35:50,126 - HolisticSignLanguage - INFO - Server processing at 10.6 FPS
+2025-05-12 13:35:51,161 - HolisticSignLanguage - INFO - Server processing at 14.5 FPS
+2025-05-12 13:35:51,859 - HolisticSignLanguage - INFO - Frame 4230: Pose detected - Wrists: L(0.33, 0.46), R(0.23, 0.33) | Elbows: L(0.41, 0.45), R(0.19, 0.46)
+2025-05-12 13:35:52,226 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:35:53,227 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:35:54,026 - HolisticSignLanguage - INFO - Frame 4260: Pose detected - Wrists: L(0.33, 0.47), R(0.26, 0.34) | Elbows: L(0.42, 0.45), R(0.20, 0.44)
+2025-05-12 13:35:54,228 - HolisticSignLanguage - INFO - Server processing at 14.0 FPS
+2025-05-12 13:35:55,253 - HolisticSignLanguage - INFO - Server processing at 20.5 FPS
+2025-05-12 13:35:55,474 - HolisticSignLanguage - INFO - Frame 4290: Pose detected - Wrists: L(0.34, 0.40), R(0.27, 0.34) | Elbows: L(0.40, 0.46), R(0.22, 0.42)
+2025-05-12 13:35:56,290 - HolisticSignLanguage - INFO - Server processing at 20.3 FPS
+2025-05-12 13:35:56,944 - HolisticSignLanguage - INFO - Frame 4320: Pose detected - Wrists: L(0.34, 0.39), R(0.27, 0.33) | Elbows: L(0.40, 0.45), R(0.21, 0.40)
+2025-05-12 13:35:57,339 - HolisticSignLanguage - INFO - Server processing at 21.0 FPS
+2025-05-12 13:35:58,375 - HolisticSignLanguage - INFO - Frame 4350: Pose detected - Wrists: L(0.33, 0.45), R(0.24, 0.30) | Elbows: L(0.41, 0.45), R(0.20, 0.41)
+2025-05-12 13:35:58,391 - HolisticSignLanguage - INFO - Server processing at 20.9 FPS
+2025-05-12 13:35:59,415 - HolisticSignLanguage - INFO - Server processing at 21.5 FPS
+2025-05-12 13:35:59,814 - HolisticSignLanguage - INFO - Frame 4380: Pose detected - Wrists: L(0.34, 0.46), R(0.24, 0.30) | Elbows: L(0.41, 0.45), R(0.21, 0.43)
+2025-05-12 13:36:00,462 - HolisticSignLanguage - INFO - Server processing at 20.1 FPS
+2025-05-12 13:36:01,277 - HolisticSignLanguage - INFO - Frame 4410: Pose detected - Wrists: L(0.34, 0.46), R(0.24, 0.32) | Elbows: L(0.41, 0.45), R(0.21, 0.44)
+2025-05-12 13:36:01,474 - HolisticSignLanguage - INFO - Server processing at 20.7 FPS
+2025-05-12 13:36:02,493 - HolisticSignLanguage - INFO - Server processing at 18.6 FPS
+2025-05-12 13:36:02,801 - HolisticSignLanguage - INFO - Frame 4440: Pose detected - Wrists: L(0.34, 0.46), R(0.24, 0.33) | Elbows: L(0.41, 0.45), R(0.21, 0.45)
+2025-05-12 13:36:03,514 - HolisticSignLanguage - INFO - Server processing at 20.6 FPS
+2025-05-12 13:36:04,358 - HolisticSignLanguage - INFO - Frame 4470: Pose detected - Wrists: L(0.34, 0.45), R(0.28, 0.44) | Elbows: L(0.42, 0.44), R(0.22, 0.44)
+2025-05-12 13:36:04,538 - HolisticSignLanguage - INFO - Server processing at 18.6 FPS
+2025-05-12 13:36:05,538 - HolisticSignLanguage - INFO - Server processing at 18.0 FPS
+2025-05-12 13:36:06,015 - HolisticSignLanguage - INFO - Frame 4500: Pose detected - Wrists: L(0.34, 0.46), R(0.27, 0.35) | Elbows: L(0.42, 0.44), R(0.20, 0.44)
+2025-05-12 13:36:06,579 - HolisticSignLanguage - INFO - Server processing at 19.2 FPS
+2025-05-12 13:36:07,507 - HolisticSignLanguage - INFO - Frame 4530: Pose detected - Wrists: L(0.38, 0.42), R(0.23, 0.39) | Elbows: L(0.40, 0.47), R(0.24, 0.46)
+2025-05-12 13:36:07,618 - HolisticSignLanguage - INFO - Server processing at 20.2 FPS
+2025-05-12 13:36:08,652 - HolisticSignLanguage - INFO - Server processing at 21.3 FPS
+2025-05-12 13:36:08,910 - HolisticSignLanguage - INFO - Frame 4560: Pose detected - Wrists: L(0.36, 0.41), R(0.25, 0.37) | Elbows: L(0.40, 0.47), R(0.23, 0.45)
+2025-05-12 13:36:09,668 - HolisticSignLanguage - INFO - Server processing at 19.7 FPS
+2025-05-12 13:36:10,387 - HolisticSignLanguage - INFO - Frame 4590: Pose detected - Wrists: L(0.34, 0.40), R(0.24, 0.36) | Elbows: L(0.41, 0.46), R(0.26, 0.46)
+2025-05-12 13:36:10,676 - HolisticSignLanguage - INFO - Server processing at 21.8 FPS
+2025-05-12 13:36:11,682 - HolisticSignLanguage - INFO - Server processing at 21.9 FPS
+2025-05-12 13:36:11,762 - HolisticSignLanguage - INFO - Frame 4620: Pose detected - Wrists: L(0.26, 0.39), R(0.26, 0.40) | Elbows: L(0.38, 0.45), R(0.33, 0.43)
+2025-05-12 13:36:12,698 - HolisticSignLanguage - INFO - Server processing at 21.7 FPS
+2025-05-12 13:36:13,139 - HolisticSignLanguage - INFO - Frame 4650: Pose detected - Wrists: L(0.33, 0.39), R(0.31, 0.38) | Elbows: L(0.42, 0.46), R(0.36, 0.43)
+2025-05-12 13:36:13,710 - HolisticSignLanguage - INFO - Server processing at 20.7 FPS
+2025-05-12 13:36:14,633 - HolisticSignLanguage - INFO - Frame 4680: Pose detected - Wrists: L(0.37, 0.40), R(0.26, 0.38) | Elbows: L(0.43, 0.46), R(0.25, 0.46)
+2025-05-12 13:36:14,742 - HolisticSignLanguage - INFO - Server processing at 20.3 FPS
+2025-05-12 13:36:15,789 - HolisticSignLanguage - INFO - Server processing at 21.0 FPS
+2025-05-12 13:36:16,059 - HolisticSignLanguage - INFO - Frame 4710: Pose detected - Wrists: L(0.36, 0.44), R(0.27, 0.36) | Elbows: L(0.40, 0.44), R(0.21, 0.45)
+2025-05-12 13:36:16,790 - HolisticSignLanguage - INFO - Server processing at 21.0 FPS
+2025-05-12 13:36:17,509 - HolisticSignLanguage - INFO - Frame 4740: Pose detected - Wrists: L(0.39, 0.40), R(0.25, 0.38) | Elbows: L(0.39, 0.45), R(0.23, 0.46)
+2025-05-12 13:36:17,809 - HolisticSignLanguage - INFO - Server processing at 20.6 FPS
+2025-05-12 13:36:18,826 - HolisticSignLanguage - INFO - Server processing at 19.7 FPS
+2025-05-12 13:36:19,007 - HolisticSignLanguage - INFO - Frame 4770: Pose detected - Wrists: L(0.36, 0.40), R(0.25, 0.37) | Elbows: L(0.39, 0.46), R(0.23, 0.45)
+2025-05-12 13:36:19,867 - HolisticSignLanguage - INFO - Server processing at 18.3 FPS
+2025-05-12 13:36:20,678 - HolisticSignLanguage - INFO - Frame 4800: Pose detected - Wrists: L(0.34, 0.40), R(0.28, 0.35) | Elbows: L(0.39, 0.46), R(0.23, 0.45)
+2025-05-12 13:36:20,883 - HolisticSignLanguage - INFO - Server processing at 18.7 FPS
+2025-05-12 13:36:21,899 - HolisticSignLanguage - INFO - Server processing at 20.7 FPS
+2025-05-12 13:36:22,121 - HolisticSignLanguage - INFO - Frame 4830: Pose detected - Wrists: L(0.33, 0.40), R(0.26, 0.29) | Elbows: L(0.39, 0.46), R(0.24, 0.41)
+2025-05-12 13:36:22,923 - HolisticSignLanguage - INFO - Server processing at 21.5 FPS
+2025-05-12 13:36:23,499 - HolisticSignLanguage - INFO - Frame 4860: Pose detected - Wrists: L(0.33, 0.43), R(0.23, 0.30) | Elbows: L(0.41, 0.45), R(0.19, 0.42)
+2025-05-12 13:36:23,930 - HolisticSignLanguage - INFO - Server processing at 21.9 FPS
+2025-05-12 13:36:24,902 - HolisticSignLanguage - INFO - Frame 4890: Pose detected - Wrists: L(0.33, 0.44), R(0.22, 0.31) | Elbows: L(0.41, 0.45), R(0.19, 0.43)
+2025-05-12 13:36:24,959 - HolisticSignLanguage - INFO - Server processing at 21.4 FPS
+2025-05-12 13:36:25,976 - HolisticSignLanguage - INFO - Server processing at 21.6 FPS
+2025-05-12 13:36:26,292 - HolisticSignLanguage - INFO - Frame 4920: Pose detected - Wrists: L(0.33, 0.44), R(0.22, 0.33) | Elbows: L(0.41, 0.45), R(0.20, 0.45)
+2025-05-12 13:36:26,995 - HolisticSignLanguage - INFO - Server processing at 21.6 FPS
+2025-05-12 13:36:27,677 - HolisticSignLanguage - INFO - Frame 4950: Pose detected - Wrists: L(0.33, 0.45), R(0.29, 0.38) | Elbows: L(0.41, 0.45), R(0.22, 0.45)
+2025-05-12 13:36:27,999 - HolisticSignLanguage - INFO - Server processing at 21.9 FPS
+2025-05-12 13:36:29,039 - HolisticSignLanguage - INFO - Server processing at 20.2 FPS
+2025-05-12 13:36:29,120 - HolisticSignLanguage - INFO - Frame 4980: Pose detected - Wrists: L(0.33, 0.45), R(0.29, 0.39) | Elbows: L(0.40, 0.45), R(0.22, 0.45)
+2025-05-12 13:36:30,078 - HolisticSignLanguage - INFO - Server processing at 21.2 FPS
+2025-05-12 13:36:30,899 - HolisticSignLanguage - INFO - Frame 5010: Pose detected - Wrists: L(0.33, 0.43), R(0.28, 0.44) | Elbows: L(0.40, 0.44), R(0.21, 0.44)
+2025-05-12 13:36:31,111 - HolisticSignLanguage - INFO - Server processing at 12.6 FPS
+2025-05-12 13:36:32,131 - HolisticSignLanguage - INFO - Server processing at 20.6 FPS
+2025-05-12 13:36:32,406 - HolisticSignLanguage - INFO - Frame 5040: Pose detected - Wrists: L(0.33, 0.43), R(0.28, 0.44) | Elbows: L(0.40, 0.44), R(0.21, 0.44)
+2025-05-12 13:36:33,174 - HolisticSignLanguage - INFO - Server processing at 17.2 FPS
+2025-05-12 13:36:34,029 - HolisticSignLanguage - INFO - Frame 5070: Pose detected - Wrists: L(0.34, 0.44), R(0.28, 0.44) | Elbows: L(0.41, 0.44), R(0.22, 0.44)
+2025-05-12 13:36:34,187 - HolisticSignLanguage - INFO - Server processing at 20.7 FPS
+2025-05-12 13:36:35,213 - HolisticSignLanguage - INFO - Server processing at 20.5 FPS
+2025-05-12 13:36:35,484 - HolisticSignLanguage - INFO - Frame 5100: Pose detected - Wrists: L(0.34, 0.44), R(0.28, 0.44) | Elbows: L(0.41, 0.44), R(0.22, 0.44)
+2025-05-12 13:36:36,252 - HolisticSignLanguage - INFO - Server processing at 20.2 FPS
+2025-05-12 13:36:36,965 - HolisticSignLanguage - INFO - Frame 5130: Pose detected - Wrists: L(0.34, 0.44), R(0.28, 0.44) | Elbows: L(0.41, 0.44), R(0.22, 0.44)
+2025-05-12 13:36:37,258 - HolisticSignLanguage - INFO - Server processing at 20.9 FPS
+2025-05-12 13:36:38,278 - HolisticSignLanguage - INFO - Server processing at 18.6 FPS
+2025-05-12 13:36:38,552 - HolisticSignLanguage - INFO - Frame 5160: Pose detected - Wrists: L(0.35, 0.43), R(0.29, 0.44) | Elbows: L(0.43, 0.44), R(0.23, 0.44)
+2025-05-12 13:36:39,280 - HolisticSignLanguage - INFO - Server processing at 19.9 FPS
+2025-05-12 13:36:39,850 - HolisticSignLanguage - INFO - Frame 5190: Pose detected - Wrists: L(0.57, 0.38), R(0.37, 0.36) | Elbows: L(0.59, 0.41), R(0.34, 0.44)
+2025-05-12 13:36:40,315 - HolisticSignLanguage - INFO - Server processing at 25.1 FPS
+2025-05-12 13:36:41,130 - HolisticSignLanguage - INFO - Frame 5220: Pose detected - Wrists: L(0.51, 0.30), R(0.41, 0.26) | Elbows: L(0.59, 0.35), R(0.34, 0.33)
+2025-05-12 13:36:41,316 - HolisticSignLanguage - INFO - Server processing at 24.0 FPS
+2025-05-12 13:36:42,252 - HolisticSignLanguage - INFO - Frame 5250: Pose detected - Wrists: L(0.52, 0.32), R(0.40, 0.19) | Elbows: L(0.59, 0.35), R(0.34, 0.28)
+2025-05-12 13:36:42,333 - HolisticSignLanguage - INFO - Server processing at 26.5 FPS
+2025-05-12 13:36:43,327 - HolisticSignLanguage - INFO - Frame 5280: Pose detected - Wrists: L(0.52, 0.32), R(0.38, 0.21) | Elbows: L(0.60, 0.36), R(0.31, 0.30)
+2025-05-12 13:36:43,333 - HolisticSignLanguage - INFO - Server processing at 28.0 FPS
+2025-05-12 13:36:44,357 - HolisticSignLanguage - INFO - Server processing at 27.4 FPS
+2025-05-12 13:36:44,422 - HolisticSignLanguage - INFO - Frame 5310: Pose detected - Wrists: L(0.51, 0.35), R(0.34, 0.26) | Elbows: L(0.62, 0.35), R(0.30, 0.33)
+2025-05-12 13:36:45,391 - HolisticSignLanguage - INFO - Server processing at 28.0 FPS
+2025-05-12 13:36:45,490 - HolisticSignLanguage - INFO - Frame 5340: Pose detected - Wrists: L(0.52, 0.35), R(0.34, 0.26) | Elbows: L(0.62, 0.35), R(0.30, 0.34)
+2025-05-12 13:36:46,421 - HolisticSignLanguage - INFO - Server processing at 28.1 FPS
+2025-05-12 13:36:46,559 - HolisticSignLanguage - INFO - Frame 5370: Pose detected - Wrists: L(0.48, 0.30), R(0.35, 0.27) | Elbows: L(0.54, 0.33), R(0.32, 0.34)
+2025-05-12 13:36:47,492 - HolisticSignLanguage - INFO - Server processing at 25.2 FPS
+2025-05-12 13:36:47,749 - HolisticSignLanguage - INFO - Frame 5400: Pose detected - Wrists: L(0.50, 0.32), R(0.35, 0.27) | Elbows: L(0.55, 0.34), R(0.32, 0.34)
+2025-05-12 13:36:48,498 - HolisticSignLanguage - INFO - Server processing at 27.8 FPS
+2025-05-12 13:36:48,809 - HolisticSignLanguage - INFO - Frame 5430: Pose detected - Wrists: L(0.63, 0.47), R(0.56, 0.43) | Elbows: L(0.68, 0.50), R(0.51, 0.47)
+2025-05-12 13:36:49,515 - HolisticSignLanguage - INFO - Server processing at 28.5 FPS
+2025-05-12 13:36:49,852 - HolisticSignLanguage - INFO - Frame 5460: Pose detected - Wrists: L(0.62, 0.45), R(0.55, 0.39) | Elbows: L(0.67, 0.48), R(0.51, 0.44)
+2025-05-12 13:36:50,531 - HolisticSignLanguage - INFO - Server processing at 27.5 FPS
+2025-05-12 13:36:50,922 - HolisticSignLanguage - INFO - Frame 5490: Pose detected - Wrists: L(0.62, 0.46), R(0.52, 0.41) | Elbows: L(0.68, 0.49), R(0.49, 0.46)
+2025-05-12 13:36:51,544 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:36:51,941 - HolisticSignLanguage - INFO - Frame 5520: Pose detected - Wrists: L(0.64, 0.49), R(0.51, 0.43) | Elbows: L(0.69, 0.49), R(0.49, 0.48)
+2025-05-12 13:36:52,555 - HolisticSignLanguage - INFO - Server processing at 29.7 FPS
+2025-05-12 13:36:52,953 - HolisticSignLanguage - INFO - Frame 5550: Pose detected - Wrists: L(0.63, 0.49), R(0.52, 0.44) | Elbows: L(0.68, 0.49), R(0.49, 0.49)
+2025-05-12 13:36:53,568 - HolisticSignLanguage - INFO - Server processing at 29.6 FPS
+2025-05-12 13:36:53,976 - HolisticSignLanguage - INFO - Frame 5580: Pose detected - Wrists: L(0.62, 0.47), R(0.52, 0.44) | Elbows: L(0.62, 0.48), R(0.50, 0.48)
+2025-05-12 13:36:54,590 - HolisticSignLanguage - INFO - Server processing at 29.4 FPS
+2025-05-12 13:36:55,597 - HolisticSignLanguage - INFO - Server processing at 31.8 FPS
+2025-05-12 13:36:55,926 - HolisticSignLanguage - INFO - Frame 5640: Pose detected - Wrists: L(0.52, 0.30), R(0.30, 0.27) | Elbows: L(0.51, 0.28), R(0.32, 0.25)
+2025-05-12 13:36:56,598 - HolisticSignLanguage - INFO - Server processing at 29.0 FPS
+2025-05-12 13:36:57,605 - HolisticSignLanguage - INFO - Server processing at 33.8 FPS
+2025-05-12 13:36:58,621 - HolisticSignLanguage - INFO - Server processing at 32.5 FPS
+2025-05-12 13:36:59,643 - HolisticSignLanguage - INFO - Server processing at 31.3 FPS
+2025-05-12 13:36:59,713 - HolisticSignLanguage - INFO - Frame 5760: Pose detected - Wrists: L(0.53, 0.32), R(0.40, 0.34) | Elbows: L(0.55, 0.31), R(0.40, 0.32)
+2025-05-12 13:37:00,677 - HolisticSignLanguage - INFO - Server processing at 28.1 FPS
+2025-05-12 13:37:01,692 - HolisticSignLanguage - INFO - Server processing at 25.6 FPS
+2025-05-12 13:37:02,027 - HolisticSignLanguage - INFO - Frame 5820: Pose detected - Wrists: L(0.74, 0.62), R(0.71, 0.61) | Elbows: L(0.76, 0.63), R(0.69, 0.63)
+2025-05-12 13:37:02,696 - HolisticSignLanguage - INFO - Server processing at 22.9 FPS
+2025-05-12 13:37:03,228 - HolisticSignLanguage - INFO - Frame 5850: Pose detected - Wrists: L(0.74, 0.62), R(0.71, 0.59) | Elbows: L(0.76, 0.63), R(0.70, 0.61)
+2025-05-12 13:37:03,700 - HolisticSignLanguage - INFO - Server processing at 26.9 FPS
+2025-05-12 13:37:04,286 - HolisticSignLanguage - INFO - Frame 5880: Pose detected - Wrists: L(0.74, 0.63), R(0.70, 0.61) | Elbows: L(0.77, 0.63), R(0.69, 0.63)
+2025-05-12 13:37:04,719 - HolisticSignLanguage - INFO - Server processing at 28.4 FPS
+2025-05-12 13:37:05,332 - HolisticSignLanguage - INFO - Frame 5910: Pose detected - Wrists: L(0.74, 0.63), R(0.70, 0.61) | Elbows: L(0.77, 0.63), R(0.69, 0.63)
+2025-05-12 13:37:05,720 - HolisticSignLanguage - INFO - Server processing at 29.0 FPS
+2025-05-12 13:37:06,364 - HolisticSignLanguage - INFO - Frame 5940: Pose detected - Wrists: L(0.74, 0.63), R(0.70, 0.61) | Elbows: L(0.75, 0.64), R(0.69, 0.63)
+2025-05-12 13:37:06,750 - HolisticSignLanguage - INFO - Server processing at 29.2 FPS
+2025-05-12 13:37:07,757 - HolisticSignLanguage - INFO - Server processing at 30.8 FPS
+2025-05-12 13:37:08,759 - HolisticSignLanguage - INFO - Server processing at 32.9 FPS
+2025-05-12 13:37:09,766 - HolisticSignLanguage - INFO - Server processing at 33.7 FPS
+2025-05-12 13:37:10,786 - HolisticSignLanguage - INFO - Server processing at 34.3 FPS
+2025-05-12 13:37:11,792 - HolisticSignLanguage - INFO - Server processing at 34.8 FPS
+2025-05-12 13:37:12,820 - HolisticSignLanguage - INFO - Server processing at 35.0 FPS
+2025-05-12 13:37:13,842 - HolisticSignLanguage - INFO - Server processing at 33.3 FPS
+2025-05-12 13:37:14,856 - HolisticSignLanguage - INFO - Server processing at 32.6 FPS
+2025-05-12 13:37:15,869 - HolisticSignLanguage - INFO - Server processing at 32.6 FPS
+2025-05-12 13:37:16,902 - HolisticSignLanguage - INFO - Server processing at 27.1 FPS
+2025-05-12 13:37:17,932 - HolisticSignLanguage - INFO - Server processing at 33.0 FPS
+2025-05-12 13:37:18,946 - HolisticSignLanguage - INFO - Server processing at 30.6 FPS
+2025-05-12 13:37:19,324 - HolisticSignLanguage - INFO - Frame 6360: Pose detected - Wrists: L(0.56, 0.36), R(0.48, 0.32) | Elbows: L(0.52, 0.31), R(0.33, 0.31)
+2025-05-12 13:37:19,946 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:37:20,369 - HolisticSignLanguage - INFO - Frame 6390: Pose detected - Wrists: L(0.61, 0.37), R(0.57, 0.34) | Elbows: L(0.54, 0.32), R(0.34, 0.32)
+2025-05-12 13:37:20,980 - HolisticSignLanguage - INFO - Server processing at 28.1 FPS
+2025-05-12 13:37:21,428 - HolisticSignLanguage - INFO - Frame 6420: Pose detected - Wrists: L(0.63, 0.33), R(0.39, 0.32) | Elbows: L(0.56, 0.30), R(0.32, 0.30)
+2025-05-12 13:37:22,002 - HolisticSignLanguage - INFO - Server processing at 31.3 FPS
+2025-05-12 13:37:23,030 - HolisticSignLanguage - INFO - Server processing at 32.1 FPS
+2025-05-12 13:37:24,039 - HolisticSignLanguage - INFO - Server processing at 33.7 FPS
+2025-05-12 13:37:25,068 - HolisticSignLanguage - INFO - Server processing at 32.1 FPS
+2025-05-12 13:37:26,104 - HolisticSignLanguage - INFO - Server processing at 33.8 FPS
+2025-05-12 13:37:27,122 - HolisticSignLanguage - INFO - Server processing at 33.4 FPS
+2025-05-12 13:37:28,125 - HolisticSignLanguage - INFO - Server processing at 32.9 FPS
+2025-05-12 13:37:29,138 - HolisticSignLanguage - INFO - Server processing at 32.6 FPS
+2025-05-12 13:37:30,162 - HolisticSignLanguage - INFO - Server processing at 34.2 FPS
+2025-05-12 13:37:31,177 - HolisticSignLanguage - INFO - Server processing at 33.5 FPS
+2025-05-12 13:37:32,187 - HolisticSignLanguage - INFO - Server processing at 32.7 FPS
+2025-05-12 13:37:33,192 - HolisticSignLanguage - INFO - Server processing at 32.8 FPS
+2025-05-12 13:37:34,201 - HolisticSignLanguage - INFO - Server processing at 30.7 FPS
+2025-05-12 13:37:35,220 - HolisticSignLanguage - INFO - Server processing at 31.4 FPS
+2025-05-12 13:37:36,251 - HolisticSignLanguage - INFO - Server processing at 31.0 FPS
+2025-05-12 13:37:37,108 - HolisticSignLanguage - INFO - Frame 6930: Pose detected - Wrists: L(0.50, 0.28), R(0.34, 0.29) | Elbows: L(0.50, 0.27), R(0.34, 0.27)
+2025-05-12 13:37:37,282 - HolisticSignLanguage - INFO - Server processing at 30.0 FPS
+2025-05-12 13:37:38,309 - HolisticSignLanguage - INFO - Server processing at 32.1 FPS
+2025-05-12 13:37:39,313 - HolisticSignLanguage - INFO - Server processing at 31.9 FPS
+2025-05-12 13:37:40,145 - HolisticSignLanguage - INFO - Frame 7020: Pose detected - Wrists: L(0.62, 0.43), R(0.37, 0.20) | Elbows: L(0.59, 0.35), R(0.33, 0.30)
+2025-05-12 13:37:40,320 - HolisticSignLanguage - INFO - Server processing at 21.9 FPS
+2025-05-12 13:37:41,381 - HolisticSignLanguage - INFO - Server processing at 17.9 FPS
+2025-05-12 13:37:41,944 - HolisticSignLanguage - INFO - Frame 7050: Pose detected - Wrists: L(0.61, 0.44), R(0.41, 0.26) | Elbows: L(0.60, 0.35), R(0.28, 0.33)
+2025-05-12 13:37:42,448 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:43,449 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:44,137 - HolisticSignLanguage - INFO - Frame 7080: Pose detected - Wrists: L(0.61, 0.43), R(0.39, 0.25) | Elbows: L(0.60, 0.35), R(0.33, 0.33)
+2025-05-12 13:37:44,513 - HolisticSignLanguage - INFO - Server processing at 12.2 FPS
+2025-05-12 13:37:45,581 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:46,143 - HolisticSignLanguage - INFO - Frame 7110: Pose detected - Wrists: L(0.52, 0.39), R(0.44, 0.39) | Elbows: L(0.61, 0.35), R(0.35, 0.35)
+2025-05-12 13:37:46,649 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:47,650 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:48,147 - HolisticSignLanguage - INFO - Frame 7140: Pose detected - Wrists: L(0.52, 0.35), R(0.37, 0.26) | Elbows: L(0.55, 0.33), R(0.36, 0.33)
+2025-05-12 13:37:48,714 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:49,718 - HolisticSignLanguage - INFO - Server processing at 11.9 FPS
+2025-05-12 13:37:50,359 - HolisticSignLanguage - INFO - Frame 7170: Pose detected - Wrists: L(0.54, 0.27), R(0.54, 0.28) | Elbows: L(0.48, 0.34), R(0.43, 0.37)
+2025-05-12 13:37:50,785 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:51,846 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:37:52,350 - HolisticSignLanguage - INFO - Frame 7200: Pose detected - Wrists: L(0.60, 0.42), R(0.38, 0.26) | Elbows: L(0.59, 0.34), R(0.29, 0.33)
+2025-05-12 13:37:52,848 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:53,849 - HolisticSignLanguage - INFO - Server processing at 12.0 FPS
+2025-05-12 13:37:54,479 - HolisticSignLanguage - INFO - Frame 7230: Pose detected - Wrists: L(0.61, 0.43), R(0.37, 0.24) | Elbows: L(0.58, 0.35), R(0.31, 0.32)
+2025-05-12 13:37:54,850 - HolisticSignLanguage - INFO - Server processing at 16.0 FPS
+2025-05-12 13:37:55,850 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:56,492 - HolisticSignLanguage - INFO - Frame 7260: Pose detected - Wrists: L(0.61, 0.42), R(0.34, 0.24) | Elbows: L(0.59, 0.35), R(0.34, 0.35)
+2025-05-12 13:37:56,917 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:57,980 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:37:58,472 - HolisticSignLanguage - INFO - Frame 7290: Pose detected - Wrists: L(0.60, 0.42), R(0.39, 0.20) | Elbows: L(0.59, 0.35), R(0.36, 0.30)
+2025-05-12 13:37:59,042 - HolisticSignLanguage - INFO - Server processing at 12.2 FPS
+2025-05-12 13:38:00,048 - HolisticSignLanguage - INFO - Server processing at 14.9 FPS
+2025-05-12 13:38:00,683 - HolisticSignLanguage - INFO - Frame 7320: Pose detected - Wrists: L(0.61, 0.40), R(0.41, 0.40) | Elbows: L(0.59, 0.35), R(0.34, 0.35)
+2025-05-12 13:38:01,115 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:02,184 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:02,678 - HolisticSignLanguage - INFO - Frame 7350: Pose detected - Wrists: L(0.61, 0.42), R(0.37, 0.22) | Elbows: L(0.59, 0.35), R(0.34, 0.32)
+2025-05-12 13:38:03,246 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:38:04,299 - HolisticSignLanguage - INFO - Server processing at 15.2 FPS
+2025-05-12 13:38:04,598 - HolisticSignLanguage - INFO - Frame 7380: Pose detected - Wrists: L(0.59, 0.41), R(0.38, 0.20) | Elbows: L(0.59, 0.35), R(0.35, 0.31)
+2025-05-12 13:38:05,299 - HolisticSignLanguage - INFO - Server processing at 20.0 FPS
+2025-05-12 13:38:06,133 - HolisticSignLanguage - INFO - Frame 7410: Pose detected - Wrists: L(0.58, 0.40), R(0.42, 0.39) | Elbows: L(0.59, 0.35), R(0.35, 0.35)
+2025-05-12 13:38:06,364 - HolisticSignLanguage - INFO - Server processing at 17.8 FPS
+2025-05-12 13:38:07,430 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:08,133 - HolisticSignLanguage - INFO - Frame 7440: Pose detected - Wrists: L(0.55, 0.43), R(0.42, 0.42) | Elbows: L(0.58, 0.35), R(0.36, 0.37)
+2025-05-12 13:38:08,431 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:09,448 - HolisticSignLanguage - INFO - Server processing at 14.8 FPS
+2025-05-12 13:38:10,146 - HolisticSignLanguage - INFO - Frame 7470: Pose detected - Wrists: L(0.58, 0.43), R(0.41, 0.42) | Elbows: L(0.59, 0.35), R(0.36, 0.36)
+2025-05-12 13:38:10,512 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:11,513 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:12,148 - HolisticSignLanguage - INFO - Frame 7500: Pose detected - Wrists: L(0.61, 0.42), R(0.35, 0.22) | Elbows: L(0.58, 0.34), R(0.34, 0.32)
+2025-05-12 13:38:12,514 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:13,714 - HolisticSignLanguage - INFO - Server processing at 12.5 FPS
+2025-05-12 13:38:14,145 - HolisticSignLanguage - INFO - Frame 7530: Pose detected - Wrists: L(0.59, 0.42), R(0.38, 0.19) | Elbows: L(0.58, 0.34), R(0.35, 0.30)
+2025-05-12 13:38:14,780 - HolisticSignLanguage - INFO - Server processing at 19.7 FPS
+2025-05-12 13:38:15,796 - HolisticSignLanguage - INFO - Server processing at 16.7 FPS
+2025-05-12 13:38:15,919 - HolisticSignLanguage - INFO - Frame 7560: Pose detected - Wrists: L(0.56, 0.42), R(0.43, 0.42) | Elbows: L(0.60, 0.35), R(0.37, 0.36)
+2025-05-12 13:38:16,861 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:17,879 - HolisticSignLanguage - INFO - Frame 7590: Pose detected - Wrists: L(0.55, 0.42), R(0.43, 0.40) | Elbows: L(0.59, 0.35), R(0.37, 0.36)
+2025-05-12 13:38:17,912 - HolisticSignLanguage - INFO - Server processing at 15.2 FPS
+2025-05-12 13:38:18,912 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:19,877 - HolisticSignLanguage - INFO - Frame 7620: Pose detected - Wrists: L(0.54, 0.36), R(0.39, 0.26) | Elbows: L(0.60, 0.35), R(0.34, 0.35)
+2025-05-12 13:38:19,913 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:20,914 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:21,878 - HolisticSignLanguage - INFO - Frame 7650: Pose detected - Wrists: L(0.60, 0.43), R(0.37, 0.24) | Elbows: L(0.58, 0.35), R(0.34, 0.33)
+2025-05-12 13:38:21,978 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:22,979 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:23,876 - HolisticSignLanguage - INFO - Frame 7680: Pose detected - Wrists: L(0.57, 0.43), R(0.39, 0.25) | Elbows: L(0.59, 0.36), R(0.35, 0.33)
+2025-05-12 13:38:23,979 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:25,026 - HolisticSignLanguage - INFO - Server processing at 22.0 FPS
+2025-05-12 13:38:25,327 - HolisticSignLanguage - INFO - Frame 7710: Pose detected - Wrists: L(0.57, 0.43), R(0.32, 0.24) | Elbows: L(0.58, 0.36), R(0.34, 0.33)
+2025-05-12 13:38:26,027 - HolisticSignLanguage - INFO - Server processing at 17.0 FPS
+2025-05-12 13:38:27,041 - HolisticSignLanguage - INFO - Server processing at 14.8 FPS
+2025-05-12 13:38:27,262 - HolisticSignLanguage - INFO - Frame 7740: Pose detected - Wrists: L(0.58, 0.43), R(0.36, 0.18) | Elbows: L(0.57, 0.35), R(0.32, 0.28)
+2025-05-12 13:38:28,096 - HolisticSignLanguage - INFO - Server processing at 15.2 FPS
+2025-05-12 13:38:29,114 - HolisticSignLanguage - INFO - Server processing at 14.7 FPS
+2025-05-12 13:38:29,276 - HolisticSignLanguage - INFO - Frame 7770: Pose detected - Wrists: L(0.60, 0.39), R(0.40, 0.34) | Elbows: L(0.59, 0.35), R(0.33, 0.36)
+2025-05-12 13:38:30,179 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:31,242 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:31,273 - HolisticSignLanguage - INFO - Frame 7800: Pose detected - Wrists: L(0.52, 0.40), R(0.44, 0.40) | Elbows: L(0.56, 0.34), R(0.37, 0.36)
+2025-05-12 13:38:32,244 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:33,245 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:33,276 - HolisticSignLanguage - INFO - Frame 7830: Pose detected - Wrists: L(0.59, 0.41), R(0.38, 0.29) | Elbows: L(0.59, 0.35), R(0.31, 0.36)
+2025-05-12 13:38:34,294 - HolisticSignLanguage - INFO - Server processing at 15.3 FPS
+2025-05-12 13:38:35,258 - HolisticSignLanguage - INFO - Frame 7860: Pose detected - Wrists: L(0.58, 0.41), R(0.38, 0.29) | Elbows: L(0.58, 0.34), R(0.28, 0.34)
+2025-05-12 13:38:35,362 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:36,375 - HolisticSignLanguage - INFO - Server processing at 14.8 FPS
+2025-05-12 13:38:37,274 - HolisticSignLanguage - INFO - Frame 7890: Pose detected - Wrists: L(0.60, 0.41), R(0.38, 0.29) | Elbows: L(0.59, 0.35), R(0.29, 0.35)
+2025-05-12 13:38:37,377 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:38,430 - HolisticSignLanguage - INFO - Server processing at 15.2 FPS
+2025-05-12 13:38:39,446 - HolisticSignLanguage - INFO - Server processing at 11.8 FPS
+2025-05-12 13:38:39,477 - HolisticSignLanguage - INFO - Frame 7920: Pose detected - Wrists: L(0.54, 0.32), R(0.41, 0.29) | Elbows: L(0.59, 0.34), R(0.32, 0.35)
+2025-05-12 13:38:40,508 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:38:41,473 - HolisticSignLanguage - INFO - Frame 7950: Pose detected - Wrists: L(0.60, 0.41), R(0.38, 0.30) | Elbows: L(0.60, 0.35), R(0.31, 0.36)
+2025-05-12 13:38:41,512 - HolisticSignLanguage - INFO - Server processing at 14.9 FPS
+2025-05-12 13:38:42,577 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:43,474 - HolisticSignLanguage - INFO - Frame 7980: Pose detected - Wrists: L(0.55, 0.42), R(0.43, 0.41) | Elbows: L(0.57, 0.35), R(0.34, 0.36)
+2025-05-12 13:38:43,577 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:44,609 - HolisticSignLanguage - INFO - Server processing at 23.2 FPS
+2025-05-12 13:38:44,778 - HolisticSignLanguage - INFO - Frame 8010: Pose detected - Wrists: L(0.55, 0.35), R(0.36, 0.30) | Elbows: L(0.58, 0.35), R(0.30, 0.35)
+2025-05-12 13:38:45,641 - HolisticSignLanguage - INFO - Server processing at 27.2 FPS
+2025-05-12 13:38:46,062 - HolisticSignLanguage - INFO - Frame 8040: Pose detected - Wrists: L(0.42, 0.30), R(0.30, 0.22) | Elbows: L(0.56, 0.35), R(0.25, 0.29)
+2025-05-12 13:38:46,662 - HolisticSignLanguage - INFO - Server processing at 14.7 FPS
+2025-05-12 13:38:47,678 - HolisticSignLanguage - INFO - Server processing at 15.8 FPS
+2025-05-12 13:38:48,080 - HolisticSignLanguage - INFO - Frame 8070: Pose detected - Wrists: L(0.52, 0.34), R(0.46, 0.30) | Elbows: L(0.57, 0.35), R(0.33, 0.36)
+2025-05-12 13:38:48,709 - HolisticSignLanguage - INFO - Server processing at 14.5 FPS
+2025-05-12 13:38:49,711 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:50,072 - HolisticSignLanguage - INFO - Frame 8100: Pose detected - Wrists: L(0.58, 0.43), R(0.42, 0.29) | Elbows: L(0.57, 0.35), R(0.31, 0.36)
+2025-05-12 13:38:50,774 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:51,782 - HolisticSignLanguage - INFO - Server processing at 14.9 FPS
+2025-05-12 13:38:52,081 - HolisticSignLanguage - INFO - Frame 8130: Pose detected - Wrists: L(0.55, 0.41), R(0.43, 0.40) | Elbows: L(0.58, 0.35), R(0.35, 0.37)
+2025-05-12 13:38:52,847 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:38:53,908 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:38:54,059 - HolisticSignLanguage - INFO - Frame 8160: Pose detected - Wrists: L(0.59, 0.41), R(0.42, 0.29) | Elbows: L(0.59, 0.35), R(0.32, 0.36)
+2025-05-12 13:38:54,960 - HolisticSignLanguage - INFO - Server processing at 20.9 FPS
+2025-05-12 13:38:55,548 - HolisticSignLanguage - INFO - Frame 8190: Pose detected - Wrists: L(0.60, 0.43), R(0.43, 0.29) | Elbows: L(0.58, 0.36), R(0.32, 0.36)
+2025-05-12 13:38:56,026 - HolisticSignLanguage - INFO - Server processing at 16.9 FPS
+2025-05-12 13:38:57,034 - HolisticSignLanguage - INFO - Server processing at 13.9 FPS
+2025-05-12 13:38:57,593 - HolisticSignLanguage - INFO - Frame 8220: Pose detected - Wrists: L(0.53, 0.35), R(0.44, 0.35) | Elbows: L(0.57, 0.35), R(0.32, 0.36)
+2025-05-12 13:38:58,095 - HolisticSignLanguage - INFO - Server processing at 15.1 FPS
+2025-05-12 13:38:59,112 - HolisticSignLanguage - INFO - Server processing at 14.7 FPS
+2025-05-12 13:38:59,610 - HolisticSignLanguage - INFO - Frame 8250: Pose detected - Wrists: L(0.58, 0.44), R(0.42, 0.43) | Elbows: L(0.58, 0.36), R(0.36, 0.37)
+2025-05-12 13:39:00,113 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:01,178 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:01,608 - HolisticSignLanguage - INFO - Frame 8280: Pose detected - Wrists: L(0.58, 0.44), R(0.43, 0.43) | Elbows: L(0.58, 0.36), R(0.36, 0.37)
+2025-05-12 13:39:02,246 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:03,311 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:03,609 - HolisticSignLanguage - INFO - Frame 8310: Pose detected - Wrists: L(0.61, 0.42), R(0.42, 0.28) | Elbows: L(0.59, 0.35), R(0.32, 0.35)
+2025-05-12 13:39:04,311 - HolisticSignLanguage - INFO - Server processing at 12.0 FPS
+2025-05-12 13:39:05,312 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:05,806 - HolisticSignLanguage - INFO - Frame 8340: Pose detected - Wrists: L(0.61, 0.44), R(0.35, 0.25) | Elbows: L(0.59, 0.35), R(0.33, 0.35)
+2025-05-12 13:39:06,381 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:07,400 - HolisticSignLanguage - INFO - Server processing at 20.6 FPS
+2025-05-12 13:39:07,428 - HolisticSignLanguage - INFO - Frame 8370: Pose detected - Wrists: L(0.58, 0.42), R(0.38, 0.19) | Elbows: L(0.59, 0.35), R(0.34, 0.30)
+2025-05-12 13:39:08,402 - HolisticSignLanguage - INFO - Server processing at 18.9 FPS
+2025-05-12 13:39:09,159 - HolisticSignLanguage - INFO - Frame 8400: Pose detected - Wrists: L(0.62, 0.44), R(0.37, 0.21) | Elbows: L(0.59, 0.36), R(0.34, 0.32)
+2025-05-12 13:39:09,444 - HolisticSignLanguage - INFO - Server processing at 15.4 FPS
+2025-05-12 13:39:10,510 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:11,140 - HolisticSignLanguage - INFO - Frame 8430: Pose detected - Wrists: L(0.53, 0.42), R(0.46, 0.41) | Elbows: L(0.58, 0.36), R(0.37, 0.37)
+2025-05-12 13:39:11,513 - HolisticSignLanguage - INFO - Server processing at 14.9 FPS
+2025-05-12 13:39:12,577 - HolisticSignLanguage - INFO - Server processing at 15.0 FPS
+2025-05-12 13:39:13,353 - HolisticSignLanguage - INFO - Frame 8460: Pose detected - Wrists: L(0.60, 0.42), R(0.38, 0.29) | Elbows: L(0.59, 0.35), R(0.32, 0.36)
+2025-05-12 13:39:13,592 - HolisticSignLanguage - INFO - Server processing at 13.8 FPS
+2025-05-12 13:39:14,520 - HolisticSignLanguage - INFO - Frame 8490: Pose detected - Wrists: L(0.57, 0.38), R(0.39, 0.32) | Elbows: L(0.59, 0.34), R(0.30, 0.34)
+2025-05-12 13:39:14,604 - HolisticSignLanguage - INFO - Server processing at 26.7 FPS
+2025-05-12 13:39:15,628 - HolisticSignLanguage - INFO - Server processing at 16.6 FPS
+2025-05-12 13:39:17,246 - HolisticSignLanguage - INFO - Server processing at 1.9 FPS
+2025-05-12 13:39:18,249 - HolisticSignLanguage - INFO - Server processing at 1.0 FPS
+2025-05-12 13:39:19,674 - HolisticSignLanguage - INFO - Server processing at 2.1 FPS
+2025-05-12 13:39:20,991 - HolisticSignLanguage - INFO - Server processing at 2.3 FPS
+2025-05-12 13:39:21,052 - HolisticSignLanguage - INFO - Frame 8520: Pose detected - Wrists: L(0.54, 0.37), R(0.40, 0.32) | Elbows: L(0.57, 0.34), R(0.30, 0.34)
+2025-05-12 13:39:22,718 - HolisticSignLanguage - INFO - Server processing at 4.6 FPS
+2025-05-12 13:39:24,590 - HolisticSignLanguage - INFO - Server processing at 1.6 FPS
+2025-05-12 13:39:25,864 - HolisticSignLanguage - INFO - Server processing at 5.5 FPS
+2025-05-12 13:39:26,883 - HolisticSignLanguage - INFO - Server processing at 13.7 FPS
+2025-05-12 13:39:27,914 - HolisticSignLanguage - INFO - Connection state changed to closed

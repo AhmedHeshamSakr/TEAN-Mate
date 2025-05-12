@@ -1,591 +1,454 @@
-import { WebRTCMediaPipeConnector } from './WebRTCMediaPipeConnector.js';
-
+// SignLanguageHandler.js - With visual display of processed video
 export default class SignLanguageHandler {
     constructor() {
         this.isActive = false;
+        this.serverUrl = 'http://localhost:8765';
+        this.peerConnection = null;
+        this.dataChannel = null;
         this.stream = null;
+        
+        // Video elements
         this.videoElement = null;
-        this.canvasElement = null;
-        this.debugMode = false;
-        this.debugOverlay = null;
-        this.debugContext = null;
+        this.displayElement = null;
         
-        // Create WebRTC connector
-        this.mediaPipeConnector = new WebRTCMediaPipeConnector();
-        
-        // Set up callback for landmark detection
-        this.mediaPipeConnector.setLandmarksCallback(this.onLandmarksDetected.bind(this));
-        
-        // Set up callback for connection failures
-        this.mediaPipeConnector.setConnectionFailCallback(this.onConnectionFailed.bind(this));
-        
-        // Variables for tracking state
-        this.fps = 0;
-        this.lastUpdateTime = 0;
+        // Landmark data
+        this.faceLandmarks = null;
+        this.poseLandmarks = null;
         this.leftHandLandmarks = null;
         this.rightHandLandmarks = null;
+        
+        // Performance tracking
+        this.lastFrameTime = 0;
+        this.fps = 0;
+        this.frameCount = 0;
     }
     
-    /**
-     * Callback for connection failures
-     * @param {string} state - The connection state that triggered the failure
-     */
-    onConnectionFailed(state) {
-        console.error(`WebRTC connection failed: ${state}`);
-        
-        // Deactivate if active
+    // Activate screen sharing and WebRTC connection
+    async activate() {
         if (this.isActive) {
-            this.deactivate();
+            console.log("[SignLanguageHandler] Already active");
+            return true;
+        }
+        
+        try {
+            console.log("[SignLanguageHandler] Step 1: Testing server connectivity");
+            // Check server connectivity
+            const serverAvailable = await this.pingServer();
+            if (!serverAvailable) {
+                throw new Error("Python MediaPipe server is not available");
+            }
             
-            // Notify that screen sharing failed
+            console.log("[SignLanguageHandler] Step 2: Creating video elements");
+            // Create video elements for display
+            this.createVideoElements();
+            
+            console.log("[SignLanguageHandler] Step 3: Requesting screen sharing permission");
+            // Request screen sharing
+            this.stream = await navigator.mediaDevices.getDisplayMedia({
+                video: { 
+                    cursor: 'always',
+                    frameRate: { ideal: 30 }
+                },
+                audio: false
+            });
+            
+            // Display local stream
+            this.videoElement.srcObject = this.stream;
+            await this.videoElement.play();
+            
+            // Handle stream ending (user stops sharing)
+            this.stream.getVideoTracks()[0].onended = () => {
+                console.log("[SignLanguageHandler] Screen sharing stopped by user");
+                this.deactivate();
+                window.dispatchEvent(new CustomEvent('screenSharingEnded'));
+            };
+            
+            console.log("[SignLanguageHandler] Step 4: Creating WebRTC connection");
+            // Create RTCPeerConnection
+            this.peerConnection = new RTCPeerConnection({
+                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+            });
+            
+            // Handle connection state changes
+            this.peerConnection.onconnectionstatechange = () => {
+                console.log(`[SignLanguageHandler] Connection state: ${this.peerConnection.connectionState}`);
+                
+                if (this.peerConnection.connectionState === 'disconnected' || 
+                    this.peerConnection.connectionState === 'failed' ||
+                    this.peerConnection.connectionState === 'closed') {
+                    this.deactivate();
+                }
+            };
+            
+            // Create data channel
+            this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
+            
+            // Set up data channel handlers
+            this.dataChannel.onopen = () => {
+                console.log("[SignLanguageHandler] Data channel opened");
+            };
+            
+            this.dataChannel.onclose = () => {
+                console.log("[SignLanguageHandler] Data channel closed");
+            };
+            
+            this.dataChannel.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    if (data.type === 'holistic_landmarks') {
+                        // Process landmarks data
+                        this.processLandmarks(data);
+                    } else if (data.type === 'stats' && data.fps !== undefined) {
+                        // Update FPS
+                        this.fps = data.fps;
+                    }
+                } catch (error) {
+                    console.error("[SignLanguageHandler] Error parsing data channel message:", error);
+                }
+            };
+            
+            // Handle incoming processed video
+            this.peerConnection.ontrack = (event) => {
+                console.log(`[SignLanguageHandler] Received ${event.track.kind} track from server`);
+                
+                // Display the processed video with landmarks
+                this.displayElement.srcObject = new MediaStream([event.track]);
+                this.displayElement.play().catch(e => {
+                    console.error("[SignLanguageHandler] Error playing display video:", e);
+                });
+            };
+            
+            // Add stream tracks to peer connection
+            this.stream.getTracks().forEach(track => {
+                console.log(`[SignLanguageHandler] Adding ${track.kind} track to peer connection`);
+                this.peerConnection.addTrack(track, this.stream);
+            });
+            
+            console.log("[SignLanguageHandler] Step 5: Creating and sending offer");
+            // Create offer
+            const offer = await this.peerConnection.createOffer();
+            await this.peerConnection.setLocalDescription(offer);
+            
+            // Wait for ICE gathering to complete
+            await new Promise(resolve => {
+                if (this.peerConnection.iceGatheringState === 'complete') {
+                    resolve();
+                } else {
+                    this.peerConnection.onicegatheringstatechange = () => {
+                        if (this.peerConnection.iceGatheringState === 'complete') {
+                            resolve();
+                        }
+                    };
+                }
+            });
+            
+            // Send offer to server
+            const response = await fetch(`${this.serverUrl}/offer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sdp: {
+                        type: this.peerConnection.localDescription.type,
+                        sdp: this.peerConnection.localDescription.sdp
+                    }
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            
+            const answer = await response.json();
+            
+            // Set remote description
+            await this.peerConnection.setRemoteDescription(
+                new RTCSessionDescription(answer.sdp)
+            );
+            
+            console.log("[SignLanguageHandler] WebRTC connection established");
+            this.isActive = true;
+            
+            // Show the video display container
+            this.showVideoContainer();
+            
+            // Request landmarks periodically
+            this.landmarksInterval = setInterval(() => {
+                if (this.dataChannel && this.dataChannel.readyState === 'open') {
+                    this.dataChannel.send('get_landmarks');
+                }
+            }, 5000); // Every 5 seconds
+            
+            return true;
+            
+        } catch (error) {
+            console.error('[SignLanguageHandler] Error activating screen sharing:', error);
+            
+            // Clean up resources
+            this.cleanupResources();
+            
+            // Dispatch error event
             window.dispatchEvent(new CustomEvent('screenSharingFailed', {
-                detail: { reason: `Connection failed: ${state}` }
+                detail: {
+                    reason: error.message || error.name || "Unknown error"
+                }
             }));
             
-            // Send message to the extension
-            chrome.runtime.sendMessage({
-                action: "signLanguageStatus",
-                status: 'Error',
-                message: `Connection failed: ${state}`
-            });
+            return false;
         }
     }
     
-    /**
-     * Callback for when landmarks are detected
-     * @param {Object} results - The landmark detection results
-     */
-    onLandmarksDetected(results) {
-        // Calculate FPS
-        const now = performance.now();
-        this.fps = Math.round(1000 / (now - (this.lastUpdateTime || now)));
-        this.lastUpdateTime = now;
-        
-        // Update hand landmarks
-        this.leftHandLandmarks = this.findHandByType(results, 'Left');
-        this.rightHandLandmarks = this.findHandByType(results, 'Right');
-        
-        // Draw landmarks if debug mode is active
-        if (this.debugMode && this.debugOverlay) {
-            this.drawHandLandmarks(results);
+    // Create video elements for display
+    createVideoElements() {
+        // Check if container already exists
+        let container = document.getElementById('signLanguageVideoContainer');
+        if (container) {
+            // Remove existing container
+            document.body.removeChild(container);
         }
         
-        // Dispatch event with hand landmarks
-        const event = new CustomEvent('handLandmarksDetected', {
-            detail: {
-                leftHand: this.leftHandLandmarks,
-                rightHand: this.rightHandLandmarks,
-                timestamp: now
-            }
-        });
+        // Create container
+        container = document.createElement('div');
+        container.id = 'signLanguageVideoContainer';
+        container.style.position = 'fixed';
+        container.style.bottom = '20px';
+        container.style.right = '20px';
+        container.style.width = '320px';
+        container.style.height = 'auto';
+        container.style.backgroundColor = '#000';
+        container.style.border = '2px solid #00BCD4';
+        container.style.borderRadius = '8px';
+        container.style.padding = '10px';
+        container.style.zIndex = '9999';
+        container.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
+        container.style.display = 'none'; // Hidden initially
         
-        // Dispatch the event for other components to use
-        window.dispatchEvent(event);
+        // Add title
+        const title = document.createElement('div');
+        title.textContent = 'MediaPipe Holistic Detection';
+        title.style.color = 'white';
+        title.style.fontWeight = 'bold';
+        title.style.marginBottom = '5px';
+        title.style.display = 'flex';
+        title.style.justifyContent = 'space-between';
+        title.style.alignItems = 'center';
+        
+        // Add close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = '×';
+        closeButton.style.background = 'none';
+        closeButton.style.border = 'none';
+        closeButton.style.color = 'white';
+        closeButton.style.fontSize = '20px';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.marginLeft = '10px';
+        closeButton.onclick = () => {
+            container.style.display = 'none';
+        };
+        
+        title.appendChild(closeButton);
+        container.appendChild(title);
+        
+        // Create the input video (hidden)
+        this.videoElement = document.createElement('video');
+        this.videoElement.autoplay = true;
+        this.videoElement.muted = true;
+        this.videoElement.playsInline = true;
+        this.videoElement.style.display = 'none';
+        container.appendChild(this.videoElement);
+        
+        // Create the display video
+        this.displayElement = document.createElement('video');
+        this.displayElement.autoplay = true;
+        this.displayElement.playsInline = true;
+        this.displayElement.style.width = '100%';
+        this.displayElement.style.borderRadius = '4px';
+        container.appendChild(this.displayElement);
+        
+        // Add FPS counter
+        const fpsCounter = document.createElement('div');
+        fpsCounter.id = 'signLanguageFPS';
+        fpsCounter.textContent = 'FPS: 0.0';
+        fpsCounter.style.color = 'white';
+        fpsCounter.style.fontSize = '12px';
+        fpsCounter.style.margin = '5px 0';
+        container.appendChild(fpsCounter);
+        
+        // Add detection status
+        const detectionStatus = document.createElement('div');
+        detectionStatus.id = 'signLanguageDetection';
+        detectionStatus.textContent = 'No landmarks detected';
+        detectionStatus.style.color = 'white';
+        detectionStatus.style.fontSize = '12px';
+        detectionStatus.style.margin = '5px 0';
+        container.appendChild(detectionStatus);
+        
+        // Add to document
+        document.body.appendChild(container);
     }
     
-    /**
-     * Find a specific hand by type from results
-     * @param {Object} results - The landmark detection results
-     * @param {string} handType - 'Left' or 'Right'
-     * @returns {Array|null} - The hand landmarks or null if not found
-     */
-    findHandByType(results, handType) {
-        if (!results || !results.multiHandedness || !results.multiHandLandmarks) {
-            return null;
+    // Show the video container
+    showVideoContainer() {
+        const container = document.getElementById('signLanguageVideoContainer');
+        if (container) {
+            container.style.display = 'block';
         }
-        
-        for (let i = 0; i < results.multiHandedness.length; i++) {
-            if (results.multiHandedness[i].label === handType) {
-                return results.multiHandLandmarks[i];
-            }
-        }
-        
-        return null;
     }
     
- 
-    /**
-     * Deactivate screen sharing and stop MediaPipe processing
-     */
+    // Deactivate screen sharing and close WebRTC connection
     deactivate() {
         if (!this.isActive) {
-            console.log("Screen sharing already inactive");
+            console.log("[SignLanguageHandler] Already inactive");
             return;
         }
         
-        console.log("Deactivating Screen Sharing");
+        console.log("[SignLanguageHandler] Deactivating");
         
-        // Disconnect from MediaPipe server
-        this.mediaPipeConnector.disconnect();
-        
-        // Stop all tracks in the stream
-        if (this.stream) {
-            this.stream.getTracks().forEach((track) => track.stop());
-            this.stream = null;
+        // Hide video container
+        const container = document.getElementById('signLanguageVideoContainer');
+        if (container) {
+            container.style.display = 'none';
         }
         
-        // Clean up video element
-        if (this.videoElement) {
-            this.videoElement.pause();
-            this.videoElement.srcObject = null;
-            document.body.removeChild(this.videoElement);
-            this.videoElement = null;
-        }
-        
-        // Clean up visualization element
-        if (this.visualizationElement && this.visualizationElement.parentNode) {
-            document.body.removeChild(this.visualizationElement.parentNode);
-            this.visualizationElement = null;
-        }
-        
-        // Reset hand landmarks
-        this.leftHandLandmarks = null;
-        this.rightHandLandmarks = null;
-        
-        this.isActive = false;
-    }
-    /**
-     * Draw hand landmarks on the debug overlay
-     * @param {Object} results - The hand detection results
-     */
-    drawHandLandmarks(results) {
-        if (!this.debugContext || !this.debugOverlay) return;
-        
-        // Clear the canvas
-        this.debugContext.clearRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
-        
-        // Draw a gradient background
-        const gradient = this.debugContext.createLinearGradient(0, 0, 0, this.debugOverlay.height);
-        gradient.addColorStop(0, "rgba(0, 0, 0, 0.8)");
-        gradient.addColorStop(1, "rgba(40, 0, 40, 0.8)");
-        this.debugContext.fillStyle = gradient;
-        this.debugContext.fillRect(0, 0, this.debugOverlay.width, this.debugOverlay.height);
-        
-        // Draw hand landmarks if available
-        if (results.multiHandLandmarks) {
-            for (let i = 0; i < results.multiHandLandmarks.length; i++) {
-                const handLandmarks = results.multiHandLandmarks[i];
-                const handedness = results.multiHandedness[i];
-                
-                // Color based on which hand (left/right)
-                const color = handedness.label === 'Left' ? 
-                    'rgba(255, 100, 100, 0.9)' : 'rgba(100, 255, 100, 0.9)';
-                
-                // Draw connections between landmarks (fingers)
-                this.drawHandConnectors(handLandmarks, color);
-                
-                // Draw landmarks (joints)
-                this.drawHandLandmarkPoints(handLandmarks, handedness.label, color);
-            }
-        }
-        
-        // Add timestamp
-        this.debugContext.fillStyle = "white";
-        this.debugContext.font = "10px Arial";
-        this.debugContext.fillText(`FPS: ${this.fps}`, 5, 15);
-        this.debugContext.fillText(`Left hand: ${this.leftHandLandmarks ? "Detected" : "None"}`, 5, 30);
-        this.debugContext.fillText(`Right hand: ${this.rightHandLandmarks ? "Detected" : "None"}`, 5, 45);
-    }
-    
-    /**
-     * Draw connections between hand landmarks to form the hand structure
-     * @param {Array} landmarks - Hand landmarks
-     * @param {string} color - Color to use for drawing
-     */
-    drawHandConnectors(landmarks, color) {
-        if (!this.debugContext) return;
-        
-        // Define hand connections (fingers and palm)
-        const connections = [
-            // Thumb
-            [0, 1], [1, 2], [2, 3], [3, 4],
-            // Index finger
-            [0, 5], [5, 6], [6, 7], [7, 8],
-            // Middle finger
-            [0, 9], [9, 10], [10, 11], [11, 12],
-            // Ring finger
-            [0, 13], [13, 14], [14, 15], [15, 16],
-            // Pinky
-            [0, 17], [17, 18], [18, 19], [19, 20],
-            // Palm
-            [0, 5], [5, 9], [9, 13], [13, 17]
-        ];
-        
-        this.debugContext.strokeStyle = color;
-        this.debugContext.lineWidth = 2;
-        
-        // Draw each connection
-        connections.forEach(([i, j]) => {
-            const x1 = landmarks[i].x * this.debugOverlay.width;
-            const y1 = landmarks[i].y * this.debugOverlay.height;
-            const x2 = landmarks[j].x * this.debugOverlay.width;
-            const y2 = landmarks[j].y * this.debugOverlay.height;
-            
-            this.debugContext.beginPath();
-            this.debugContext.moveTo(x1, y1);
-            this.debugContext.lineTo(x2, y2);
-            this.debugContext.stroke();
-        });
-    }
-    
-    /**
-     * Draw individual landmark points for the hand
-     * @param {Array} landmarks - Hand landmarks
-     * @param {string} handLabel - Which hand (Left/Right)
-     * @param {string} color - Color to use for drawing
-     */
-    drawHandLandmarkPoints(landmarks, handLabel, color) {
-        if (!this.debugContext) return;
-        
-        // Draw each landmark
-        landmarks.forEach((landmark, index) => {
-            const x = landmark.x * this.debugOverlay.width;
-            const y = landmark.y * this.debugOverlay.height;
-            
-            // Draw circle for the landmark
-            this.debugContext.fillStyle = color;
-            
-            // Special highlighting for fingertips (landmarks 4, 8, 12, 16, 20)
-            const isFingerTip = [4, 8, 12, 16, 20].includes(index);
-            const radius = isFingerTip ? 5 : 3;
-            
-            this.debugContext.beginPath();
-            this.debugContext.arc(x, y, radius, 0, 2 * Math.PI);
-            this.debugContext.fill();
-            
-            // Add index number for specific landmarks
-            if (index % 4 === 0 || index === 0) {
-                this.debugContext.fillStyle = "white";
-                this.debugContext.font = "8px Arial";
-                this.debugContext.fillText(`${index}`, x + 5, y);
-            }
-        });
-        
-        // Add hand label
-        const firstPoint = landmarks[0];
-        const labelX = firstPoint.x * this.debugOverlay.width;
-        const labelY = firstPoint.y * this.debugOverlay.height - 10;
-        
-        this.debugContext.fillStyle = "white";
-        this.debugContext.font = "10px Arial";
-        this.debugContext.fillText(handLabel, labelX, labelY);
-    }
-    
- /**
- * Simplified video display initialization with better debugging
- */
-initializeVideoDisplay() {
-    // Create a container for the video
-    const videoContainer = document.createElement("div");
-    videoContainer.id = "sign-language-visualization-container";
-    videoContainer.style.position = "fixed";
-    videoContainer.style.bottom = "20px";
-    videoContainer.style.right = "20px";
-    videoContainer.style.zIndex = "9999";
-    videoContainer.style.borderRadius = "8px";
-    videoContainer.style.overflow = "hidden";
-    videoContainer.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
-    videoContainer.style.backgroundColor = "#111";
-    videoContainer.style.width = "320px";
-    
-    // Create a title bar
-    const titleBar = document.createElement("div");
-    titleBar.textContent = "Sign Language Detection";
-    titleBar.style.backgroundColor = "#4285F4";
-    titleBar.style.color = "white";
-    titleBar.style.padding = "8px";
-    titleBar.style.textAlign = "center";
-    titleBar.style.fontWeight = "bold";
-    titleBar.style.fontSize = "14px";
-    titleBar.style.position = "relative";
-    
-    // Create close button
-    const closeBtn = document.createElement("button");
-    closeBtn.textContent = "×";
-    closeBtn.style.position = "absolute";
-    closeBtn.style.right = "8px";
-    closeBtn.style.top = "6px";
-    closeBtn.style.backgroundColor = "transparent";
-    closeBtn.style.border = "none";
-    closeBtn.style.color = "white";
-    closeBtn.style.fontSize = "18px";
-    closeBtn.style.cursor = "pointer";
-    closeBtn.style.padding = "0 4px";
-    closeBtn.onclick = () => {
-        document.body.removeChild(videoContainer);
-        this.visualizationElement = null;
-    };
-    
-    // Create video element
-    this.visualizationElement = document.createElement("video");
-    this.visualizationElement.id = "sign-language-visualization-video";
-    this.visualizationElement.autoplay = true;
-    this.visualizationElement.playsInline = true;
-    this.visualizationElement.muted = true;
-    this.visualizationElement.style.width = "100%";
-    this.visualizationElement.style.display = "block";
-    this.visualizationElement.style.backgroundColor = "#000";
-    
-    // Add debug info display
-    this.debugInfo = document.createElement("div");
-    this.debugInfo.id = "sign-language-debug-info";
-    this.debugInfo.textContent = "Initializing...";
-    this.debugInfo.style.padding = "8px";
-    this.debugInfo.style.color = "#aaa";
-    this.debugInfo.style.fontSize = "12px";
-    this.debugInfo.style.fontFamily = "monospace";
-    
-    // Add elements to container
-    titleBar.appendChild(closeBtn);
-    videoContainer.appendChild(titleBar);
-    videoContainer.appendChild(this.visualizationElement);
-    videoContainer.appendChild(this.debugInfo);
-    
-    // Add to document
-    document.body.appendChild(videoContainer);
-    
-    return this.visualizationElement;
-}
-
-/**
- * Activate screen sharing and MediaPipe processing with improved error handling
- */
-async activate() {
-    if (this.isActive) {
-        console.log("Screen sharing already active");
-        return true;
-    }
-    
-    console.log("Activating Screen Sharing with MediaPipe via WebRTC");
-    
-    try {
-        // Initialize video display
-        const visualizationElement = this.initializeVideoDisplay();
-        this.updateDebugInfo("Requesting screen access...");
-        
-        // Request screen capture permission
-        this.stream = await navigator.mediaDevices.getDisplayMedia({
-            video: { 
-                frameRate: 30,
-                cursor: "always"
-            },
-            audio: false
-        });
-        
-        this.updateDebugInfo("Screen access granted. Setting up connection...");
-        
-        // Connect to the MediaPipe server
-        const connected = await this.mediaPipeConnector.connect();
-        if (!connected) {
-            this.updateDebugInfo("Failed to connect to MediaPipe server");
-            console.error("Failed to connect to MediaPipe server");
-            return false;
-        }
-        
-        this.updateDebugInfo("Connected to server. Setting up video stream...");
-        
-        // Set up video element for the stream
-        this.videoElement = document.createElement("video");
-        this.videoElement.srcObject = this.stream;
-        this.videoElement.style.display = "none"; // Hide the source video element
-        this.videoElement.autoplay = true;
-        this.videoElement.playsInline = true;
-        document.body.appendChild(this.videoElement);
-        
-        // Wait for video to be ready
-        await new Promise((resolve) => {
-            this.videoElement.onloadedmetadata = () => {
-                console.log("Video metadata loaded");
-                resolve();
-            };
-            // If already loaded, resolve immediately
-            if (this.videoElement.readyState >= 2) {
-                console.log("Video already loaded");
-                resolve();
-            }
-        });
-        
-        // Start playing the source video
-        await this.videoElement.play();
-        console.log("Source video playback started");
-        this.updateDebugInfo("Source video ready. Starting detection...");
-        
-        // Set up track receive handling
-        this.mediaPipeConnector.pc.ontrack = (event) => {
-            console.log(`Received track: ${event.track.kind}`);
-            this.updateDebugInfo(`Received ${event.track.kind} track from server`);
-            
-            if (event.track.kind === 'video') {
-                // Create a new MediaStream with the track
-                const stream = new MediaStream([event.track]);
-                
-                // Attach the stream to the visualization element
-                this.visualizationElement.srcObject = stream;
-                this.visualizationElement.play().catch(err => {
-                    console.error("Error playing visualization video:", err);
-                    this.updateDebugInfo(`Error playing video: ${err.message}`);
-                });
-                
-                // Debug visualization element
-                console.log("Visualization element:", this.visualizationElement);
-                console.log("Stream tracks:", stream.getTracks());
-            }
-        };
-        
-        // Start sending video to the WebRTC server
-        const success = await this.mediaPipeConnector.startVideo(this.videoElement);
-        if (!success) {
-            this.updateDebugInfo("Failed to start video streaming");
-            throw new Error("Failed to start video streaming to server");
-        }
-        
-        this.updateDebugInfo("Video streaming started. Waiting for visualization...");
-        
-        // Handle stream ending (user stops sharing)
-        this.stream.getVideoTracks()[0].onended = () => {
-            console.log("Screen sharing stopped by user");
-            this.deactivate();
-            
-            // Notify that screen sharing was stopped
-            window.dispatchEvent(new CustomEvent('screenSharingEnded'));
-            
-            // Send message to the extension
-            chrome.runtime.sendMessage({
-                action: "signLanguageStatus",
-                status: 'Off'
-            });
-        };
-        
-        this.isActive = true;
-        return true;
-        
-    } catch (error) {
-        console.error("Error activating sign language detection:", error);
-        this.updateDebugInfo(`Error: ${error.message || error}`);
-        
-        // If the user cancels the screen sharing prompt
-        if (error.name === 'NotAllowedError') {
-            console.log("User denied screen capture permission");
-            this.updateDebugInfo("Screen sharing permission denied");
+        // Clear landmarks interval
+        if (this.landmarksInterval) {
+            clearInterval(this.landmarksInterval);
+            this.landmarksInterval = null;
         }
         
         // Clean up resources
-        this.mediaPipeConnector.disconnect();
-        return false;
+        this.cleanupResources();
+        
+        this.isActive = false;
     }
-}
-
-/**
- * Update the debug info panel with the latest status
- */
-updateDebugInfo(message) {
-    if (this.debugInfo) {
-        const timestamp = new Date().toLocaleTimeString();
-        this.debugInfo.textContent = `[${timestamp}] ${message}`;
-        console.log(`Debug Info: ${message}`);
-    }
-}
-
-    /**
-     * Update the FPS display with the latest value
-     * @param {number} fps - Frames per second value
-     */
-    updateFpsDisplay(fps) {
-        if (this.fpsDisplay) {
-            this.fpsDisplay.textContent = `FPS: ${fps.toFixed(1)}`;
-            
-            // Change color based on FPS quality
-            if (fps >= 15) {
-                this.fpsDisplay.style.color = "#4CAF50"; // Green for good FPS
-            } else if (fps >= 8) {
-                this.fpsDisplay.style.color = "#FFC107"; // Yellow for medium FPS
-            } else {
-                this.fpsDisplay.style.color = "#F44336"; // Red for low FPS
-            }
+    
+    // Clean up resources
+    cleanupResources() {
+        // Close peer connection
+        if (this.peerConnection) {
+            this.peerConnection.close();
+            this.peerConnection = null;
         }
+        
+        // Stop stream tracks
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+            this.stream = null;
+        }
+        
+        // Clean up video elements
+        if (this.videoElement) {
+            this.videoElement.srcObject = null;
+        }
+        
+        if (this.displayElement) {
+            this.displayElement.srcObject = null;
+        }
+        
+        // Reset landmarks data
+        this.faceLandmarks = null;
+        this.poseLandmarks = null;
+        this.leftHandLandmarks = null;
+        this.rightHandLandmarks = null;
     }
-
-  
-
-    /**
-     * Callback for when landmarks are detected
-     * @param {Object} results - The landmark detection results
-     */
-    onLandmarksDetected(results) {
-        // Extract the FPS from the results
-        const fps = results.fps || 0;
+    
+    // Process landmarks data from server
+    processLandmarks(data) {
+        // Update landmarks status
+        this.faceLandmarks = data.has_face ? {} : null;
+        this.poseLandmarks = data.has_pose ? data.pose_info : null;
+        this.leftHandLandmarks = data.has_left_hand ? {} : null;
+        this.rightHandLandmarks = data.has_right_hand ? {} : null;
         
-        // Update the FPS display
-        this.updateFpsDisplay(fps);
+        // Update UI
+        this.updateDetectionUI(data);
         
-        // Update debug info
-        this.updateDebugInfo(results);
-        
-        // Extract and process hand landmarks
-        this.leftHandLandmarks = this.findHandByType(results.results, 'Left');
-        this.rightHandLandmarks = this.findHandByType(results.results, 'Right');
-        
-        // Dispatch event with hand landmarks
+        // Dispatch event with detection results
         const event = new CustomEvent('handLandmarksDetected', {
             detail: {
                 leftHand: this.leftHandLandmarks,
                 rightHand: this.rightHandLandmarks,
-                poseLandmarks: results.results.poseLandmarks,
-                timestamp: results.timestamp,
-                fps: fps
+                face: this.faceLandmarks,
+                pose: this.poseLandmarks,
+                fps: this.fps,
+                timestamp: Date.now()
             }
         });
-        
-        // Dispatch the event for other components to use
         window.dispatchEvent(event);
     }
+    
+    // Update detection UI
+    updateDetectionUI(data) {
+        // Update FPS counter
+        const fpsElement = document.getElementById('signLanguageFPS');
+        if (fpsElement) {
+            fpsElement.textContent = `FPS: ${this.fps.toFixed(1)}`;
             
-
-    /**
-     * Toggle screen sharing state
-     * @returns {Promise<boolean>} The new active state
-     */
-    async toggle() {
-        if (this.isActive) {
-            this.deactivate();
+            // Color code based on performance
+            if (this.fps >= 20) {
+                fpsElement.style.color = '#4CAF50'; // Green
+            } else if (this.fps >= 10) {
+                fpsElement.style.color = '#FFC107'; // Yellow
+            } else {
+                fpsElement.style.color = '#F44336'; // Red
+            }
+        }
+        
+        // Update detection status
+        const detectionElement = document.getElementById('signLanguageDetection');
+        if (detectionElement) {
+            // Build detection text
+            const detectedParts = [];
+            if (data.has_face) detectedParts.push("Face");
+            if (data.has_pose) detectedParts.push("Pose");
+            if (data.has_left_hand) detectedParts.push("Left Hand");
+            if (data.has_right_hand) detectedParts.push("Right Hand");
+            
+            if (detectedParts.length > 0) {
+                detectionElement.textContent = `Detected: ${detectedParts.join(", ")}`;
+                detectionElement.style.color = '#4CAF50'; // Green
+            } else {
+                detectionElement.textContent = 'No landmarks detected';
+                detectionElement.style.color = '#F44336'; // Red
+            }
+        }
+    }
+    
+    // Ping server to test connectivity
+    async pingServer() {
+        try {
+            console.log('[SignLanguageHandler] Testing server connection...');
+            const response = await fetch(`${this.serverUrl}/ping`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log(`[SignLanguageHandler] Server responded: ${data.message}`);
+                return true;
+            } else {
+                console.log(`[SignLanguageHandler] Server returned status: ${response.status}`);
+                return false;
+            }
+        } catch (error) {
+            console.error(`[SignLanguageHandler] Server connection test failed: ${error.message}`);
             return false;
-        } else {
-            return await this.activate();
         }
     }
     
-    /**
-     * Toggle debug visualization mode
-     * @returns {boolean} The new debug mode state
-     */
-    toggleDebugMode() {
-        this.debugMode = !this.debugMode;
-        
-        if (this.debugMode && !this.debugOverlay && this.isActive) {
-            this.initializeDebugOverlay();
-        } else if (this.debugOverlay) {
-            this.debugOverlay.parentNode.style.display = this.debugMode ? "block" : "none";
-        }
-        
-        return this.debugMode;
-    }
-    
-    /**
-     * Get debug information about the current state
-     * @returns {Object} Current state information
-     */
+    // Get debug information
     getDebugInfo() {
         return {
             isActive: this.isActive,
-            serverConnected: this.mediaPipeConnector.isConnected,
+            connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
+            dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
             streamActive: this.stream !== null && 
                 this.stream.getVideoTracks().some(track => track.readyState === 'live'),
-            videoElementActive: this.videoElement !== null,
             fps: this.fps,
-            lastUpdateTime: this.lastUpdateTime,
-            leftHandDetected: this.leftHandLandmarks !== null,
-            rightHandDetected: this.rightHandLandmarks !== null,
-            debugMode: this.debugMode
+            faceLandmarks: this.faceLandmarks !== null,
+            poseLandmarks: this.poseLandmarks !== null,
+            leftHandLandmarks: this.leftHandLandmarks !== null,
+            rightHandLandmarks: this.rightHandLandmarks !== null
         };
     }
 }

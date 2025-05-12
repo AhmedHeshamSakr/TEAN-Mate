@@ -40,3 +40,5 @@ chmod +x start_webrtc_server.sh
 
 echo "Setup complete! You can start the server with:"
 echo "./start_webrtc_server.sh"
+echo ""
+echo "Make sure the mediapipe_webrtc_server.py file is in the same directory."

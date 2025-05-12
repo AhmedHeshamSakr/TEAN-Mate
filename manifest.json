@@ -46,7 +46,10 @@
         "assets/*",
         "Florence-2-base-ft/config.json",
         "onnx-runtime/*",
-        "Florence-2-base-ft/*"
+        "Florence-2-base-ft/*",
+        "https://cdn.jsdelivr.net/*",
+        "https://cdnjs.cloudflare.com/*",
+        "http://localhost:9000/*"
       ],
       "matches": ["<all_urls>"]
     }

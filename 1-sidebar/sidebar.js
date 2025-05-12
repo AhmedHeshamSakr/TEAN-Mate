@@ -16,6 +16,7 @@ class SidebarController {
         this.screenSharingActive = false; // Track if screen sharing is active
         this.ttsActive = false; // Add a state tracking variable for TTS
         this.accumulatedSpeech = ''; // Track accumulated speech for continuous mode
+        this.debugModeActive = false; // Track if debug visualization is active
         
         this.initialize(); // Set up event listeners and initial state
     }
@@ -29,18 +30,25 @@ class SidebarController {
         }).catch((error) => {
             console.error("Error playing welcome audio:", error);
         });
-
+    
         // Set sidebar title using the extension's name
         document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
-
+    
         // Wait for DOM to load before attaching event listeners
         document.addEventListener("DOMContentLoaded", () => {
             this.setupEventListeners();
             this.initializeSTTListeners();
             this.initializeUIElements();
             this.initializeScreenSharingListeners();
+            
+            // Check if screen sharing is already active from a previous session
+            setTimeout(() => {
+                this.sendMessageToActiveTab({
+                    action: "getScreenSharingStatus"
+                });
+            }, 1000);
         });
-
+    
         // Get sidebar position and theme preferences
         const self = this;
         this.getSettings(function(settings) {
@@ -48,12 +56,13 @@ class SidebarController {
             self.applyTheme(settings.theme || 'system');
         });
         this.setupSystemThemeListener(); 
-
+    
         // Add listener for messages from content scripts and background
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             this.handleIncomingMessages(message, sender, sendResponse);
         });
     }
+    
 
     // Handle incoming messages from content scripts or background
     handleIncomingMessages(message, sender, sendResponse) {
@@ -78,19 +87,34 @@ class SidebarController {
             const status = message.status;
             this.updateScreenSharingStatus(status);
             
-            if (status === 'Error') {
-                this.updateStatusMessage('Failed to start screen sharing. Please try again.');
+            if (status === 'Active') {
+                this.screenSharingActive = true;
+                this.updateStatusMessage('Screen sharing active with MediaPipe Holistic');
+            } else if (status === 'Error') {
                 this.screenSharingActive = false;
                 this.buttons.signLanguage.classList.remove('active');
+                this.updateStatusMessage('Failed to start screen sharing: ' + (message.message || 'Unknown error'));
+            } else if (status === 'Off') {
+                this.screenSharingActive = false;
+                this.buttons.signLanguage.classList.remove('active');
+                this.updateStatusMessage('Screen sharing stopped');
             }
+        } else if (message.action === "handLandmarksUpdate") {
+            // Handle hand landmarks update from content script
+            this.handleLandmarksUpdate(message);
         } else if (message.action === "screenSharingEnded") {
             // Handle screen sharing ended event
             this.screenSharingActive = false;
             this.buttons.signLanguage.classList.remove('active');
             this.updateScreenSharingStatus('Off');
             this.updateStatusMessage('Screen sharing ended');
+        } else if (message.action === "debugModeStatus") {
+            // Handle debug mode status update
+            this.debugModeActive = message.enabled;
+            this.updateStatusMessage(`Debug visualization ${message.enabled ? 'enabled' : 'disabled'}`);
         }
     }
+    
 
     // Set TTS button active state
     setTTSActive(active) {
@@ -215,7 +239,7 @@ class SidebarController {
         }
         
         // Count words by splitting on whitespace
-        const wordCount = this.accumulatedSpeech.trim().split(/\\s+/).length;
+        const wordCount = this.accumulatedSpeech.trim().split(/\s+/).length;
         wordCountElement.textContent = `${wordCount} ${wordCount === 1 ? 'word' : 'words'}`;
     }
     
@@ -338,6 +362,7 @@ class SidebarController {
         }
     }
 
+    // Handle screen sharing button click
     handleScreenSharing() {
         console.log("Screen Sharing button clicked");
         
@@ -346,7 +371,7 @@ class SidebarController {
             // Deactivate
             this.screenSharingActive = false;
             this.buttons.signLanguage.classList.remove('active');
-            this.updateStatusMessage('Screen sharing deactivated');
+            this.updateStatusMessage('Screen sharing with MediaPipe deactivated');
             this.updateScreenSharingStatus('Off');
             
             // Send deactivation message to content script
@@ -357,7 +382,7 @@ class SidebarController {
         } else {
             // Activate
             this.buttons.signLanguage.classList.add('active');
-            this.updateStatusMessage('Preparing screen sharing...');
+            this.updateStatusMessage('Preparing screen sharing with MediaPipe Holistic...');
             this.updateScreenSharingStatus('Processing');
             
             // Send activation command to content script
@@ -367,12 +392,47 @@ class SidebarController {
             
             // Set a timeout to check if activation succeeded
             setTimeout(() => {
-                if (this.screenSharingActive && !document.getElementById("sign-status-indicator").classList.contains('bg-success')) {
+                if (!this.screenSharingActive) {
                     // If still processing after 5 seconds, show a hint
                     this.updateStatusMessage('Waiting for screen share permission...');
                 }
             }, 5000);
         }
+    }
+    
+    // Toggle debug visualization mode
+    toggleDebugMode() {
+        this.sendMessageToActiveTab({
+            action: "toggleDebugMode"
+        });
+    }
+    
+    // Add this method to handle incoming landmarks updates
+    handleLandmarksUpdate(message) {
+        if (!this.screenSharingActive) return;
+        
+        const { face, pose, leftHand, rightHand, fps, timestamp } = message;
+        
+        // Update status message with detection info
+        const time = new Date(timestamp).toLocaleTimeString();
+        
+        // Build status text based on detected landmarks
+        let detectedParts = [];
+        if (face) detectedParts.push("Face");
+        if (pose) detectedParts.push("Pose");
+        if (leftHand) detectedParts.push("Left Hand");
+        if (rightHand) detectedParts.push("Right Hand");
+        
+        let statusText = `[${time}] `;
+        if (detectedParts.length > 0) {
+            statusText += `Detected: ${detectedParts.join(", ")}`;
+        } else {
+            statusText += "No landmarks detected";
+        }
+        
+        statusText += ` (${fps.toFixed(1)} FPS)`;
+        
+        this.updateStatusMessage(statusText);
     }
     
     // Update screen sharing status indicator
@@ -544,6 +604,12 @@ class SidebarController {
         this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
         this.addButtonListener(this.buttons.signLanguage, this.handleScreenSharing.bind(this));
         this.addButtonListener(this.buttons.options, this.handleOptions.bind(this));
+        
+        // Add debug mode toggle to the Screen Sharing button - double click to toggle
+        this.buttons.signLanguage.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            this.toggleDebugMode();
+        });
     }
 
     // Add an event listener to a button, with error handling
