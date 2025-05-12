@@ -16,6 +16,7 @@ class ContentHandler {
         this.linkHandler = new LinkHandler();
         this.currentElement = null;
         this.currentLink = null;
+        this.nextElementAfterListbox = null;
         this.walker = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_ELEMENT,
@@ -317,8 +318,20 @@ class ContentHandler {
                     if (tagName === 'a') {
                         this.linkHandler.accessLink(this.currentLink);
                     } else {
+                        const role = this.currentLink.getAttribute('role');
+                        const tagName = this.currentLink.tagName?.toLowerCase();
+                        
+                        // Save the next element before handling the dropdown
+                        if (InteractionHandler.isCustomDropdown(this.currentLink)) {
+                            this.saveNextElementAfterListbox(this.currentLink);
+                        }
+                        
                         // Always handle interaction regardless of element type
                         InteractionHandler.handleInteraction(this.currentLink);
+
+                        if (role === 'option' || tagName === 'option') {
+                            this.restoreNextElementAfterListbox();
+                        }
                         
                         // Only check for custom dropdown if it's not a text field
                         if (InteractionHandler.isCustomDropdown(this.currentLink)) {
@@ -327,7 +340,7 @@ class ContentHandler {
                     }
                 }
             }
-        }else if (request.action === "performSearch"){
+        } else if (request.action === "performSearch"){
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
         } else if (request.action === "pauseTTS") {
             this.speechHandler.stop();
@@ -362,6 +375,37 @@ class ContentHandler {
                             style.width !== '0px';
         const isInteractive = InteractionHandler.isInteractiveElement(element);
         return isNotHidden || isInteractive;
+    }
+
+    saveNextElementAfterListbox(listbox) {
+        // Get all elements in the document
+        const allElements = document.querySelectorAll('*');
+        const elementsArray = Array.from(allElements);
+        
+        // Find the index of the listbox
+        const listboxIndex = elementsArray.indexOf(listbox);
+        
+        // If listbox is found and there are elements after it
+        if (listboxIndex !== -1 && listboxIndex < elementsArray.length - 1) {
+            // Start from the element after the listbox
+            for (let i = listboxIndex + 1; i < elementsArray.length; i++) {
+                const element = elementsArray[i];
+                // Check if this element is not a descendant of the listbox
+                if (!listbox.contains(element)) {
+                    this.nextElementAfterListbox = element;
+                    console.log('Found next element after listbox:', element);
+                    break;
+                }
+            }
+        }
+    }
+
+    restoreNextElementAfterListbox() {
+        console.log('restoreNextElementAfterListbox: ', this.nextElementAfterListbox);
+        if (this.nextElementAfterListbox) {
+            this.walker.currentNode = this.nextElementAfterListbox;
+            this.nextElementAfterListbox = null;
+        }
     }
 }
 
