@@ -12382,7 +12382,6 @@ var BackgroundHandler = /*#__PURE__*/function () {
     key: "initialize",
     value: function initialize() {
       var _context, _context2, _context3, _context4;
-      // Set up all event listeners
       chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onInstalled).call(_context, this));
       chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onActionClicked).call(_context2, this));
       chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.onCommand).call(_context3, this));
@@ -12657,7 +12656,7 @@ new BackgroundHandler();
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d76c7a8e1232def55785")
+/******/ 		__webpack_require__.h = () => ("281f821b1305eae05ed0")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

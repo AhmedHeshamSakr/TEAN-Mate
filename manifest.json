@@ -9,7 +9,7 @@
     "scripting",
     "tabs",
     "sidePanel"
-  ],
+    ],
   "host_permissions": [
     "https://cdn.jsdelivr.net/*",
     "https://cdnjs.cloudflare.com/*",

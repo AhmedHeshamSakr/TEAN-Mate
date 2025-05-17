@@ -24558,8 +24558,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
 /* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
 /* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
@@ -24575,7 +24575,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context10; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context10 = {}.toString.call(r)).call(_context10, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context11; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context11 = {}.toString.call(r)).call(_context11, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 
 
@@ -24639,10 +24639,29 @@ var ContentHandler = /*#__PURE__*/function () {
         self.settings = settings;
         self.highlightWhileReading = settings.highlightText || false;
         self.badge = settings.showIconBadge || false;
+        self.readSelectedTextOnly = settings.readingElement === 'selected';
         // Example: Use TTS rate setting
         var ttsRate = settings.ttsRate || 1.0;
         console.log('Using TTS rate:', ttsRate);
       });
+    }
+  }, {
+    key: "getSelectedText",
+    value: function getSelectedText() {
+      var selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        var _context3;
+        var range = selection.getRangeAt(0);
+        var selectedText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__(_context3 = range.toString()).call(_context3);
+        if (selectedText) {
+          return {
+            elementsToReturn: [],
+            // Empty array to prevent highlighting
+            text: [selectedText]
+          };
+        }
+      }
+      return null;
     }
   }, {
     key: "getNextElement",
@@ -24656,9 +24675,9 @@ var ContentHandler = /*#__PURE__*/function () {
           var _element$tagName;
           var tagName = (_element$tagName = element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (element.tagName.toLowerCase() === 'a' && element.href) {
-            var _context3, _context4;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_11__(element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context3 = element.textContent).call(_context3) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context4 = element.textContent).call(_context4)) : "Link to ".concat(domain));
+            var _context4, _context5;
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_12__(element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__(_context4 = element.textContent).call(_context4) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__(_context5 = element.textContent).call(_context5)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
             _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processAllDescendants(element);
@@ -24670,8 +24689,8 @@ var ContentHandler = /*#__PURE__*/function () {
                 var child = _step.value;
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
-                  var _context5;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context5 = child.textContent).call(_context5);
+                  var _context6;
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__(_context6 = child.textContent).call(_context6);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(element);
@@ -24724,9 +24743,9 @@ var ContentHandler = /*#__PURE__*/function () {
               var child = _step2.value;
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
-                var _context6;
+                var _context7;
                 if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_15__["default"].processedElements.has(element)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context6 = child.textContent).call(_context6);
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_11__(_context7 = child.textContent).call(_context7);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(element);
@@ -24765,51 +24784,81 @@ var ContentHandler = /*#__PURE__*/function () {
     value: function () {
       var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee2() {
         var _this = this;
-        var _this$currentElement, elementsToReturn, text, _loop, i;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context9) {
-          while (1) switch (_context9.prev = _context9.next) {
+        var _this$currentElement, elementsToReturn, text, isSelectedText, _loop, i;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              if (!this.currentElement) {
-                this.currentElement = this.getNextElement();
-              }
-              _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
-              if (!(!this.currentElement || !elementsToReturn)) {
-                _context9.next = 4;
+              if (this.currentElement) {
+                _context10.next = 9;
                 break;
               }
-              return _context9.abrupt("return");
-            case 4:
+              if (!this.readSelectedTextOnly) {
+                _context10.next = 8;
+                break;
+              }
+              this.currentElement = this.getSelectedText();
+              // If no text is selected, don't read anything
+              if (this.currentElement) {
+                _context10.next = 6;
+                break;
+              }
+              console.log('No text selected');
+              return _context10.abrupt("return");
+            case 6:
+              _context10.next = 9;
+              break;
+            case 8:
+              this.currentElement = this.getNextElement();
+            case 9:
+              _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
+              if (!(!this.currentElement || !elementsToReturn)) {
+                _context10.next = 12;
+                break;
+              }
+              return _context10.abrupt("return");
+            case 12:
+              isSelectedText = elementsToReturn.length === 0 && text.length > 0;
+              if (!isSelectedText) {
+                _context10.next = 18;
+                break;
+              }
+              _context10.next = 16;
+              return this.speechHandler.speak(text[0], function () {});
+            case 16:
+              this.currentElement = null;
+              return _context10.abrupt("return");
+            case 18:
               _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _loop(i) {
-                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context8) {
-                  while (1) switch (_context8.prev = _context8.next) {
+                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context9) {
+                  while (1) switch (_context9.prev = _context9.next) {
                     case 0:
-                      _context8.next = 2;
+                      _context9.next = 2;
                       return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__(/*#__PURE__*/function () {
                         var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee(resolve) {
-                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context7) {
-                            while (1) switch (_context7.prev = _context7.next) {
+                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context8) {
+                            while (1) switch (_context8.prev = _context8.next) {
                               case 0:
-                                _context7.prev = 0;
+                                _context8.prev = 0;
                                 // Add highlight first
                                 _this.highlightWhileReading ? _this.highlightBox.addHighlight(elementsToReturn[i]) : null;
 
                                 // Wait for speech to complete
-                                _context7.next = 4;
+                                _context8.next = 4;
                                 return _this.speechHandler.speak(text[i], function () {});
                               case 4:
                                 _this.highlightWhileReading ? _this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 resolve();
-                                _context7.next = 12;
+                                _context8.next = 12;
                                 break;
                               case 8:
-                                _context7.prev = 8;
-                                _context7.t0 = _context7["catch"](0);
-                                console.error('Error in sequence:', _context7.t0);
+                                _context8.prev = 8;
+                                _context8.t0 = _context8["catch"](0);
+                                console.error('Error in sequence:', _context8.t0);
                                 _this.highlightWhileReading ? _this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 //resolve(); // Continue to next item even if there's an error
                               case 12:
                               case "end":
-                                return _context7.stop();
+                                return _context8.stop();
                             }
                           }, _callee, null, [[0, 8]]);
                         }));
@@ -24819,27 +24868,27 @@ var ContentHandler = /*#__PURE__*/function () {
                       }());
                     case 2:
                     case "end":
-                      return _context8.stop();
+                      return _context9.stop();
                   }
                 }, _loop);
               });
               i = 0;
-            case 6:
+            case 20:
               if (!(i < elementsToReturn.length)) {
-                _context9.next = 11;
+                _context10.next = 25;
                 break;
               }
-              return _context9.delegateYield(_loop(i), "t0", 8);
-            case 8:
+              return _context10.delegateYield(_loop(i), "t0", 22);
+            case 22:
               i++;
-              _context9.next = 6;
+              _context10.next = 20;
               break;
-            case 11:
+            case 25:
               this.currentElement = null; // Prepare for the next element
               this.speakCurrentSection();
-            case 13:
+            case 27:
             case "end":
-              return _context9.stop();
+              return _context10.stop();
           }
         }, _callee2, this);
       }));
@@ -26942,7 +26991,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d76c7a8e1232def55785")
+/******/ 		__webpack_require__.h = () => ("281f821b1305eae05ed0")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

@@ -14,7 +14,7 @@ class BackgroundHandler {
   }
 
   initialize() {
-    // Set up all event listeners
+
     chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
     chrome.commands.onCommand.addListener(this.onCommand.bind(this));
