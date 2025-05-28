@@ -104,7 +104,7 @@ The sign language detection feature requires a local MediaPipe server:
 2. **Run the MediaPipe Server**
    ```bash
    # Navigate to the server directory
-   cd 2-features/SignLanguage/mediapipe_server_setup
+   cd 2-features/SignLanguage
    
    # Start the server
    python mediapipe_webrtc_server.py
