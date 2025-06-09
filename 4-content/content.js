@@ -35,6 +35,9 @@ class ContentHandler {
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
         this.wasSpeaking = false;
+
+        // Add focus change listener
+        document.addEventListener('focusin', this.handleFocusChange.bind(this));
     }
 
     getNextElement() {
@@ -407,6 +410,34 @@ class ContentHandler {
             this.walker.currentNode = this.nextElementAfterListbox;
             this.nextElementAfterListbox = null;
         }
+    }
+
+    handleFocusChange(event) {
+        const focusedElement = event.target;
+        if (!focusedElement) return;
+
+        // Stop current speech if any
+        if (this.speechHandler.isSpeaking) {
+            this.speechHandler.stop();
+            if (this.currentElement && this.currentElement.elementsToReturn) {
+                for (let el of this.currentElement.elementsToReturn) {
+                    this.highlightBox.removeHighlight(el);
+                }
+            }
+        }
+
+        // Update walker position to the focused element
+        this.walker.currentNode = focusedElement;
+        
+        // Clear processed elements to ensure we can process the focused element
+        this.textExtractor.clearProcessedElements();
+        
+        // Set current element to null to force a new element fetch
+        this.currentElement = null;
+        
+        // Start speaking from the focused element
+        this.speakCurrentSection();
+        this.wasSpeaking = true;
     }
 }
 
