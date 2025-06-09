@@ -375,6 +375,9 @@ class ContentHandler {
                             style.height !== '0px' &&
                             style.width !== '0px';
         const isInteractive = InteractionHandler.isInteractiveElement(element);
+
+        if (element.disabled || element.getAttribute('aria-disabled') === 'true') return false;
+
         return isNotHidden || isInteractive;
     }
 
