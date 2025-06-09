@@ -450,7 +450,20 @@ export default class InteractionHandler {
         
         // First, try to open the dropdown
         if (dropdownContainer.getAttribute('aria-expanded') === 'false') {
-            dropdownContainer.click();
+            // Find the first interactive element within the dropdown that could be the trigger
+            const triggerElement = dropdownContainer.querySelector('button, [role="button"], [tabindex="0"]') || dropdownContainer;
+            
+            // Trigger a sequence of events that most dropdowns expect
+            const events = ['mousedown', 'mouseup', 'click'];
+            events.forEach(eventType => {
+                const event = new MouseEvent(eventType, {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                triggerElement.dispatchEvent(event);
+            });
+            
             // Also try setting aria-expanded
             dropdownContainer.setAttribute('aria-expanded', 'true');
         }
