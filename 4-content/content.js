@@ -306,6 +306,7 @@ class ContentHandler {
                 this.wasSpeaking = true;
             }
         } else if (request.action === "accessLink") {
+            console.log('accessLink called on: ', this.currentLink);
             if (this.currentElement && this.currentElement.elementsToReturn) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
@@ -378,31 +379,28 @@ class ContentHandler {
     }
 
     saveNextElementAfterListbox(listbox) {
-        // Get all elements in the document
-        const allElements = document.querySelectorAll('*');
-        const elementsArray = Array.from(allElements);
-        
-        // Find the index of the listbox
-        const listboxIndex = elementsArray.indexOf(listbox);
-        
-        // If listbox is found and there are elements after it
-        if (listboxIndex !== -1 && listboxIndex < elementsArray.length - 1) {
-            // Start from the element after the listbox
-            for (let i = listboxIndex + 1; i < elementsArray.length; i++) {
-                const element = elementsArray[i];
-                // Check if this element is not a descendant of the listbox
-                if (!listbox.contains(element)) {
-                    this.nextElementAfterListbox = element;
-                    console.log('Found next element after listbox:', element);
-                    break;
-                }
-            }
+        // Try to find a semantic container
+        let container = listbox.closest('[role="listitem"], section, article, .question-block, .form-section');
+        // Fallback: use parent or grandparent if no semantic container found
+        if (!container) container = listbox.parentElement;
+        if (!container) container = listbox;
+
+        // Find the next sibling that is an element node
+        let next = container.nextElementSibling;
+        while (next && next.nodeType !== 1) {
+            next = next.nextElementSibling;
+        }
+        if (next) {
+            this.nextElementAfterListbox = next;
+            console.log('Found next element after logical block:', next);
         }
     }
 
     restoreNextElementAfterListbox() {
         console.log('restoreNextElementAfterListbox: ', this.nextElementAfterListbox);
         if (this.nextElementAfterListbox) {
+            // Clear the processed elements set to ensure we can process the next element
+            this.textExtractor.clearProcessedElements();
             this.walker.currentNode = this.nextElementAfterListbox;
             this.nextElementAfterListbox = null;
         }
