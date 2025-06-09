@@ -17,6 +17,8 @@ class ContentHandler {
         this.currentElement = null;
         this.currentLink = null;
         this.nextElementAfterListbox = null;
+        this.isProgrammaticFocus = false;
+        this.isReadingActive = false;
         this.walker = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_ELEMENT,
@@ -170,6 +172,14 @@ class ContentHandler {
               try {
                 // Add highlight first
                 this.highlightBox.addHighlight(elementsToReturn[i]);
+                
+                // If the element is interactive or a link, set focus to it
+                if (InteractionHandler.isInteractiveElement(elementsToReturn[i]) || 
+                    elementsToReturn[i].tagName?.toLowerCase() === 'a') {
+                    this.isProgrammaticFocus = true;
+                    elementsToReturn[i].focus();
+                    this.isProgrammaticFocus = false;
+                }
       
                 // Wait for speech to complete
                 await this.speechHandler.speak(text[i], ()=>{});
@@ -179,7 +189,7 @@ class ContentHandler {
               } catch (error) {
                 console.error('Error in sequence:', error);
                 this.highlightBox.removeHighlight(elementsToReturn[i]);
-                //resolve(); // Continue to next item even if there's an error
+                this.isProgrammaticFocus = false;
               }
             });
         }
@@ -274,6 +284,7 @@ class ContentHandler {
         if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) return;
             this.currentElement = null;
+            this.isReadingActive = true;
             this.speakCurrentSection();
             this.wasSpeaking = true;
         } else if (request.action === "skipToNext") {
@@ -284,6 +295,7 @@ class ContentHandler {
                 }
             }
             this.currentElement = null;
+            this.isReadingActive = true;
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
@@ -294,6 +306,7 @@ class ContentHandler {
             }
             this.textExtractor.clearProcessedElements();
             this.currentElement = this.prevElement();
+            this.isReadingActive = true;
             this.speakCurrentSection();
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
@@ -304,7 +317,9 @@ class ContentHandler {
                     }
                 }
                 this.wasSpeaking = false;
+                this.isReadingActive = false;
             } else {
+                this.isReadingActive = true;
                 this.speakCurrentSection();
                 this.wasSpeaking = true;
             }
@@ -354,6 +369,7 @@ class ContentHandler {
                 }
             }
             this.wasSpeaking = false;
+            this.isReadingActive = false;
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
                 if (this.currentElement && this.currentElement.elementsToReturn) {
@@ -361,6 +377,7 @@ class ContentHandler {
                         this.highlightBox.removeHighlight(el);
                     }
                 }
+                this.isReadingActive = true;
                 this.speakCurrentSection();
             }
         }
@@ -413,6 +430,8 @@ class ContentHandler {
     }
 
     handleFocusChange(event) {
+        if (this.isProgrammaticFocus || !this.isReadingActive) return;
+
         const focusedElement = event.target;
         if (!focusedElement) return;
 
