@@ -19,6 +19,7 @@ class ContentHandler {
         this.nextElementAfterListbox = null;
         this.isProgrammaticFocus = false;
         this.isReadingActive = false;
+        this.wasSpeaking = false;
         this.walker = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_ELEMENT,
@@ -34,12 +35,28 @@ class ContentHandler {
             false
         );
 
-        chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
-
-        this.wasSpeaking = false;
-
         // Add focus change listener
         document.addEventListener('focusin', this.handleFocusChange.bind(this));
+        
+        // Listen for messages
+        chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+
+        // Reset reading state on page load
+        this.resetReadingState();
+    }
+
+    resetReadingState() {
+        this.isReadingActive = false;
+        this.wasSpeaking = false;
+        this.currentElement = null;
+        if (this.speechHandler.isSpeaking) {
+            this.speechHandler.stop();
+        }
+        if (this.currentElement && this.currentElement.elementsToReturn) {
+            for (let el of this.currentElement.elementsToReturn) {
+                this.highlightBox.removeHighlight(el);
+            }
+        }
     }
 
     getNextElement() {
@@ -281,6 +298,12 @@ class ContentHandler {
     }
 
     handleMessage(request) {
+        // Reset reading state if we're on a new page
+        if (request.action === "pageLoad") {
+            this.resetReadingState();
+            return;
+        }
+
         if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) return;
             this.currentElement = null;
@@ -430,6 +453,7 @@ class ContentHandler {
     }
 
     handleFocusChange(event) {
+        // Skip if this is a programmatic focus change or reading is not active
         if (this.isProgrammaticFocus || !this.isReadingActive) return;
 
         const focusedElement = event.target;
