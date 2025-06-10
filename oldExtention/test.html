@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artyom Voice Assistant</title>
+    <script src="/node_modules/artyom.js/build/artyom.window.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #recognizedText {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            height: 50px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Artyom Voice Assistant</h1>
+    <button id="start">Start Listening</button>
+    <button id="actionButton" onclick="alert('Button clicked!')">Action Button</button>
+    <h3>Recognized Speech:</h3>
+    <div id="recognizedText"></div>
+
+    <script>
+        class ArtyomAssistant {
+            constructor() {
+                this.artyom = new Artyom();
+                this.isListening = false;
+                this.setupCommands();
+                this.setupUI();
+            }
+
+            setupCommands() {
+                this.artyom.addCommands([
+                    {
+                        indexes: ["click the button", "press the button"],
+                        action: () => {
+                            const actionButton = document.getElementById("actionButton");
+                            actionButton.click(); // Simulates a button click
+                            this.displayAction("Action button clicked!");
+                        }
+                    },
+                    {
+                        indexes: ["scroll down", "scroll the page"],
+                        action: () => {
+                            window.scrollBy(0, 100); // Scrolls the page down by 100 pixels
+                            this.displayAction("Page scrolled down!");
+                        }
+                    },
+                    {
+                        indexes: ["change the color", "make it red"],
+                        action: () => {
+                            document.body.style.backgroundColor = "red"; // Changes background color
+                            this.displayAction("Background color changed to red!");
+                        }
+                    }
+                ]);
+
+                this.artyom.redirectRecognizedTextOutput((recognized, isFinal) => {
+                    const recognizedTextDiv = document.getElementById("recognizedText");
+                    if (isFinal) {
+                        recognizedTextDiv.textContent = "Final recognized text: " + recognized;
+                    } else {
+                        recognizedTextDiv.textContent = recognized;
+                    }
+                });
+            }
+
+            displayAction(message) {
+                const recognizedTextDiv = document.getElementById("recognizedText");
+                recognizedTextDiv.textContent = message;
+            }
+
+            setupUI() {
+                const startButton = document.getElementById("start");
+                startButton.addEventListener("click", () => this.toggleListening(startButton));
+            }
+
+            startListening() {
+                this.artyom.fatality();
+                setTimeout(() => {
+                    this.artyom.initialize({
+                        lang: "en_US",
+                        continuous: true,
+                        listen: true,
+                        debug: true,
+                        speed: 1,
+                    }).then(() => {
+                        console.log("Artyom is ready to listen!");
+                        this.isListening = true;
+                        document.getElementById("start").textContent = "Stop Listening";
+                    }).catch(err => {
+                        console.error("Initialization error:", err);
+                        alert("Artyom initialization failed. Please check your settings.");
+                    });
+                }, 250);
+            }
+
+            stopListening() {
+                this.artyom.fatality();
+                console.log("Artyom has stopped listening.");
+                this.isListening = false;
+                document.getElementById("start").textContent = "Start Listening";
+            }
+
+            toggleListening(button) {
+                if (this.isListening) {
+                    this.stopListening();
+                } else {
+                    this.startListening();
+                }
+            }
+        }
+
+        // Instantiate the assistant
+        const assistant = new ArtyomAssistant();
+    </script>
+</body>
+</html>

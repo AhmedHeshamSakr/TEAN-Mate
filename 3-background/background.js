@@ -19,7 +19,6 @@ class BackgroundHandler {
     chrome.action.onClicked.addListener(this.onActionClicked.bind(this));
     chrome.commands.onCommand.addListener(this.onCommand.bind(this));
     chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
-    
     // Initialize TTS voices when the background script starts
     this.initializeVoices();
   }

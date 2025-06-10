@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="sidebar.css">
-
-    
 </head>
 <body>
     <main class="sidebar-MainContainer container">
@@ -19,33 +17,141 @@
 
         <div class="Features-div">
             <div class="button-container d-grid gap-3">
-                <button class="accessibility-button btn btn-outline-primary">
-                    <i class="fas fa-volume-up"></i>
-                    Text to Speech
-                </button>
-                <button class="accessibility-button btn btn-outline-success">
-                    <i class="fas fa-microphone"></i>
-                    Speech to Text
-                </button>
-                <button class="accessibility-button btn btn-outline-info">
-                    <i class="fas fa-sign-language"></i>
-                    Sign Language
-                </button>
-                <button class="accessibility-button btn btn-outline-warning">
-                    <i class="fas fa-image"></i>
-                    Image Captioning
-                </button>
+                <!-- Text to Speech button -->
+                 <div>
+                    <button class="accessibility-button btn btn-outline-primary">
+                        <i class="fas fa-volume-up"></i>
+                        Text to Speech
+                    </button>
+                 </div>
+                <!-- Speech to Text container with mode selection -->
+                <div class="stt-feature-container">
+                    <button class="accessibility-button btn btn-outline-success d-flex justify-content-between align-items-center">
+                        <span>
+                            <i class="fas fa-microphone"></i>
+                            Speech to Text
+                        </span>
+                        <span id="stt-status-indicator" class="badge bg-secondary">Ready</span>
+                    </button>
+                    <div class="stt-controls mt-2">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2 small">Mode:</span>
+                            <select id="stt-mode-select" class="form-select form-select-sm">
+                                <option value="push-to-talk" selected>Push-to-Talk (Space)</option>
+                                <option value="continuous">Continuous Listening</option>
+                            </select>
+                        </div>
+                        <!-- Add video overlay option that appears only when continuous mode is selected -->
+                        <div id="video-overlay-option" class="form-check" style="display: none;">
+                            <input class="form-check-input" type="checkbox" value="" id="video-overlay-checkbox">
+                            <label class="form-check-label small" for="video-overlay-checkbox">
+                                Display text overlay on videos
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Captioning with simplified selection -->
+                <div class="image-caption-container">
+                    <button class="accessibility-button btn btn-outline-warning d-flex justify-content-between align-items-center">
+                        <span>
+                            <i class="fas fa-image"></i>
+                            Image Captioning
+                        </span>
+                        <span id="caption-status" class="badge bg-secondary">Off</span>
+                    </button>
+                    <div class="caption-controls mt-2">
+                        <div class="d-flex">
+                            <select id="caption-type-select" class="form-select form-select-sm me-2">
+                                <option value="<CAPTION>">Basic Caption</option>
+                                <option value="<DETAILED_CAPTION>">Detailed Caption</option>
+                                <option value="<MORE_DETAILED_CAPTION>" selected>More Detailed</option>
+                            </select>
+                            <button id="confirm-caption-type" class="btn btn-primary btn-sm">Activate</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sign Language button with simplified functionality -->
+                <div class="sign-language-container">
+                    <button class="accessibility-button btn btn-outline-info d-flex justify-content-between align-items-center">
+                        <span>
+                            <i class="fas fa-sign-language"></i>
+                           Sign Language
+                        </span>
+                        <span id="sign-status-indicator" class="badge bg-secondary">Off</span>
+                    </button>
+                </div>                
             </div>
 
-            <div id="speech-display" class="speech-display">
-                <h3>Speech Recognition Output:</h3>
-                <div id="recognizedText">Start speaking to see the text here...</div>
+            <!-- Status/feedback area -->
+            <div id="status-area" class="status-area mt-3 p-2 border rounded">
+                <div id="status-message" class="status-message text-center text-muted small">Ready to assist</div>
+            </div>
+
+            <!-- Speech recognition output area with enhanced functionality -->
+            <div id="speech-display" class="speech-display mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="h5 mb-0">Speech Recognition Output:</h3>
+                    <div class="btn-group btn-group-sm">
+                        <button id="copy-speech-btn" class="btn btn-outline-secondary" title="Copy text" disabled>
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button id="save-speech-btn" class="btn btn-outline-secondary" title="Save as file" disabled>
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button id="clear-speech-btn" class="btn btn-outline-secondary" title="Clear text" disabled>
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Speech mode indicator -->
+                <div class="speech-mode-indicator mb-2">
+                    <small class="text-muted">
+                        <span id="speech-mode-label">Mode: Push-to-Talk</span>
+                        <span id="speech-accumulation-indicator" class="badge bg-primary ms-2" style="display: none;">Accumulating</span>
+                    </small>
+                </div>
+                
+                <!-- Recognized text display -->
+                <div id="recognizedText" class="p-2 border rounded bg-light">Start speaking to see the text here...</div>
+                
+                <!-- Word count display for continuous mode -->
+                <div class="text-end mt-1">
+                    <small id="word-count" class="text-muted">0 words</small>
+                </div>
+            </div>
+
+            <!-- Keyboard shortcuts panel (initially hidden) -->
+            <div id="shortcuts-panel" class="shortcuts-panel mt-3 p-2 border rounded" style="display: none;">
+                <h5>Keyboard Shortcuts</h5>
+                <ul class="list-unstyled">
+                    <li><kbd>Space</kbd> - Hold for Push-to-Talk</li>
+                    <li><kbd>Esc</kbd> - Stop current action</li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer mt-4 d-flex justify-content-between">
+                <!-- Settings button -->
+                <button id="settingsButton" class="sidebar-button btn btn-sm btn-outline-secondary" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                
+                <!-- Keyboard shortcuts button -->
+                <button id="shortcutsButton" class="sidebar-button btn btn-sm btn-outline-secondary" title="Keyboard Shortcuts">
+                    <i class="fas fa-keyboard"></i>
+                </button>
+                
+                <!-- Status indicator -->
+                <div class="status-indicator">
+                    <span id="connection-status" class="badge bg-success">Connected</span>
+                </div>
             </div>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="sidebar.bundle.js" > </script>
-
+    <script src="sidebar.bundle.js"></script>
 </body>
 </html>

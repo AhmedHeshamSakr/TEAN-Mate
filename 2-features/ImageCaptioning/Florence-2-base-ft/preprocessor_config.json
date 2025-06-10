@@ -1,0 +1,83 @@
+{
+  "_valid_processor_keys": [
+    "images",
+    "do_resize",
+    "size",
+    "resample",
+    "do_center_crop",
+    "crop_size",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_convert_rgb",
+    "return_tensors",
+    "data_format",
+    "input_data_format"
+  ],
+  "crop_size": {
+    "height": 768,
+    "width": 768
+  },
+  "do_center_crop": false,
+  "do_convert_rgb": null,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "image_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "image_processor_type": "CLIPImageProcessor",
+  "image_seq_length": 577,
+  "image_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "processor_class": "Florence2Processor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "size": {
+    "height": 768,
+    "width": 768
+  },
+  "tasks_answer_post_processing_type": {
+    "<OCR>": "pure_text",
+    "<OCR_WITH_REGION>": "ocr",
+    "<CAPTION>": "pure_text",
+    "<DETAILED_CAPTION>": "pure_text",
+    "<MORE_DETAILED_CAPTION>": "pure_text",
+    "<OD>": "description_with_bboxes",
+    "<DENSE_REGION_CAPTION>": "description_with_bboxes",
+    "<CAPTION_TO_PHRASE_GROUNDING>": "phrase_grounding",
+    "<REFERRING_EXPRESSION_SEGMENTATION>": "polygons",
+    "<REGION_TO_SEGMENTATION>": "polygons",
+    "<OPEN_VOCABULARY_DETECTION>": "description_with_bboxes_or_polygons",
+    "<REGION_TO_CATEGORY>": "pure_text",
+    "<REGION_TO_DESCRIPTION>": "pure_text",
+    "<REGION_TO_OCR>": "pure_text",
+    "<REGION_PROPOSAL>": "bboxes"
+  },
+  "task_prompts_without_inputs": {
+    "<OCR>": "What is the text in the image?",
+    "<OCR_WITH_REGION>": "What is the text in the image, with regions?",
+    "<CAPTION>": "What does the image describe?",
+    "<DETAILED_CAPTION>": "Describe in detail what is shown in the image.",
+    "<MORE_DETAILED_CAPTION>": "Describe with a paragraph what is shown in the image.",
+    "<OD>": "Locate the objects with category name in the image.",
+    "<DENSE_REGION_CAPTION>": "Locate the objects in the image, with their descriptions.",
+    "<REGION_PROPOSAL>": "Locate the region proposals in the image."
+  },
+  "task_prompts_with_input": {
+    "<CAPTION_TO_PHRASE_GROUNDING>": "Locate the phrases in the caption: {input}",
+    "<REFERRING_EXPRESSION_SEGMENTATION>": "Locate {input} in the image with mask",
+    "<REGION_TO_SEGMENTATION>": "What is the polygon mask of region {input}",
+    "<OPEN_VOCABULARY_DETECTION>": "Locate {input} in the image.",
+    "<REGION_TO_CATEGORY>": "What is the region {input}?",
+    "<REGION_TO_DESCRIPTION>": "What does the region {input} describe?",
+    "<REGION_TO_OCR>": "What text is in the region {input}?"
+  }
+}
