@@ -2868,3 +2868,279 @@ TypeError: __init__() got an unexpected keyword argument 'use_gpu'
 2025-05-28 15:56:15,438 - HolisticSignLanguage - INFO - Frame 3000: Pose detected (Quality: 0.93) - Wrists: L(0.26, 0.49), R(0.18, 0.46)
 2025-05-28 15:56:16,377 - HolisticSignLanguage - INFO - Performance: 18.7 output FPS, 30.7ms avg processing, Quality: 0.86
 2025-05-28 15:56:16,518 - HolisticSignLanguage - INFO - Connection state changed to closed
+2025-05-28 20:40:58,424 - HolisticSignLanguage - INFO - GPU available: False
+2025-05-28 20:41:05,754 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:05 +0200] "OPTIONS /ping HTTP/1.1" 200 239 "https://www.google.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:05,755 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:05 +0200] "GET /ping HTTP/1.1" 200 540 "https://www.google.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:05,761 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:05 +0200] "GET /ping HTTP/1.1" 200 540 "https://www.google.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:09,635 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:09 +0200] "OPTIONS /offer HTTP/1.1" 200 284 "https://www.google.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:10,657 - aioice.ice - INFO - Connection(0) Remote candidate "2c8237db-7319-431f-adef-1937e2a6c433.local" could not be resolved
+2025-05-28 20:41:10,658 - HolisticSignLanguage - INFO - Track received: video
+2025-05-28 20:41:10,659 - HolisticSignLanguage - INFO - Enhanced data channel created for holistic landmarks with performance monitoring
+2025-05-28 20:41:10,728 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:09 +0200] "POST /offer HTTP/1.1" 200 3400 "https://www.google.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:10,728 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.75', 62432) -> ('197.52.124.154', 59847)) State.FROZEN -> State.WAITING
+2025-05-28 20:41:10,729 - HolisticSignLanguage - INFO - Connection state changed to connecting
+2025-05-28 20:41:10,729 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.75', 62432) -> ('197.52.124.154', 59847)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 20:41:10,734 - aioice.ice - INFO - Connection(0) Discovered peer reflexive candidate Candidate(qFQw5u9Og8 1 udp 1845501695 192.168.100.75 59847 typ prflx)
+2025-05-28 20:41:10,734 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.75', 62432) -> ('192.168.100.75', 59847)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 20:41:10,735 - aioice.ice - INFO - Connection(0) Check CandidatePair(('192.168.100.75', 62432) -> ('192.168.100.75', 59847)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-05-28 20:41:10,736 - aioice.ice - INFO - Connection(0) ICE completed
+2025-05-28 20:41:10,821 - HolisticSignLanguage - INFO - Connection state changed to connected
+2025-05-28 20:41:10,822 - HolisticSignLanguage - INFO - Data channel created: holistic-landmarks
+2025-05-28 20:41:12,971 - HolisticSignLanguage - INFO - GPU not available. Processing will use CPU. Codec: unknown
+2025-05-28 20:41:13,110 - HolisticSignLanguage - INFO - Created optimized holistic model for codec: unknown
+2025-05-28 20:41:13,231 - HolisticSignLanguage - INFO - Performance: 0.4 output FPS, 260.3ms avg processing, Quality: 0.00
+2025-05-28 20:41:13,232 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 720
+2025-05-28 20:41:14,303 - HolisticSignLanguage - INFO - Performance: 6.5 output FPS, 60.6ms avg processing, Quality: 0.00
+2025-05-28 20:41:14,303 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 800
+2025-05-28 20:41:15,396 - HolisticSignLanguage - INFO - Performance: 11.0 output FPS, 41.9ms avg processing, Quality: 0.00
+2025-05-28 20:41:15,397 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 880
+2025-05-28 20:41:16,403 - HolisticSignLanguage - INFO - Performance: 18.9 output FPS, 34.7ms avg processing, Quality: 0.00
+2025-05-28 20:41:16,403 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 960
+2025-05-28 20:41:17,424 - HolisticSignLanguage - INFO - Performance: 23.5 output FPS, 32.1ms avg processing, Quality: 0.00
+2025-05-28 20:41:17,424 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1040
+2025-05-28 20:41:18,434 - HolisticSignLanguage - INFO - Performance: 24.8 output FPS, 30.8ms avg processing, Quality: 0.00
+2025-05-28 20:41:18,434 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1120
+2025-05-28 20:41:20,282 - HolisticSignLanguage - INFO - Performance: 2.2 output FPS, 30.7ms avg processing, Quality: 0.00
+2025-05-28 20:41:20,282 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1200
+2025-05-28 20:41:21,387 - HolisticSignLanguage - INFO - Performance: 0.9 output FPS, 30.7ms avg processing, Quality: 0.00
+2025-05-28 20:41:21,388 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1280
+2025-05-28 20:41:22,825 - HolisticSignLanguage - INFO - Performance: 7.0 output FPS, 28.6ms avg processing, Quality: 0.00
+2025-05-28 20:41:24,091 - HolisticSignLanguage - INFO - Performance: 1.6 output FPS, 28.7ms avg processing, Quality: 0.00
+2025-05-28 20:41:25,151 - HolisticSignLanguage - INFO - Performance: 3.8 output FPS, 28.8ms avg processing, Quality: 0.00
+2025-05-28 20:41:26,221 - HolisticSignLanguage - INFO - Performance: 21.5 output FPS, 28.5ms avg processing, Quality: 0.00
+2025-05-28 20:41:35,936 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:35 +0200] "OPTIONS /ping HTTP/1.1" 200 240 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:35,938 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:35 +0200] "GET /ping HTTP/1.1" 200 541 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:35,942 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:35 +0200] "GET /ping HTTP/1.1" 200 541 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:39,928 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:39 +0200] "OPTIONS /offer HTTP/1.1" 200 285 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:40,934 - aioice.ice - INFO - Connection(2) Remote candidate "5e62cdf6-2e9d-44c2-98bb-d91471a87038.local" could not be resolved
+2025-05-28 20:41:40,935 - HolisticSignLanguage - INFO - Track received: video
+2025-05-28 20:41:40,935 - HolisticSignLanguage - INFO - Enhanced data channel created for holistic landmarks with performance monitoring
+2025-05-28 20:41:40,999 - aiohttp.access - INFO - ::1 [28/May/2025:19:41:39 +0200] "POST /offer HTTP/1.1" 200 3403 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 20:41:41,000 - aioice.ice - INFO - Connection(2) Check CandidatePair(('192.168.100.75', 50374) -> ('197.52.124.154', 63689)) State.FROZEN -> State.WAITING
+2025-05-28 20:41:41,000 - HolisticSignLanguage - INFO - Connection state changed to connecting
+2025-05-28 20:41:41,000 - aioice.ice - INFO - Connection(2) Check CandidatePair(('192.168.100.75', 50374) -> ('197.52.124.154', 63689)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 20:41:41,002 - aioice.ice - INFO - Connection(2) Discovered peer reflexive candidate Candidate(RV1W9ElNe4 1 udp 1845501695 192.168.100.75 63689 typ prflx)
+2025-05-28 20:41:41,002 - aioice.ice - INFO - Connection(2) Check CandidatePair(('192.168.100.75', 50374) -> ('192.168.100.75', 63689)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 20:41:41,003 - aioice.ice - INFO - Connection(2) Check CandidatePair(('192.168.100.75', 50374) -> ('192.168.100.75', 63689)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-05-28 20:41:41,003 - aioice.ice - INFO - Connection(2) ICE completed
+2025-05-28 20:41:41,027 - HolisticSignLanguage - INFO - Connection state changed to connected
+2025-05-28 20:41:41,030 - HolisticSignLanguage - INFO - Data channel created: holistic-landmarks
+2025-05-28 20:41:42,722 - HolisticSignLanguage - INFO - GPU not available. Processing will use CPU. Codec: unknown
+2025-05-28 20:41:42,753 - HolisticSignLanguage - INFO - Created optimized holistic model for codec: unknown
+2025-05-28 20:41:42,883 - HolisticSignLanguage - INFO - Performance: 0.5 output FPS, 160.1ms avg processing, Quality: 0.94
+2025-05-28 20:41:42,883 - HolisticSignLanguage - INFO - Processing too slow (160.1ms), decreasing processing width to 600
+2025-05-28 20:41:44,140 - HolisticSignLanguage - INFO - Performance: 0.8 output FPS, 112.0ms avg processing, Quality: 0.93
+2025-05-28 20:41:45,855 - HolisticSignLanguage - INFO - Performance: 0.6 output FPS, 89.7ms avg processing, Quality: 0.93
+2025-05-28 20:41:47,533 - HolisticSignLanguage - INFO - Performance: 1.2 output FPS, 79.9ms avg processing, Quality: 0.92
+2025-05-28 20:41:48,534 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 77.1ms avg processing, Quality: 0.92
+2025-05-28 20:41:49,701 - HolisticSignLanguage - INFO - Performance: 0.9 output FPS, 75.6ms avg processing, Quality: 0.92
+2025-05-28 20:41:51,678 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 72.1ms avg processing, Quality: 0.92
+2025-05-28 20:41:53,046 - HolisticSignLanguage - INFO - Performance: 1.5 output FPS, 71.2ms avg processing, Quality: 0.92
+2025-05-28 20:41:54,251 - HolisticSignLanguage - INFO - Performance: 0.8 output FPS, 70.7ms avg processing, Quality: 0.93
+2025-05-28 20:41:55,359 - HolisticSignLanguage - INFO - Performance: 0.9 output FPS, 69.2ms avg processing, Quality: 0.93
+2025-05-28 20:41:56,741 - aioice.ice - INFO - Connection(0) Consent to send expired
+2025-05-28 20:41:56,755 - HolisticSignLanguage - INFO - Connection state changed to closed
+2025-05-28 20:41:57,027 - HolisticSignLanguage - INFO - Performance: 2.4 output FPS, 66.1ms avg processing, Quality: 0.93
+2025-05-28 20:41:58,158 - HolisticSignLanguage - INFO - Performance: 1.8 output FPS, 65.0ms avg processing, Quality: 0.93
+2025-05-28 20:41:59,232 - HolisticSignLanguage - INFO - Performance: 2.8 output FPS, 63.9ms avg processing, Quality: 0.93
+2025-05-28 20:41:59,895 - HolisticSignLanguage - INFO - Connection state changed to closed
+2025-05-28 22:04:01,912 - aiohttp.access - INFO - ::1 [28/May/2025:21:04:01 +0200] "OPTIONS /ping HTTP/1.1" 200 240 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 22:04:01,915 - aiohttp.access - INFO - ::1 [28/May/2025:21:04:01 +0200] "GET /ping HTTP/1.1" 200 541 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 22:04:01,921 - aiohttp.access - INFO - ::1 [28/May/2025:21:04:01 +0200] "GET /ping HTTP/1.1" 200 541 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 22:04:04,981 - aiohttp.access - INFO - ::1 [28/May/2025:21:04:04 +0200] "OPTIONS /offer HTTP/1.1" 200 285 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 22:04:06,011 - aioice.ice - INFO - Connection(4) Remote candidate "8e045722-8cd3-43a0-bef9-e532f4944c4a.local" could not be resolved
+2025-05-28 22:04:06,012 - HolisticSignLanguage - INFO - Track received: video
+2025-05-28 22:04:06,013 - HolisticSignLanguage - INFO - Enhanced data channel created for holistic landmarks with performance monitoring
+2025-05-28 22:04:06,088 - aiohttp.access - INFO - ::1 [28/May/2025:21:04:04 +0200] "POST /offer HTTP/1.1" 200 3403 "https://www.youtube.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-28 22:04:06,089 - aioice.ice - INFO - Connection(4) Check CandidatePair(('192.168.100.75', 57491) -> ('197.52.124.154', 59509)) State.FROZEN -> State.WAITING
+2025-05-28 22:04:06,089 - HolisticSignLanguage - INFO - Connection state changed to connecting
+2025-05-28 22:04:06,089 - aioice.ice - INFO - Connection(4) Check CandidatePair(('192.168.100.75', 57491) -> ('197.52.124.154', 59509)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 22:04:06,096 - aioice.ice - INFO - Connection(4) Discovered peer reflexive candidate Candidate(U3QnwI4x3q 1 udp 1845501695 192.168.100.75 59509 typ prflx)
+2025-05-28 22:04:06,096 - aioice.ice - INFO - Connection(4) Check CandidatePair(('192.168.100.75', 57491) -> ('192.168.100.75', 59509)) State.WAITING -> State.IN_PROGRESS
+2025-05-28 22:04:06,097 - aioice.ice - INFO - Connection(4) Check CandidatePair(('192.168.100.75', 57491) -> ('192.168.100.75', 59509)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-05-28 22:04:06,098 - aioice.ice - INFO - Connection(4) ICE completed
+2025-05-28 22:04:06,130 - HolisticSignLanguage - INFO - Connection state changed to connected
+2025-05-28 22:04:06,132 - HolisticSignLanguage - INFO - Data channel created: holistic-landmarks
+2025-05-28 22:04:06,552 - HolisticSignLanguage - INFO - GPU not available. Processing will use CPU. Codec: unknown
+2025-05-28 22:04:06,629 - HolisticSignLanguage - INFO - Created optimized holistic model for codec: unknown
+2025-05-28 22:04:07,795 - HolisticSignLanguage - INFO - Performance: 2.8 output FPS, 75.7ms avg processing, Quality: 0.89
+2025-05-28 22:04:08,818 - HolisticSignLanguage - INFO - Performance: 11.7 output FPS, 46.4ms avg processing, Quality: 0.89
+2025-05-28 22:04:09,391 - HolisticSignLanguage - INFO - Frame 30: Pose detected (Quality: 0.91) - Wrists: L(0.25, 0.62), R(0.29, 0.53)
+2025-05-28 22:04:09,844 - HolisticSignLanguage - INFO - Performance: 25.4 output FPS, 36.8ms avg processing, Quality: 0.90
+2025-05-28 22:04:10,445 - HolisticSignLanguage - INFO - Frame 60: Pose detected (Quality: 0.91) - Wrists: L(0.23, 0.63), R(0.28, 0.59)
+2025-05-28 22:04:10,863 - HolisticSignLanguage - INFO - Performance: 28.5 output FPS, 34.1ms avg processing, Quality: 0.90
+2025-05-28 22:04:11,903 - HolisticSignLanguage - INFO - Performance: 16.4 output FPS, 33.7ms avg processing, Quality: 0.90
+2025-05-28 22:04:11,973 - HolisticSignLanguage - INFO - Frame 90: Pose detected (Quality: 0.91) - Wrists: L(0.25, 0.64), R(0.26, 0.66)
+2025-05-28 22:04:12,920 - HolisticSignLanguage - INFO - Performance: 21.6 output FPS, 30.7ms avg processing, Quality: 0.91
+2025-05-28 22:04:13,233 - HolisticSignLanguage - INFO - Frame 120: Pose detected (Quality: 0.94) - Wrists: L(0.32, 0.64), R(0.27, 0.63)
+2025-05-28 22:04:13,943 - HolisticSignLanguage - INFO - Performance: 29.3 output FPS, 30.3ms avg processing, Quality: 0.90
+2025-05-28 22:04:14,256 - HolisticSignLanguage - INFO - Frame 150: Pose detected (Quality: 0.92) - Wrists: L(0.28, 0.65), R(0.23, 0.64)
+2025-05-28 22:04:14,947 - HolisticSignLanguage - INFO - Performance: 28.9 output FPS, 30.1ms avg processing, Quality: 0.90
+2025-05-28 22:04:15,303 - HolisticSignLanguage - INFO - Frame 180: Pose detected (Quality: 0.90) - Wrists: L(0.37, 0.90), R(0.22, 0.63)
+2025-05-28 22:04:15,968 - HolisticSignLanguage - INFO - Performance: 26.5 output FPS, 30.2ms avg processing, Quality: 0.90
+2025-05-28 22:04:16,552 - HolisticSignLanguage - INFO - Frame 210: Pose detected (Quality: 0.89) - Wrists: L(0.35, 0.66), R(0.22, 0.62)
+2025-05-28 22:04:16,974 - HolisticSignLanguage - INFO - Performance: 24.8 output FPS, 31.4ms avg processing, Quality: 0.91
+2025-05-28 22:04:18,196 - HolisticSignLanguage - INFO - Performance: 1.6 output FPS, 31.6ms avg processing, Quality: 0.90
+2025-05-28 22:04:18,196 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 720
+2025-05-28 22:04:19,214 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.6ms avg processing, Quality: 0.89
+2025-05-28 22:04:19,214 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 800
+2025-05-28 22:04:21,229 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.6ms avg processing, Quality: 0.87
+2025-05-28 22:04:21,230 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 880
+2025-05-28 22:04:22,233 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.6ms avg processing, Quality: 0.86
+2025-05-28 22:04:22,233 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 960
+2025-05-28 22:04:23,245 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.7ms avg processing, Quality: 0.85
+2025-05-28 22:04:23,246 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1040
+2025-05-28 22:04:24,246 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.7ms avg processing, Quality: 0.84
+2025-05-28 22:04:24,246 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1120
+2025-05-28 22:04:25,248 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.6ms avg processing, Quality: 0.84
+2025-05-28 22:04:25,248 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1200
+2025-05-28 22:04:26,252 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.5ms avg processing, Quality: 0.83
+2025-05-28 22:04:26,253 - HolisticSignLanguage - INFO - Quality below threshold (0.00), increasing processing width to 1280
+2025-05-28 22:04:27,269 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.5ms avg processing, Quality: 0.82
+2025-05-28 22:04:29,272 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.5ms avg processing, Quality: 0.80
+2025-05-28 22:04:30,283 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.5ms avg processing, Quality: 0.79
+2025-05-28 22:04:32,285 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.78
+2025-05-28 22:04:33,293 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.77
+2025-05-28 22:04:34,305 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.76
+2025-05-28 22:04:35,315 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.75
+2025-05-28 22:04:36,317 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.4ms avg processing, Quality: 0.74
+2025-05-28 22:04:37,318 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.4ms avg processing, Quality: 0.73
+2025-05-28 22:04:38,330 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.4ms avg processing, Quality: 0.72
+2025-05-28 22:04:39,340 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.4ms avg processing, Quality: 0.72
+2025-05-28 22:04:41,345 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.70
+2025-05-28 22:04:42,366 - HolisticSignLanguage - INFO - Performance: 1.0 output FPS, 31.3ms avg processing, Quality: 0.69
+2025-05-28 22:04:43,602 - HolisticSignLanguage - INFO - Performance: 1.6 output FPS, 31.1ms avg processing, Quality: 0.67
+2025-05-28 22:04:44,642 - HolisticSignLanguage - INFO - Performance: 16.3 output FPS, 32.8ms avg processing, Quality: 0.67
+2025-05-28 22:04:44,755 - HolisticSignLanguage - INFO - Frame 270: Pose detected (Quality: 0.92) - Wrists: L(0.33, 0.68), R(0.24, 0.68)
+2025-05-28 22:04:45,649 - HolisticSignLanguage - INFO - Performance: 30.8 output FPS, 31.5ms avg processing, Quality: 0.63
+2025-05-28 22:04:45,710 - HolisticSignLanguage - INFO - Frame 300: Pose detected (Quality: 0.72) - Wrists: L(0.41, 0.84), R(0.21, 0.73)
+2025-05-28 22:04:46,659 - HolisticSignLanguage - INFO - Performance: 31.7 output FPS, 29.1ms avg processing, Quality: 0.62
+2025-05-28 22:04:46,659 - HolisticSignLanguage - INFO - Frame 330: Pose detected (Quality: 0.74) - Wrists: L(0.40, 0.86), R(0.18, 0.73)
+2025-05-28 22:04:47,622 - HolisticSignLanguage - INFO - Frame 360: Pose detected (Quality: 0.72) - Wrists: L(0.38, 0.80), R(0.18, 0.75)
+2025-05-28 22:04:47,687 - HolisticSignLanguage - INFO - Performance: 31.1 output FPS, 27.5ms avg processing, Quality: 0.74
+2025-05-28 22:04:48,619 - HolisticSignLanguage - INFO - Frame 390: Pose detected (Quality: 0.75) - Wrists: L(0.42, 0.87), R(0.21, 0.78)
+2025-05-28 22:04:48,718 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 27.1ms avg processing, Quality: 0.74
+2025-05-28 22:04:49,646 - HolisticSignLanguage - INFO - Frame 420: Pose detected (Quality: 0.72) - Wrists: L(0.35, 0.71), R(0.19, 0.72)
+2025-05-28 22:04:49,747 - HolisticSignLanguage - INFO - Performance: 29.2 output FPS, 27.1ms avg processing, Quality: 0.74
+2025-05-28 22:04:50,724 - HolisticSignLanguage - INFO - Frame 450: Pose detected (Quality: 0.81) - Wrists: L(0.33, 0.67), R(0.23, 0.80)
+2025-05-28 22:04:50,756 - HolisticSignLanguage - INFO - Performance: 27.8 output FPS, 27.1ms avg processing, Quality: 0.77
+2025-05-28 22:04:51,746 - HolisticSignLanguage - INFO - Frame 480: Pose detected (Quality: 0.91) - Wrists: L(0.33, 0.69), R(0.22, 0.61)
+2025-05-28 22:04:51,780 - HolisticSignLanguage - INFO - Performance: 29.3 output FPS, 27.0ms avg processing, Quality: 0.77
+2025-05-28 22:04:52,746 - HolisticSignLanguage - INFO - Frame 510: Pose detected (Quality: 0.74) - Wrists: L(0.40, 0.88), R(0.23, 0.83)
+2025-05-28 22:04:52,813 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 26.9ms avg processing, Quality: 0.79
+2025-05-28 22:04:53,745 - HolisticSignLanguage - INFO - Frame 540: Pose detected (Quality: 0.94) - Wrists: L(0.36, 0.64), R(0.22, 0.65)
+2025-05-28 22:04:53,815 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 26.9ms avg processing, Quality: 0.82
+2025-05-28 22:04:54,747 - HolisticSignLanguage - INFO - Frame 570: Pose detected (Quality: 0.89) - Wrists: L(0.33, 0.64), R(0.29, 0.73)
+2025-05-28 22:04:54,849 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 26.9ms avg processing, Quality: 0.87
+2025-05-28 22:04:55,747 - HolisticSignLanguage - INFO - Frame 600: Pose detected (Quality: 0.93) - Wrists: L(0.36, 0.64), R(0.23, 0.71)
+2025-05-28 22:04:55,882 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 26.8ms avg processing, Quality: 0.89
+2025-05-28 22:04:56,745 - HolisticSignLanguage - INFO - Frame 630: Pose detected (Quality: 0.75) - Wrists: L(0.31, 0.72), R(0.18, 0.73)
+2025-05-28 22:04:56,912 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 26.8ms avg processing, Quality: 0.91
+2025-05-28 22:04:57,748 - HolisticSignLanguage - INFO - Frame 660: Pose detected (Quality: 0.95) - Wrists: L(0.37, 0.65), R(0.18, 0.65)
+2025-05-28 22:04:57,916 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 26.8ms avg processing, Quality: 0.90
+2025-05-28 22:04:58,748 - HolisticSignLanguage - INFO - Frame 690: Pose detected (Quality: 0.78) - Wrists: L(0.31, 0.72), R(0.19, 0.75)
+2025-05-28 22:04:58,946 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 27.0ms avg processing, Quality: 0.86
+2025-05-28 22:04:59,747 - HolisticSignLanguage - INFO - Frame 720: Pose detected (Quality: 0.69) - Wrists: L(0.38, 1.00), R(0.16, 0.77)
+2025-05-28 22:04:59,981 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 27.0ms avg processing, Quality: 0.84
+2025-05-28 22:05:00,747 - HolisticSignLanguage - INFO - Frame 750: Pose detected (Quality: 0.72) - Wrists: L(0.37, 0.92), R(0.17, 0.73)
+2025-05-28 22:05:01,012 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 27.0ms avg processing, Quality: 0.80
+2025-05-28 22:05:01,747 - HolisticSignLanguage - INFO - Frame 780: Pose detected (Quality: 0.86) - Wrists: L(0.35, 0.82), R(0.18, 0.72)
+2025-05-28 22:05:02,016 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 26.9ms avg processing, Quality: 0.78
+2025-05-28 22:05:02,744 - HolisticSignLanguage - INFO - Frame 810: Pose detected (Quality: 0.73) - Wrists: L(0.38, 0.79), R(0.18, 0.76)
+2025-05-28 22:05:03,046 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 26.8ms avg processing, Quality: 0.76
+2025-05-28 22:05:03,805 - HolisticSignLanguage - INFO - Frame 840: Pose detected (Quality: 0.86) - Wrists: L(0.34, 0.68), R(0.23, 0.72)
+2025-05-28 22:05:04,066 - HolisticSignLanguage - INFO - Performance: 28.5 output FPS, 27.3ms avg processing, Quality: 0.78
+2025-05-28 22:05:04,839 - HolisticSignLanguage - INFO - Frame 870: Pose detected (Quality: 0.67) - Wrists: L(0.39, 0.83), R(0.17, 0.72)
+2025-05-28 22:05:05,076 - HolisticSignLanguage - INFO - Performance: 28.7 output FPS, 28.1ms avg processing, Quality: 0.80
+2025-05-28 22:05:05,889 - HolisticSignLanguage - INFO - Frame 900: Pose detected (Quality: 0.87) - Wrists: L(0.38, 0.71), R(0.19, 0.56)
+2025-05-28 22:05:06,096 - HolisticSignLanguage - INFO - Performance: 28.4 output FPS, 28.9ms avg processing, Quality: 0.81
+2025-05-28 22:05:07,000 - HolisticSignLanguage - INFO - Frame 930: Pose detected (Quality: 0.84) - Wrists: L(0.18, 0.64), R(0.26, 0.56)
+2025-05-28 22:05:07,115 - HolisticSignLanguage - INFO - Performance: 26.5 output FPS, 29.8ms avg processing, Quality: 0.81
+2025-05-28 22:05:08,143 - HolisticSignLanguage - INFO - Performance: 26.3 output FPS, 30.6ms avg processing, Quality: 0.82
+2025-05-28 22:05:08,144 - HolisticSignLanguage - INFO - Frame 960: Pose detected (Quality: 0.83) - Wrists: L(0.20, 0.63), R(0.26, 0.58)
+2025-05-28 22:05:09,158 - HolisticSignLanguage - INFO - Performance: 29.6 output FPS, 30.1ms avg processing, Quality: 0.84
+2025-05-28 22:05:09,159 - HolisticSignLanguage - INFO - Frame 990: Pose detected (Quality: 0.84) - Wrists: L(0.23, 0.64), R(0.26, 0.58)
+2025-05-28 22:05:10,160 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 29.2ms avg processing, Quality: 0.83
+2025-05-28 22:05:10,161 - HolisticSignLanguage - INFO - Frame 1020: Pose detected (Quality: 0.84) - Wrists: L(0.23, 0.62), R(0.27, 0.58)
+2025-05-28 22:05:11,161 - HolisticSignLanguage - INFO - Performance: 28.0 output FPS, 28.9ms avg processing, Quality: 0.85
+2025-05-28 22:05:11,234 - HolisticSignLanguage - INFO - Frame 1050: Pose detected (Quality: 0.92) - Wrists: L(0.42, 0.83), R(0.26, 0.70)
+2025-05-28 22:05:12,173 - HolisticSignLanguage - INFO - Performance: 15.8 output FPS, 28.9ms avg processing, Quality: 0.86
+2025-05-28 22:05:12,776 - HolisticSignLanguage - INFO - Frame 1080: Pose detected (Quality: 0.90) - Wrists: L(0.30, 0.69), R(0.21, 0.29)
+2025-05-28 22:05:13,179 - HolisticSignLanguage - INFO - Performance: 27.8 output FPS, 28.9ms avg processing, Quality: 0.88
+2025-05-28 22:05:13,995 - HolisticSignLanguage - INFO - Frame 1110: Pose detected (Quality: 0.70) - Wrists: L(0.41, 0.85), R(0.17, 0.86)
+2025-05-28 22:05:14,225 - HolisticSignLanguage - INFO - Performance: 21.0 output FPS, 29.2ms avg processing, Quality: 0.89
+2025-05-28 22:05:15,081 - HolisticSignLanguage - INFO - Frame 1140: Pose detected (Quality: 0.94) - Wrists: L(0.20, 0.55), R(0.11, 0.27)
+2025-05-28 22:05:15,251 - HolisticSignLanguage - INFO - Performance: 30.2 output FPS, 28.7ms avg processing, Quality: 0.91
+2025-05-28 22:05:16,096 - HolisticSignLanguage - INFO - Frame 1170: Pose detected (Quality: 0.94) - Wrists: L(0.22, 0.52), R(0.14, 0.46)
+2025-05-28 22:05:16,257 - HolisticSignLanguage - INFO - Performance: 29.8 output FPS, 28.3ms avg processing, Quality: 0.91
+2025-05-28 22:05:17,015 - HolisticSignLanguage - INFO - Frame 1200: Pose detected (Quality: 0.91) - Wrists: L(0.23, 0.51), R(0.15, 0.46)
+2025-05-28 22:05:17,273 - HolisticSignLanguage - INFO - Performance: 32.5 output FPS, 27.6ms avg processing, Quality: 0.92
+2025-05-28 22:05:18,010 - HolisticSignLanguage - INFO - Frame 1230: Pose detected (Quality: 0.93) - Wrists: L(0.21, 0.52), R(0.13, 0.37)
+2025-05-28 22:05:18,296 - HolisticSignLanguage - INFO - Performance: 29.3 output FPS, 27.2ms avg processing, Quality: 0.93
+2025-05-28 22:05:19,023 - HolisticSignLanguage - INFO - Frame 1260: Pose detected (Quality: 0.91) - Wrists: L(0.21, 0.57), R(0.11, 0.27)
+2025-05-28 22:05:19,367 - HolisticSignLanguage - INFO - Performance: 29.0 output FPS, 26.3ms avg processing, Quality: 0.92
+2025-05-28 22:05:20,058 - HolisticSignLanguage - INFO - Frame 1290: Pose detected (Quality: 0.94) - Wrists: L(0.19, 0.52), R(0.11, 0.30)
+2025-05-28 22:05:20,390 - HolisticSignLanguage - INFO - Performance: 30.3 output FPS, 26.3ms avg processing, Quality: 0.93
+2025-05-28 22:05:21,056 - HolisticSignLanguage - INFO - Frame 1320: Pose detected (Quality: 0.92) - Wrists: L(0.20, 0.53), R(0.11, 0.28)
+2025-05-28 22:05:21,405 - HolisticSignLanguage - INFO - Performance: 28.6 output FPS, 26.8ms avg processing, Quality: 0.92
+2025-05-28 22:05:22,061 - HolisticSignLanguage - INFO - Frame 1350: Pose detected (Quality: 0.95) - Wrists: L(0.27, 0.50), R(0.07, 0.48)
+2025-05-28 22:05:22,426 - HolisticSignLanguage - INFO - Performance: 31.3 output FPS, 26.9ms avg processing, Quality: 0.92
+2025-05-28 22:05:23,061 - HolisticSignLanguage - INFO - Frame 1380: Pose detected (Quality: 0.95) - Wrists: L(0.25, 0.46), R(0.08, 0.50)
+2025-05-28 22:05:23,428 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 26.8ms avg processing, Quality: 0.93
+2025-05-28 22:05:24,056 - HolisticSignLanguage - INFO - Frame 1410: Pose detected (Quality: 0.91) - Wrists: L(0.25, 0.51), R(0.10, 0.45)
+2025-05-28 22:05:24,441 - HolisticSignLanguage - INFO - Performance: 29.6 output FPS, 26.8ms avg processing, Quality: 0.93
+2025-05-28 22:05:25,060 - HolisticSignLanguage - INFO - Frame 1440: Pose detected (Quality: 0.92) - Wrists: L(0.23, 0.50), R(0.13, 0.49)
+2025-05-28 22:05:25,456 - HolisticSignLanguage - INFO - Performance: 30.5 output FPS, 26.2ms avg processing, Quality: 0.92
+2025-05-28 22:05:26,074 - HolisticSignLanguage - INFO - Frame 1470: Pose detected (Quality: 0.87) - Wrists: L(0.23, 0.55), R(0.10, 0.60)
+2025-05-28 22:05:26,472 - HolisticSignLanguage - INFO - Performance: 29.5 output FPS, 26.3ms avg processing, Quality: 0.91
+2025-05-28 22:05:27,109 - HolisticSignLanguage - INFO - Frame 1500: Pose detected (Quality: 0.85) - Wrists: L(0.20, 0.54), R(0.14, 0.47)
+2025-05-28 22:05:27,474 - HolisticSignLanguage - INFO - Performance: 29.0 output FPS, 26.3ms avg processing, Quality: 0.88
+2025-05-28 22:05:28,109 - HolisticSignLanguage - INFO - Frame 1530: Pose detected (Quality: 0.89) - Wrists: L(0.25, 0.55), R(0.12, 0.40)
+2025-05-28 22:05:28,506 - HolisticSignLanguage - INFO - Performance: 29.1 output FPS, 26.3ms avg processing, Quality: 0.89
+2025-05-28 22:05:29,141 - HolisticSignLanguage - INFO - Frame 1560: Pose detected (Quality: 0.92) - Wrists: L(0.22, 0.54), R(0.12, 0.27)
+2025-05-28 22:05:29,545 - HolisticSignLanguage - INFO - Performance: 29.8 output FPS, 26.2ms avg processing, Quality: 0.88
+2025-05-28 22:05:30,142 - HolisticSignLanguage - INFO - Frame 1590: Pose detected (Quality: 0.93) - Wrists: L(0.23, 0.54), R(0.11, 0.46)
+2025-05-28 22:05:30,573 - HolisticSignLanguage - INFO - Performance: 30.2 output FPS, 26.2ms avg processing, Quality: 0.89
+2025-05-28 22:05:31,147 - HolisticSignLanguage - INFO - Frame 1620: Pose detected (Quality: 0.94) - Wrists: L(0.22, 0.48), R(0.09, 0.51)
+2025-05-28 22:05:31,657 - HolisticSignLanguage - INFO - Performance: 27.7 output FPS, 26.5ms avg processing, Quality: 0.91
+2025-05-28 22:05:32,355 - HolisticSignLanguage - INFO - Frame 1650: Pose detected (Quality: 0.86) - Wrists: L(0.21, 0.59), R(0.08, 0.61)
+2025-05-28 22:05:32,682 - HolisticSignLanguage - INFO - Performance: 24.4 output FPS, 27.6ms avg processing, Quality: 0.90
+2025-05-28 22:05:33,444 - HolisticSignLanguage - INFO - Frame 1680: Pose detected (Quality: 0.75) - Wrists: L(0.22, 0.42), R(0.11, 0.38)
+2025-05-28 22:05:33,716 - HolisticSignLanguage - INFO - Performance: 31.9 output FPS, 26.9ms avg processing, Quality: 0.80
+2025-05-28 22:05:34,784 - HolisticSignLanguage - INFO - Performance: 29.0 output FPS, 22.7ms avg processing, Quality: 0.51
+2025-05-28 22:05:35,809 - HolisticSignLanguage - INFO - Performance: 29.3 output FPS, 17.8ms avg processing, Quality: 0.24
+2025-05-28 22:05:36,825 - HolisticSignLanguage - INFO - Performance: 29.5 output FPS, 14.0ms avg processing, Quality: 0.05
+2025-05-28 22:05:37,544 - HolisticSignLanguage - INFO - Frame 1800: Pose detected (Quality: 0.66) - Wrists: L(0.26, 0.75), R(0.03, 0.58)
+2025-05-28 22:05:37,826 - HolisticSignLanguage - INFO - Performance: 25.0 output FPS, 17.6ms avg processing, Quality: 0.21
+2025-05-28 22:05:38,621 - HolisticSignLanguage - INFO - Frame 1830: Pose detected (Quality: 0.66) - Wrists: L(0.28, 0.80), R(-0.01, 0.65)
+2025-05-28 22:05:38,843 - HolisticSignLanguage - INFO - Performance: 29.5 output FPS, 22.2ms avg processing, Quality: 0.42
+2025-05-28 22:05:39,632 - HolisticSignLanguage - INFO - Frame 1860: Pose detected (Quality: 0.69) - Wrists: L(0.39, 0.59), R(0.07, 0.64)
+2025-05-28 22:05:39,872 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 26.6ms avg processing, Quality: 0.63
+2025-05-28 22:05:40,636 - HolisticSignLanguage - INFO - Frame 1890: Pose detected (Quality: 0.66) - Wrists: L(0.41, 0.64), R(0.14, 0.63)
+2025-05-28 22:05:40,892 - HolisticSignLanguage - INFO - Performance: 28.4 output FPS, 27.4ms avg processing, Quality: 0.69
+2025-05-28 22:05:41,691 - HolisticSignLanguage - INFO - Frame 1920: Pose detected (Quality: 0.66) - Wrists: L(0.40, 0.65), R(0.05, 0.61)
+2025-05-28 22:05:41,926 - HolisticSignLanguage - INFO - Performance: 29.0 output FPS, 26.7ms avg processing, Quality: 0.69
+2025-05-28 22:05:42,955 - HolisticSignLanguage - INFO - Performance: 28.2 output FPS, 26.4ms avg processing, Quality: 0.70
+2025-05-28 22:05:43,722 - HolisticSignLanguage - INFO - Frame 1980: Pose detected (Quality: 0.77) - Wrists: L(0.46, 0.46), R(0.40, 0.51)
+2025-05-28 22:05:43,956 - HolisticSignLanguage - INFO - Performance: 31.0 output FPS, 26.5ms avg processing, Quality: 0.72
+2025-05-28 22:05:44,736 - HolisticSignLanguage - INFO - Frame 2010: Pose detected (Quality: 0.92) - Wrists: L(0.43, 0.45), R(0.29, 0.43)
+2025-05-28 22:05:44,989 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 26.3ms avg processing, Quality: 0.76
+2025-05-28 22:05:45,757 - HolisticSignLanguage - INFO - Frame 2040: Pose detected (Quality: 0.78) - Wrists: L(0.44, 0.55), R(0.14, 0.48)
+2025-05-28 22:05:45,991 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 27.0ms avg processing, Quality: 0.79
+2025-05-28 22:05:46,723 - HolisticSignLanguage - INFO - Frame 2070: Pose detected (Quality: 0.84) - Wrists: L(0.44, 0.46), R(0.19, 0.51)
+2025-05-28 22:05:47,023 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 26.5ms avg processing, Quality: 0.80
+2025-05-28 22:05:47,722 - HolisticSignLanguage - INFO - Frame 2100: Pose detected (Quality: 0.81) - Wrists: L(0.45, 0.46), R(0.18, 0.46)
+2025-05-28 22:05:48,058 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 26.4ms avg processing, Quality: 0.80
+2025-05-28 22:05:48,721 - HolisticSignLanguage - INFO - Frame 2130: Pose detected (Quality: 0.79) - Wrists: L(0.45, 0.48), R(0.16, 0.51)
+2025-05-28 22:05:49,091 - HolisticSignLanguage - INFO - Performance: 30.0 output FPS, 25.7ms avg processing, Quality: 0.80
+2025-05-28 22:05:49,749 - HolisticSignLanguage - INFO - Frame 2160: Pose detected (Quality: 0.72) - Wrists: L(0.46, 0.46), R(0.40, 0.50)
+2025-05-28 22:05:50,127 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 25.7ms avg processing, Quality: 0.79
+2025-05-28 22:05:50,724 - HolisticSignLanguage - INFO - Frame 2190: Pose detected (Quality: 0.89) - Wrists: L(0.45, 0.47), R(0.27, 0.45)
+2025-05-28 22:05:51,157 - HolisticSignLanguage - INFO - Performance: 30.1 output FPS, 25.8ms avg processing, Quality: 0.78
+2025-05-28 22:05:51,725 - HolisticSignLanguage - INFO - Frame 2220: Pose detected (Quality: 0.77) - Wrists: L(0.34, 0.63), R(0.13, 0.63)
+2025-05-28 22:05:52,161 - HolisticSignLanguage - INFO - Performance: 29.9 output FPS, 25.8ms avg processing, Quality: 0.78
+2025-05-28 22:05:52,814 - HolisticSignLanguage - INFO - Frame 2250: Pose detected (Quality: 0.89) - Wrists: L(0.29, 0.59), R(0.07, 0.64)
+2025-05-28 22:05:53,187 - HolisticSignLanguage - INFO - Performance: 24.4 output FPS, 26.2ms avg processing, Quality: 0.80
+2025-05-28 22:05:53,877 - HolisticSignLanguage - INFO - Frame 2280: Pose detected (Quality: 0.88) - Wrists: L(0.31, 0.56), R(0.12, 0.69)
+2025-05-28 22:05:54,204 - HolisticSignLanguage - INFO - Performance: 31.5 output FPS, 26.7ms avg processing, Quality: 0.84
+2025-05-28 22:05:54,240 - HolisticSignLanguage - INFO - Connection state changed to closed
