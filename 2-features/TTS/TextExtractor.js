@@ -1,12 +1,130 @@
 import LimitedWeakSet from "../TTS/LimitedWeakSet.js";
 export default class TextExtractor {
-    static processedElements = new LimitedWeakSet(50); // Tracks processed elements
+    static processedElements = new LimitedWeakSet(20); // Tracks processed elements
     static textContainingTags = [
         "b", "strong", "i", "em", "u", "mark", "small", "sub", "sup", "s",
-        "span", "abbr", "cite", "q", "code", "kbd", "var", "a", "time", "th", "td"
+        "span", "abbr", "cite", "q", "code", "kbd", "var", "a", "time", "th", "td",
+        "button", "input", "select", "textarea", "option", "label"
       ];
     constructor() {
         
+    }
+
+    static getElementState(element) {
+        const role = element.getAttribute('role') || '';
+        const tagName = element.tagName.toLowerCase();
+        let stateText = '';
+
+        switch(role.toLowerCase()) {
+            case 'button':
+                stateText = element.disabled || element.getAttribute('aria-disabled') === 'true' 
+                    ? 'Disabled button: ' : 'Button: ';
+                break;
+                
+            case 'checkbox':
+                const checkedState = element.getAttribute('aria-checked');
+                stateText = `Checkbox ${checkedState === 'mixed' ? 'partially checked' :
+                            checkedState === 'true' ? 'checked' : 'unchecked'}`;
+                if (element.disabled || element.getAttribute('aria-disabled') === 'true') {
+                    stateText += ' (disabled)';
+                }
+                break;
+                
+            case 'radio':
+                const isChecked = element.getAttribute('aria-checked') === 'true';
+                const labelIds = element.getAttribute('aria-labelledby')?.split(' ') || [];
+                const labelText = labelIds.map(id => 
+                    document.getElementById(id)?.textContent.trim()
+                ).filter(Boolean).join(' ');
+                stateText = `Radio button ${isChecked ? 'selected' : 'not selected'}. ${labelText ? `: ${labelText}` : ''}`;
+                if (element.disabled || element.getAttribute('aria-disabled') === 'true') {
+                    stateText += ' (disabled)';
+                }
+                break;
+                
+            case 'option':
+                const isSelected = element.getAttribute('aria-selected') === 'true';
+                stateText = isSelected ? 'Selected option: ' : 'Option: ';
+                break;
+                
+            case 'combobox':
+            case 'listbox':
+                const expanded = element.getAttribute('aria-expanded') === 'true';
+                stateText = `${role} ${expanded ? 'expanded' : 'collapsed'}`;
+                break;
+                
+            default:
+                switch (tagName) {
+                    case 'button':
+                        stateText = element.disabled ? 'Disabled button: ' : 'Button: ';
+                        break;
+                        
+                    case 'input':
+                        switch (element.type.toLowerCase()) {
+                            case 'text':
+                            case 'email':
+                            case 'password':
+                            case 'search':
+                            case 'tel':
+                            case 'url':
+                                stateText = `${element.type} field`;
+                                if (element.value) stateText += ` containing: ${element.value}`;
+                                if (element.placeholder) stateText += ` placeholder: ${element.placeholder}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                if (element.readOnly) stateText += ' (read-only)';
+                                break;
+                                
+                            case 'checkbox':
+                                stateText = `Checkbox ${element.checked ? 'checked' : 'unchecked'}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                                
+                            case 'radio':
+                                stateText = `Radio button ${element.checked ? 'selected' : 'unselected'}`;
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                                
+                            case 'submit':
+                                stateText = 'Submit button';
+                                if (element.disabled) stateText += ' (disabled)';
+                                break;
+                        }
+                        break;
+                        
+                    case 'select':
+                        const selectedOptions = Array.from(element.selectedOptions)
+                            .map(opt => opt.textContent)
+                            .join(', ');
+                        stateText = element.multiple ? 'Multiple select' : 'Dropdown';
+                        if (selectedOptions) stateText += ` selected: ${selectedOptions}`;
+                        if (element.disabled) stateText += ' (disabled)';
+                        break;
+                        
+                    case 'textarea':
+                        stateText = 'Text area';
+                        if (element.value) stateText += ` containing: ${element.value}`;
+                        if (element.placeholder) stateText += ` placeholder: ${element.placeholder}`;
+                        if (element.disabled) stateText += ' (disabled)';
+                        if (element.readOnly) stateText += ' (read-only)';
+                        break;
+                        
+                    case 'option':
+                        stateText = element.selected ? 'Selected option: ' : 'Option: ';
+                        break;
+                }
+                break;
+        }
+        // Add additional ARIA states for all elements
+        const ariaLabels = [];
+        if (element.getAttribute('aria-busy') === 'true') ariaLabels.push('busy');
+        if (element.getAttribute('aria-expanded')) ariaLabels.push(`expanded=${element.getAttribute('aria-expanded')}`);
+        if (element.getAttribute('aria-haspopup')) ariaLabels.push(`has popup`);
+        
+        if (ariaLabels.length > 0) {
+            stateText += ` (${ariaLabels.join(', ')})`;
+        }
+
+        return stateText;
     }
 
     /**
@@ -33,6 +151,11 @@ export default class TextExtractor {
         if (tagName === 'a' && node.href) {
             const domain = new URL(node.href).hostname.replace('www.', '');
             text += node.textContent.trim() ? `Link text: ${node.textContent.trim()}` : `Link to ${domain}`;
+            TextExtractor.processAllDescendants(node);
+        }
+        else if (['button', 'input', 'select', 'textarea', 'option'].includes(tagName)) {
+            const stateText = TextExtractor.getElementState(node);
+            text += `${stateText}${node.textContent.trim()}`;
             TextExtractor.processAllDescendants(node);
         }
         else if (TextExtractor.textContainingTags.includes(tagName.toLowerCase())) {
@@ -78,7 +201,7 @@ export default class TextExtractor {
     }
 
     clearProcessedElements() {
-        TextExtractor.processedElements = new LimitedWeakSet(50);
+        TextExtractor.processedElements = new LimitedWeakSet(20);
     }
 
     static processAllDescendants(element) {
