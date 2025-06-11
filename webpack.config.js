@@ -95,7 +95,7 @@ export default {
       '@features': resolve(__dirname, '2-features'),
       '@background': resolve(__dirname, '3-background'),
       '@content': resolve(__dirname, '4-content'),
-      '@common': resolve(__dirname, '5-common'),
+      '@settings': resolve(__dirname, '6-settings'),
       '@sidebar': resolve(__dirname, '1-sidebar'),
       'artyom.js': path.resolve(__dirname, 'node_modules/artyom.js'),
       '@bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
@@ -177,16 +177,15 @@ export default {
         {
           from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
           to: 'all.min.css'
+        },
+        {
+          from: '2-features/ImageCaptioning/Florence-2-base-ft',
+          to: 'Florence-2-base-ft'
+        },
+        {
+          from: '2-features/ImageCaptioning/onnx-runtime/*',
+          to: 'onnx-runtime/[name][ext]'
         }
-        // {
-        //   from: 'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
-        //   to: 'all.min.css'
-        // },
-        // {
-        //   from: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
-        //   to: 'bootstrap.min.css'
-        // }
-          
       ]
     })
   ],

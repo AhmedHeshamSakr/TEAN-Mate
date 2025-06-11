@@ -1,12 +1,15 @@
 import Artyom from "artyom.js";
+import VideoOverlayManager from './VideoOverlayManager.js';
 
 export default class ArtyomAssistant {
     constructor(sidebarController) {
         this.artyom = new Artyom.default();
         this.sidebarController = sidebarController; // Reference to SidebarController
         this.isListening = false;
+        this.videoOverlayManager = new VideoOverlayManager();
         this.setupCommands();
         this.initializeSettings();
+        this.commandsDisabled = false;
     }
 
     getSettings(callback) {
@@ -28,10 +31,16 @@ export default class ArtyomAssistant {
         this.getSettings(function(settings) {
             self.badge = settings.showIconBadge || false;
         });
+
     }
 
     setupCommands() {
-        const triggerAction = this.triggerExtensionAction.bind(this);
+        const triggerAction = (action, wildcard) => {
+            // Don't process commands if disabled
+            if (this.commandsDisabled) return;
+            
+            this.triggerExtensionAction(action, wildcard);
+        };
         this.artyom.addCommands([
             {
                 indexes: ["text to speech", "start reading"],
@@ -61,20 +70,73 @@ export default class ArtyomAssistant {
                 indexes: ["open link", "open this link"],
                 action: () => {triggerAction("access-link");}
             },
-            // New search command
             {
                 indexes: ["search for *", "find *"],
                 smart: true,
                 action: (i, wildcard) => {triggerAction("search", wildcard);}
+            },
+            {
+                indexes: ["copy text", "copy speech"],
+                action: () => {
+                    if (this.sidebarController) {
+                        this.sidebarController.handleCopySpeech();
+                    }
+                }
+            },
+            {
+                indexes: ["save text", "save speech"],
+                action: () => {
+                    if (this.sidebarController) {
+                        this.sidebarController.handleSaveSpeech();
+                    }
+                }
+            },
+            {
+                indexes: ["clear text", "clear speech"],
+                action: () => {
+                    if (this.sidebarController) {
+                        this.sidebarController.handleClearSpeech();
+                    }
+                }
             }
         ]);
-
+        // In ArtyomAssistant.js
         this.artyom.redirectRecognizedTextOutput((recognized, isFinal) => {
-            const recognizedTextDiv = document.getElementById("recognizedText");
-            recognizedTextDiv.textContent = isFinal ? `You said: ${recognized}` : recognized;
+            // Update sidebar display
+            if (this.sidebarController) {
+                this.sidebarController.updateSpeechDisplay(recognized, isFinal);
+                
+                // Send ALL recognized text to overlay (not just final results)
+                if (this.isVideoOverlayEnabled()) {
+                    console.log("Sending recognized text to video overlay:", recognized);
+                    
+                    // Send directly to content script
+                    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                        if (tabs.length > 0) {
+                            chrome.tabs.sendMessage(tabs[0].id, {
+                                action: "displayOverlayText",
+                                text: recognized,
+                                isFinal: isFinal
+                            });
+                        }
+                    });
+                }
+            } else {
+                // Fallback if sidebarController is not available
+                const recognizedTextDiv = document.getElementById("recognizedText");
+                if (recognizedTextDiv) {
+                    recognizedTextDiv.textContent = isFinal ? `You said: ${recognized}` : recognized;
+                }
+            }
         });
     }
 
+    isVideoOverlayEnabled() {
+        const checkbox = document.getElementById('video-overlay-checkbox');
+        return checkbox && checkbox.checked && 
+               this.sidebarController.getSTTMode() === 'continuous';
+    }
+    
     startListening() {
         if (!this.isListening) {
             this.isListening = true;
@@ -131,6 +193,10 @@ export default class ArtyomAssistant {
         } else {
             console.warn("SidebarController is not set.");
         }
+    }
+    setCommandsEnabled(enabled) {
+        this.commandsDisabled = !enabled;
+        console.log(`Speech commands ${enabled ? 'enabled' : 'disabled'}`);
     }
 }
 

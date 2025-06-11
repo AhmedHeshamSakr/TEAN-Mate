@@ -1,256 +1,183 @@
+# TEAN Mate
+#### The Ease of Accsess and Navigation Mate
 
+A comprehensive AI-powered Browser Extension designed to improve web accessibility for individuals with disabilities. TEAN Mate offers text-to-speech, speech-to-text, image captioning, and sign language detection features to make web browsing more accessible.
 
+## Features
 
-# TEAN Mate Extension
-An AI-powered Extension aimed at improving web accessibility for individuals with disabilities.
+### Text-to-Speech (TTS)
+- Extracts and reads webpage content aloud using Piper TTS
+- Highlights currently spoken text for better tracking
+- Skip forward/backward between text sections
+- Pause and resume reading functionality
+- Keyboard shortcuts for navigation (Ctrl+Right, Ctrl+Left, Ctrl+Space)
+- Visual highlighting of currently read content
+
+### Speech-to-Text (STT)
+- Voice command recognition using Artyom.js
+- Supports both push-to-talk and continuous listening modes
+- Displays recognized text in the sidebar
+- Option to overlay speech captions on videos
+- Copy, save, or clear transcribed text
+- Word count tracking
+
+### Image Captioning
+- AI-powered image description using Florence-2 model
+- Multiple caption detail levels (basic, detailed, more detailed)
+- Visual indicators when processing images
+- Automatic alt-text generation for images without descriptions
+
+### Sign Language Detection
+- MediaPipe Holistic integration for hand, face, and pose tracking
+- Screen sharing to detect and interpret hand movements 
+- Real-time visualization of detected landmarks
+- Supports webcam-based sign language interpretation
 
 ## Project Structure
+
 ```
 extension/
 ├── manifest.json           # Extension configuration
-├── package.json           # Project dependencies
-├── webpack.config.js      # Build configuration
-├── icons/                 # Extension icons
-├── 1-sidebar/            # Sidebar UI components
-├── 2-features/           # Feature modules
-├── 3-background/         # Background scripts
-├── 4-content/            # Content scripts
-├── 5-common/             # Shared utilities
-└── dist/                 # Build output
+├── package.json            # Project dependencies
+├── webpack.config.js       # Build configuration
+├── 1-sidebar/              # Sidebar UI components
+│   ├── sidebar.css         # Sidebar styles
+│   ├── sidebar.html        # Sidebar HTML interface
+│   └── sidebar.js          # Sidebar functionality
+├── 2-features/             # Feature modules
+│   ├── ImageCaptioning/    # Image description generation
+│   ├── SignLanguage/       # Sign language detection
+│   ├── STT/                # Speech-to-text features
+│   └── TTS/                # Text-to-speech features
+├── 3-background/           # Background scripts
+│   └── background.js       # Extension background processes
+├── 4-content/              # Content scripts
+│   └── content.js          # DOM interaction and feature integration
+├── 6-settings/             # Settings & options page
+└── dist/                   # Build output
 ```
 
-## Development Guide
+## Installation Guide
 
-### Setting Up Development Environment
+### For Development
 
-1. Install Dependencies
-```bash
-# Clone the repository
-git clone [repository-url]
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-2. Load Extension in Edge
-- Open Edge and navigate to `edge://extensions/`
-- Enable "Developer mode"
-- Click "Load unpacked"
-- Select the `dist` folder from your project
-
-### Adding New Features
-
-1. **Create Feature Module**
+1. **Clone the Repository**
    ```bash
-   # Add new feature file in 2-features/
-   touch 2-features/NewFeatureHandler.js
-   ```
-   
-   Basic feature template:
-   ```javascript
-   export class NewFeatureHandler {
-     constructor() {
-       this.initialize();
-     }
-     
-     initialize() {
-       // Setup feature
-     }
-     
-     // Feature methods
-   }
+   git clone https://github.com/AhmedHeshamSakr/TEAN-Mate
+   cd tean-mate
    ```
 
-2. **Register in Content Script**
-   - Open `4-content/content.js`
-   - Import new feature:
-     ```javascript
-     import { NewFeatureHandler } from '@features/NewFeatureHandler';
-     ```
-   - Initialize in content script:
-     ```javascript
-     const newFeature = new NewFeatureHandler();
-     ```
-
-3. **Add UI Elements**
-   - Add HTML in `1-sidebar/sidebar.html`:
-     ```html
-     <div id="new-feature-container">
-       <!-- Feature UI elements -->
-     </div>
-     ```
-   - Add styles in `1-sidebar/sidebar.css`:
-     ```css
-     .new-feature-styles {
-       /* Feature styles */
-     }
-     ```
-   - Add JavaScript in `1-sidebar/sidebar.js`:
-     ```javascript
-     import  NewFeatureHandler from '2-features/NewFeatureHandler';
-     
-     // Feature UI logic
-     ```
-
-4. **Add Background Script Handlers (if needed)**
-   - Update `3-background/background.js`:
-     ```javascript
-     // Add message handlers for new feature
-     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-       if (message.type === 'NEW_FEATURE_ACTION') {
-         // Handle feature action
-       }
-     });
-     ```
-
-5. **Update Manifest (if needed)**
-   - Add new permissions in `manifest.json`:
-     ```json
-     {
-       "permissions": [
-         "existing-permission",
-         "new-permission"
-       ]
-     }
-     ```
-
-6. **Add Common Utilities (if needed)**
-   - Create utility file in `5-common/`:
-     ```javascript
-     // 5-common/NewUtility.js
-     export class NewUtility {
-       // Utility methods
-     }
-     ```
-
-### Building and Testing
-
-1. **Development Build**
-```bash
-# Start development with watch mode
-npm run dev
-```
-
-2. **Production Build**
-```bash
-# Create production build
-npm run build
-```
-
-3. **Start Dev**
-```bash
-# Run tests
-npm Start
-```
-
-### Common Development Tasks
-
-1. **Adding Icons**
-   - Place icon in `icons/` directory
-   - Update manifest.json if needed
-   - Reference in sidebar using webpack alias:
-     ```javascript
-     import iconPath from '@icons/new-icon.png';
-     ```
-
-2. **Adding External Libraries**
+2. **Install Dependencies**
    ```bash
-   npm install new-library --save
-   ```
-   - Update webpack.config.js if needed for special handling
-
-3. **Adding Keyboard Shortcuts**
-   - Update manifest.json:
-     ```json
-     {
-       "commands": {
-         "new-command": {
-           "suggested_key": {
-             "default": "Ctrl+K"
-           },
-           "description": "New command description"
-         }
-       }
-     }
-     ```
-
-4. **Adding Message Handlers**
-   ```javascript
-   // In background.js
-   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-     // Handle message
-   });
-   
-   // In content.js or feature
-   chrome.runtime.sendMessage({
-     type: 'MESSAGE_TYPE',
-     data: payload
-   });
+   npm install
    ```
 
-### Best Practices
-
-1. **Code Organization**
-   - Keep features modular and self-contained
-   - Use meaningful file and class names
-   - Follow the established directory structure
-
-2. **Performance**
-   - Lazy load features when possible
-   - Minimize DOM operations
-   - Use event delegation for multiple listeners
-
-3. **Accessibility**
-   - Follow WCAG guidelines
-   - Test with screen readers
-   - Ensure keyboard navigation works
-
-4. **Error Handling**
-   - Implement proper error handling
-   - Log errors appropriately
-   - Provide user feedback when needed
-
-### Debugging
-
-1. **Extension Debugging**
-   - Use `edge://extensions/` debugger
-   - Check background script console
-   - Monitor network requests
-
-2. **Development Tools**
-   - Use source maps for debugging
-   - Check webpack build output
-   - Monitor console for errors
-
-### Contributing
-
-1. Create a new branch for features
-2. Follow coding standards
-3. Test thoroughly
-4. Submit pull request with description
-
-### Build and Deploy
-
-1. **Development**
+3. **Build the Extension**
    ```bash
+   # For development with hot reload
    npm run dev
-   ```
-
-2. **Production**
-   ```bash
+   
+   # For production build
    npm run build
    ```
 
-<!-- 3. **Testing**
-   ```bash
-   npm test
-   ``` -->
+4. **Load the Extension in Edge**
+   - Open Edge browser and navigate to `edge://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked"
+   - Select the `dist` folder from your project
 
-The `dist` folder will contain the built extension ready for loading into Edge.
+### For Sign Language Detection
+
+The sign language detection feature requires a local MediaPipe server:
+
+1. **Set Up Python Environment**
+   ```bash
+   # Create a virtual environment
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   
+   # Install dependencies
+   pip install mediapipe opencv-python aiohttp aiohttp_cors aiortc av torch numpy
+   ```
+
+2. **Run the MediaPipe Server**
+   ```bash
+   # Navigate to the server directory
+   cd 2-features/SignLanguage
+   
+   # Start the server
+   python mediapipe_webrtc_server.py
+   ```
+
+3. The server runs on `http://localhost:8765`
+
+## Usage Guide
+
+### Text-to-Speech
+- Click the "Text to Speech" button in the sidebar to start reading the current page
+- Use keyboard shortcuts to navigate:
+  - `Ctrl+Right`: Skip to next section
+  - `Ctrl+Left`: Skip to previous section
+  - `Ctrl+Space`: Pause/resume reading
+  - `Ctrl+Up`: Access current link
+
+### Speech-to-Text
+- Select mode (Push-to-Talk or Continuous) from the dropdown
+- For Push-to-Talk: Hold `Space` key while speaking
+- For Continuous: Click the button to start/stop listening
+- Use the copy, save, or clear buttons to manage transcribed text
+- Enable "Display text overlay on videos" to show captions on video content
+
+### Image Captioning
+- Click the "Image Captioning" button
+- Select caption detail level and click "Activate"
+- Hover over images to see processing indicators
+- AI-generated captions will be read aloud when using TTS
+
+### Sign Language Detection
+- Ensure the MediaPipe server is running
+- Click the "Sign Language" button to activate
+- Grant screen sharing permission
+- View detected landmarks in the overlay window
+- Double-click the button to toggle debug visualization mode
+
+## Voice Commands
+
+TEAN Mate supports the following voice commands:
+
+- "Text to speech" or "Start reading" - Activates TTS
+- "Stop" or "Pause" - Pauses reading
+- "Sign language" or "Show sign language" - Activates sign language detection
+- "Image caption" or "Describe image" - Activates image captioning
+- "Next" or "Skip next" - Moves to next section
+- "Back" or "Skip back" - Moves to previous section
+- "Open link" or "Open this link" - Opens focused link
+- "Search for [query]" or "Find [query]" - Performs web search
+- "Copy text" or "Copy speech" - Copies transcribed text
+- "Save text" or "Save speech" - Saves transcribed text as file
+- "Clear text" or "Clear speech" - Clears transcribed text
+
+## Technical Details
+
+- **Text-to-Speech**: Uses Piper TTS with custom voice models
+- **Speech-to-Text**: Implements Artyom.js for voice recognition
+- **Image Captioning**: Utilizes Florence-2 model for image understanding
+- **Sign Language**: Leverages MediaPipe Holistic for landmark detection
+- **Video Overlay**: Provides real-time caption display on video content
+
+## Browser Support
+
+Currently, TEAN Mate is designed for Microsoft Edge with Manifest V3 support.
+
+## Contributors
+
+- [Add contributor information here]
 
 ## License
 
+[Add license information here]
+
 ## Support
+
+For issues, feature requests, or questions, please [open an issue](https://github.com/AhmedHeshamSakr/TEAN-Mate/issues) on our GitHub repository.

@@ -112,6 +112,8 @@ body {
 
 /* Enhanced Button Design */
 .accessibility-button {
+    width: 100%;
+    /* existing properties */
     padding: 18px 25px;
     font-size: 1.1rem;
     font-weight: 600;
@@ -126,6 +128,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 
 .accessibility-button i {
     font-size: 1.6rem;
@@ -172,7 +175,8 @@ body {
     color: var(--warning-color);
 }
 
-/* Speech Display Enhancements */
+
+/* Speech display container styling */
 .speech-display {
     border: 2px dashed var(--border-color);
     background: var(--card-bg);
@@ -194,12 +198,116 @@ body {
     padding-bottom: 10px;
 }
 
+/* Styling for recognized text container */
 #recognizedText {
     font-style: italic;
     color: var(--text-dark);
     min-height: 50px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transition: background-color 0.3s ease;
+}
+
+/* Highlight the recognized text area when content is being accumulated */
+#recognizedText.accumulating {
+    background-color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+/* Style for speech text action buttons */
+.speech-actions {
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 5px;
+}
+
+/* Add some animation for the speech status indicator */
+.listening-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.listening-active {
+    background-color: #28a745;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+#caption-type-menu {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Loading spinner styling */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.25em;
+}
+
+/* Ensure images are block elements for proper overlay */
+img[data-caption-loading] {
+    border: 2px solid #ffd700 !important;
+    transition: border-color 0.3s ease;
+}
+
+
+/* Sign language container styles */
+.sign-language-container {
+    position: relative;
+}
+
+.sign-language-controls {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: rgba(0, 188, 212, 0.05);
+    border: 1px solid rgba(0, 188, 212, 0.1);
+}
+
+.sign-language-display {
+    margin-top: 15px;
+}
+
+.sign-display {
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.sign-entry {
+    border-left: 3px solid var(--info-color);
+    padding-left: 10px;
+    margin-bottom: 8px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Responsive Design */
@@ -252,6 +360,10 @@ body {
     background-color: var(--border-color);
     transform: rotate(30deg);
 }
+.image-caption-wrapper {
+    position: relative;
+    display: inline-block;
+}
 
 /* @font-face {
     font-family: 'Inter';
@@ -301,16 +413,18 @@ body {
 .fas {
     font-family: 'FontAwesome';
     display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    line-height: 1;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}*/
+
+.caption-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #ffffff;
+    animation: spin 1s linear infinite;
 }
 
-.fa-volume-up::before { content: "\f028"; }
-.fa-microphone::before { content: "\f130"; }
-.fa-sign-language::before { content: "\f2a7"; }
-.fa-image::before { content: "\f03e"; } */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artyom Voice Assistant</title>
+    <script src="node_modules/artyom.js/build/artyom.window.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #recognizedText {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            height: 50px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Artyom Voice Assistant</h1>
+    <button id="start">Start Listening</button>
+    <button id="stop">Stop Listening</button>
+    <button id="speak">Speak Text</button>
+    <textarea id="textToSpeak" rows="4" cols="50" placeholder="Enter text to speak"></textarea>
+    <h3>Recognized Speech:</h3>
+    <div id="recognizedText"></div>
+
+    <script>
+        const artyom = new Artyom();
+
+        // Add commands
+        artyom.addCommands([
+            {
+                indexes: ["hello", "hi", "hey"],
+                action: function () {
+                    artyom.say("Hello! How can I assist you today?");
+                }
+            },
+            {
+                indexes: ["what time is it", "tell me the time"],
+                action: function () {
+                    const now = new Date();
+                    const time = now.toLocaleTimeString();
+                    artyom.say(`The current time is ${time}`);
+                }
+            }
+        ]);
+
+        // Real-time speech recognition output
+        artyom.redirectRecognizedTextOutput(function (recognized, isFinal) {
+            const recognizedTextDiv = document.getElementById("recognizedText");
+            if (isFinal) {
+                recognizedTextDiv.textContent = "Final recognized text: " + recognized;
+            } else {
+                recognizedTextDiv.textContent = recognized;
+            }
+        });
+
+        // Start continuous listening
+    // Add listeners for errors
+    // Handle Artyom errors using the on method
+    artyom.on(['error'], function (error) {
+        console.error("Artyom encountered an error:", error);
+
+        // Handle specific errors
+        switch (error.code) {
+            case "network":
+                alert("Network error: Please check your internet connection.");
+                break;
+            case "not-allowed":
+                alert("Permission denied: Please allow microphone access.");
+                break;
+            case "service-not-allowed":
+                alert("Speech recognition service is not available.");
+                break;
+            case "no-speech":
+                alert("No speech detected. Please try speaking again.");
+                break;
+            default:
+                alert("An unknown error occurred. Please check your microphone or try again later.");
+                break;
+        }
+    });
+
+    // Start continuous listening
+    document.getElementById("start").addEventListener("click", function () {
+        artyom.fatality(); // Stop previous instance
+        setTimeout(function () {
+            artyom.initialize({
+                lang: "en-GB",
+                continuous: true,
+                listen: true,
+                debug: true,
+                speed: 1
+            }).then(function () {
+                console.log("Artyom is ready to listen!");
+                artyom.say("Voice assistant activated!");
+            }).catch(function (err) {
+                console.error("Initialization error:", err);
+                alert("Artyom initialization failed. Please check your settings.");
+            });
+        }, 250);
+    });
+
+        // Stop listening
+        document.getElementById("stop").addEventListener("click", function () {
+            artyom.fatality();
+            console.log("Artyom has stopped listening.");
+        });
+
+        // Speak user-entered text
+        document.getElementById("speak").addEventListener("click", function () {
+            const textToSpeak = document.getElementById("textToSpeak").value;
+            if (textToSpeak.trim()) {
+                artyom.say(textToSpeak, {
+                    onStart: function () {
+                        console.log("Speaking...");
+                    },
+                    onEnd: function () {
+                        console.log("Finished speaking.");
+                    }
+                });
+            } else {
+                artyom.say("Please enter some text to speak.");
+            }
+        });
+    </script>
+</body>
+</html>
