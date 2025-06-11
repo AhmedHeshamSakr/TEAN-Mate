@@ -70,13 +70,13 @@ class ContentHandler {
         }
         
         // Add speech event listeners for notification
-        this.speechHandler.addEventListener('speechstart', () => {
-            this.notifySpeechStarted();
-        });
+        // this.speechHandler.addEventListener('speechstart', () => {
+        //     this.notifySpeechStarted();
+        // });
         
-        this.speechHandler.addEventListener('speechend', () => {
-            this.notifySpeechStopped();
-        });
+        // this.speechHandler.addEventListener('speechend', () => {
+        //     this.notifySpeechStopped();
+        // });
         
         // Listen for hand landmarks detected events from the sign language handler
         window.addEventListener('handLandmarksDetected', (event) => {
@@ -270,7 +270,7 @@ class ContentHandler {
                 this.highlightBox.addHighlight(elementsToReturn[i]);
 
                 if (elementsToReturn[i].tagName?.toLowerCase() === 'img') {
-                    console.log('🖼️ Detected image element:', element);
+                    console.log('🖼️ Detected image element:', elementsToReturn[i]);
                     
                     try {
                         // Pass both the URL and the element to the caption generator
@@ -407,9 +407,7 @@ class ContentHandler {
             return;
         }
 
-        if (request.action === "extractText") {
-            if (this.speechHandler.isSpeaking) return;
-        } else if (request.action === "activateImageCaptioning") {
+        if (request.action === "activateImageCaptioning") {
             console.log('[CONTENT] Received captioning activation');
             this.imageCaptionHandler.setCaptionType(request.captionType);
             this.imageCaptionHandler.activate();
