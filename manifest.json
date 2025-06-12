@@ -60,25 +60,31 @@
   "commands": {
     "skip-next": {
       "suggested_key": {
-        "default": "Ctrl+Right"
+        "default": "Ctrl+Right",
+        "mac": "Command+Shift+Right"
       },
       "description": "Skip to next section"
     },
     "skip-previous": {
       "suggested_key": {
-        "default": "Ctrl+Left"
+        "default": "Ctrl+Left",
+         "mac": "Command+Shift+Left"
       },
       "description": "Skip to previous section"
     },
     "toggle-reading": {
       "suggested_key": {
-        "default": "Ctrl+Space"
+        "default": "Ctrl+Space",
+        "mac": "Command+Shift+Space"
+
       },
       "description": "Pause and continue reading"
     },
     "access-link": {
       "suggested_key": {
-        "default": "Ctrl+Up"
+        "default": "Ctrl+Up",
+        "mac": "Command+Shift+Up"
+
       },
       "description": "Access current link"
     }

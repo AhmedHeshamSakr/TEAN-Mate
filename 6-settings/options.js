@@ -140,7 +140,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Settings saved to local storage');
                 
                 // Dispatch an event that settings were updated
-                chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings });
+                chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings }, function(response) {
+                    if (chrome.runtime.lastError) {
+                        console.log('Error sending message to background script:', chrome.runtime.lastError.message);
+                        // Continue with your code even if the message fails
+                    } else {
+                        console.log('Message successfully sent to background script');
+                    }
+                });
             });
         });
     }
@@ -245,6 +252,33 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    function initBootstrapComponents() {
+        if (typeof bootstrap !== 'undefined') {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            if (tooltipTriggerList.length > 0) {
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => 
+                    new bootstrap.Tooltip(tooltipTriggerEl)
+                );
+            }
+
+            // Initialize the tabs
+            const triggerTabList = document.querySelectorAll('#settingsTabs button');
+            if (triggerTabList.length > 0) {
+                triggerTabList.forEach(triggerEl => {
+                    const tabTrigger = new bootstrap.Tab(triggerEl);
+                    triggerEl.addEventListener('click', event => {
+                        event.preventDefault();
+                        tabTrigger.show();
+                    });
+                });
+            }
+        } else {
+            console.warn('Bootstrap library not loaded. Some UI components may not function properly.');
+        }
+    }
+
+    setTimeout(initBootstrapComponents, 100);
 });
 
 // Reset shortcuts

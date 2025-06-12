@@ -8,7 +8,29 @@ export default class ArtyomAssistant {
         this.isListening = false;
         this.videoOverlayManager = new VideoOverlayManager();
         this.setupCommands();
+        this.initializeSettings();
         this.commandsDisabled = false;
+    }
+
+    getSettings(callback) {
+        // Try to get settings from sync storage first
+        chrome.storage.sync.get('settings', function(data) {
+            if (data.settings) {
+                callback(data.settings);
+            } else {
+                // Fall back to local storage if not found in sync
+                chrome.storage.local.get('settings', function(localData) {
+                    callback(localData.settings || {});
+                });
+            }
+        });
+    }
+
+    initializeSettings() {
+        const self = this;
+        this.getSettings(function(settings) {
+            self.badge = settings.showIconBadge || false;
+        });
 
     }
 
@@ -144,6 +166,10 @@ export default class ArtyomAssistant {
             this.artyom.fatality();
             console.log("Artyom has stopped listening.");
             this.isListening = false;
+            this.badge? chrome.runtime.sendMessage({
+                action: "updateBadge",
+                isActive: false
+            }) : null;
         }
     }
 

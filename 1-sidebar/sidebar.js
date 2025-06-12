@@ -264,6 +264,12 @@ class SidebarController {
             });
         }
         
+        // Enable buttons if there is any text to work with
+        const hasText = text && text.trim().length > 0;
+        document.getElementById('copy-speech-btn').disabled = !hasText;
+        document.getElementById('save-speech-btn').disabled = !hasText;
+        document.getElementById('clear-speech-btn').disabled = !hasText;
+        
         // If in continuous mode and text is final, accumulate it
         if (mode === 'continuous' && isFinal && text.trim()) {
             // Show accumulation indicator
@@ -281,11 +287,6 @@ class SidebarController {
             // Update the display with accumulated text
             recognizedTextDiv.textContent = this.accumulatedSpeech;
             recognizedTextDiv.classList.add('accumulating');
-            
-            // Enable the action buttons
-            document.getElementById('copy-speech-btn').disabled = false;
-            document.getElementById('save-speech-btn').disabled = false;
-            document.getElementById('clear-speech-btn').disabled = false;
             
             // Update word count
             this.updateWordCount();
@@ -713,6 +714,12 @@ class SidebarController {
         if (controls) {
             controls.style.display = 'none';
         }
+    }
+
+    handleOptions() {
+        console.log("Options button clicked");
+        // Open the options page in a new tab
+        chrome.runtime.openOptionsPage();
     }
 
     // Send a message to the active tab
