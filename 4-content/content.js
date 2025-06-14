@@ -707,7 +707,7 @@ class ContentHandler {
 
     async checkServerConnectivity() {
         try {
-            const response = await fetch('http://localhost:8765/ping');
+            const response = await fetch('https://science-licensing-encountered-updating.trycloudflare.com/ping');
             
             if (response.ok) {
                 return true;

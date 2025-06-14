@@ -2,7 +2,7 @@
 export default class SignLanguageHandler {
     constructor() {
         this.isActive = false;
-        this.serverUrl = 'http://localhost:8765';
+        this.serverUrl = 'https://science-licensing-encountered-updating.trycloudflare.com';
         this.peerConnection = null;
         this.dataChannel = null;
         this.stream = null;
