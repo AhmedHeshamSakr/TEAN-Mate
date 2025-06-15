@@ -53,6 +53,11 @@ export default class TextExtractor {
                 stateText = `${role} ${expanded ? 'expanded' : 'collapsed'}`;
                 break;
                 
+            case 'treeitem':
+                const isExpanded = element.getAttribute('aria-expanded') === 'true';
+                stateText = `Tree item ${isExpanded ? 'expanded' : 'collapsed'}`;
+                break;
+                
             default:
                 switch (tagName) {
                     case 'button':

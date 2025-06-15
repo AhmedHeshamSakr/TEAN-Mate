@@ -27,6 +27,14 @@ export default class InteractionHandler {
             this.handleOptionSelection(element);
             return;
         }
+        
+        if (role === 'treeitem') {
+            // Toggle expanded state
+            const isExpanded = element.getAttribute('aria-expanded') === 'true';
+            element.setAttribute('aria-expanded', !isExpanded);
+            element.click();
+            return;
+        }
 
         switch (tagName) {
             case 'button':
@@ -516,7 +524,7 @@ export default class InteractionHandler {
         // Elements with interactive roles
         const role = element.getAttribute('role');
         if (role && ['button', 'link', 'checkbox', 'radio', 'menuitem', 'option', 
-                     'tab', 'combobox', 'listbox', 'switch'].includes(role)) {
+                     'tab', 'combobox', 'listbox', 'switch', 'treeitem'].includes(role)) {
             return true;
         }
         
