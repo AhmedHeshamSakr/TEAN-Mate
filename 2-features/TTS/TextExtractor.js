@@ -17,8 +17,12 @@ export default class TextExtractor {
 
         switch(role.toLowerCase()) {
             case 'button':
-                stateText = element.disabled || element.getAttribute('aria-disabled') === 'true' 
-                    ? 'Disabled button: ' : 'Button: ';
+                stateText = element.disabled ? 'Disabled button: ' : 'Button: ';
+                // Add expanded state if available
+                if (element.getAttribute('aria-expanded') !== null) {
+                    const isExpanded = element.getAttribute('aria-expanded') === 'true';
+                    stateText = `${isExpanded ? 'Expanded' : 'Collapsed'} button: `;
+                }
                 break;
                 
             case 'checkbox':

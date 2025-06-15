@@ -36,6 +36,14 @@ export default class InteractionHandler {
             return;
         }
 
+        if (role === 'button' && element.getAttribute('aria-haspopup') === 'true') {
+            // Handle button with popup
+            const isExpanded = element.getAttribute('aria-expanded') === 'true';
+            element.click();
+            element.setAttribute('aria-expanded', !isExpanded);
+            return;
+        }
+
         switch (tagName) {
             case 'button':
                 element.click();

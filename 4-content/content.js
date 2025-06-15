@@ -164,6 +164,9 @@ class ContentHandler {
                     const isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
                     const isTreeItem = element.getAttribute('role') === 'treeitem';
                     
+                    // Get aria-label if available
+                    const ariaLabel = element.getAttribute('aria-label');
+                    
                     // Generic radio/checkbox text discovery
                     if (isRadio || isCheckbox) {
                         console.log(`generic ${isRadio ? 'radio' : 'checkbox'} text discovery`);
@@ -173,22 +176,9 @@ class ContentHandler {
                         this.markInputLabelProcessed(element);
                     } else if (isTreeItem) {
                         console.log('treeitem text discovery');
-                        // Check if the tree item is actually expanded by looking at its children
-                        const hasVisibleChildren = Array.from(element.children).some(child => 
-                            child.offsetHeight > 0 && 
-                            child.offsetWidth > 0 && 
-                            window.getComputedStyle(child).display !== 'none'
-                        );
-                        // Check if the chevron indicator shows expanded state
-                        const chevron = element.querySelector('.tree-expander-indicator');
-                        const isChevronExpanded = chevron && 
-                            (chevron.classList.contains('docon-chevron-down') || 
-                             chevron.classList.contains('docon-chevron-down-light'));
-                        
-                        // Use visual state if it contradicts aria-expanded
-                        const isActuallyExpanded = hasVisibleChildren || isChevronExpanded;
+                        const expanded = element.getAttribute('aria-expanded') === 'true';
                         const itemText = element.textContent.trim();
-                        text.push(`${isActuallyExpanded ? 'Expanded' : 'Collapsed'} tree item: ${itemText}`);
+                        text.push(`${expanded ? 'Expanded' : 'Collapsed'} tree item: ${itemText}`);
                         elementsToReturn.push(element);
                         this.currentLink = element;
                     } else {
@@ -205,7 +195,9 @@ class ContentHandler {
                             TextExtractor.processedElements.add(radioOrCheckboxChild);
                         } else {
                             console.log('non-radio/checkbox text discovery');
-                            text.push(`${stateText}${element.textContent.trim()}`);
+                            // Use aria-label if available, otherwise use text content
+                            const elementText = ariaLabel || element.textContent.trim();
+                            text.push(`${stateText}${elementText}`);
                             elementsToReturn.push(element);
                         }
                     }
@@ -601,6 +593,18 @@ class ContentHandler {
                         
                         // Toggle aria-expanded after click
                         const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+                        this.currentLink.setAttribute('aria-expanded', !isExpanded);
+                        
+                        // Force a reflow to ensure the click is processed
+                        this.currentLink.offsetHeight;
+                    } else if (role === 'button' && this.currentLink.getAttribute('aria-haspopup') === 'true') {
+                        // Handle button with popup
+                        const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+                        
+                        // Click the button
+                        this.currentLink.click();
+                        
+                        // Toggle aria-expanded
                         this.currentLink.setAttribute('aria-expanded', !isExpanded);
                         
                         // Force a reflow to ensure the click is processed
