@@ -166,6 +166,7 @@ class ContentHandler {
     }
 
     getSelectedText() {
+        console.log('getSelectedText called');
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
@@ -310,19 +311,19 @@ class ContentHandler {
         }
         let { elementsToReturn, text } = this.currentElement;
 
-        if (!this.currentElement || !elementsToReturn || elementsToReturn.length === 0) {
-            this.currentElement = null;
-            // Send a notification that speech has finished completely
-            this.notifySpeechStopped();
-            return;
-        }
-
         const isSelectedText = elementsToReturn.length === 0 && text.length > 0;
     
         if (isSelectedText) {
             // Just speak the text without highlighting
             await this.speechHandler.speak(text[0], ()=>{});
             this.currentElement = null;
+            return;
+        }
+
+        if (!this.currentElement || !elementsToReturn || elementsToReturn.length === 0) {
+            this.currentElement = null;
+            // Send a notification that speech has finished completely
+            this.notifySpeechStopped();
             return;
         }
 
