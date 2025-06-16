@@ -2,7 +2,7 @@
 export default class SignLanguageHandler {
     constructor() {
         this.isActive = false;
-        this.serverUrl = 'http://localhost:8765';
+        this.serverUrl = 'https://initiated-costume-attend-landing.trycloudflare.com';
         this.peerConnection = null;
         this.dataChannel = null;
         this.stream = null;
@@ -28,6 +28,9 @@ export default class SignLanguageHandler {
         
         // Display preferences
         this.showDetailedInfo = false;  // Toggle for detailed technical info
+
+        // Translation text
+        this.translation = null;
     }
     
     // Activate screen sharing and WebRTC connection
@@ -218,11 +221,18 @@ export default class SignLanguageHandler {
                 // Handle different types of server messages with clean UI updates
                 if (data.type === 'holistic_landmarks') {
                     this.processLandmarksData(data);
+                    console.log("[SignLanguageHandler] Received landmarks data:", data);
                 } else if (data.type === 'performance_stats') {
                     this.processPerformanceData(data);
+                    console.log("[SignLanguageHandler] Received performance data:", data);
                 } else if (data.type === 'stats' && data.fps !== undefined) {
                     this.fps = data.fps;
+                    console.log("[SignLanguageHandler] Received FPS:", this.fps);
                     this.updateFPSDisplay();
+                } else if (data.type === 'translation') {
+                    // Store translation text
+                    this.translation = data.text;
+                    console.log("[SignLanguageHandler] Received translation:", this.translation);
                 }
                 
             } catch (error) {
@@ -251,6 +261,15 @@ export default class SignLanguageHandler {
         
         // Update UI with clean detection status
         this.updateDetectionStatus(data);
+        
+        // Update translation display if available
+        if (this.translation) {
+            const translationElement = document.getElementById('signLanguageTranslation');
+            if (translationElement) {
+                translationElement.textContent = this.translation;
+                translationElement.style.display = 'block';
+            }
+        }
         
         // Dispatch event for other components
         const event = new CustomEvent('handLandmarksDetected', {
@@ -444,6 +463,24 @@ export default class SignLanguageHandler {
         this.displayElement.style.backgroundColor = '#000';
         container.appendChild(this.displayElement);
         
+        // Add translation text overlay
+        const translationOverlay = document.createElement('div');
+        translationOverlay.id = 'signLanguageTranslation';
+        translationOverlay.style.position = 'absolute';
+        translationOverlay.style.bottom = '40px';
+        translationOverlay.style.left = '0';
+        translationOverlay.style.right = '0';
+        translationOverlay.style.padding = '8px';
+        translationOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        translationOverlay.style.color = 'white';
+        translationOverlay.style.fontSize = '14px';
+        translationOverlay.style.textAlign = 'center';
+        translationOverlay.style.display = 'none';
+        translationOverlay.style.borderRadius = '4px';
+        translationOverlay.style.margin = '0 8px';
+        translationOverlay.style.backdropFilter = 'blur(5px)';
+        container.appendChild(translationOverlay);
+        
         // Minimal status bar with essential information only
         const statusBar = document.createElement('div');
         statusBar.style.display = 'flex';
@@ -534,6 +571,13 @@ export default class SignLanguageHandler {
         if (this.displayElement) {
             this.displayElement.srcObject = null;
         }
+
+        // Clear translation display
+        const translationElement = document.getElementById('signLanguageTranslation');
+        if (translationElement) {
+            translationElement.textContent = '';
+            translationElement.style.display = 'none';
+        }
         
         // Reset all state
         this.faceLandmarks = null;
@@ -543,6 +587,7 @@ export default class SignLanguageHandler {
         this.serverPerformanceData = null;
         this.lastLandmarkUpdate = null;
         this.fps = 0;
+        this.translation = null;
     }
     
     async pingServer() {
@@ -580,5 +625,13 @@ export default class SignLanguageHandler {
             lastLandmarkUpdate: this.lastLandmarkUpdate,
             showDetailedInfo: this.showDetailedInfo
         };
+    }
+
+    /**
+     * Get the latest translation text
+     * @returns {string|null} The latest translation or null if none received
+     */
+    getTranslation() {
+        return this.translation;
     }
 }
