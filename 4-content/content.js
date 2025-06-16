@@ -189,6 +189,16 @@ class ContentHandler {
             const element = this.walker.currentNode;
             if(TextExtractor.processedElements.has(element)) continue;
             if (this.isElementVisible(element)) {
+                // Check if element has any interactive children
+                const hasInteractiveChildren = Array.from(element.querySelectorAll('*')).some(child => 
+                    InteractionHandler.isInteractiveElement(child) && this.isElementVisible(child)
+                );
+
+                // Skip this element if it has interactive children
+                if (hasInteractiveChildren) {
+                    continue;
+                }
+
                 const tagName = element.tagName?.toLowerCase();
                 if (tagName === 'a' && element.href) {
                     const domain = new URL(element.href).hostname.replace('www.', '');
@@ -201,6 +211,10 @@ class ContentHandler {
                     const stateText = TextExtractor.getElementState(element);
                     const isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
                     const isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
+                    const isTreeItem = element.getAttribute('role') === 'treeitem';
+                    
+                    // Get aria-label if available
+                    const ariaLabel = element.getAttribute('aria-label');
                     
                     // Generic radio/checkbox text discovery
                     if (isRadio || isCheckbox) {
@@ -209,6 +223,13 @@ class ContentHandler {
                         text.push(`${stateText}. ${labelText}`);
                         elementsToReturn.push(element);
                         this.markInputLabelProcessed(element);
+                    } else if (isTreeItem) {
+                        console.log('treeitem text discovery');
+                        const expanded = element.getAttribute('aria-expanded') === 'true';
+                        const itemText = element.textContent.trim();
+                        text.push(`${expanded ? 'Expanded' : 'Collapsed'} tree item: ${itemText}`);
+                        elementsToReturn.push(element);
+                        this.currentLink = element;
                     } else {
                         // Check if this is a container with a radio button or checkbox child
                         const radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
@@ -223,7 +244,9 @@ class ContentHandler {
                             TextExtractor.processedElements.add(radioOrCheckboxChild);
                         } else {
                             console.log('non-radio/checkbox text discovery');
-                            text.push(`${stateText}${element.textContent.trim()}`);
+                            // Use aria-label if available, otherwise use text content
+                            const elementText = ariaLabel || element.textContent.trim();
+                            text.push(`${stateText}${elementText}`);
                             elementsToReturn.push(element);
                         }
                     }
@@ -634,12 +657,41 @@ class ContentHandler {
                 // Check if the current link is a form element or a link
                 if (this.currentLink) {
                     const tagName = this.currentLink.tagName?.toLowerCase();
+                    const role = this.currentLink.getAttribute('role');
+                    
                     if (tagName === 'a') {
                         this.linkHandler.accessLink(this.currentLink);
-                    } else {
-                        const role = this.currentLink.getAttribute('role');
-                        const tagName = this.currentLink.tagName?.toLowerCase();
+                    } else if (role === 'treeitem') {
+                        // Handle tree item interaction
+                        // Find the expander element
+                        const expander = this.currentLink.querySelector('.tree-expander');
+                        if (expander) {
+                            // Click the expander first
+                            expander.click();
+                        }
                         
+                        // Also click the tree item itself
+                        this.currentLink.click();
+                        
+                        // Toggle aria-expanded after click
+                        const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+                        this.currentLink.setAttribute('aria-expanded', !isExpanded);
+                        
+                        // Force a reflow to ensure the click is processed
+                        this.currentLink.offsetHeight;
+                    } else if (role === 'button' && this.currentLink.getAttribute('aria-haspopup') === 'true') {
+                        // Handle button with popup
+                        const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+                        
+                        // Click the button
+                        this.currentLink.click();
+                        
+                        // Toggle aria-expanded
+                        this.currentLink.setAttribute('aria-expanded', !isExpanded);
+                        
+                        // Force a reflow to ensure the click is processed
+                        this.currentLink.offsetHeight;
+                    } else {
                         // Save the next element before handling the dropdown
                         if (InteractionHandler.isCustomDropdown(this.currentLink)) {
                             this.saveNextElementAfterListbox(this.currentLink);
@@ -781,10 +833,11 @@ class ContentHandler {
                             style.height !== '0px' &&
                             style.width !== '0px';
         const isInteractive = InteractionHandler.isInteractiveElement(element);
+        const isTreeItem = element.getAttribute('role') === 'treeitem';
 
         if (element.disabled || element.getAttribute('aria-disabled') === 'true') return false;
 
-        return isNotHidden || isInteractive;
+        return isNotHidden || isInteractive || isTreeItem;
     }
 
     saveNextElementAfterListbox(listbox) {
