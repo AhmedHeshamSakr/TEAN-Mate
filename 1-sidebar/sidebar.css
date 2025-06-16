@@ -1,5 +1,6 @@
 /* Enhanced Color Palette */
 :root {
+    /* Light theme (default) */
     --primary-color: #2196f3;
     --secondary-color: #4caf50;
     --info-color: #00bcd4;
@@ -8,6 +9,45 @@
     --background-gradient-end: #bbdefb;
     --text-dark: #333333;
     --text-light: #ffffff;
+    --background-color: #ffffff;
+    --sidebar-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #ffffff;
+    --border-color: rgba(33, 150, 243, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --primary-color: #64b5f6;
+    --secondary-color: #81c784;
+    --info-color: #4dd0e1;
+    --warning-color: #ffb74d;
+    --background-gradient-start: #263238;
+    --background-gradient-end: #1a2327;
+    --text-dark: #e0e0e0;
+    --text-light: #f5f5f5;
+    --background-color: #121212;
+    --sidebar-bg: rgba(18, 18, 18, 0.95);
+    --card-bg: #1e1e1e;
+    --border-color: rgba(100, 181, 246, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast theme variables */
+[data-theme="high-contrast"] {
+    --primary-color: #ffffff;
+    --secondary-color: #ffffff;
+    --info-color: #ffffff;
+    --warning-color: #ffffff;
+    --background-gradient-start: #000000;
+    --background-gradient-end: #000000;
+    --text-dark: #ffffff;
+    --text-light: #ffffff;
+    --background-color: #000000;
+    --sidebar-bg: rgba(0, 0, 0, 0.95);
+    --card-bg: #000000;
+    --border-color: rgba(255, 255, 255, 0.8);
+    --shadow-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Modern Typography and Base Styling */
@@ -28,10 +68,10 @@ body {
 .sidebar-MainContainer {
     max-width: 750px;
     width: 95%;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(33, 150, 243, 0.2);
+    background: var(--sidebar-bg);
+    border: 2px solid var(--border-color);
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px var(--shadow-color);
     padding: 40px;
     backdrop-filter: blur(10px);
     transition: all 0.4s ease;
@@ -63,11 +103,11 @@ body {
 
 /* Feature Container */
 .Features-div {
-    background: rgba(249, 249, 249, 0.7);
+    background: var(--card-bg);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 20px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
 /* Enhanced Button Design */
@@ -106,7 +146,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -138,11 +178,31 @@ body {
 
 /* Speech display container styling */
 .speech-display {
-    margin-top: 15px;
+    border: 2px dashed var(--border-color);
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+}
+
+.speech-display:hover {
+    border-color: var(--primary-color);
+}
+
+.speech-display h3 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
 }
 
 /* Styling for recognized text container */
 #recognizedText {
+    font-style: italic;
+    color: var(--text-dark);
+    min-height: 50px;
     max-height: 200px;
     overflow-y: auto;
     font-size: 0.9rem;
@@ -282,10 +342,78 @@ img[data-caption-loading] {
 .button-container > *:nth-child(3) { animation-delay: 0.6s; }
 .button-container > *:nth-child(4) { animation-delay: 0.8s; }
 
+#settingsButton {
+    background-color: transparent;
+    color: var(--text-dark);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#settingsButton:hover {
+    background-color: var(--border-color);
+    transform: rotate(30deg);
+}
 .image-caption-wrapper {
     position: relative;
     display: inline-block;
 }
+
+/* @font-face {
+    font-family: 'Inter';
+    font-weight: 300;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Light.woff2') format('woff2'),
+         url('fonts/inter/Inter-Light.otf') format('otf'),
+         url('fonts/inter/Inter-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 400;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Regular.woff2') format('woff2'),
+         url('fonts/inter/Inter-Regular.otf') format('otf'),
+         url('fonts/inter/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 600;
+    font-style: normal;
+    src: url('fonts/inter/Inter-SemiBold.woff2') format('woff2'),
+         url('fonts/inter/Inter-SemiBold.otf') format('otf'),
+         url('fonts/inter/Inter-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-style: normal;
+    src: url('fonts/inter/Inter-Bold.woff2') format('woff2'),
+         url('fonts/inter/Inter-Bold.otf') format('otf'),
+         url('fonts/inter/Inter-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('fonts/fontawesome/fontawesome-webfont.woff2') format('woff2'),
+         url('fonts/fontawesome/fontawesome-webfont.woff') format('woff'),
+         url('fonts/fontawesome/fontawesome-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fas {
+    font-family: 'FontAwesome';
+    display: inline-block;
+}*/
 
 .caption-spinner {
     width: 40px;
@@ -299,4 +427,47 @@ img[data-caption-loading] {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Dark mode and high contrast styles */
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .status-message,
+[data-theme="dark"] #word-count,
+[data-theme="dark"] #speech-mode-label {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] #recognizedText {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0 !important;
+    border-color: #4d4d4d !important;
+}
+
+[data-theme="dark"] .status-area {
+    background-color: #2d2d2d;
+    border-color: #4d4d4d;
+}
+
+/* High contrast styles */
+[data-theme="high-contrast"] .text-muted,
+[data-theme="high-contrast"] .status-message,
+[data-theme="high-contrast"] #word-count,
+[data-theme="high-contrast"] #speech-mode-label {
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+[data-theme="high-contrast"] .bg-light,
+[data-theme="high-contrast"] #recognizedText {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+    border-width: 2px !important;
+}
+
+[data-theme="high-contrast"] .status-area {
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff;
 }

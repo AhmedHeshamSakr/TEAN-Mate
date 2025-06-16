@@ -59,6 +59,9 @@ class ContentHandler {
     resetReadingState() {
         this.isReadingActive = false;
         this.wasSpeaking = false;
+        this.settings = null;
+        this.initializeSettings();
+
         this.currentElement = null;
         if (this.speechHandler.isSpeaking) {
             this.speechHandler.stop();
@@ -131,6 +134,52 @@ class ContentHandler {
         chrome.runtime.sendMessage({
             action: "ttsStopped"
         });
+    }
+
+    getSettings(callback) {
+        // Try to get settings from sync storage first
+        chrome.storage.sync.get('settings', function(data) {
+            if (data.settings) {
+                callback(data.settings);
+            } else {
+                // Fall back to local storage if not found in sync
+                chrome.storage.local.get('settings', function(localData) {
+                    callback(localData.settings || {});
+                });
+            }
+        });
+    }
+
+    initializeSettings() {
+        const self = this;
+        this.getSettings(function(settings) {
+            // Now you can use the settings
+            console.log('Loaded settings:', settings);
+            self.settings = settings;
+            self.highlightWhileReading = settings.highlightText || false;
+            self.badge = settings.showIconBadge || false;
+            self.readSelectedTextOnly = settings.readingElement === 'selected';
+            // Example: Use TTS rate setting
+            const ttsRate = settings.ttsRate || 1.0;
+            console.log('Using TTS rate:', ttsRate);
+        });
+    }
+
+    getSelectedText() {
+        console.log('getSelectedText called');
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString().trim();
+            
+            if (selectedText) {
+                return { 
+                    elementsToReturn: [], // Empty array to prevent highlighting
+                    text: [selectedText]
+                };
+            }
+        }
+        return null;
     }
 
     getNextElement() {
@@ -272,9 +321,27 @@ class ContentHandler {
 
     async speakCurrentSection() {
         if (!this.currentElement) {
-            this.currentElement = this.getNextElement();
+            if (this.readSelectedTextOnly) {
+                this.currentElement = this.getSelectedText();
+                // If no text is selected, don't read anything
+                if (!this.currentElement) {
+                    console.log('No text selected');
+                    return;
+                }
+            } else {
+                this.currentElement = this.getNextElement();
+            }
         }
         let { elementsToReturn, text } = this.currentElement;
+
+        const isSelectedText = elementsToReturn.length === 0 && text.length > 0;
+    
+        if (isSelectedText) {
+            // Just speak the text without highlighting
+            await this.speechHandler.speak(text[0], ()=>{});
+            this.currentElement = null;
+            return;
+        }
 
         if (!this.currentElement || !elementsToReturn || elementsToReturn.length === 0) {
             this.currentElement = null;
@@ -282,6 +349,7 @@ class ContentHandler {
             this.notifySpeechStopped();
             return;
         }
+
     
         // Notify that speech has started
         this.notifySpeechStarted();
@@ -290,7 +358,7 @@ class ContentHandler {
             await new Promise(async (resolve) => {
               try {
                 // Add highlight first
-                this.highlightBox.addHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.addHighlight(elementsToReturn[i]) : null;
 
                 if (elementsToReturn[i].tagName?.toLowerCase() === 'img') {
                     console.log('🖼️ Detected image element:', elementsToReturn[i]);
@@ -316,12 +384,12 @@ class ContentHandler {
       
                 // Wait for speech to complete
                 await this.speechHandler.speak(text[i], ()=>{});
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.removeHighlight(elementsToReturn[i]): null;
                 
                 resolve();
               } catch (error) {
                 console.error('Error in sequence:', error);
-                this.highlightBox.removeHighlight(elementsToReturn[i]);
+                this.highlightWhileReading? this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                 this.isProgrammaticFocus = false;
               }
             });
@@ -516,6 +584,11 @@ class ContentHandler {
             this.isReadingActive = true;
             this.speakCurrentSection();
             this.wasSpeaking = true;
+            this.badge? chrome.runtime.sendMessage({ 
+                action: "updateBadge", 
+                isActive: true, 
+                text: "TTS" 
+            }) : null;
         } else if (request.action === "stopTTS") {
             // Complete stop of TTS
             this.speechHandler.stop();
@@ -528,7 +601,7 @@ class ContentHandler {
             this.notifySpeechStopped();
         } else if (request.action === "skipToNext") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -538,7 +611,7 @@ class ContentHandler {
             this.speakCurrentSection();
         } else if (request.action === "skipToPrevious") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
@@ -550,18 +623,27 @@ class ContentHandler {
         } else if (request.action === "toggleReading") {
             if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
-                if (this.currentElement && this.currentElement.elementsToReturn) {
+                if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                     for (let el of this.currentElement.elementsToReturn) {
                         this.highlightBox.removeHighlight(el);
                     }
                 }
                 this.wasSpeaking = false;
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: false 
+                }) : null;
                 this.isReadingActive = false;
                 this.notifySpeechStopped();
             } else {
                 this.isReadingActive = true;
                 this.speakCurrentSection();
                 this.wasSpeaking = true;
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: true, 
+                    text: "TTS" 
+                }): null;
             }
         } else if (request.action === "accessLink") {
             console.log('accessLink called on: ', this.currentLink);
@@ -633,23 +715,32 @@ class ContentHandler {
             window.open(`https://www.google.com/search?q=${encodeURIComponent(request.query)}`, '_blank');
         } else if (request.action === "pauseTTS") {
             this.speechHandler.stop();
-            if (this.currentElement && this.currentElement.elementsToReturn) {
+            if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                 for (let el of this.currentElement.elementsToReturn) {
                     this.highlightBox.removeHighlight(el);
                 }
             }
             this.wasSpeaking = false;
+            this.badge? chrome.runtime.sendMessage({ 
+                action: "updateBadge", 
+                isActive: false 
+            }): null;
             this.isReadingActive = false;
             this.notifySpeechStopped();
         } else if (request.action === "resumeTTS") {
             if (this.wasSpeaking) {
-                if (this.currentElement && this.currentElement.elementsToReturn) {
+                if (this.currentElement && this.currentElement.elementsToReturn && this.highlightWhileReading) {
                     for (let el of this.currentElement.elementsToReturn) {
                         this.highlightBox.removeHighlight(el);
                     }
                 }
                 this.isReadingActive = true;
                 this.speakCurrentSection();
+                this.badge? chrome.runtime.sendMessage({ 
+                    action: "updateBadge", 
+                    isActive: true, 
+                    text: "TTS" 
+                }) : null;
             }
         } else if (request.action === "toggleImageCaptioning") {
             this.toggleImageCaptioning();
