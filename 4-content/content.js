@@ -524,28 +524,27 @@ class ContentHandler {
             console.log('[CONTENT] Received captioning deactivation');
             this.imageCaptionHandler.deactivate();
         } else if (request.action === "startScreenCapture") {
-            console.log('[CONTENT] Received screen capture activation');
+            console.log('[CONTENT] Screen capture activation requested');
             
-            // Check server connectivity first
             this.checkServerConnectivity()
                 .then(serverAvailable => {
+                    console.log('[CONTENT] Server connectivity check result:', serverAvailable);
+                    
                     if (!serverAvailable) {
-                        // Server not available, notify about it
+                        console.log('[CONTENT] Server not available, showing notification');
                         chrome.runtime.sendMessage({
                             action: "screenSharingStatus",
                             status: 'Error',
                             message: "Python MediaPipe server is not running"
                         });
-                        
-                        // Show notification to start server
                         this.showServerNotification();
                         return;
                     }
                     
-                    // Proceed with activation if server is available
+                    console.log('[CONTENT] Server available, proceeding with SignLanguageHandler activation');
                     this.signLanguageHandler.activate()
                         .then(success => {
-                            // Notify sidebar of activation result
+                            console.log('[CONTENT] SignLanguageHandler activation result:', success);
                             chrome.runtime.sendMessage({
                                 action: "screenSharingStatus",
                                 status: success ? 'Active' : 'Error'
@@ -556,7 +555,13 @@ class ContentHandler {
                             } else {
                                 console.error('[CONTENT] Failed to activate screen sharing with MediaPipe Holistic');
                             }
+                        })
+                        .catch(error => {
+                            console.error('[CONTENT] SignLanguageHandler activation failed with error:', error);
                         });
+                })
+                .catch(error => {
+                    console.error('[CONTENT] Server connectivity check failed:', error);
                 });
         } else if (request.action === "stopScreenCapture") {
             console.log('[CONTENT] Received screen capture deactivation');

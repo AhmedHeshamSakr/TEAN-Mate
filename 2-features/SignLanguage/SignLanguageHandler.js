@@ -42,101 +42,117 @@ export default class SignLanguageHandler {
         }
         
         try {
+            console.log("[SignLanguageHandler] Starting activation process");
+            
+            // Step 1: Test server connectivity
             console.log("[SignLanguageHandler] Step 1: Testing server connectivity");
             const serverAvailable = await this.pingServer();
+            console.log("[SignLanguageHandler] Server availability:", serverAvailable);
+            
             if (!serverAvailable) {
                 throw new Error("Python MediaPipe server is not available");
             }
             
+            // Step 2: Create video elements
             console.log("[SignLanguageHandler] Step 2: Creating video elements");
             this.createVideoElements();
             
-            console.log("[SignLanguageHandler] Step 3: Requesting optimized screen sharing");
-            
-            // Smart capture constraints for optimal performance
-            // The browser will capture at an efficient size, and the server will optimize further
+            // Step 3: Request screen sharing
+            console.log("[SignLanguageHandler] Step 3: Requesting screen sharing");
             this.stream = await navigator.mediaDevices.getDisplayMedia({
                 video: { 
                     cursor: 'always',
                     frameRate: { ideal: 30, max: 30 },
-                    width: { 
-                        ideal: 1280,    // Reasonable starting point for capture
-                        max: 1920       // Prevent excessively large captures
-                    },
-                    height: { 
-                        ideal: 720,     // Good balance for processing
-                        max: 1080       // Reasonable maximum
-                    }
+                    width: { ideal: 1280, max: 1920 },
+                    height: { ideal: 720, max: 1080 }
                 },
                 audio: false
             });
             
-            // Log capture information for monitoring (console only, not UI clutter)
-            const videoTrack = this.stream.getVideoTracks()[0];
-            if (videoTrack) {
-                const settings = videoTrack.getSettings();
-                console.log(`[SignLanguageHandler] Browser capture: ${settings.width}x${settings.height}@${settings.frameRate}fps`);
-            }
+            console.log("[SignLanguageHandler] Screen sharing granted, stream obtained:", this.stream);
             
+            // Step 4: Set up video element
             this.videoElement.srcObject = this.stream;
             await this.videoElement.play();
+            console.log("[SignLanguageHandler] Video element playing");
             
-            this.stream.getVideoTracks()[0].onended = () => {
-                console.log("[SignLanguageHandler] Screen sharing stopped by user");
-                this.deactivate();
-                window.dispatchEvent(new CustomEvent('screenSharingEnded'));
-            };
-            
-            console.log("[SignLanguageHandler] Step 4: Creating WebRTC connection");
+            // Step 5: Create RTCPeerConnection
+            console.log("[SignLanguageHandler] Step 5: Creating RTCPeerConnection");
             this.peerConnection = new RTCPeerConnection({
                 iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
             });
             
+            // Add comprehensive connection state monitoring
             this.peerConnection.onconnectionstatechange = () => {
-                console.log(`[SignLanguageHandler] Connection state: ${this.peerConnection.connectionState}`);
+                console.log(`[SignLanguageHandler] Connection state changed to: ${this.peerConnection.connectionState}`);
                 
-                if (this.peerConnection.connectionState === 'disconnected' || 
-                    this.peerConnection.connectionState === 'failed' ||
-                    this.peerConnection.connectionState === 'closed') {
+                if (this.peerConnection.connectionState === 'connected') {
+                    console.log('[SignLanguageHandler] WebRTC connection successfully established!');
+                } else if (this.peerConnection.connectionState === 'failed') {
+                    console.error('[SignLanguageHandler] WebRTC connection failed!');
                     this.deactivate();
                 }
             };
             
-            // Create data channel with clean message handling
+            // Monitor ICE connection state
+            this.peerConnection.oniceconnectionstatechange = () => {
+                console.log(`[SignLanguageHandler] ICE connection state: ${this.peerConnection.iceConnectionState}`);
+            };
+            
+            // Monitor ICE gathering state
+            this.peerConnection.onicegatheringstatechange = () => {
+                console.log(`[SignLanguageHandler] ICE gathering state: ${this.peerConnection.iceGatheringState}`);
+            };
+            
+            // Step 6: Create data channel BEFORE adding tracks
+            console.log("[SignLanguageHandler] Step 6: Creating data channel");
             this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
             this.setupDataChannelHandlers();
+            console.log("[SignLanguageHandler] Data channel created and handlers set up");
             
+            // Step 7: Set up track handler
             this.peerConnection.ontrack = (event) => {
                 console.log(`[SignLanguageHandler] Received ${event.track.kind} track from server`);
-                
                 this.displayElement.srcObject = new MediaStream([event.track]);
                 this.displayElement.play().catch(e => {
                     console.error("[SignLanguageHandler] Error playing display video:", e);
                 });
             };
             
-            // Add stream tracks to peer connection
+            // Step 8: Add tracks to peer connection
+            console.log("[SignLanguageHandler] Step 8: Adding tracks to peer connection");
             this.stream.getTracks().forEach(track => {
                 console.log(`[SignLanguageHandler] Adding ${track.kind} track to peer connection`);
                 this.peerConnection.addTrack(track, this.stream);
             });
             
-            console.log("[SignLanguageHandler] Step 5: Creating and sending offer");
+            // Step 9: Create and send offer
+            console.log("[SignLanguageHandler] Step 9: Creating offer");
             const offer = await this.peerConnection.createOffer();
-            await this.peerConnection.setLocalDescription(offer);
+            console.log("[SignLanguageHandler] Offer created:", offer);
             
+            await this.peerConnection.setLocalDescription(offer);
+            console.log("[SignLanguageHandler] Local description set");
+            
+            // Step 10: Wait for ICE gathering to complete
+            console.log("[SignLanguageHandler] Step 10: Waiting for ICE gathering");
             await new Promise(resolve => {
                 if (this.peerConnection.iceGatheringState === 'complete') {
+                    console.log("[SignLanguageHandler] ICE gathering already complete");
                     resolve();
                 } else {
                     this.peerConnection.onicegatheringstatechange = () => {
+                        console.log(`[SignLanguageHandler] ICE gathering state changed to: ${this.peerConnection.iceGatheringState}`);
                         if (this.peerConnection.iceGatheringState === 'complete') {
+                            console.log("[SignLanguageHandler] ICE gathering completed");
                             resolve();
                         }
                     };
                 }
             });
             
+            // Step 11: Send offer to server
+            console.log("[SignLanguageHandler] Step 11: Sending offer to server");
             const response = await fetch(`${this.serverUrl}/offer`, {
                 method: 'POST',
                 headers: {
@@ -150,39 +166,32 @@ export default class SignLanguageHandler {
                 })
             });
             
+            console.log("[SignLanguageHandler] Server response status:", response.status);
+            
             if (!response.ok) {
                 throw new Error(`Server responded with status: ${response.status}`);
             }
             
             const answer = await response.json();
-            await this.peerConnection.setRemoteDescription(
-                new RTCSessionDescription(answer.sdp)
-            );
+            console.log("[SignLanguageHandler] Received answer from server:", answer);
             
-            console.log("[SignLanguageHandler] WebRTC connection established successfully");
+            // Step 12: Set remote description
+            console.log("[SignLanguageHandler] Step 12: Setting remote description");
+            await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer.sdp));
+            console.log("[SignLanguageHandler] Remote description set successfully");
+            
+            console.log("[SignLanguageHandler] WebRTC connection process completed");
             this.isActive = true;
             this.showVideoContainer();
-            
-            // Request data from server periodically (but don't clutter the UI with it)
-            this.landmarksInterval = setInterval(() => {
-                if (this.dataChannel && this.dataChannel.readyState === 'open') {
-                    this.dataChannel.send('get_landmarks');
-                    this.dataChannel.send('get_performance');
-                }
-            }, 2000);
             
             return true;
             
         } catch (error) {
-            console.error('[SignLanguageHandler] Error activating screen sharing:', error);
+            console.error('[SignLanguageHandler] Error during activation:', error);
             this.cleanupResources();
-            
             window.dispatchEvent(new CustomEvent('screenSharingFailed', {
-                detail: {
-                    reason: error.message || error.name || "Unknown error"
-                }
+                detail: { reason: error.message || error.name || "Unknown error" }
             }));
-            
             return false;
         }
     }
@@ -191,13 +200,16 @@ export default class SignLanguageHandler {
      * Set up data channel handlers with focus on essential information
      * Log detailed info to console but only show key metrics in UI
      */
-  setupDataChannelHandlers() {
+    setupDataChannelHandlers() {
+        console.log("[SignLanguageHandler] Setting up data channel handlers");
+        
         this.dataChannel.onopen = () => {
-            console.log("[SignLanguageHandler] Data channel opened - requesting initial data");
+            console.log("[SignLanguageHandler] 🎉 DATA CHANNEL OPENED SUCCESSFULLY!");
             this.updateConnectionStatus('connected');
             
             setTimeout(() => {
                 if (this.dataChannel.readyState === 'open') {
+                    console.log("[SignLanguageHandler] Sending initial requests to server");
                     this.dataChannel.send('get_landmarks');
                     this.dataChannel.send('get_performance');
                 }
@@ -205,17 +217,20 @@ export default class SignLanguageHandler {
         };
         
         this.dataChannel.onclose = () => {
-            console.log("[SignLanguageHandler] Data channel closed");
+            console.log("[SignLanguageHandler] ❌ Data channel closed");
             this.updateConnectionStatus('disconnected');
         };
         
+        this.dataChannel.onerror = (error) => {
+            console.error("[SignLanguageHandler] ❌ Data channel error:", error);
+        };
+        
         this.dataChannel.onmessage = (event) => {
+            console.log("[SignLanguageHandler] 📨 Received message from server:", event.data);
+            
             try {
                 const data = JSON.parse(event.data);
-                
-                if (this.showDetailedInfo) {
-                    console.log('[SignLanguageHandler] Received data:', data.type, data);
-                }
+                console.log('[SignLanguageHandler] Parsed message:', data.type, data);
                 
                 // Handle different types of server messages
                 if (data.type === 'holistic_landmarks') {
@@ -224,6 +239,7 @@ export default class SignLanguageHandler {
                     this.processPerformanceData(data);
                 } else if (data.type === 'translation') {
                     // NEW: Handle translation messages from the server
+                    console.log("[SignLanguageHandler] 🤟 Translation message received:", data.text);
                     this.processTranslationData(data);
                 } else if (data.type === 'stats' && data.fps !== undefined) {
                     this.fps = data.fps;

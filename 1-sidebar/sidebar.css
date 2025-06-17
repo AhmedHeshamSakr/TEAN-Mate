@@ -365,6 +365,39 @@ img[data-caption-loading] {
     display: inline-block;
 }
 
+/* Enhanced styles for unified communication display */
+.speech-input {
+    border-left: 4px solid #007bff !important; /* Blue border for speech */
+}
+
+.sign-language-input {
+    border-left: 4px solid #17a2b8 !important; /* Teal border for sign language */
+    background-color: #e8f4f8 !important; /* Slightly different background */
+}
+
+.accumulating {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Visual indicators for different communication types */
+.communication-source-indicator {
+    font-size: 0.9em;
+    margin-right: 0.5rem;
+}
+
+.speech-indicator {
+    color: #007bff;
+}
+
+.sign-language-indicator {
+    color: #17a2b8;
+}
 /* @font-face {
     font-family: 'Inter';
     font-weight: 300;
