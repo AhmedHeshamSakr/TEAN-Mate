@@ -18,6 +18,12 @@ class SidebarController {
         this.accumulatedSpeech = ''; // Track accumulated speech for continuous mode
         this.debugModeActive = false; // Track if debug visualization is active
         
+        // Enhanced communication tracking for unified display
+        this.currentTranslation = null;
+        this.communicationHistory = []; // Now stores both speech and translations
+        this.lastCommunicationType = null; // Track what type of input we last received
+        this.currentDisplayText = ''; // Current text being displayed (for copy operations)
+
         this.initialize(); // Set up event listeners and initial state
     }
 
@@ -112,6 +118,16 @@ class SidebarController {
             // Handle debug mode status update
             this.debugModeActive = message.enabled;
             this.updateStatusMessage(`Debug visualization ${message.enabled ? 'enabled' : 'disabled'}`);
+        } else if (message.action === "signLanguageTranslation") {
+            // CRITICAL ADDITION: Handle translation messages from content script
+            // This is the missing piece that receives translations and feeds them to the unified display
+            this.handleTranslationReceived(message);
+        } else if (message.action === "translationHistoryResponse") {
+            // Handle translation history responses (for future enhancement)
+            this.handleTranslationHistoryReceived(message.history);
+        } else if (message.action === "translationHistoryCleared") {
+            // Handle translation history cleared confirmation
+            this.handleTranslationHistoryCleared();
         }
     }
     
@@ -200,61 +216,179 @@ class SidebarController {
         }
     }
 
-    handleCopySpeech() {
-        if (!this.accumulatedSpeech) return;
-        
-        navigator.clipboard.writeText(this.accumulatedSpeech)
-            .then(() => {
-                this.updateStatusMessage('Text copied to clipboard');
-            })
-            .catch(err => {
-                console.error('Failed to copy text: ', err);
-                this.updateStatusMessage('Failed to copy text');
-            });
-    }
-    
-    handleSaveSpeech() {
-        if (!this.accumulatedSpeech) return;
-        
-        const blob = new Blob([this.accumulatedSpeech], {type: 'text/plain'});
-        const url = URL.createObjectURL(blob);
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `speech-text-${timestamp}.txt`;
-        a.click();
-        
-        URL.revokeObjectURL(url);
-        this.updateStatusMessage('Text saved as file');
-    }
-    
-    updateWordCount() {
-        const wordCountElement = document.getElementById('word-count');
-        if (!wordCountElement) return;
-        
-        if (!this.accumulatedSpeech) {
-            wordCountElement.textContent = '0 words';
-            return;
-        }
-        
-        // Count words by splitting on whitespace
-        const wordCount = this.accumulatedSpeech.trim().split(/\s+/).length;
-        wordCountElement.textContent = `${wordCount} ${wordCount === 1 ? 'word' : 'words'}`;
-    }
-    
-    // Update the updateSpeechDisplay method to include word count updates
-    updateSpeechDisplay(text, isFinal = false) {
+    // Enhanced method to handle both speech and translation display
+    updateCommunicationDisplay(text, options = {}) {
+        const {
+            isFinal = false,
+            source = 'speech', // 'speech' or 'sign-language'
+            confidence = null,
+            timestamp = Date.now(),
+            mode = null // For speech: 'push-to-talk' or 'continuous'
+        } = options;
+
         const recognizedTextDiv = document.getElementById("recognizedText");
         const speechModeLabel = document.getElementById("speech-mode-label");
         const accumulationIndicator = document.getElementById("speech-accumulation-indicator");
         
-        // Update mode display
-        const mode = this.getSTTMode();
+        // Update the mode label to reflect current input source
         if (speechModeLabel) {
-            speechModeLabel.textContent = `Mode: ${mode === 'continuous' ? 'Continuous' : 'Push-to-Talk'}`;
+            if (source === 'sign-language') {
+                speechModeLabel.textContent = 'Mode: Sign Language Translation';
+            } else if (mode) {
+                speechModeLabel.textContent = `Mode: ${mode === 'continuous' ? 'Continuous Speech' : 'Push-to-Talk'}`;
+            }
         }
 
+        // Handle different sources of communication input
+        if (source === 'sign-language') {
+            this.handleSignLanguageDisplay(text, confidence, timestamp, recognizedTextDiv, accumulationIndicator);
+        } else {
+            this.handleSpeechDisplay(text, isFinal, mode, recognizedTextDiv, accumulationIndicator);
+        }
+
+        // Enable the control buttons since we have content
+        const hasText = text && text.trim().length > 0;
+        this.updateControlButtons(hasText);
+        
+        // Update word count (works for both speech and translations)
+        this.updateWordCount();
+        
+        // Store in unified communication history
+        if (isFinal || source === 'sign-language') {
+            this.addToCommunicationHistory(text, source, confidence, timestamp);
+        }
+    }
+
+    // Handle sign language translation display
+    handleSignLanguageDisplay(text, confidence, timestamp, displayElement, accumulationIndicator) {
+        // Create a formatted display for sign language translations
+        const timeStr = new Date(timestamp).toLocaleTimeString();
+        
+        // Build the display text with source indicator
+        let displayText = `🤟 [${timeStr}] "${text}"`;
+        
+        // Add confidence indicator if available
+        if (confidence !== null && confidence !== undefined) {
+            const confidencePercent = Math.round(confidence * 100);
+            displayText += ` (${confidencePercent}% confidence)`;
+        }
+        
+        // Show accumulation indicator for sign language
+        if (accumulationIndicator) {
+            accumulationIndicator.style.display = 'inline-block';
+            accumulationIndicator.textContent = 'Sign Language';
+            accumulationIndicator.className = 'badge bg-info ms-2'; // Different color for sign language
+        }
+        
+        // Update the display
+        displayElement.textContent = displayText;
+        displayElement.classList.add('sign-language-input');
+        displayElement.classList.remove('speech-input');
+        
+        // Update current content for button operations
+        this.currentDisplayText = text; // Store the clean text for copying
+        this.lastCommunicationType = 'sign-language';
+    }
+
+    // Handle speech recognition display (enhanced version of your existing method)
+    handleSpeechDisplay(text, isFinal, mode, displayElement, accumulationIndicator) {
+        // Handle speech input similar to your existing logic but with source awareness
+        
+        if (mode === 'continuous' && isFinal && text.trim()) {
+            // Show accumulation indicator for continuous speech
+            if (accumulationIndicator) {
+                accumulationIndicator.style.display = 'inline-block';
+                accumulationIndicator.textContent = 'Accumulating Speech';
+                accumulationIndicator.className = 'badge bg-primary ms-2'; // Original color for speech
+            }
+            
+            // Add timestamp and source indicator for final speech results
+            const timeStr = new Date().toLocaleTimeString();
+            const displayText = `🎤 [${timeStr}] ${text}`;
+            
+            // Accumulate the speech as in your original logic
+            if (this.accumulatedSpeech) {
+                this.accumulatedSpeech += ' ' + text;
+            } else {
+                this.accumulatedSpeech = text;
+            }
+            
+            displayElement.textContent = `🎤 Accumulated Speech: ${this.accumulatedSpeech}`;
+            displayElement.classList.add('speech-input', 'accumulating');
+            displayElement.classList.remove('sign-language-input');
+            
+            this.currentDisplayText = this.accumulatedSpeech;
+        } else {
+            // Handle interim speech results or push-to-talk
+            if (accumulationIndicator) {
+                accumulationIndicator.style.display = 'none';
+            }
+            
+            const prefix = text.trim() ? '🎤 ' : '';
+            displayElement.textContent = prefix + text;
+            displayElement.classList.add('speech-input');
+            displayElement.classList.remove('sign-language-input', 'accumulating');
+            
+            this.currentDisplayText = text;
+        }
+        
+        this.lastCommunicationType = 'speech';
+    }
+
+    // Enhanced method to handle incoming translation messages
+    handleTranslationReceived(message) {
+        const { translatedText, timestamp, confidence, words } = message;
+        
+        console.log(`[SIDEBAR] Translation received: "${translatedText}"`);
+        
+        // Store the translation
+        this.currentTranslation = {
+            text: translatedText,
+            timestamp: timestamp,
+            confidence: confidence,
+            words: words
+        };
+        
+        // Display using the unified communication display
+        this.updateCommunicationDisplay(translatedText, {
+            source: 'sign-language',
+            confidence: confidence,
+            timestamp: timestamp,
+            isFinal: true
+        });
+        
+        // Update status message
+        this.updateStatusMessage(`Sign Language: "${translatedText}"`);
+    }
+
+    // Handle translation history responses (for future enhancements)
+    handleTranslationHistoryReceived(history) {
+        console.log('[SIDEBAR] Translation history received:', history);
+        // You can extend this method to do something with the history if needed
+        // For now, we'll just store it for potential future use
+        this.translationHistory = history || [];
+    }
+
+    // Handle translation history cleared confirmation
+    handleTranslationHistoryCleared() {
+        console.log('[SIDEBAR] Translation history cleared confirmation received');
+        // Clear any local references to translation history
+        this.translationHistory = [];
+        this.updateStatusMessage('Translation history cleared');
+    }
+
+    // Enhanced method for speech display (modify your existing updateSpeechDisplay)
+    updateSpeechDisplay(text, isFinal = false) {
+        const mode = this.getSTTMode();
+        
+        // Use the unified display method
+        this.updateCommunicationDisplay(text, {
+            source: 'speech',
+            isFinal: isFinal,
+            mode: mode
+        });
+
+        // Handle video overlay for continuous mode (keep your existing logic)
         const videoOverlayCheckbox = document.getElementById('video-overlay-checkbox');
         if (mode === 'continuous' && videoOverlayCheckbox && videoOverlayCheckbox.checked) {
             this.sendMessageToActiveTab({
@@ -263,53 +397,113 @@ class SidebarController {
                 isFinal: isFinal
             });
         }
+    }
+
+    // Add items to unified communication history
+    addToCommunicationHistory(text, source, confidence, timestamp) {
+        const historyItem = {
+            text: text,
+            source: source,
+            confidence: confidence,
+            timestamp: timestamp,
+            id: Date.now() + Math.random() // Unique identifier
+        };
         
-        // Enable buttons if there is any text to work with
-        const hasText = text && text.trim().length > 0;
-        document.getElementById('copy-speech-btn').disabled = !hasText;
-        document.getElementById('save-speech-btn').disabled = !hasText;
-        document.getElementById('clear-speech-btn').disabled = !hasText;
+        this.communicationHistory.push(historyItem);
         
-        // If in continuous mode and text is final, accumulate it
-        if (mode === 'continuous' && isFinal && text.trim()) {
-            // Show accumulation indicator
-            if (accumulationIndicator) {
-                accumulationIndicator.style.display = 'inline-block';
-            }
-            
-            // Add the new text with proper spacing
-            if (this.accumulatedSpeech) {
-                this.accumulatedSpeech += ' ' + text;
-            } else {
-                this.accumulatedSpeech = text;
-            }
-            
-            // Update the display with accumulated text
-            recognizedTextDiv.textContent = this.accumulatedSpeech;
-            recognizedTextDiv.classList.add('accumulating');
-            
-            // Update word count
-            this.updateWordCount();
-        } 
-        // In push-to-talk mode or for interim results, just show current recognition
-        else {
-            // Hide accumulation indicator
-            if (accumulationIndicator) {
-                accumulationIndicator.style.display = 'none';
-            }
-            
-            recognizedTextDiv.textContent = text;
-            recognizedTextDiv.classList.remove('accumulating');
+        // Keep only the last 50 items to prevent memory issues
+        if (this.communicationHistory.length > 50) {
+            this.communicationHistory.shift();
         }
     }
-    
-    // Update handleClearSpeech to reset word count
-    handleClearSpeech() {
-        this.accumulatedSpeech = '';
+
+    // Enhanced control button management
+    updateControlButtons(hasText) {
+        const buttons = [
+            'copy-speech-btn',
+            'save-speech-btn',
+            'clear-speech-btn'
+        ];
         
-        // Reset speech recognition display
-        document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
-        document.getElementById('recognizedText').classList.remove('accumulating');
+        buttons.forEach(buttonId => {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.disabled = !hasText;
+            }
+        });
+    }
+
+    // Enhanced copy functionality that works with both speech and translations
+    handleCopySpeech() {
+        if (!this.currentDisplayText) return;
+        
+        navigator.clipboard.writeText(this.currentDisplayText)
+            .then(() => {
+                const sourceText = this.lastCommunicationType === 'sign-language' ? 'translation' : 'speech';
+                this.updateStatusMessage(`${sourceText} copied to clipboard`);
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                this.updateStatusMessage('Failed to copy text');
+            });
+    }
+
+    // Enhanced save functionality for unified communication history
+    handleSaveSpeech() {
+        if (this.communicationHistory.length === 0 && !this.currentDisplayText) return;
+        
+        // Prepare content for saving
+        let content = '';
+        
+        if (this.communicationHistory.length > 0) {
+            // Save the complete communication history
+            content = this.communicationHistory.map(item => {
+                const timeStr = new Date(item.timestamp).toLocaleString();
+                const sourceIcon = item.source === 'sign-language' ? '🤟' : '🎤';
+                const sourceLabel = item.source === 'sign-language' ? 'Sign Language' : 'Speech';
+                
+                let line = `${sourceIcon} [${timeStr}] ${sourceLabel}: "${item.text}"`;
+                
+                if (item.confidence) {
+                    const confidencePercent = Math.round(item.confidence * 100);
+                    line += ` (${confidencePercent}% confidence)`;
+                }
+                
+                return line;
+            }).join('\n');
+        } else {
+            // Fallback to current text if no history
+            const sourceLabel = this.lastCommunicationType === 'sign-language' ? 'Sign Language' : 'Speech';
+            content = `${sourceLabel}: "${this.currentDisplayText}"`;
+        }
+        
+        // Create and download file
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `communication-output-${timestamp}.txt`;
+        a.click();
+        
+        URL.revokeObjectURL(url);
+        this.updateStatusMessage('Communication history saved to file');
+    }
+
+    // Enhanced clear functionality
+    handleClearSpeech() {
+        // Clear all communication data
+        this.accumulatedSpeech = '';
+        this.currentDisplayText = '';
+        this.currentTranslation = null;
+        this.communicationHistory = [];
+        this.lastCommunicationType = null;
+        
+        // Reset the display
+        const recognizedTextDiv = document.getElementById('recognizedText');
+        recognizedTextDiv.textContent = 'Start speaking or signing to see text here...';
+        recognizedTextDiv.className = 'p-2 border rounded bg-light'; // Reset classes
         
         // Hide accumulation indicator
         const accumulationIndicator = document.getElementById("speech-accumulation-indicator");
@@ -317,16 +511,52 @@ class SidebarController {
             accumulationIndicator.style.display = 'none';
         }
         
-        // Disable buttons when text is cleared
-        document.getElementById('copy-speech-btn').disabled = true;
-        document.getElementById('save-speech-btn').disabled = true;
-        document.getElementById('clear-speech-btn').disabled = true;
+        // Reset mode label
+        const speechModeLabel = document.getElementById("speech-mode-label");
+        if (speechModeLabel) {
+            const mode = this.getSTTMode();
+            speechModeLabel.textContent = `Mode: ${mode === 'continuous' ? 'Continuous' : 'Push-to-Talk'}`;
+        }
+        
+        // Disable buttons
+        this.updateControlButtons(false);
         
         // Reset word count
         this.updateWordCount();
-        this.updateStatusMessage('Speech text cleared');
+        
+        // Request content script to clear its history too
+        this.sendMessageToActiveTab({
+            action: "clearTranslationHistory"
+        });
+        
+        this.updateStatusMessage('All communication data cleared');
     }
-    
+
+    // Enhanced word count that works with current display text
+    updateWordCount() {
+        const wordCountElement = document.getElementById('word-count');
+        if (!wordCountElement) return;
+        
+        let textToCount = '';
+        
+        if (this.lastCommunicationType === 'sign-language' && this.currentDisplayText) {
+            textToCount = this.currentDisplayText;
+        } else if (this.accumulatedSpeech) {
+            textToCount = this.accumulatedSpeech;
+        } else if (this.currentDisplayText) {
+            textToCount = this.currentDisplayText;
+        }
+        
+        if (!textToCount) {
+            wordCountElement.textContent = '0 words';
+            return;
+        }
+        
+        const wordCount = textToCount.trim().split(/\s+/).length;
+        const sourceLabel = this.lastCommunicationType === 'sign-language' ? 'sign language' : 'speech';
+        wordCountElement.textContent = `${wordCount} ${wordCount === 1 ? 'word' : 'words'} (${sourceLabel})`;
+    }
+
     // Update the handleSTTModeChange method to reset accumulated speech when changing modes
     handleSTTModeChange(event) {
         const mode = event.target.value;
@@ -340,7 +570,7 @@ class SidebarController {
         
         // Reset accumulated speech when changing modes
         this.accumulatedSpeech = '';
-        document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
+        document.getElementById('recognizedText').textContent = 'Start speaking or signing to see text here...';
         
         // Disable buttons
         document.getElementById('copy-speech-btn').disabled = true;
@@ -782,13 +1012,6 @@ class SidebarController {
     getSTTMode() {
         const modeSelect = document.getElementById('stt-mode-select');
         return modeSelect ? modeSelect.value : 'push-to-talk';
-    }
-
-    // Handle Options button click
-    handleOptions() {
-        console.log("Options button clicked");
-        // Open the options page in a new tab
-        chrome.runtime.openOptionsPage();
     }
 
     // Handle skipping to next item

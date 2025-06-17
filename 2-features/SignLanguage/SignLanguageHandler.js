@@ -26,6 +26,10 @@ export default class SignLanguageHandler {
         this.serverPerformanceData = null;
         this.lastLandmarkUpdate = null;
         
+        // Translation data - NEW
+        this.lastTranslation = null;
+        this.translationHistory = [];
+
         // Display preferences
         this.showDetailedInfo = false;  // Toggle for detailed technical info
     }
@@ -187,10 +191,9 @@ export default class SignLanguageHandler {
      * Set up data channel handlers with focus on essential information
      * Log detailed info to console but only show key metrics in UI
      */
-    setupDataChannelHandlers() {
+  setupDataChannelHandlers() {
         this.dataChannel.onopen = () => {
             console.log("[SignLanguageHandler] Data channel opened - requesting initial data");
-            // Update UI to show connection is ready
             this.updateConnectionStatus('connected');
             
             setTimeout(() => {
@@ -210,16 +213,18 @@ export default class SignLanguageHandler {
             try {
                 const data = JSON.parse(event.data);
                 
-                // Log all messages to console for debugging, but only show essential info in UI
                 if (this.showDetailedInfo) {
                     console.log('[SignLanguageHandler] Received data:', data.type, data);
                 }
                 
-                // Handle different types of server messages with clean UI updates
+                // Handle different types of server messages
                 if (data.type === 'holistic_landmarks') {
                     this.processLandmarksData(data);
                 } else if (data.type === 'performance_stats') {
                     this.processPerformanceData(data);
+                } else if (data.type === 'translation') {
+                    // NEW: Handle translation messages from the server
+                    this.processTranslationData(data);
                 } else if (data.type === 'stats' && data.fps !== undefined) {
                     this.fps = data.fps;
                     this.updateFPSDisplay();
@@ -266,6 +271,67 @@ export default class SignLanguageHandler {
             }
         });
         window.dispatchEvent(event);
+    }
+
+     /**
+     * NEW: Process translation data received from the MediaPipe server
+     */
+     processTranslationData(data) {
+        console.log("[SignLanguageHandler] Translation received:", data.text);
+        
+        // Store the translation data
+        this.lastTranslation = {
+            text: data.text,
+            timestamp: Date.now(),
+            confidence: data.confidence || null, // if server provides confidence scores
+            words: data.words || null // if server provides individual words
+        };
+        
+        // Add to translation history (keep last 10 translations)
+        this.translationHistory.push(this.lastTranslation);
+        if (this.translationHistory.length > 10) {
+            this.translationHistory.shift(); // Remove oldest translation
+        }
+        
+        // Dispatch custom event for the content script to listen to
+        const translationEvent = new CustomEvent('signLanguageTranslation', {
+            detail: {
+                translatedText: data.text,
+                timestamp: this.lastTranslation.timestamp,
+                confidence: data.confidence,
+                words: data.words,
+                translationHistory: this.translationHistory
+            }
+        });
+        
+        // Dispatch the event so content script can catch it
+        window.dispatchEvent(translationEvent);
+        
+        // Also log for debugging
+        console.log(`[SignLanguageHandler] Dispatched translation event: "${data.text}"`);
+    }
+
+     /**
+     * NEW: Get the most recent translation
+     */
+     getLastTranslation() {
+        return this.lastTranslation;
+    }
+    
+    /**
+     * NEW: Get translation history
+     */
+    getTranslationHistory() {
+        return this.translationHistory;
+    }
+    
+    /**
+     * NEW: Clear translation history
+     */
+    clearTranslationHistory() {
+        this.translationHistory = [];
+        this.lastTranslation = null;
+        console.log("[SignLanguageHandler] Translation history cleared");
     }
     
     /**

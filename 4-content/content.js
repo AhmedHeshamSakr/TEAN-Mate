@@ -102,6 +102,24 @@ class ContentHandler {
             });
         });
         
+        // CRITICAL ADDITION: Listen for sign language translation events from the sign language handler
+        // This is the bridge that catches translations from your SignLanguageHandler and forwards them to the sidebar
+        window.addEventListener('signLanguageTranslation', (event) => {
+            const { translatedText, timestamp, confidence, words, translationHistory } = event.detail;
+            
+            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation: "${translatedText}"`);
+            
+            // Forward the translation to sidebar for display in the unified communication display
+            chrome.runtime.sendMessage({
+                action: "signLanguageTranslation",
+                translatedText: translatedText,
+                timestamp: timestamp,
+                confidence: confidence,
+                words: words,
+                translationHistory: translationHistory
+            });
+        });
+        
         // Listen for screen sharing ended event
         window.addEventListener('screenSharingEnded', () => {
             console.log('Screen sharing ended event received');
@@ -568,6 +586,19 @@ class ContentHandler {
         } else if (request.action === "displayOverlayText") {
             console.log('[CONTENT] Received text for overlay:', request.text);
             this.displayOverlayText(request.text, request.isFinal);
+        } else if (request.action === "getTranslationHistory") {
+            // ADDITION: Handle requests for translation history from sidebar
+            const history = this.signLanguageHandler.getTranslationHistory();
+            chrome.runtime.sendMessage({
+                action: "translationHistoryResponse",
+                history: history
+            });
+        } else if (request.action === "clearTranslationHistory") {
+            // ADDITION: Handle requests to clear translation history
+            this.signLanguageHandler.clearTranslationHistory();
+            chrome.runtime.sendMessage({
+                action: "translationHistoryCleared"
+            });
         } else if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) {
                 // If already speaking, stop it first
