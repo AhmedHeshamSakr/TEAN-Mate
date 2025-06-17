@@ -708,18 +708,29 @@ class SidebarController {
     // Get user settings from storage
     getSettings() {
         return new Promise((resolve, reject) => {
-            chrome.storage.sync.get('settings', function(data) {
-                if (chrome.runtime.lastError) {
-                    // If sync storage fails, try local storage
-                    chrome.storage.local.get('settings', function(localData) {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError);
+            // First check the storage preference
+            chrome.storage.local.get('settings', function(localData) {
+                if (localData.settings && localData.settings.dataStorage) {
+                    const storagePreference = localData.settings.dataStorage;
+                    
+                    if (storagePreference === 'sync') {
+                        // Load from sync storage
+                        chrome.storage.sync.get('settings', function(syncData) {
+                            resolve(syncData.settings || {});
+                        });
+                    } else {
+                        // Load from local storage
+                        resolve(localData.settings || {});
+                    }
+                } else {
+                    // If no preference is set, try both storages
+                    chrome.storage.sync.get('settings', function(syncData) {
+                        if (syncData.settings) {
+                            resolve(syncData.settings);
                         } else {
                             resolve(localData.settings || {});
                         }
                     });
-                } else {
-                    resolve(data.settings || {});
                 }
             });
         });
