@@ -60,6 +60,7 @@ class ContentHandler {
         this.isReadingActive = false;
         this.wasSpeaking = false;
         this.settings = null;
+        this.readSelectedTextOnly = false;
         this.initializeSettings();
 
         this.currentElement = null;
@@ -158,7 +159,6 @@ class ContentHandler {
             self.settings = settings;
             self.highlightWhileReading = settings.highlightText || false;
             self.badge = settings.showIconBadge || false;
-            self.readSelectedTextOnly = settings.readingElement === 'selected';
             // Example: Use TTS rate setting
             const ttsRate = settings.ttsRate || 1.0;
             console.log('Using TTS rate:', ttsRate);
@@ -502,11 +502,6 @@ class ContentHandler {
             console.log('[CONTENT] Setting reading mode to:', request.mode);
             // Only need to check for selected text mode, everything else is "all content"
             this.readSelectedTextOnly = request.mode === 'selected';
-            // Update settings to persist the change
-            this.getSettings((settings) => {
-                settings.readingElement = request.mode;
-                chrome.storage.sync.set({ settings: settings });
-            });
             return;
         }
 

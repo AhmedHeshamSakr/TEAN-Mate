@@ -65,17 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show/hide custom elements row based on reading element selection
-    const readingElementSelect = document.getElementById('readingElement');
-    const customElementsRow = document.getElementById('customElementsRow');
-    
-    if (readingElementSelect && customElementsRow) {
-        readingElementSelect.addEventListener('change', function() {
-            customElementsRow.style.display = this.value === 'custom' ? 'block' : 'none';
-            saveSettings();
-        });
-    }
-
     // Handle clear data button
     const clearDataBtn = document.getElementById('clearData');
     if (clearDataBtn) {
@@ -198,14 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (input.type === 'range') {
                     const event = new Event('input');
                     input.dispatchEvent(event);
-                }
-                
-                // Handle special case for reading element select
-                if (id === 'readingElement') {
-                    const customElementsRow = document.getElementById('customElementsRow');
-                    if (customElementsRow) {
-                        customElementsRow.style.display = input.value === 'custom' ? 'block' : 'none';
-                    }
                 }
             }
         });
