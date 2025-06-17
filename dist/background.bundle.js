@@ -3380,6 +3380,16 @@ module.exports.formatError = function (err) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/date/now */ "./node_modules/core-js-pure/stable/date/now.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js ***!
@@ -3387,6 +3397,146 @@ module.exports.formatError = function (err) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/instance/bind */ "./node_modules/core-js-pure/stable/instance/bind.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js ***!
+  \*******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/concat */ "./node_modules/core-js-pure/stable/instance/concat.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js ***!
+  \*******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/filter */ "./node_modules/core-js-pure/stable/instance/filter.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js ***!
+  \*********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/for-each */ "./node_modules/core-js-pure/stable/instance/for-each.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js ***!
+  \*********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/includes */ "./node_modules/core-js-pure/stable/instance/includes.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/slice */ "./node_modules/core-js-pure/stable/instance/slice.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/json/stringify */ "./node_modules/core-js-pure/stable/json/stringify.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js ***!
+  \****************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/define-properties */ "./node_modules/core-js-pure/stable/object/define-properties.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js ***!
+  \**************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/define-property */ "./node_modules/core-js-pure/stable/object/define-property.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js ***!
+  \**************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-descriptor */ "./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js ***!
+  \***************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-descriptors */ "./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js ***!
+  \***********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/get-own-property-symbols */ "./node_modules/core-js-pure/stable/object/get-own-property-symbols.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js ***!
+  \***************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/object/keys */ "./node_modules/core-js-pure/stable/object/keys.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js ***!
+  \***************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/set-timeout */ "./node_modules/core-js-pure/stable/set-timeout.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js/global-this.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js/global-this.js ***!
+  \********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/features/global-this */ "./node_modules/core-js-pure/features/global-this.js");
 
 /***/ }),
 
@@ -3807,6 +3957,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/actual/global-this.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/actual/global-this.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../stable/global-this */ "./node_modules/core-js-pure/stable/global-this.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/actual/instance/for-each.js":
 /*!***************************************************************!*\
   !*** ./node_modules/core-js-pure/actual/instance/for-each.js ***!
@@ -4028,6 +4193,38 @@ module.exports = path.Array.isArray;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/array/virtual/concat.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/concat.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.concat */ "./node_modules/core-js-pure/modules/es.array.concat.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'concat');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/array/virtual/filter.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/filter.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.filter */ "./node_modules/core-js-pure/modules/es.array.filter.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'filter');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/array/virtual/for-each.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js-pure/es/array/virtual/for-each.js ***!
@@ -4040,6 +4237,22 @@ __webpack_require__(/*! ../../../modules/es.array.for-each */ "./node_modules/co
 var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
 
 module.exports = getBuiltInPrototypeMethod('Array', 'forEach');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/array/virtual/includes.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/includes.js ***!
+  \****************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.includes */ "./node_modules/core-js-pure/modules/es.array.includes.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'includes');
 
 
 /***/ }),
@@ -4092,6 +4305,22 @@ module.exports = getBuiltInPrototypeMethod('Array', 'slice');
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/date/now.js":
+/*!**************************************************!*\
+  !*** ./node_modules/core-js-pure/es/date/now.js ***!
+  \**************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.date.now */ "./node_modules/core-js-pure/modules/es.date.now.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Date.now;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/function/virtual/bind.js":
 /*!***************************************************************!*\
   !*** ./node_modules/core-js-pure/es/function/virtual/bind.js ***!
@@ -4125,6 +4354,21 @@ module.exports = getIteratorMethod;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/global-this.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js-pure/es/global-this.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../modules/es.global-this */ "./node_modules/core-js-pure/modules/es.global-this.js");
+
+module.exports = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/instance/bind.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js-pure/es/instance/bind.js ***!
@@ -4141,6 +4385,74 @@ var FunctionPrototype = Function.prototype;
 module.exports = function (it) {
   var own = it.bind;
   return it === FunctionPrototype || (isPrototypeOf(FunctionPrototype, it) && own === FunctionPrototype.bind) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/concat.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/concat.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/concat */ "./node_modules/core-js-pure/es/array/virtual/concat.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.concat;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.concat) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/filter.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/filter.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/filter */ "./node_modules/core-js-pure/es/array/virtual/filter.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.filter;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.filter) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/includes.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/includes.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var arrayMethod = __webpack_require__(/*! ../array/virtual/includes */ "./node_modules/core-js-pure/es/array/virtual/includes.js");
+var stringMethod = __webpack_require__(/*! ../string/virtual/includes */ "./node_modules/core-js-pure/es/string/virtual/includes.js");
+
+var ArrayPrototype = Array.prototype;
+var StringPrototype = String.prototype;
+
+module.exports = function (it) {
+  var own = it.includes;
+  if (it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.includes)) return arrayMethod;
+  if (typeof it == 'string' || it === StringPrototype || (isPrototypeOf(StringPrototype, it) && own === StringPrototype.includes)) {
+    return stringMethod;
+  } return own;
 };
 
 
@@ -4209,6 +4521,30 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/json/stringify.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/json/stringify.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.date.to-json */ "./node_modules/core-js-pure/modules/es.date.to-json.js");
+__webpack_require__(/*! ../../modules/es.json.stringify */ "./node_modules/core-js-pure/modules/es.json.stringify.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+var apply = __webpack_require__(/*! ../../internals/function-apply */ "./node_modules/core-js-pure/internals/function-apply.js");
+
+// eslint-disable-next-line es/no-json -- safe
+if (!path.JSON) path.JSON = { stringify: JSON.stringify };
+
+// eslint-disable-next-line no-unused-vars -- required for `.length`
+module.exports = function stringify(it, replacer, space) {
+  return apply(path.JSON.stringify, null, arguments);
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/create.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/create.js ***!
@@ -4225,6 +4561,28 @@ var Object = path.Object;
 module.exports = function create(P, D) {
   return Object.create(P, D);
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/define-properties.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/define-properties.js ***!
+  \******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.define-properties */ "./node_modules/core-js-pure/modules/es.object.define-properties.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+var Object = path.Object;
+
+var defineProperties = module.exports = function defineProperties(T, D) {
+  return Object.defineProperties(T, D);
+};
+
+if (Object.defineProperties.sham) defineProperties.sham = true;
 
 
 /***/ }),
@@ -4251,6 +4609,60 @@ if (Object.defineProperty.sham) defineProperty.sham = true;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-descriptor.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-descriptor.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.get-own-property-descriptor */ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+var Object = path.Object;
+
+var getOwnPropertyDescriptor = module.exports = function getOwnPropertyDescriptor(it, key) {
+  return Object.getOwnPropertyDescriptor(it, key);
+};
+
+if (Object.getOwnPropertyDescriptor.sham) getOwnPropertyDescriptor.sham = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-descriptors.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-descriptors.js ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.get-own-property-descriptors */ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.getOwnPropertyDescriptors;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/get-own-property-symbols.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/get-own-property-symbols.js ***!
+  \*************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.symbol */ "./node_modules/core-js-pure/modules/es.symbol.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.getOwnPropertySymbols;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/object/get-prototype-of.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/es/object/get-prototype-of.js ***!
@@ -4263,6 +4675,22 @@ __webpack_require__(/*! ../../modules/es.object.get-prototype-of */ "./node_modu
 var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
 
 module.exports = path.Object.getPrototypeOf;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/object/keys.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js-pure/es/object/keys.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../modules/es.object.keys */ "./node_modules/core-js-pure/modules/es.object.keys.js");
+var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.Object.keys;
 
 
 /***/ }),
@@ -4304,6 +4732,22 @@ __webpack_require__(/*! ../../modules/es.string.iterator */ "./node_modules/core
 var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
 
 module.exports = path.Promise;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/string/virtual/includes.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/string/virtual/includes.js ***!
+  \*****************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.string.includes */ "./node_modules/core-js-pure/modules/es.string.includes.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('String', 'includes');
 
 
 /***/ }),
@@ -4375,6 +4819,19 @@ __webpack_require__(/*! ../../modules/es.symbol.to-primitive */ "./node_modules/
 var WrappedWellKnownSymbolModule = __webpack_require__(/*! ../../internals/well-known-symbol-wrapped */ "./node_modules/core-js-pure/internals/well-known-symbol-wrapped.js");
 
 module.exports = WrappedWellKnownSymbolModule.f('toPrimitive');
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/features/global-this.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js-pure/features/global-this.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+module.exports = __webpack_require__(/*! ../full/global-this */ "./node_modules/core-js-pure/full/global-this.js");
 
 
 /***/ }),
@@ -4561,6 +5018,24 @@ module.exports = parent;
 "use strict";
 
 var parent = __webpack_require__(/*! ../actual/get-iterator-method */ "./node_modules/core-js-pure/actual/get-iterator-method.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/full/global-this.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js-pure/full/global-this.js ***!
+  \*******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// TODO: remove from `core-js@4`
+__webpack_require__(/*! ../modules/esnext.global-this */ "./node_modules/core-js-pure/modules/esnext.global-this.js");
+
+var parent = __webpack_require__(/*! ../actual/global-this */ "./node_modules/core-js-pure/actual/global-this.js");
 
 module.exports = parent;
 
@@ -5414,6 +5889,33 @@ module.exports = function (target, source, exceptions) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/internals/correct-is-regexp-logic.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/correct-is-regexp-logic.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js-pure/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+module.exports = function (METHOD_NAME) {
+  var regexp = /./;
+  try {
+    '/./'[METHOD_NAME](regexp);
+  } catch (error1) {
+    try {
+      regexp[MATCH] = false;
+      return '/./'[METHOD_NAME](regexp);
+    } catch (error2) { /* empty */ }
+  } return false;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/internals/correct-prototype-getter.js":
 /*!*************************************************************************!*\
   !*** ./node_modules/core-js-pure/internals/correct-prototype-getter.js ***!
@@ -5509,6 +6011,58 @@ module.exports = function (object, key, value) {
   if (DESCRIPTORS) definePropertyModule.f(object, key, createPropertyDescriptor(0, value));
   else object[key] = value;
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/date-to-iso-string.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/date-to-iso-string.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+var padStart = (__webpack_require__(/*! ../internals/string-pad */ "./node_modules/core-js-pure/internals/string-pad.js").start);
+
+var $RangeError = RangeError;
+var $isFinite = isFinite;
+var abs = Math.abs;
+var DatePrototype = Date.prototype;
+var nativeDateToISOString = DatePrototype.toISOString;
+var thisTimeValue = uncurryThis(DatePrototype.getTime);
+var getUTCDate = uncurryThis(DatePrototype.getUTCDate);
+var getUTCFullYear = uncurryThis(DatePrototype.getUTCFullYear);
+var getUTCHours = uncurryThis(DatePrototype.getUTCHours);
+var getUTCMilliseconds = uncurryThis(DatePrototype.getUTCMilliseconds);
+var getUTCMinutes = uncurryThis(DatePrototype.getUTCMinutes);
+var getUTCMonth = uncurryThis(DatePrototype.getUTCMonth);
+var getUTCSeconds = uncurryThis(DatePrototype.getUTCSeconds);
+
+// `Date.prototype.toISOString` method implementation
+// https://tc39.es/ecma262/#sec-date.prototype.toisostring
+// PhantomJS / old WebKit fails here:
+module.exports = (fails(function () {
+  return nativeDateToISOString.call(new Date(-5e13 - 1)) !== '0385-07-25T07:06:39.999Z';
+}) || !fails(function () {
+  nativeDateToISOString.call(new Date(NaN));
+})) ? function toISOString() {
+  if (!$isFinite(thisTimeValue(this))) throw new $RangeError('Invalid time value');
+  var date = this;
+  var year = getUTCFullYear(date);
+  var milliseconds = getUTCMilliseconds(date);
+  var sign = year < 0 ? '-' : year > 9999 ? '+' : '';
+  return sign + padStart(abs(year), sign ? 6 : 4, 0) +
+    '-' + padStart(getUTCMonth(date) + 1, 2, 0) +
+    '-' + padStart(getUTCDate(date), 2, 0) +
+    'T' + padStart(getUTCHours(date), 2, 0) +
+    ':' + padStart(getUTCMinutes(date), 2, 0) +
+    ':' + padStart(getUTCSeconds(date), 2, 0) +
+    '.' + padStart(milliseconds, 3, 0) +
+    'Z';
+} : nativeDateToISOString;
 
 
 /***/ }),
@@ -6948,6 +7502,30 @@ module.exports = true;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/internals/is-regexp.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/is-regexp.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js-pure/internals/is-object.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js-pure/internals/classof-raw.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js-pure/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+// `IsRegExp` abstract operation
+// https://tc39.es/ecma262/#sec-isregexp
+module.exports = function (it) {
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) === 'RegExp');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/internals/is-symbol.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js-pure/internals/is-symbol.js ***!
@@ -7476,6 +8054,27 @@ var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules
 
 module.exports = function (argument, $default) {
   return argument === undefined ? arguments.length < 2 ? '' : $default : toString(argument);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/not-a-regexp.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/not-a-regexp.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isRegExp = __webpack_require__(/*! ../internals/is-regexp */ "./node_modules/core-js-pure/internals/is-regexp.js");
+
+var $TypeError = TypeError;
+
+module.exports = function (it) {
+  if (isRegExp(it)) {
+    throw new $TypeError("The method doesn't accept regular expressions");
+  } return it;
 };
 
 
@@ -8239,6 +8838,48 @@ module.exports = function (name) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/internals/schedulers-fix.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/schedulers-fix.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+var apply = __webpack_require__(/*! ../internals/function-apply */ "./node_modules/core-js-pure/internals/function-apply.js");
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js-pure/internals/is-callable.js");
+var ENVIRONMENT = __webpack_require__(/*! ../internals/environment */ "./node_modules/core-js-pure/internals/environment.js");
+var USER_AGENT = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js-pure/internals/environment-user-agent.js");
+var arraySlice = __webpack_require__(/*! ../internals/array-slice */ "./node_modules/core-js-pure/internals/array-slice.js");
+var validateArgumentsLength = __webpack_require__(/*! ../internals/validate-arguments-length */ "./node_modules/core-js-pure/internals/validate-arguments-length.js");
+
+var Function = globalThis.Function;
+// dirty IE9- and Bun 0.3.0- checks
+var WRAP = /MSIE .\./.test(USER_AGENT) || ENVIRONMENT === 'BUN' && (function () {
+  var version = globalThis.Bun.version.split('.');
+  return version.length < 3 || version[0] === '0' && (version[1] < 3 || version[1] === '3' && version[2] === '0');
+})();
+
+// IE9- / Bun 0.3.0- setTimeout / setInterval / setImmediate additional parameters fix
+// https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers
+// https://github.com/oven-sh/bun/issues/1633
+module.exports = function (scheduler, hasTimeArg) {
+  var firstParamIndex = hasTimeArg ? 2 : 1;
+  return WRAP ? function (handler, timeout /* , ...arguments */) {
+    var boundArgs = validateArgumentsLength(arguments.length, 1) > firstParamIndex;
+    var fn = isCallable(handler) ? handler : Function(handler);
+    var params = boundArgs ? arraySlice(arguments, firstParamIndex) : [];
+    var callback = boundArgs ? function () {
+      apply(fn, this, params);
+    } : fn;
+    return hasTimeArg ? scheduler(callback, timeout) : scheduler(callback);
+  } : scheduler;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/internals/set-species.js":
 /*!************************************************************!*\
   !*** ./node_modules/core-js-pure/internals/set-species.js ***!
@@ -8432,6 +9073,81 @@ module.exports = {
   // `String.prototype.at` method
   // https://github.com/mathiasbynens/String.prototype.at
   charAt: createMethod(true)
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/string-pad.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/string-pad.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js-pure/internals/to-length.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js-pure/internals/to-string.js");
+var $repeat = __webpack_require__(/*! ../internals/string-repeat */ "./node_modules/core-js-pure/internals/string-repeat.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js-pure/internals/require-object-coercible.js");
+
+var repeat = uncurryThis($repeat);
+var stringSlice = uncurryThis(''.slice);
+var ceil = Math.ceil;
+
+// `String.prototype.{ padStart, padEnd }` methods implementation
+var createMethod = function (IS_END) {
+  return function ($this, maxLength, fillString) {
+    var S = toString(requireObjectCoercible($this));
+    var intMaxLength = toLength(maxLength);
+    var stringLength = S.length;
+    var fillStr = fillString === undefined ? ' ' : toString(fillString);
+    var fillLen, stringFiller;
+    if (intMaxLength <= stringLength || fillStr === '') return S;
+    fillLen = intMaxLength - stringLength;
+    stringFiller = repeat(fillStr, ceil(fillLen / fillStr.length));
+    if (stringFiller.length > fillLen) stringFiller = stringSlice(stringFiller, 0, fillLen);
+    return IS_END ? S + stringFiller : stringFiller + S;
+  };
+};
+
+module.exports = {
+  // `String.prototype.padStart` method
+  // https://tc39.es/ecma262/#sec-string.prototype.padstart
+  start: createMethod(false),
+  // `String.prototype.padEnd` method
+  // https://tc39.es/ecma262/#sec-string.prototype.padend
+  end: createMethod(true)
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/internals/string-repeat.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/string-repeat.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var toIntegerOrInfinity = __webpack_require__(/*! ../internals/to-integer-or-infinity */ "./node_modules/core-js-pure/internals/to-integer-or-infinity.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js-pure/internals/to-string.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js-pure/internals/require-object-coercible.js");
+
+var $RangeError = RangeError;
+
+// `String.prototype.repeat` method implementation
+// https://tc39.es/ecma262/#sec-string.prototype.repeat
+module.exports = function repeat(count) {
+  var str = toString(requireObjectCoercible(this));
+  var result = '';
+  var n = toIntegerOrInfinity(count);
+  if (n < 0 || n === Infinity) throw new $RangeError('Wrong number of repetitions');
+  for (;n > 0; (n >>>= 1) && (str += str)) if (n & 1) result += str;
+  return result;
 };
 
 
@@ -9255,6 +9971,32 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.array.filter.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.array.filter.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $filter = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js-pure/internals/array-iteration.js").filter);
+var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js-pure/internals/array-method-has-species-support.js");
+
+var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
+
+// `Array.prototype.filter` method
+// https://tc39.es/ecma262/#sec-array.prototype.filter
+// with adding support of @@species
+$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
+  filter: function filter(callbackfn /* , thisArg */) {
+    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.array.for-each.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.array.for-each.js ***!
@@ -9298,6 +10040,39 @@ var INCORRECT_ITERATION = !checkCorrectnessOfIteration(function (iterable) {
 $({ target: 'Array', stat: true, forced: INCORRECT_ITERATION }, {
   from: from
 });
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.array.includes.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.array.includes.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $includes = (__webpack_require__(/*! ../internals/array-includes */ "./node_modules/core-js-pure/internals/array-includes.js").includes);
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js-pure/internals/add-to-unscopables.js");
+
+// FF99+ bug
+var BROKEN_ON_SPARSE = fails(function () {
+  // eslint-disable-next-line es/no-array-prototype-includes -- detection
+  return !Array(1).includes();
+});
+
+// `Array.prototype.includes` method
+// https://tc39.es/ecma262/#sec-array.prototype.includes
+$({ target: 'Array', proto: true, forced: BROKEN_ON_SPARSE }, {
+  includes: function includes(el /* , fromIndex = 0 */) {
+    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables('includes');
 
 
 /***/ }),
@@ -9538,6 +10313,68 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.date.now.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.date.now.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// TODO: Remove from `core-js@4`
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+
+var $Date = Date;
+var thisTimeValue = uncurryThis($Date.prototype.getTime);
+
+// `Date.now` method
+// https://tc39.es/ecma262/#sec-date.now
+$({ target: 'Date', stat: true }, {
+  now: function now() {
+    return thisTimeValue(new $Date());
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.date.to-json.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.date.to-json.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js-pure/internals/function-call.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js-pure/internals/to-object.js");
+var toPrimitive = __webpack_require__(/*! ../internals/to-primitive */ "./node_modules/core-js-pure/internals/to-primitive.js");
+var toISOString = __webpack_require__(/*! ../internals/date-to-iso-string */ "./node_modules/core-js-pure/internals/date-to-iso-string.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js-pure/internals/classof-raw.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+
+var FORCED = fails(function () {
+  return new Date(NaN).toJSON() !== null
+    || call(Date.prototype.toJSON, { toISOString: function () { return 1; } }) !== 1;
+});
+
+// `Date.prototype.toJSON` method
+// https://tc39.es/ecma262/#sec-date.prototype.tojson
+$({ target: 'Date', proto: true, forced: FORCED }, {
+  // eslint-disable-next-line no-unused-vars -- required for `.length`
+  toJSON: function toJSON(key) {
+    var O = toObject(this);
+    var pv = toPrimitive(O, 'number');
+    return typeof pv == 'number' && !isFinite(pv) ? null :
+      (!('toISOString' in O) && classof(O) === 'Date') ? call(toISOString, O) : O.toISOString();
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.date.to-primitive.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.date.to-primitive.js ***!
@@ -9566,6 +10403,26 @@ var bind = __webpack_require__(/*! ../internals/function-bind */ "./node_modules
 // eslint-disable-next-line es/no-function-prototype-bind -- detection
 $({ target: 'Function', proto: true, forced: Function.bind !== bind }, {
   bind: bind
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.global-this.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.global-this.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+
+// `globalThis` object
+// https://tc39.es/ecma262/#sec-globalthis
+$({ global: true, forced: globalThis.globalThis !== globalThis }, {
+  globalThis: globalThis
 });
 
 
@@ -9706,6 +10563,28 @@ $({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.object.define-properties.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.define-properties.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+var defineProperties = (__webpack_require__(/*! ../internals/object-define-properties */ "./node_modules/core-js-pure/internals/object-define-properties.js").f);
+
+// `Object.defineProperties` method
+// https://tc39.es/ecma262/#sec-object.defineproperties
+// eslint-disable-next-line es/no-object-defineproperties -- safe
+$({ target: 'Object', stat: true, forced: Object.defineProperties !== defineProperties, sham: !DESCRIPTORS }, {
+  defineProperties: defineProperties
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.object.define-property.js":
 /*!************************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.object.define-property.js ***!
@@ -9723,6 +10602,69 @@ var defineProperty = (__webpack_require__(/*! ../internals/object-define-propert
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 $({ target: 'Object', stat: true, forced: Object.defineProperty !== defineProperty, sham: !DESCRIPTORS }, {
   defineProperty: defineProperty
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.get-own-property-descriptor.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js-pure/internals/to-indexed-object.js");
+var nativeGetOwnPropertyDescriptor = (__webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js-pure/internals/object-get-own-property-descriptor.js").f);
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+
+var FORCED = !DESCRIPTORS || fails(function () { nativeGetOwnPropertyDescriptor(1); });
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+$({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
+    return nativeGetOwnPropertyDescriptor(toIndexedObject(it), key);
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.get-own-property-descriptors.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js-pure/internals/descriptors.js");
+var ownKeys = __webpack_require__(/*! ../internals/own-keys */ "./node_modules/core-js-pure/internals/own-keys.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js-pure/internals/to-indexed-object.js");
+var getOwnPropertyDescriptorModule = __webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js-pure/internals/object-get-own-property-descriptor.js");
+var createProperty = __webpack_require__(/*! ../internals/create-property */ "./node_modules/core-js-pure/internals/create-property.js");
+
+// `Object.getOwnPropertyDescriptors` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
+$({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = toIndexedObject(object);
+    var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+    var keys = ownKeys(O);
+    var result = {};
+    var index = 0;
+    var key, descriptor;
+    while (keys.length > index) {
+      descriptor = getOwnPropertyDescriptor(O, key = keys[index++]);
+      if (descriptor !== undefined) createProperty(result, key, descriptor);
+    }
+    return result;
+  }
 });
 
 
@@ -9782,6 +10724,32 @@ $({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES, sham: !CORRECT_PR
   }
 });
 
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.object.keys.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.object.keys.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js-pure/internals/to-object.js");
+var nativeKeys = __webpack_require__(/*! ../internals/object-keys */ "./node_modules/core-js-pure/internals/object-keys.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeKeys(1); });
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+$({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
+  keys: function keys(it) {
+    return nativeKeys(toObject(it));
+  }
+});
 
 
 /***/ }),
@@ -10566,6 +11534,38 @@ $({ target: 'Promise', stat: true }, {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.string.includes.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.string.includes.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+var notARegExp = __webpack_require__(/*! ../internals/not-a-regexp */ "./node_modules/core-js-pure/internals/not-a-regexp.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js-pure/internals/require-object-coercible.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js-pure/internals/to-string.js");
+var correctIsRegExpLogic = __webpack_require__(/*! ../internals/correct-is-regexp-logic */ "./node_modules/core-js-pure/internals/correct-is-regexp-logic.js");
+
+var stringIndexOf = uncurryThis(''.indexOf);
+
+// `String.prototype.includes` method
+// https://tc39.es/ecma262/#sec-string.prototype.includes
+$({ target: 'String', proto: true, forced: !correctIsRegExpLogic('includes') }, {
+  includes: function includes(searchString /* , position = 0 */) {
+    return !!~stringIndexOf(
+      toString(requireObjectCoercible(this)),
+      toString(notARegExp(searchString)),
+      arguments.length > 1 ? arguments[1] : undefined
+    );
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.string.iterator.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.string.iterator.js ***!
@@ -11245,6 +12245,20 @@ if (FunctionPrototype[METADATA] === undefined) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/esnext.global-this.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/esnext.global-this.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// TODO: Remove from `core-js@4`
+__webpack_require__(/*! ../modules/es.global-this */ "./node_modules/core-js-pure/modules/es.global-this.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/esnext.promise.all-settled.js":
 /*!*************************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/esnext.promise.all-settled.js ***!
@@ -11570,6 +12584,67 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/web.set-interval.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/web.set-interval.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+var schedulersFix = __webpack_require__(/*! ../internals/schedulers-fix */ "./node_modules/core-js-pure/internals/schedulers-fix.js");
+
+var setInterval = schedulersFix(globalThis.setInterval, true);
+
+// Bun / IE9- setInterval additional parameters fix
+// https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#dom-setinterval
+$({ global: true, bind: true, forced: globalThis.setInterval !== setInterval }, {
+  setInterval: setInterval
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/web.set-timeout.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/web.set-timeout.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+var schedulersFix = __webpack_require__(/*! ../internals/schedulers-fix */ "./node_modules/core-js-pure/internals/schedulers-fix.js");
+
+var setTimeout = schedulersFix(globalThis.setTimeout, true);
+
+// Bun / IE9- setTimeout additional parameters fix
+// https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#dom-settimeout
+$({ global: true, bind: true, forced: globalThis.setTimeout !== setTimeout }, {
+  setTimeout: setTimeout
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/web.timers.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/web.timers.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+// TODO: Remove this module from `core-js@4` since it's split to modules listed below
+__webpack_require__(/*! ../modules/web.set-interval */ "./node_modules/core-js-pure/modules/web.set-interval.js");
+__webpack_require__(/*! ../modules/web.set-timeout */ "./node_modules/core-js-pure/modules/web.set-timeout.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/array/from.js":
 /*!********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/array/from.js ***!
@@ -11615,6 +12690,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/date/now.js":
+/*!******************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/date/now.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/date/now */ "./node_modules/core-js-pure/es/date/now.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/get-iterator-method.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/get-iterator-method.js ***!
@@ -11631,6 +12721,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/global-this.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/global-this.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../es/global-this */ "./node_modules/core-js-pure/es/global-this.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/instance/bind.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/instance/bind.js ***!
@@ -11640,6 +12745,36 @@ module.exports = parent;
 "use strict";
 
 var parent = __webpack_require__(/*! ../../es/instance/bind */ "./node_modules/core-js-pure/es/instance/bind.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/instance/concat.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/concat.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/concat */ "./node_modules/core-js-pure/es/instance/concat.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/instance/filter.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/filter.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/filter */ "./node_modules/core-js-pure/es/instance/filter.js");
 
 module.exports = parent;
 
@@ -11672,6 +12807,21 @@ module.exports = function (it) {
   return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.forEach)
     || hasOwn(DOMIterables, classof(it)) ? method : own;
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/instance/includes.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/includes.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/includes */ "./node_modules/core-js-pure/es/instance/includes.js");
+
+module.exports = parent;
 
 
 /***/ }),
@@ -11721,6 +12871,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/json/stringify.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/json/stringify.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/json/stringify */ "./node_modules/core-js-pure/es/json/stringify.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/create.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/create.js ***!
@@ -11730,6 +12895,21 @@ module.exports = parent;
 "use strict";
 
 var parent = __webpack_require__(/*! ../../es/object/create */ "./node_modules/core-js-pure/es/object/create.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/define-properties.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/define-properties.js ***!
+  \**********************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/define-properties */ "./node_modules/core-js-pure/es/object/define-properties.js");
 
 module.exports = parent;
 
@@ -11751,6 +12931,51 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-descriptor.js ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-descriptor */ "./node_modules/core-js-pure/es/object/get-own-property-descriptor.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-descriptors.js ***!
+  \*********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-descriptors */ "./node_modules/core-js-pure/es/object/get-own-property-descriptors.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/get-own-property-symbols.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/get-own-property-symbols.js ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/get-own-property-symbols */ "./node_modules/core-js-pure/es/object/get-own-property-symbols.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/object/get-prototype-of.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/object/get-prototype-of.js ***!
@@ -11760,6 +12985,21 @@ module.exports = parent;
 "use strict";
 
 var parent = __webpack_require__(/*! ../../es/object/get-prototype-of */ "./node_modules/core-js-pure/es/object/get-prototype-of.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/object/keys.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/object/keys.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/object/keys */ "./node_modules/core-js-pure/es/object/keys.js");
 
 module.exports = parent;
 
@@ -11793,6 +13033,22 @@ var parent = __webpack_require__(/*! ../../es/promise */ "./node_modules/core-js
 __webpack_require__(/*! ../../modules/web.dom-collections.iterator */ "./node_modules/core-js-pure/modules/web.dom-collections.iterator.js");
 
 module.exports = parent;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/stable/set-timeout.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/set-timeout.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../modules/web.timers */ "./node_modules/core-js-pure/modules/web.timers.js");
+var path = __webpack_require__(/*! ../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.setTimeout;
 
 
 /***/ }),
@@ -11969,6 +13225,33 @@ function _createClass(e, r, t) {
   return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__(e, "prototype", {
     writable: !1
   }), e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/object/define-property.js */ "./node_modules/core-js-pure/full/object/define-property.js");
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/toPropertyKey.js");
+
+
+function _defineProperty(e, r, t) {
+  return (r = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r)) in e ? core_js_pure_features_object_define_property_js__WEBPACK_IMPORTED_MODULE_1__(e, r, {
+    value: t,
+    enumerable: !0,
+    configurable: !0,
+    writable: !0
+  }) : e[r] = t, e;
 }
 
 
@@ -12238,13 +13521,47 @@ function _initializeVoices() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_global_this__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/global-this */ "./node_modules/@babel/runtime-corejs3/core-js/global-this.js");
+/* harmony import */ var _2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/initializeVoices.js */ "./2-features/TTS/initializeVoices.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_0__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_2__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context24, _context25; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context24 = ownKeys(Object(t), !0)).call(_context24, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_9__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_6__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context25 = ownKeys(Object(t))).call(_context25, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_7__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__(t, r)); }); } return e; }
+
+
 
 
 
@@ -12254,8 +13571,9 @@ __webpack_require__.r(__webpack_exports__);
 
 var BackgroundHandler = /*#__PURE__*/function () {
   function BackgroundHandler() {
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, BackgroundHandler);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_11__["default"])(this, BackgroundHandler);
     // Define keyboard shortcut commands and their corresponding actions
+    // These map Chrome extension commands to content script actions
     this.commands = {
       "skip-next": "skipToNext",
       "skip-previous": "skipToPrevious",
@@ -12263,138 +13581,760 @@ var BackgroundHandler = /*#__PURE__*/function () {
       "access-link": "accessLink",
       "toggle-stt": "toggleSTT"
     };
+
+    // Translation Management System
+    // This system handles all sign language translations with persistence and history
+    this.translations = []; // In-memory storage for quick access
+    this.maxStoredTranslations = 100; // Limit to prevent memory issues
+    this.translationStats = {
+      totalReceived: 0,
+      sessionCount: 0,
+      lastTranslationTime: null,
+      averageConfidence: 0
+    };
+
+    // Extension state tracking
+    this.extensionState = {
+      isInitialized: false,
+      lastActiveTabId: null,
+      sidebarConnected: false
+    };
+
+    // Initialize all background functionality
     this.initialize();
   }
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(BackgroundHandler, [{
+
+  /**
+   * Initialize all event listeners and load persistent data
+   * This method sets up the complete background script functionality
+   */
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_12__["default"])(BackgroundHandler, [{
     key: "initialize",
     value: function initialize() {
-      var _context, _context2, _context3, _context4;
-      // Set up all event listeners
-      chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context = this.onInstalled).call(_context, this));
-      chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context2 = this.onActionClicked).call(_context2, this));
-      chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.onCommand).call(_context3, this));
-      chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_5__(_context4 = this.onMessage).call(_context4, this));
-      chrome.storage.onChanged.addListener(function (changes, namespace) {
-        if (changes.settings && changes.settings.newValue) {
-          var newSettings = changes.settings.newValue;
+      var _context, _context2, _context3, _context4, _context5, _context6, _context7;
+      // Set up all Chrome extension event listeners
+      chrome.runtime.onInstalled.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context = this.onInstalled).call(_context, this));
+      chrome.action.onClicked.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context2 = this.onActionClicked).call(_context2, this));
+      chrome.commands.onCommand.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context3 = this.onCommand).call(_context3, this));
+      chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context4 = this.onMessage).call(_context4, this));
 
-          // If theme changed, notify all extension pages
-          if (changes.settings.oldValue && changes.settings.oldValue.theme !== newSettings.theme) {
-            // Send message to all extension pages
-            chrome.runtime.sendMessage({
-              action: "themeChanged",
-              theme: newSettings.theme
-            });
-          }
-        }
-      });
+      // Listen for settings changes to update theme across all extension pages
+      chrome.storage.onChanged.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context5 = this.onStorageChanged).call(_context5, this));
 
-      // Initialize TTS voices when the background script starts
+      // Listen for tab changes to track active tab for message routing
+      chrome.tabs.onActivated.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context6 = this.onTabActivated).call(_context6, this));
+      chrome.tabs.onUpdated.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_14__(_context7 = this.onTabUpdated).call(_context7, this));
+
+      // Load stored translations and initialize voices when extension starts
+      this.loadStoredData();
+
+      // Initialize TTS voices for the speech functionality
       this.initializeVoices();
+      console.log('[Background] BackgroundHandler initialized with translation management');
     }
+
+    /**
+     * Load all persistent data from storage
+     * This includes translations, user settings, and extension state
+     */
+  }, {
+    key: "loadStoredData",
+    value: (function () {
+      var _loadStoredData = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee() {
+        var result;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              _context8.prev = 0;
+              _context8.next = 3;
+              return this.loadTranslationsFromStorage();
+            case 3:
+              _context8.next = 5;
+              return chrome.storage.local.get(['extensionState', 'translationStats']);
+            case 5:
+              result = _context8.sent;
+              if (result.translationStats) {
+                this.translationStats = _objectSpread(_objectSpread({}, this.translationStats), result.translationStats);
+              }
+              this.extensionState.isInitialized = true;
+              console.log('[Background] Stored data loaded successfully');
+              _context8.next = 14;
+              break;
+            case 11:
+              _context8.prev = 11;
+              _context8.t0 = _context8["catch"](0);
+              console.error('[Background] Error loading stored data:', _context8.t0);
+            case 14:
+            case "end":
+              return _context8.stop();
+          }
+        }, _callee, this, [[0, 11]]);
+      }));
+      function loadStoredData() {
+        return _loadStoredData.apply(this, arguments);
+      }
+      return loadStoredData;
+    }()
+    /**
+     * Initialize TTS voices for speech functionality
+     * This ensures voices are available when the extension starts
+     */
+    )
   }, {
     key: "initializeVoices",
-    value: function () {
-      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee() {
+    value: (function () {
+      var _initializeVoices2 = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee2() {
         var voices;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee2$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
             case 0:
-              _context5.prev = 0;
-              _context5.next = 3;
-              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_6__.initializeVoices)();
+              _context9.prev = 0;
+              _context9.next = 3;
+              return (0,_2_features_TTS_initializeVoices_js__WEBPACK_IMPORTED_MODULE_22__.initializeVoices)();
             case 3:
-              voices = _context5.sent;
-              _context5.next = 6;
+              voices = _context9.sent;
+              _context9.next = 6;
               return chrome.storage.local.set({
                 voices: voices
               });
             case 6:
-              console.log("Voices initialized:", voices);
-              _context5.next = 12;
+              console.log("[Background] Voices initialized:", voices.length, "voices available");
+              _context9.next = 12;
               break;
             case 9:
-              _context5.prev = 9;
-              _context5.t0 = _context5["catch"](0);
-              console.error("Failed to initialize voices:", _context5.t0);
+              _context9.prev = 9;
+              _context9.t0 = _context9["catch"](0);
+              console.error("[Background] Failed to initialize voices:", _context9.t0);
             case 12:
             case "end":
-              return _context5.stop();
+              return _context9.stop();
           }
-        }, _callee, null, [[0, 9]]);
+        }, _callee2, null, [[0, 9]]);
       }));
       function initializeVoices() {
         return _initializeVoices2.apply(this, arguments);
       }
       return initializeVoices;
     }()
+    /**
+     * Handle extension installation and setup
+     * This runs once when the extension is first installed or updated
+     */
+    )
   }, {
     key: "onInstalled",
-    value: function () {
-      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee2() {
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee2$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+    value: (function () {
+      var _onInstalled = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee3() {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee3$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              _context6.prev = 0;
-              _context6.next = 3;
+              _context10.prev = 0;
+              _context10.next = 3;
               return chrome.storage.local.set({
-                sidebarOpened: false
+                sidebarOpened: false,
+                translationStats: this.translationStats,
+                extensionState: this.extensionState
               });
             case 3:
-              console.log("Extension installed and state initialized");
-              _context6.next = 9;
+              console.log("[Background] Extension installed and state initialized");
+              _context10.next = 9;
               break;
             case 6:
-              _context6.prev = 6;
-              _context6.t0 = _context6["catch"](0);
-              console.error("Error during installation:", _context6.t0);
+              _context10.prev = 6;
+              _context10.t0 = _context10["catch"](0);
+              console.error("[Background] Error during installation:", _context10.t0);
             case 9:
             case "end":
-              return _context6.stop();
+              return _context10.stop();
           }
-        }, _callee2, null, [[0, 6]]);
+        }, _callee3, this, [[0, 6]]);
       }));
       function onInstalled() {
         return _onInstalled.apply(this, arguments);
       }
       return onInstalled;
     }()
+    /**
+     * Handle extension icon clicks - opens the sidebar
+     */
+    )
   }, {
     key: "onActionClicked",
     value: function onActionClicked(tab) {
+      // Track the active tab for message routing
+      this.extensionState.lastActiveTabId = tab.id;
+
       // Open the sidebar directly when the extension icon is clicked
-      // Note: This should not be nested inside another listener
       chrome.sidePanel.open({
         windowId: tab.windowId
       });
+      console.log('[Background] Sidebar opened for tab:', tab.id);
     }
+
+    /**
+     * Handle keyboard shortcut commands
+     * These commands are defined in manifest.json and trigger content script actions
+     */
   }, {
     key: "onCommand",
     value: function onCommand(command) {
       var action = this.commands[command];
       if (action) {
+        var _context11;
+        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_15__(_context11 = "[Background] Executing command: ".concat(command, " -> ")).call(_context11, action));
         this.sendMessageToActiveTab({
           action: action
         });
       } else {
-        console.warn("Unknown command: ".concat(command));
+        console.warn("[Background] Unknown command: ".concat(command));
       }
     }
+
+    /**
+     * Handle storage changes (primarily for theme updates)
+     */
+  }, {
+    key: "onStorageChanged",
+    value: function onStorageChanged(changes, namespace) {
+      if (changes.settings && changes.settings.newValue) {
+        var newSettings = changes.settings.newValue;
+
+        // If theme changed, notify all extension pages
+        if (changes.settings.oldValue && changes.settings.oldValue.theme !== newSettings.theme) {
+          // Send message to all extension pages (sidebar, options, etc.)
+          chrome.runtime.sendMessage({
+            action: "themeChanged",
+            theme: newSettings.theme
+          })["catch"](function () {
+            // No receivers available - this is normal when no extension pages are open
+          });
+        }
+      }
+    }
+
+    /**
+     * Track active tab changes for proper message routing
+     */
+  }, {
+    key: "onTabActivated",
+    value: function onTabActivated(activeInfo) {
+      this.extensionState.lastActiveTabId = activeInfo.tabId;
+    }
+
+    /**
+     * Track tab updates to maintain accurate tab state
+     */
+  }, {
+    key: "onTabUpdated",
+    value: function onTabUpdated(tabId, changeInfo, tab) {
+      if (changeInfo.status === 'complete' && tab.active) {
+        this.extensionState.lastActiveTabId = tabId;
+      }
+    }
+
+    /**
+     * Central message handler - routes all messages between extension components
+     * This is the heart of the extension's communication system
+     */
   }, {
     key: "onMessage",
     value: function onMessage(request, sender, sendResponse) {
-      if (request.action === "getVoices") {
-        // Handle voice retrieval request
-        chrome.storage.local.get("voices", function (result) {
-          sendResponse({
-            voices: result.voices
-          });
-        });
-        return true; // Required for async response
-      } else if (request.action === "updateBadge") {
-        this.updateBadge(request.isActive, request.text);
+      console.log("[Background] Received message: ".concat(request.action), request);
+
+      // Handle different types of messages
+      switch (request.action) {
+        // TTS Voice Management
+        case "getVoices":
+          this.handleGetVoices(sendResponse);
+          return true;
+        // Required for async response
+
+        // Extension Badge Updates
+        case "updateBadge":
+          this.updateBadge(request.isActive, request.text);
+          break;
+
+        // SIGN LANGUAGE TRANSLATION MANAGEMENT
+        // This is the critical section that handles all translation-related messages
+
+        case "signLanguageTranslation":
+          // Main translation handler - processes translations from content scripts
+          this.handleSignLanguageTranslation(request, sender, sendResponse);
+          return true;
+        // Keep message channel open for async response
+
+        case "getTranslationHistory":
+          // Sidebar requests for stored translation history
+          this.handleGetTranslationHistory(sendResponse);
+          return true;
+        case "clearTranslationHistory":
+          // Clear all stored translations
+          this.handleClearTranslationHistory(sendResponse);
+          return true;
+        case "getTranslationStats":
+          // Provide translation statistics for analytics
+          this.handleGetTranslationStats(sendResponse);
+          return true;
+        case "exportTranslations":
+          // Export translations for backup or sharing
+          this.handleExportTranslations(sendResponse);
+          return true;
+
+        // MEDIAPIPE STATUS FORWARDING
+        // These messages need to be forwarded to the sidebar for real-time updates
+
+        case "handLandmarksUpdate":
+          // Forward hand detection updates to sidebar
+          this.forwardToSidebar(request);
+          break;
+        case "screenSharingStatus":
+          // Forward screen sharing status to sidebar
+          this.forwardToSidebar(request);
+          break;
+        case "debugModeStatus":
+          // Forward debug mode status to sidebar
+          this.forwardToSidebar(request);
+          break;
+
+        // SIDEBAR CONNECTION MANAGEMENT
+        case "sidebarConnected":
+          // Track when sidebar connects for better message routing
+          this.extensionState.sidebarConnected = true;
+          console.log('[Background] Sidebar connected');
+          break;
+        case "sidebarDisconnected":
+          // Track when sidebar disconnects
+          this.extensionState.sidebarConnected = false;
+          console.log('[Background] Sidebar disconnected');
+          break;
+        default:
+          console.log("[Background] Unhandled message action: ".concat(request.action));
       }
     }
+
+    /**
+     * Handle voice retrieval requests for TTS functionality
+     */
+  }, {
+    key: "handleGetVoices",
+    value: function handleGetVoices(sendResponse) {
+      chrome.storage.local.get("voices", function (result) {
+        sendResponse({
+          voices: result.voices || [],
+          count: result.voices ? result.voices.length : 0
+        });
+      });
+    }
+
+    /**
+     * MAIN TRANSLATION HANDLER
+     * This is the core method that processes all sign language translations
+     * It enriches the translation data, stores it, and forwards it to the sidebar
+     */
+  }, {
+    key: "handleSignLanguageTranslation",
+    value: (function () {
+      var _handleSignLanguageTranslation = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee4(request, sender, sendResponse) {
+        var _sender$tab, _sender$tab2, _sender$tab3, translationData;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee4$(_context12) {
+          while (1) switch (_context12.prev = _context12.next) {
+            case 0:
+              _context12.prev = 0;
+              console.log('[Background] Processing sign language translation:', request.translatedText);
+
+              // Create enriched translation data with metadata
+              translationData = {
+                // Core translation content
+                id: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__() + Math.random(),
+                // Unique identifier
+                text: request.translatedText,
+                timestamp: request.timestamp || _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__(),
+                confidence: request.confidence,
+                words: request.words,
+                // Tab and context metadata
+                tabId: (_sender$tab = sender.tab) === null || _sender$tab === void 0 ? void 0 : _sender$tab.id,
+                tabUrl: (_sender$tab2 = sender.tab) === null || _sender$tab2 === void 0 ? void 0 : _sender$tab2.url,
+                tabTitle: (_sender$tab3 = sender.tab) === null || _sender$tab3 === void 0 ? void 0 : _sender$tab3.title,
+                // Processing metadata
+                processed: true,
+                source: 'sign-language',
+                sessionId: this.generateSessionId()
+              }; // Store the translation in our management system
+              _context12.next = 5;
+              return this.addTranslation(translationData);
+            case 5:
+              // Update statistics for analytics
+              this.updateTranslationStats(translationData);
+
+              // Forward the translation to the sidebar for immediate display
+              // We send the original request format to maintain compatibility with sidebar
+              this.forwardToSidebar({
+                action: "signLanguageTranslation",
+                translatedText: request.translatedText,
+                timestamp: request.timestamp,
+                confidence: request.confidence,
+                words: request.words,
+                translationHistory: request.translationHistory
+              });
+
+              // Provide visual feedback with badge notification
+              this.updateTranslationBadge();
+
+              // Send success response back to content script
+              sendResponse({
+                success: true,
+                translationId: translationData.id,
+                stored: true,
+                totalTranslations: this.translations.length
+              });
+              console.log("[Background] Translation processed successfully. Total stored: ".concat(this.translations.length));
+              _context12.next = 16;
+              break;
+            case 12:
+              _context12.prev = 12;
+              _context12.t0 = _context12["catch"](0);
+              console.error('[Background] Error processing translation:', _context12.t0);
+
+              // Send error response
+              sendResponse({
+                success: false,
+                error: _context12.t0.message
+              });
+            case 16:
+            case "end":
+              return _context12.stop();
+          }
+        }, _callee4, this, [[0, 12]]);
+      }));
+      function handleSignLanguageTranslation(_x, _x2, _x3) {
+        return _handleSignLanguageTranslation.apply(this, arguments);
+      }
+      return handleSignLanguageTranslation;
+    }()
+    /**
+     * Add a translation to our storage system with persistence
+     */
+    )
+  }, {
+    key: "addTranslation",
+    value: (function () {
+      var _addTranslation = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee5(translationData) {
+        var _context13;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee5$(_context14) {
+          while (1) switch (_context14.prev = _context14.next) {
+            case 0:
+              // Add to beginning of array (most recent first)
+              this.translations.unshift(translationData);
+
+              // Maintain storage limits to prevent memory issues
+              if (this.translations.length > this.maxStoredTranslations) {
+                this.translations = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(_context13 = this.translations).call(_context13, 0, this.maxStoredTranslations);
+              }
+
+              // Save to persistent storage for browser restart persistence
+              _context14.next = 4;
+              return this.saveTranslationsToStorage();
+            case 4:
+              console.log("[Background] Translation added. Storage count: ".concat(this.translations.length));
+            case 5:
+            case "end":
+              return _context14.stop();
+          }
+        }, _callee5, this);
+      }));
+      function addTranslation(_x4) {
+        return _addTranslation.apply(this, arguments);
+      }
+      return addTranslation;
+    }()
+    /**
+     * Update translation statistics for analytics and monitoring
+     */
+    )
+  }, {
+    key: "updateTranslationStats",
+    value: function updateTranslationStats(translationData) {
+      this.translationStats.totalReceived++;
+      this.translationStats.sessionCount++;
+      this.translationStats.lastTranslationTime = translationData.timestamp;
+
+      // Calculate running average confidence if confidence data is available
+      if (translationData.confidence) {
+        var currentAvg = this.translationStats.averageConfidence;
+        var count = this.translationStats.totalReceived;
+
+        // Calculate new running average
+        this.translationStats.averageConfidence = (currentAvg * (count - 1) + translationData.confidence) / count;
+      }
+
+      // Save updated stats to storage
+      chrome.storage.local.set({
+        translationStats: this.translationStats
+      });
+    }
+
+    /**
+     * Handle requests for translation history from sidebar or other components
+     */
+  }, {
+    key: "handleGetTranslationHistory",
+    value: function handleGetTranslationHistory(sendResponse) {
+      var _context15;
+      var recentCount = 50; // Return recent translations for UI display
+
+      sendResponse({
+        success: true,
+        translations: _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(_context15 = this.translations).call(_context15, 0, recentCount),
+        count: this.translations.length,
+        totalEver: this.translationStats.totalReceived,
+        stats: this.translationStats
+      });
+    }
+
+    /**
+     * Handle requests to clear all translation history
+     */
+  }, {
+    key: "handleClearTranslationHistory",
+    value: (function () {
+      var _handleClearTranslationHistory = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee6(sendResponse) {
+        var totalEver;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee6$(_context16) {
+          while (1) switch (_context16.prev = _context16.next) {
+            case 0:
+              _context16.prev = 0;
+              // Clear in-memory storage
+              this.translations = [];
+
+              // Reset statistics but keep total count for lifetime tracking
+              totalEver = this.translationStats.totalReceived;
+              this.translationStats = {
+                totalReceived: totalEver,
+                // Keep lifetime total
+                sessionCount: 0,
+                lastTranslationTime: null,
+                averageConfidence: 0
+              };
+
+              // Clear persistent storage
+              _context16.next = 6;
+              return chrome.storage.local.remove(['signLanguageTranslations']);
+            case 6:
+              _context16.next = 8;
+              return chrome.storage.local.set({
+                translationStats: this.translationStats
+              });
+            case 8:
+              // Notify sidebar that history was cleared
+              this.forwardToSidebar({
+                action: "translationHistoryCleared"
+              });
+              sendResponse({
+                success: true,
+                message: 'Translation history cleared successfully'
+              });
+              console.log('[Background] Translation history cleared');
+              _context16.next = 17;
+              break;
+            case 13:
+              _context16.prev = 13;
+              _context16.t0 = _context16["catch"](0);
+              console.error('[Background] Error clearing translation history:', _context16.t0);
+              sendResponse({
+                success: false,
+                error: _context16.t0.message
+              });
+            case 17:
+            case "end":
+              return _context16.stop();
+          }
+        }, _callee6, this, [[0, 13]]);
+      }));
+      function handleClearTranslationHistory(_x5) {
+        return _handleClearTranslationHistory.apply(this, arguments);
+      }
+      return handleClearTranslationHistory;
+    }()
+    /**
+     * Handle requests for translation statistics
+     */
+    )
+  }, {
+    key: "handleGetTranslationStats",
+    value: function handleGetTranslationStats(sendResponse) {
+      var stats = _objectSpread(_objectSpread({}, this.translationStats), {}, {
+        currentSession: this.translations.length,
+        storageUsed: this.translations.length,
+        storageLimit: this.maxStoredTranslations,
+        memoryUsage: this.calculateMemoryUsage()
+      });
+      sendResponse({
+        success: true,
+        stats: stats
+      });
+    }
+
+    /**
+     * Handle translation export requests
+     */
+  }, {
+    key: "handleExportTranslations",
+    value: function handleExportTranslations(sendResponse) {
+      try {
+        var exportData = {
+          exportTimestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__(),
+          exportDate: new Date().toISOString(),
+          translationCount: this.translations.length,
+          translations: this.translations,
+          stats: this.translationStats,
+          extensionVersion: chrome.runtime.getManifest().version
+        };
+        sendResponse({
+          success: true,
+          data: exportData,
+          filename: "sign-language-translations-".concat(new Date().toISOString().split('T')[0], ".json")
+        });
+      } catch (error) {
+        console.error('[Background] Error exporting translations:', error);
+        sendResponse({
+          success: false,
+          error: error.message
+        });
+      }
+    }
+
+    /**
+     * Forward messages to the sidebar/side panel
+     * This handles the routing of real-time updates to the user interface
+     */
+  }, {
+    key: "forwardToSidebar",
+    value: function forwardToSidebar(message) {
+      // Add metadata for better message tracking
+      var enrichedMessage = _objectSpread(_objectSpread({}, message), {}, {
+        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__(),
+        fromBackground: true
+      });
+
+      // Send to sidebar (side panel)
+      chrome.runtime.sendMessage(enrichedMessage)["catch"](function (error) {
+        var _context17;
+        // Sidebar might not be open, which is normal
+        // Only log if it's an unexpected error
+        if (error.message && !_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_18__(_context17 = error.message).call(_context17, 'Receiving end does not exist')) {
+          console.warn('[Background] Error forwarding to sidebar:', error.message);
+        }
+      });
+    }
+
+    /**
+     * Save translations to persistent storage
+     * This ensures translations survive browser restarts
+     */
+  }, {
+    key: "saveTranslationsToStorage",
+    value: (function () {
+      var _saveTranslationsToStorage = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee7() {
+        var _context18, recentTranslations;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee7$(_context19) {
+          while (1) switch (_context19.prev = _context19.next) {
+            case 0:
+              _context19.prev = 0;
+              // Save recent translations to storage (limit for performance)
+              recentTranslations = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(_context18 = this.translations).call(_context18, 0, 50);
+              _context19.next = 4;
+              return chrome.storage.local.set({
+                signLanguageTranslations: recentTranslations,
+                translationStats: this.translationStats,
+                lastSaved: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__()
+              });
+            case 4:
+              _context19.next = 9;
+              break;
+            case 6:
+              _context19.prev = 6;
+              _context19.t0 = _context19["catch"](0);
+              console.error('[Background] Error saving translations to storage:', _context19.t0);
+            case 9:
+            case "end":
+              return _context19.stop();
+          }
+        }, _callee7, this, [[0, 6]]);
+      }));
+      function saveTranslationsToStorage() {
+        return _saveTranslationsToStorage.apply(this, arguments);
+      }
+      return saveTranslationsToStorage;
+    }()
+    /**
+     * Load translations from persistent storage on extension startup
+     */
+    )
+  }, {
+    key: "loadTranslationsFromStorage",
+    value: (function () {
+      var _loadTranslationsFromStorage = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee8() {
+        var result;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee8$(_context20) {
+          while (1) switch (_context20.prev = _context20.next) {
+            case 0:
+              _context20.prev = 0;
+              _context20.next = 3;
+              return chrome.storage.local.get(['signLanguageTranslations', 'translationStats']);
+            case 3:
+              result = _context20.sent;
+              if (result.signLanguageTranslations) {
+                this.translations = result.signLanguageTranslations;
+                console.log("[Background] Loaded ".concat(this.translations.length, " translations from storage"));
+              }
+              if (result.translationStats) {
+                this.translationStats = _objectSpread(_objectSpread({}, this.translationStats), result.translationStats);
+                console.log('[Background] Loaded translation statistics from storage');
+              }
+              _context20.next = 11;
+              break;
+            case 8:
+              _context20.prev = 8;
+              _context20.t0 = _context20["catch"](0);
+              console.error('[Background] Error loading translations from storage:', _context20.t0);
+            case 11:
+            case "end":
+              return _context20.stop();
+          }
+        }, _callee8, this, [[0, 8]]);
+      }));
+      function loadTranslationsFromStorage() {
+        return _loadTranslationsFromStorage.apply(this, arguments);
+      }
+      return loadTranslationsFromStorage;
+    }()
+    /**
+     * Update extension badge to show translation activity
+     * This provides immediate visual feedback when translations occur
+     */
+    )
+  }, {
+    key: "updateTranslationBadge",
+    value: function updateTranslationBadge() {
+      // Show translation indicator briefly
+      chrome.action.setBadgeText({
+        text: "🤟"
+      });
+      chrome.action.setBadgeBackgroundColor({
+        color: "#4CAF50"
+      });
+
+      // Clear badge after a few seconds
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_19__(function () {
+        chrome.action.setBadgeText({
+          text: ""
+        });
+      }, 3000);
+    }
+
+    /**
+     * Update extension badge for general TTS activity
+     */
   }, {
     key: "updateBadge",
     value: function updateBadge(isActive) {
@@ -12412,56 +14352,126 @@ var BackgroundHandler = /*#__PURE__*/function () {
         }); // Clear the badge
       }
     }
+
+    /**
+     * Send a message to the currently active tab
+     * This is used for keyboard shortcuts and other commands
+     */
   }, {
     key: "sendMessageToActiveTab",
-    value: function () {
-      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.mark(function _callee3(message) {
-        var _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_4__.wrap(function _callee3$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
+    value: (function () {
+      var _sendMessageToActiveTab = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_10__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.mark(function _callee9(message) {
+        var tabId, _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab, _context21;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_13__.wrap(function _callee9$(_context22) {
+          while (1) switch (_context22.prev = _context22.next) {
             case 0:
-              _context7.prev = 0;
-              _context7.next = 3;
+              _context22.prev = 0;
+              // Use stored active tab ID if available, otherwise query for active tab
+              tabId = this.extensionState.lastActiveTabId;
+              if (tabId) {
+                _context22.next = 15;
+                break;
+              }
+              _context22.next = 5;
               return chrome.tabs.query({
                 active: true,
                 currentWindow: true
               });
-            case 3:
-              _yield$chrome$tabs$qu = _context7.sent;
-              _yield$chrome$tabs$qu2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_yield$chrome$tabs$qu, 1);
+            case 5:
+              _yield$chrome$tabs$qu = _context22.sent;
+              _yield$chrome$tabs$qu2 = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_8__["default"])(_yield$chrome$tabs$qu, 1);
               tab = _yield$chrome$tabs$qu2[0];
               if (!tab) {
-                _context7.next = 11;
+                _context22.next = 13;
                 break;
               }
-              _context7.next = 9;
-              return chrome.tabs.sendMessage(tab.id, message);
-            case 9:
-              _context7.next = 12;
+              tabId = tab.id;
+              this.extensionState.lastActiveTabId = tabId;
+              _context22.next = 15;
               break;
-            case 11:
-              console.warn("No active tab found");
-            case 12:
-              _context7.next = 17;
-              break;
-            case 14:
-              _context7.prev = 14;
-              _context7.t0 = _context7["catch"](0);
-              console.error("Error sending message to tab:", _context7.t0);
+            case 13:
+              console.warn("[Background] No active tab found");
+              return _context22.abrupt("return");
+            case 15:
+              _context22.next = 17;
+              return chrome.tabs.sendMessage(tabId, message);
             case 17:
+              console.log("[Background] Message sent to tab ".concat(tabId, ":"), message.action);
+              _context22.next = 24;
+              break;
+            case 20:
+              _context22.prev = 20;
+              _context22.t0 = _context22["catch"](0);
+              console.error("[Background] Error sending message to tab:", _context22.t0);
+
+              // Clear stored tab ID if it's invalid
+              if (_context22.t0.message && _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_18__(_context21 = _context22.t0.message).call(_context21, 'No tab with id')) {
+                this.extensionState.lastActiveTabId = null;
+              }
+            case 24:
             case "end":
-              return _context7.stop();
+              return _context22.stop();
           }
-        }, _callee3, null, [[0, 14]]);
+        }, _callee9, this, [[0, 20]]);
       }));
-      function sendMessageToActiveTab(_x) {
+      function sendMessageToActiveTab(_x6) {
         return _sendMessageToActiveTab.apply(this, arguments);
       }
       return sendMessageToActiveTab;
     }()
+    /**
+     * Generate a unique session ID for grouping related translations
+     */
+    )
+  }, {
+    key: "generateSessionId",
+    value: function generateSessionId() {
+      var _context23;
+      return _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_15__(_context23 = "session_".concat(_babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_16__(), "_")).call(_context23, Math.random().toString(36).substr(2, 9));
+    }
+
+    /**
+     * Calculate approximate memory usage for monitoring
+     */
+  }, {
+    key: "calculateMemoryUsage",
+    value: function calculateMemoryUsage() {
+      try {
+        var jsonString = _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_20__(this.translations);
+        return {
+          bytes: jsonString.length,
+          kilobytes: Math.round(jsonString.length / 1024),
+          translationCount: this.translations.length
+        };
+      } catch (error) {
+        return {
+          error: 'Unable to calculate memory usage'
+        };
+      }
+    }
+
+    /**
+     * Get comprehensive background script status for debugging
+     */
+  }, {
+    key: "getStatus",
+    value: function getStatus() {
+      return {
+        initialized: this.extensionState.isInitialized,
+        sidebarConnected: this.extensionState.sidebarConnected,
+        activeTabId: this.extensionState.lastActiveTabId,
+        translationCount: this.translations.length,
+        stats: this.translationStats,
+        memoryUsage: this.calculateMemoryUsage()
+      };
+    }
   }]);
-}(); // Initialize the background handler
-new BackgroundHandler();
+}(); // Initialize the enhanced background handler with translation management
+var backgroundHandler = new BackgroundHandler();
+
+// Make it globally accessible for debugging and testing
+_babel_runtime_corejs3_core_js_global_this__WEBPACK_IMPORTED_MODULE_21__.backgroundHandler = backgroundHandler;
+console.log('[Background] Enhanced background script with translation management loaded');
 
 /***/ })
 
@@ -12544,7 +14554,7 @@ new BackgroundHandler();
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("adcf10151eeab4adf1b2")
+/******/ 		__webpack_require__.h = () => ("f0ef4a18b5e04acf6461")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

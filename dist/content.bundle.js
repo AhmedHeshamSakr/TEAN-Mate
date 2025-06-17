@@ -60914,15 +60914,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
 /* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
-
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
 
 
 
@@ -60977,36 +60975,40 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     value: function () {
       var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee() {
         var _this = this;
-        var _context3, serverAvailable, videoTrack, _context, _context2, settings, offer, response, answer;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+        var _context, serverAvailable, offer, response, answer;
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               if (!this.isActive) {
-                _context4.next = 3;
+                _context2.next = 3;
                 break;
               }
               console.log("[SignLanguageHandler] Already active");
-              return _context4.abrupt("return", true);
+              return _context2.abrupt("return", true);
             case 3:
-              _context4.prev = 3;
+              _context2.prev = 3;
+              console.log("[SignLanguageHandler] Starting activation process");
+
+              // Step 1: Test server connectivity
               console.log("[SignLanguageHandler] Step 1: Testing server connectivity");
-              _context4.next = 7;
+              _context2.next = 8;
               return this.pingServer();
-            case 7:
-              serverAvailable = _context4.sent;
+            case 8:
+              serverAvailable = _context2.sent;
+              console.log("[SignLanguageHandler] Server availability:", serverAvailable);
               if (serverAvailable) {
-                _context4.next = 10;
+                _context2.next = 12;
                 break;
               }
               throw new Error("Python MediaPipe server is not available");
-            case 10:
+            case 12:
+              // Step 2: Create video elements
               console.log("[SignLanguageHandler] Step 2: Creating video elements");
               this.createVideoElements();
-              console.log("[SignLanguageHandler] Step 3: Requesting optimized screen sharing");
 
-              // Smart capture constraints for optimal performance
-              // The browser will capture at an efficient size, and the server will optimize further
-              _context4.next = 15;
+              // Step 3: Request screen sharing
+              console.log("[SignLanguageHandler] Step 3: Requesting screen sharing");
+              _context2.next = 17;
               return navigator.mediaDevices.getDisplayMedia({
                 video: {
                   cursor: 'always',
@@ -61016,50 +61018,62 @@ var SignLanguageHandler = /*#__PURE__*/function () {
                   },
                   width: {
                     ideal: 1280,
-                    // Reasonable starting point for capture
-                    max: 1920 // Prevent excessively large captures
+                    max: 1920
                   },
                   height: {
                     ideal: 720,
-                    // Good balance for processing
-                    max: 1080 // Reasonable maximum
+                    max: 1080
                   }
                 },
                 audio: false
               });
-            case 15:
-              this.stream = _context4.sent;
-              // Log capture information for monitoring (console only, not UI clutter)
-              videoTrack = this.stream.getVideoTracks()[0];
-              if (videoTrack) {
-                settings = videoTrack.getSettings();
-                console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__(_context = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__(_context2 = "[SignLanguageHandler] Browser capture: ".concat(settings.width, "x")).call(_context2, settings.height, "@")).call(_context, settings.frameRate, "fps"));
-              }
+            case 17:
+              this.stream = _context2.sent;
+              console.log("[SignLanguageHandler] Screen sharing granted, stream obtained:", this.stream);
+
+              // Step 4: Set up video element
               this.videoElement.srcObject = this.stream;
-              _context4.next = 21;
+              _context2.next = 22;
               return this.videoElement.play();
-            case 21:
-              this.stream.getVideoTracks()[0].onended = function () {
-                console.log("[SignLanguageHandler] Screen sharing stopped by user");
-                _this.deactivate();
-                window.dispatchEvent(new CustomEvent('screenSharingEnded'));
-              };
-              console.log("[SignLanguageHandler] Step 4: Creating WebRTC connection");
+            case 22:
+              console.log("[SignLanguageHandler] Video element playing");
+
+              // Step 5: Create RTCPeerConnection
+              console.log("[SignLanguageHandler] Step 5: Creating RTCPeerConnection");
               this.peerConnection = new RTCPeerConnection({
                 iceServers: [{
                   urls: 'stun:stun.l.google.com:19302'
                 }]
               });
+
+              // Add comprehensive connection state monitoring
               this.peerConnection.onconnectionstatechange = function () {
-                console.log("[SignLanguageHandler] Connection state: ".concat(_this.peerConnection.connectionState));
-                if (_this.peerConnection.connectionState === 'disconnected' || _this.peerConnection.connectionState === 'failed' || _this.peerConnection.connectionState === 'closed') {
+                console.log("[SignLanguageHandler] Connection state changed to: ".concat(_this.peerConnection.connectionState));
+                if (_this.peerConnection.connectionState === 'connected') {
+                  console.log('[SignLanguageHandler] WebRTC connection successfully established!');
+                } else if (_this.peerConnection.connectionState === 'failed') {
+                  console.error('[SignLanguageHandler] WebRTC connection failed!');
                   _this.deactivate();
                 }
               };
 
-              // Create data channel with clean message handling
+              // Monitor ICE connection state
+              this.peerConnection.oniceconnectionstatechange = function () {
+                console.log("[SignLanguageHandler] ICE connection state: ".concat(_this.peerConnection.iceConnectionState));
+              };
+
+              // Monitor ICE gathering state
+              this.peerConnection.onicegatheringstatechange = function () {
+                console.log("[SignLanguageHandler] ICE gathering state: ".concat(_this.peerConnection.iceGatheringState));
+              };
+
+              // Step 6: Create data channel BEFORE adding tracks
+              console.log("[SignLanguageHandler] Step 6: Creating data channel");
               this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
               this.setupDataChannelHandlers();
+              console.log("[SignLanguageHandler] Data channel created and handlers set up");
+
+              // Step 7: Set up track handler
               this.peerConnection.ontrack = function (event) {
                 console.log("[SignLanguageHandler] Received ".concat(event.track.kind, " track from server"));
                 _this.displayElement.srcObject = new MediaStream([event.track]);
@@ -61068,88 +61082,99 @@ var SignLanguageHandler = /*#__PURE__*/function () {
                 });
               };
 
-              // Add stream tracks to peer connection
-              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_5__(_context3 = this.stream.getTracks()).call(_context3, function (track) {
+              // Step 8: Add tracks to peer connection
+              console.log("[SignLanguageHandler] Step 8: Adding tracks to peer connection");
+              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context = this.stream.getTracks()).call(_context, function (track) {
                 console.log("[SignLanguageHandler] Adding ".concat(track.kind, " track to peer connection"));
                 _this.peerConnection.addTrack(track, _this.stream);
               });
-              console.log("[SignLanguageHandler] Step 5: Creating and sending offer");
-              _context4.next = 32;
+
+              // Step 9: Create and send offer
+              console.log("[SignLanguageHandler] Step 9: Creating offer");
+              _context2.next = 38;
               return this.peerConnection.createOffer();
-            case 32:
-              offer = _context4.sent;
-              _context4.next = 35;
+            case 38:
+              offer = _context2.sent;
+              console.log("[SignLanguageHandler] Offer created:", offer);
+              _context2.next = 42;
               return this.peerConnection.setLocalDescription(offer);
-            case 35:
-              _context4.next = 37;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_6__(function (resolve) {
+            case 42:
+              console.log("[SignLanguageHandler] Local description set");
+
+              // Step 10: Wait for ICE gathering to complete
+              console.log("[SignLanguageHandler] Step 10: Waiting for ICE gathering");
+              _context2.next = 46;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_5__(function (resolve) {
                 if (_this.peerConnection.iceGatheringState === 'complete') {
+                  console.log("[SignLanguageHandler] ICE gathering already complete");
                   resolve();
                 } else {
                   _this.peerConnection.onicegatheringstatechange = function () {
+                    console.log("[SignLanguageHandler] ICE gathering state changed to: ".concat(_this.peerConnection.iceGatheringState));
                     if (_this.peerConnection.iceGatheringState === 'complete') {
+                      console.log("[SignLanguageHandler] ICE gathering completed");
                       resolve();
                     }
                   };
                 }
               });
-            case 37:
-              _context4.next = 39;
+            case 46:
+              // Step 11: Send offer to server
+              console.log("[SignLanguageHandler] Step 11: Sending offer to server");
+              _context2.next = 49;
               return fetch("".concat(this.serverUrl, "/offer"), {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_7__({
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_6__({
                   sdp: {
                     type: this.peerConnection.localDescription.type,
                     sdp: this.peerConnection.localDescription.sdp
                   }
                 })
               });
-            case 39:
-              response = _context4.sent;
+            case 49:
+              response = _context2.sent;
+              console.log("[SignLanguageHandler] Server response status:", response.status);
               if (response.ok) {
-                _context4.next = 42;
+                _context2.next = 53;
                 break;
               }
               throw new Error("Server responded with status: ".concat(response.status));
-            case 42:
-              _context4.next = 44;
+            case 53:
+              _context2.next = 55;
               return response.json();
-            case 44:
-              answer = _context4.sent;
-              _context4.next = 47;
+            case 55:
+              answer = _context2.sent;
+              console.log("[SignLanguageHandler] Received answer from server:", answer);
+
+              // Step 12: Set remote description
+              console.log("[SignLanguageHandler] Step 12: Setting remote description");
+              _context2.next = 60;
               return this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer.sdp));
-            case 47:
-              console.log("[SignLanguageHandler] WebRTC connection established successfully");
+            case 60:
+              console.log("[SignLanguageHandler] Remote description set successfully");
+              console.log("[SignLanguageHandler] WebRTC connection process completed");
               this.isActive = true;
               this.showVideoContainer();
-
-              // Request data from server periodically (but don't clutter the UI with it)
-              this.landmarksInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_8__(function () {
-                if (_this.dataChannel && _this.dataChannel.readyState === 'open') {
-                  _this.dataChannel.send('get_landmarks');
-                  _this.dataChannel.send('get_performance');
-                }
-              }, 2000);
-              return _context4.abrupt("return", true);
-            case 54:
-              _context4.prev = 54;
-              _context4.t0 = _context4["catch"](3);
-              console.error('[SignLanguageHandler] Error activating screen sharing:', _context4.t0);
+              return _context2.abrupt("return", true);
+            case 67:
+              _context2.prev = 67;
+              _context2.t0 = _context2["catch"](3);
+              console.error('[SignLanguageHandler] Error during activation:', _context2.t0);
               this.cleanupResources();
               window.dispatchEvent(new CustomEvent('screenSharingFailed', {
                 detail: {
-                  reason: _context4.t0.message || _context4.t0.name || "Unknown error"
+                  reason: _context2.t0.message || _context2.t0.name || "Unknown error"
                 }
               }));
-              return _context4.abrupt("return", false);
-            case 60:
+              return _context2.abrupt("return", false);
+            case 73:
             case "end":
-              return _context4.stop();
+              return _context2.stop();
           }
-        }, _callee, this, [[3, 54]]);
+        }, _callee, this, [[3, 67]]);
       }));
       function activate() {
         return _activate.apply(this, arguments);
@@ -61164,26 +61189,30 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     key: "setupDataChannelHandlers",
     value: function setupDataChannelHandlers() {
       var _this2 = this;
+      console.log("[SignLanguageHandler] Setting up data channel handlers");
       this.dataChannel.onopen = function () {
-        console.log("[SignLanguageHandler] Data channel opened - requesting initial data");
+        console.log("[SignLanguageHandler] 🎉 DATA CHANNEL OPENED SUCCESSFULLY!");
         _this2.updateConnectionStatus('connected');
-        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_9__(function () {
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_7__(function () {
           if (_this2.dataChannel.readyState === 'open') {
+            console.log("[SignLanguageHandler] Sending initial requests to server");
             _this2.dataChannel.send('get_landmarks');
             _this2.dataChannel.send('get_performance');
           }
         }, 1000);
       };
       this.dataChannel.onclose = function () {
-        console.log("[SignLanguageHandler] Data channel closed");
+        console.log("[SignLanguageHandler] ❌ Data channel closed");
         _this2.updateConnectionStatus('disconnected');
       };
+      this.dataChannel.onerror = function (error) {
+        console.error("[SignLanguageHandler] ❌ Data channel error:", error);
+      };
       this.dataChannel.onmessage = function (event) {
+        console.log("[SignLanguageHandler] 📨 Received message from server:", event.data);
         try {
           var data = JSON.parse(event.data);
-          if (_this2.showDetailedInfo) {
-            console.log('[SignLanguageHandler] Received data:', data.type, data);
-          }
+          console.log('[SignLanguageHandler] Parsed message:', data.type, data);
 
           // Handle different types of server messages
           if (data.type === 'holistic_landmarks') {
@@ -61192,6 +61221,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
             _this2.processPerformanceData(data);
           } else if (data.type === 'translation') {
             // NEW: Handle translation messages from the server
+            console.log("[SignLanguageHandler] 🤟 Translation message received:", data.text);
             _this2.processTranslationData(data);
           } else if (data.type === 'stats' && data.fps !== undefined) {
             _this2.fps = data.fps;
@@ -61217,7 +61247,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
 
       // Store for reference
       this.lastLandmarkUpdate = {
-        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_10__(),
+        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__(),
         frame_id: data.frame_id,
         quality_score: data.quality_score,
         processing_scale: data.processing_scale
@@ -61234,7 +61264,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
           face: this.faceLandmarks,
           pose: this.poseLandmarks,
           fps: this.fps,
-          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_10__(),
+          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__(),
           frameId: data.frame_id,
           qualityScore: data.quality_score
         }
@@ -61253,7 +61283,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       // Store the translation data
       this.lastTranslation = {
         text: data.text,
-        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_10__(),
+        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_8__(),
         confidence: data.confidence || null,
         // if server provides confidence scores
         words: data.words || null // if server provides individual words
@@ -61331,8 +61361,8 @@ var SignLanguageHandler = /*#__PURE__*/function () {
 
       // Log detailed performance info to console only
       if (this.showDetailedInfo) {
-        var _context5, _context6, _data$output_fps, _data$avg_processing_, _data$quality_score;
-        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__(_context5 = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_4__(_context6 = "[SignLanguageHandler] Server performance: ".concat(((_data$output_fps = data.output_fps) === null || _data$output_fps === void 0 ? void 0 : _data$output_fps.toFixed(1)) || 'N/A', " FPS, ")).call(_context6, ((_data$avg_processing_ = data.avg_processing_ms) === null || _data$avg_processing_ === void 0 ? void 0 : _data$avg_processing_.toFixed(1)) || 'N/A', "ms processing, Quality: ")).call(_context5, ((_data$quality_score = data.quality_score) === null || _data$quality_score === void 0 ? void 0 : _data$quality_score.toFixed(2)) || 'N/A'));
+        var _context3, _context4, _data$output_fps, _data$avg_processing_, _data$quality_score;
+        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_9__(_context3 = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_9__(_context4 = "[SignLanguageHandler] Server performance: ".concat(((_data$output_fps = data.output_fps) === null || _data$output_fps === void 0 ? void 0 : _data$output_fps.toFixed(1)) || 'N/A', " FPS, ")).call(_context4, ((_data$avg_processing_ = data.avg_processing_ms) === null || _data$avg_processing_ === void 0 ? void 0 : _data$avg_processing_.toFixed(1)) || 'N/A', "ms processing, Quality: ")).call(_context3, ((_data$quality_score = data.quality_score) === null || _data$quality_score === void 0 ? void 0 : _data$quality_score.toFixed(2)) || 'N/A'));
       }
     }
 
@@ -61576,8 +61606,8 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         this.peerConnection = null;
       }
       if (this.stream) {
-        var _context7;
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_5__(_context7 = this.stream.getTracks()).call(_context7, function (track) {
+        var _context5;
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_4__(_context5 = this.stream.getTracks()).call(_context5, function (track) {
           return track.stop();
         });
         this.stream = null;
@@ -61603,39 +61633,39 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     value: function () {
       var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.mark(function _callee2() {
         var response, data;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee2$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_3__.wrap(function _callee2$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              _context8.prev = 0;
+              _context6.prev = 0;
               console.log('[SignLanguageHandler] Testing server connection...');
-              _context8.next = 4;
+              _context6.next = 4;
               return fetch("".concat(this.serverUrl, "/ping"));
             case 4:
-              response = _context8.sent;
+              response = _context6.sent;
               if (!response.ok) {
-                _context8.next = 13;
+                _context6.next = 13;
                 break;
               }
-              _context8.next = 8;
+              _context6.next = 8;
               return response.json();
             case 8:
-              data = _context8.sent;
+              data = _context6.sent;
               console.log("[SignLanguageHandler] Server responded: ".concat(data.message));
-              return _context8.abrupt("return", true);
+              return _context6.abrupt("return", true);
             case 13:
               console.log("[SignLanguageHandler] Server returned status: ".concat(response.status));
-              return _context8.abrupt("return", false);
+              return _context6.abrupt("return", false);
             case 15:
-              _context8.next = 21;
+              _context6.next = 21;
               break;
             case 17:
-              _context8.prev = 17;
-              _context8.t0 = _context8["catch"](0);
-              console.error("[SignLanguageHandler] Server connection test failed: ".concat(_context8.t0.message));
-              return _context8.abrupt("return", false);
+              _context6.prev = 17;
+              _context6.t0 = _context6["catch"](0);
+              console.error("[SignLanguageHandler] Server connection test failed: ".concat(_context6.t0.message));
+              return _context6.abrupt("return", false);
             case 21:
             case "end":
-              return _context8.stop();
+              return _context6.stop();
           }
         }, _callee2, this, [[0, 17]]);
       }));
@@ -61647,12 +61677,12 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "getDebugInfo",
     value: function getDebugInfo() {
-      var _context9;
+      var _context7;
       return {
         isActive: this.isActive,
         connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
         dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
-        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_11__(_context9 = this.stream.getVideoTracks()).call(_context9, function (track) {
+        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_10__(_context7 = this.stream.getVideoTracks()).call(_context7, function (track) {
           return track.readyState === 'live';
         }),
         fps: this.fps,
@@ -69918,26 +69948,22 @@ var ContentHandler = /*#__PURE__*/function () {
         console.log('[CONTENT] Received captioning deactivation');
         this.imageCaptionHandler.deactivate();
       } else if (request.action === "startScreenCapture") {
-        console.log('[CONTENT] Received screen capture activation');
-
-        // Check server connectivity first
+        console.log('[CONTENT] Screen capture activation requested');
         this.checkServerConnectivity().then(function (serverAvailable) {
+          console.log('[CONTENT] Server connectivity check result:', serverAvailable);
           if (!serverAvailable) {
-            // Server not available, notify about it
+            console.log('[CONTENT] Server not available, showing notification');
             chrome.runtime.sendMessage({
               action: "screenSharingStatus",
               status: 'Error',
               message: "Python MediaPipe server is not running"
             });
-
-            // Show notification to start server
             _this3.showServerNotification();
             return;
           }
-
-          // Proceed with activation if server is available
+          console.log('[CONTENT] Server available, proceeding with SignLanguageHandler activation');
           _this3.signLanguageHandler.activate().then(function (success) {
-            // Notify sidebar of activation result
+            console.log('[CONTENT] SignLanguageHandler activation result:', success);
             chrome.runtime.sendMessage({
               action: "screenSharingStatus",
               status: success ? 'Active' : 'Error'
@@ -69947,7 +69973,11 @@ var ContentHandler = /*#__PURE__*/function () {
             } else {
               console.error('[CONTENT] Failed to activate screen sharing with MediaPipe Holistic');
             }
+          })["catch"](function (error) {
+            console.error('[CONTENT] SignLanguageHandler activation failed with error:', error);
           });
+        })["catch"](function (error) {
+          console.error('[CONTENT] Server connectivity check failed:', error);
         });
       } else if (request.action === "stopScreenCapture") {
         console.log('[CONTENT] Received screen capture deactivation');
@@ -72371,7 +72401,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("adcf10151eeab4adf1b2")
+/******/ 		__webpack_require__.h = () => ("f0ef4a18b5e04acf6461")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
