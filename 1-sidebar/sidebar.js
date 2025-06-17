@@ -2,6 +2,7 @@ import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
 import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js"; 
 import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
 import SignLanguageHandler from "../2-features/SignLanguage/SignLanguageHandler.js"; 
+import { Document, Packer, Paragraph, TextRun } from "docx";
 
 // Update the SidebarController
 class SidebarController {
@@ -228,37 +229,54 @@ class SidebarController {
             return;
         }
 
+        // Get file format and save location from settings with proper error handling
+        let fileFormat = 'txt'; // Default format
+        let saveLocation = 'TEAN Mate Transcriptions'; // Default location
         try {
-            // Get file format from settings with proper error handling
-            let fileFormat = 'txt'; // Default format
             const settings = await this.getSettings();
-            if (settings && settings.defaultFileFormat) {
-                fileFormat = settings.defaultFileFormat;
+            if (settings) {
+                if (settings.defaultFileFormat) {
+                    fileFormat = settings.defaultFileFormat;
+                }
+                if (settings.defaultSaveLocation) {
+                    saveLocation = settings.defaultSaveLocation;
+                }
             }
+        } catch (settingsError) {
+            console.warn("Could not load settings, using defaults:", settingsError);
+        }
 
+        try {
             let blob;
             let filename;
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
             switch (fileFormat) {
-                case 'docx':
-                    // For now, save as plain text with .docx extension
-                    // TODO: Implement proper DOCX conversion
-                    blob = new Blob([this.accumulatedSpeech], { type: 'text/plain' });
+                case 'docx': {
+                    // Use docx library to create a real Word document
+                    const doc = new Document({
+                        sections: [{
+                            properties: {},
+                            children: [
+                                new Paragraph({
+                                    children: [
+                                        new TextRun(this.accumulatedSpeech)
+                                    ]
+                                })
+                            ]
+                        }]
+                    });
+                    blob = await Packer.toBlob(doc);
                     filename = `speech_${timestamp}.docx`;
                     break;
-
-                case 'srt':
+                }
+                case 'srt': {
                     const srtContent = this.convertToSRTWithTimestamps();
-                    if (!srtContent) {
-                        throw new Error("No valid speech segments to convert to SRT");
-                    }
-                    blob = new Blob([srtContent], { type: 'text/plain' });
+                    blob = new Blob([srtContent], { type: 'application/x-subrip' });
                     filename = `speech_${timestamp}.srt`;
                     break;
-
-                case 'json':
-                    // Create a structured JSON with metadata
+                }
+                case 'json': {
                     const startTime = this.speechSegments[0]?.timestamp || 0;
                     const jsonData = {
                         text: this.accumulatedSpeech,
@@ -273,28 +291,36 @@ class SidebarController {
                     blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
                     filename = `speech_${timestamp}.json`;
                     break;
-
+                }
                 case 'txt':
-                default:
+                default: {
                     blob = new Blob([this.accumulatedSpeech], { type: 'text/plain' });
                     filename = `speech_${timestamp}.txt`;
                     break;
+                }
             }
 
-            // Create and trigger download
+            // Create a temporary URL for the blob
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a); // Append to body to ensure it works in all browsers
-            a.click();
-            document.body.removeChild(a); // Clean up
-            URL.revokeObjectURL(url);
 
-            this.updateStatusMessage(`Speech saved as ${filename}`, "success");
+            // Use Chrome's downloads API to save the file
+            chrome.downloads.download({
+                url: url,
+                filename: `${saveLocation}/${filename}`,
+                saveAs: false
+            }, (downloadId) => {
+                if (chrome.runtime.lastError) {
+                    console.error("Error saving file:", chrome.runtime.lastError);
+                    this.updateStatusMessage("Error saving speech");
+                } else {
+                    this.updateStatusMessage(`Speech saved as ${filename} in ${saveLocation} folder`);
+                }
+                // Clean up the temporary URL
+                URL.revokeObjectURL(url);
+            });
         } catch (error) {
             console.error("Error saving speech:", error);
-            this.updateStatusMessage(`Error saving speech: ${error.message}`, "error");
+            this.updateStatusMessage("Error saving speech");
         }
     }
     

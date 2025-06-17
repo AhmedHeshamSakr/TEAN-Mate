@@ -45,6 +45,7 @@
     "@mediapipe/pose": "^0.5.1675469404",
     "artyom.js": "^1.0.6",
     "bootstrap": "^5.3.0",
+    "docx": "^9.5.1",
     "path": "^0.12.7",
     "path-browserify": "^1.0.1"
   }
