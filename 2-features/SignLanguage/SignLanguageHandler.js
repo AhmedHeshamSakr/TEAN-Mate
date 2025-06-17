@@ -2,7 +2,7 @@
 export default class SignLanguageHandler {
     constructor() {
         this.isActive = false;
-        this.serverUrl = 'http://localhost:8765';
+        this.serverUrl = 'http://localhost:8766';
         this.peerConnection = null;
         this.dataChannel = null;
         this.stream = null;
@@ -214,6 +214,13 @@ export default class SignLanguageHandler {
                     this.dataChannel.send('get_performance');
                 }
             }, 1000);
+            this.landmarkInterval = setInterval(() => {
+            if (this.dataChannel.readyState === 'open') {
+            console.log("[SignLanguageHandler] Sending periodic requests to server");
+            this.dataChannel.send('get_translation'); // NEW: Request translation data
+                }
+            }, 1000);
+
         };
         
         this.dataChannel.onclose = () => {
@@ -226,7 +233,7 @@ export default class SignLanguageHandler {
         };
         
         this.dataChannel.onmessage = (event) => {
-            console.log("[SignLanguageHandler] 📨 Received message from server:", event.data);
+            // console.log("[SignLanguageHandler] 📨 Received message from server:", event.data);
             
             try {
                 const data = JSON.parse(event.data);
@@ -239,7 +246,7 @@ export default class SignLanguageHandler {
                     this.processPerformanceData(data);
                 } else if (data.type === 'translation') {
                     // NEW: Handle translation messages from the server
-                    console.log("[SignLanguageHandler] 🤟 Translation message received:", data.text);
+                    console.log("[SignLanguageHandler] 🤟 Translation message received:", data);
                     this.processTranslationData(data);
                 } else if (data.type === 'stats' && data.fps !== undefined) {
                     this.fps = data.fps;
