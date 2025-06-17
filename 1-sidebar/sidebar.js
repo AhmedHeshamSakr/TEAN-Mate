@@ -144,6 +144,12 @@ class SidebarController {
 
     // Initialize UI elements that need event listeners
     initializeUIElements() {
+        // Add listener for TTS mode change
+        const ttsModeSelect = document.getElementById('tts-mode-select');
+        if (ttsModeSelect) {
+            ttsModeSelect.addEventListener('change', this.handleTTSModeChange.bind(this));
+        }
+
         // Add listener for mode change
         const modeSelect = document.getElementById('stt-mode-select');
         if (modeSelect) {
@@ -870,6 +876,27 @@ class SidebarController {
                console.warn(`Unknown action: ${action}`);
                this.updateStatusMessage(`Unknown action: ${action}`);
        }
+   }
+
+   // Handle TTS mode change
+   handleTTSModeChange(event) {
+       const mode = event.target.value;
+       console.log(`TTS mode changed to: ${mode}`);
+       
+       // Stop any active reading
+       if (this.ttsActive) {
+           this.sendMessageToActiveTab({ action: "stopTTS" });
+           this.setTTSActive(false);
+       }
+       
+       // Send the new reading mode to content script
+       this.sendMessageToActiveTab({
+           action: "setReadingMode",
+           mode: mode
+       });
+       
+       // Update status message
+       this.updateStatusMessage(`Reading mode set to: ${mode}`);
    }
 }
 

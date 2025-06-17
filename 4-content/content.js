@@ -498,6 +498,18 @@ class ContentHandler {
             return;
         }
 
+        if (request.action === "setReadingMode") {
+            console.log('[CONTENT] Setting reading mode to:', request.mode);
+            // Only need to check for selected text mode, everything else is "all content"
+            this.readSelectedTextOnly = request.mode === 'selected';
+            // Update settings to persist the change
+            this.getSettings((settings) => {
+                settings.readingElement = request.mode;
+                chrome.storage.sync.set({ settings: settings });
+            });
+            return;
+        }
+
         if (request.action === "activateImageCaptioning") {
             console.log('[CONTENT] Received captioning activation');
             this.imageCaptionHandler.setCaptionType(request.captionType);
