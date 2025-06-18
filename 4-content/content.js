@@ -60,6 +60,7 @@ class ContentHandler {
         this.isReadingActive = false;
         this.wasSpeaking = false;
         this.settings = null;
+        this.readSelectedTextOnly = false;
         this.initializeSettings();
 
         this.currentElement = null;
@@ -137,14 +138,28 @@ class ContentHandler {
     }
 
     getSettings(callback) {
-        // Try to get settings from sync storage first
-        chrome.storage.sync.get('settings', function(data) {
-            if (data.settings) {
-                callback(data.settings);
-            } else {
-                // Fall back to local storage if not found in sync
-                chrome.storage.local.get('settings', function(localData) {
+        // First check the storage preference
+        chrome.storage.local.get('settings', function(localData) {
+            if (localData.settings && localData.settings.dataStorage) {
+                const storagePreference = localData.settings.dataStorage;
+                
+                if (storagePreference === 'sync') {
+                    // Load from sync storage
+                    chrome.storage.sync.get('settings', function(syncData) {
+                        callback(syncData.settings || {});
+                    });
+                } else {
+                    // Load from local storage
                     callback(localData.settings || {});
+                }
+            } else {
+                // If no preference is set, try both storages
+                chrome.storage.sync.get('settings', function(syncData) {
+                    if (syncData.settings) {
+                        callback(syncData.settings);
+                    } else {
+                        callback(localData.settings || {});
+                    }
                 });
             }
         });
@@ -158,7 +173,6 @@ class ContentHandler {
             self.settings = settings;
             self.highlightWhileReading = settings.highlightText || false;
             self.badge = settings.showIconBadge || false;
-            self.readSelectedTextOnly = settings.readingElement === 'selected';
             // Example: Use TTS rate setting
             const ttsRate = settings.ttsRate || 1.0;
             console.log('Using TTS rate:', ttsRate);
@@ -495,6 +509,13 @@ class ContentHandler {
         // Reset reading state if we're on a new page
         if (request.action === "pageLoad") {
             this.resetReadingState();
+            return;
+        }
+
+        if (request.action === "setReadingMode") {
+            console.log('[CONTENT] Setting reading mode to:', request.mode);
+            // Only need to check for selected text mode, everything else is "all content"
+            this.readSelectedTextOnly = request.mode === 'selected';
             return;
         }
 

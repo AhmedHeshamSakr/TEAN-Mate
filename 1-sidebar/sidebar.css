@@ -471,3 +471,18 @@ img[data-caption-loading] {
     border: 2px solid #ffffff;
     color: #ffffff;
 }
+
+.tts-controls {
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 0.25rem;
+}
+
+.tts-controls .form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.tts-controls .small {
+    color: #6c757d;
+}

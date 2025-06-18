@@ -2,6 +2,7 @@ import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
 import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js"; 
 import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
 import SignLanguageHandler from "../2-features/SignLanguage/SignLanguageHandler.js"; 
+import { Document, Packer, Paragraph, TextRun } from "docx";
 
 // Update the SidebarController
 class SidebarController {
@@ -15,7 +16,8 @@ class SidebarController {
         this.pushToTalkActive = false;
         this.screenSharingActive = false; // Track if screen sharing is active
         this.ttsActive = false; // Add a state tracking variable for TTS
-        this.accumulatedSpeech = ''; // Track accumulated speech for continuous mode
+        this.accumulatedSpeech = '';
+        this.speechSegments = []; // Array to store speech segments with timestamps
         this.debugModeActive = false; // Track if debug visualization is active
         
         this.initialize(); // Set up event listeners and initial state
@@ -51,9 +53,11 @@ class SidebarController {
     
         // Get sidebar position and theme preferences
         const self = this;
-        this.getSettings(function(settings) {
+        this.getSettings().then((settings) => {
             // Apply theme
             self.applyTheme(settings.theme || 'system');
+        }).catch((error) => {
+            console.error("Error loading settings:", error);
         });
         this.setupSystemThemeListener(); 
     
@@ -144,6 +148,12 @@ class SidebarController {
 
     // Initialize UI elements that need event listeners
     initializeUIElements() {
+        // Add listener for TTS mode change
+        const ttsModeSelect = document.getElementById('tts-mode-select');
+        if (ttsModeSelect) {
+            ttsModeSelect.addEventListener('change', this.handleTTSModeChange.bind(this));
+        }
+
         // Add listener for mode change
         const modeSelect = document.getElementById('stt-mode-select');
         if (modeSelect) {
@@ -213,20 +223,146 @@ class SidebarController {
             });
     }
     
-    handleSaveSpeech() {
-        if (!this.accumulatedSpeech) return;
+    async handleSaveSpeech() {
+        if (!this.accumulatedSpeech) {
+            this.updateStatusMessage("No speech to save", "error");
+            return;
+        }
+
+        // Get file format and save location from settings with proper error handling
+        let fileFormat = 'txt'; // Default format
+        let saveLocation = 'TEAN Mate Transcriptions'; // Default location
+        try {
+            const settings = await this.getSettings();
+            if (settings) {
+                if (settings.defaultFileFormat) {
+                    fileFormat = settings.defaultFileFormat;
+                }
+                if (settings.defaultSaveLocation) {
+                    saveLocation = settings.defaultSaveLocation;
+                }
+            }
+        } catch (settingsError) {
+            console.warn("Could not load settings, using defaults:", settingsError);
+        }
+
+        try {
+            let blob;
+            let filename;
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+            switch (fileFormat) {
+                case 'docx': {
+                    // Use docx library to create a real Word document
+                    const doc = new Document({
+                        sections: [{
+                            properties: {},
+                            children: [
+                                new Paragraph({
+                                    children: [
+                                        new TextRun(this.accumulatedSpeech)
+                                    ]
+                                })
+                            ]
+                        }]
+                    });
+                    blob = await Packer.toBlob(doc);
+                    filename = `speech_${timestamp}.docx`;
+                    break;
+                }
+                case 'srt': {
+                    const srtContent = this.convertToSRTWithTimestamps();
+                    blob = new Blob([srtContent], { type: 'application/x-subrip' });
+                    filename = `speech_${timestamp}.srt`;
+                    break;
+                }
+                case 'json': {
+                    const startTime = this.speechSegments[0]?.timestamp || 0;
+                    const jsonData = {
+                        text: this.accumulatedSpeech,
+                        timestamp: new Date().toISOString(),
+                        segments: this.speechSegments.map(segment => ({
+                            text: segment.text,
+                            timestamp: segment.timestamp,
+                            relativeTime: segment.timestamp - startTime,
+                            formattedTime: this.formatRelativeTime(segment.timestamp - startTime)
+                        }))
+                    };
+                    blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+                    filename = `speech_${timestamp}.json`;
+                    break;
+                }
+                case 'txt':
+                default: {
+                    blob = new Blob([this.accumulatedSpeech], { type: 'text/plain' });
+                    filename = `speech_${timestamp}.txt`;
+                    break;
+                }
+            }
+
+            // Create a temporary URL for the blob
+            const url = URL.createObjectURL(blob);
+
+            // Use Chrome's downloads API to save the file
+            chrome.downloads.download({
+                url: url,
+                filename: `${saveLocation}/${filename}`,
+                saveAs: false
+            }, (downloadId) => {
+                if (chrome.runtime.lastError) {
+                    console.error("Error saving file:", chrome.runtime.lastError);
+                    this.updateStatusMessage("Error saving speech");
+                } else {
+                    this.updateStatusMessage(`Speech saved as ${filename} in ${saveLocation} folder`);
+                }
+                // Clean up the temporary URL
+                URL.revokeObjectURL(url);
+            });
+        } catch (error) {
+            console.error("Error saving speech:", error);
+            this.updateStatusMessage("Error saving speech");
+        }
+    }
+    
+    convertToSRTWithTimestamps() {
+        if (this.speechSegments.length === 0) return '';
         
-        const blob = new Blob([this.accumulatedSpeech], {type: 'text/plain'});
-        const url = URL.createObjectURL(blob);
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        let srtContent = '';
+        const startTime = this.speechSegments[0].timestamp;
         
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `speech-text-${timestamp}.txt`;
-        a.click();
+        this.speechSegments.forEach((segment, index) => {
+            if (!segment.text.trim()) return;
+            
+            // Calculate relative timestamps in seconds
+            const relativeStartTime = (segment.timestamp - startTime) / 1000;
+            const relativeEndTime = index < this.speechSegments.length - 1 
+                ? (this.speechSegments[index + 1].timestamp - startTime) / 1000
+                : relativeStartTime + 3; // If it's the last segment, add 3 seconds
+            
+            srtContent += `${index + 1}\n`;
+            srtContent += `${this.formatSRTTime(relativeStartTime)} --> ${this.formatSRTTime(relativeEndTime)}\n`;
+            srtContent += `${segment.text.trim()}\n\n`;
+        });
         
-        URL.revokeObjectURL(url);
-        this.updateStatusMessage('Text saved as file');
+        return srtContent;
+    }
+
+    formatSRTTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = Math.floor(seconds % 60);
+        const ms = Math.floor((seconds % 1) * 1000);
+        
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')},${ms.toString().padStart(3, '0')}`;
+    }
+    
+    formatRelativeTime(ms) {
+        const seconds = Math.floor(ms / 1000);
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
     
     updateWordCount() {
@@ -243,7 +379,7 @@ class SidebarController {
         wordCountElement.textContent = `${wordCount} ${wordCount === 1 ? 'word' : 'words'}`;
     }
     
-    // Update the updateSpeechDisplay method to include word count updates
+    // Update the updateSpeechDisplay method to track timestamps
     updateSpeechDisplay(text, isFinal = false) {
         const recognizedTextDiv = document.getElementById("recognizedText");
         const speechModeLabel = document.getElementById("speech-mode-label");
@@ -283,6 +419,12 @@ class SidebarController {
             } else {
                 this.accumulatedSpeech = text;
             }
+
+            // Add new segment with timestamp
+            this.speechSegments.push({
+                text: text.trim(),
+                timestamp: new Date().getTime()
+            });
             
             // Update the display with accumulated text
             recognizedTextDiv.textContent = this.accumulatedSpeech;
@@ -303,9 +445,10 @@ class SidebarController {
         }
     }
     
-    // Update handleClearSpeech to reset word count
+    // Update handleClearSpeech to also clear speech segments
     handleClearSpeech() {
         this.accumulatedSpeech = '';
+        this.speechSegments = [];
         
         // Reset speech recognition display
         document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
@@ -327,40 +470,30 @@ class SidebarController {
         this.updateStatusMessage('Speech text cleared');
     }
     
-    // Update the handleSTTModeChange method to reset accumulated speech when changing modes
+    // Update handleSTTModeChange to also clear speech segments
     handleSTTModeChange(event) {
         const mode = event.target.value;
-        console.log(`STT mode changed to: ${mode}`);
+        console.log('STT mode changed to:', mode);
         
-        // Stop any active listening when changing modes
-        if (this.artyomAssistant.isListening) {
-            this.artyomAssistant.stopListening();
-            this.updateSTTStatus('Ready');
-        }
+        // Stop any active reading
+        this.sendMessageToActiveTab({ action: "stopTTS" });
         
-        // Reset accumulated speech when changing modes
+        // Send the new reading mode to the content script
+        this.sendMessageToActiveTab({ 
+            action: "setReadingMode", 
+            mode: mode 
+        });
+        
+        // Clear accumulated speech and segments when mode changes
         this.accumulatedSpeech = '';
-        document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
-        
-        // Disable buttons
-        document.getElementById('copy-speech-btn').disabled = true;
-        document.getElementById('save-speech-btn').disabled = true;
-        document.getElementById('clear-speech-btn').disabled = true;
-        
-        // Show/hide video overlay option based on mode
-        const videoOverlayOption = document.getElementById('video-overlay-option');
-        if (videoOverlayOption) {
-            videoOverlayOption.style.display = mode === 'continuous' ? 'block' : 'none';
-            // Reset checkbox when changing modes
-            document.getElementById('video-overlay-checkbox').checked = false;
+        this.speechSegments = [];
+        const recognizedTextDiv = document.getElementById("recognizedText");
+        if (recognizedTextDiv) {
+            recognizedTextDiv.textContent = '';
+            recognizedTextDiv.classList.remove('accumulating');
         }
         
-        // Show appropriate guidance in status area
-        if (mode === 'push-to-talk') {
-            this.updateStatusMessage('Hold SPACE key to speak');
-        } else {
-            this.updateStatusMessage('Click the button to toggle listening');
-        }
+        this.updateStatusMessage(`Speech-to-text mode set to ${mode}`, "info");
     }
 
     // Handle screen sharing button click
@@ -560,28 +693,46 @@ class SidebarController {
             
             // Add listener for theme changes
             colorSchemeQuery.addEventListener('change', (e) => {
-                self.getSettings(function(settings) {
+                self.getSettings().then((settings) => {
                     // Only update if set to system theme
                     if (settings.theme === 'system') {
                         self.applyTheme('system');
                     }
+                }).catch((error) => {
+                    console.error("Error loading settings:", error);
                 });
             });
         }
     }
 
     // Get user settings from storage
-    getSettings(callback) {
-        // Try to get settings from sync storage first
-        chrome.storage.sync.get('settings', function(data) {
-            if (data.settings) {
-                callback(data.settings);
-            } else {
-                // Fall back to local storage if not found in sync
-                chrome.storage.local.get('settings', function(localData) {
-                    callback(localData.settings || {});
-                });
-            }
+    getSettings() {
+        return new Promise((resolve, reject) => {
+            // First check the storage preference
+            chrome.storage.local.get('settings', function(localData) {
+                if (localData.settings && localData.settings.dataStorage) {
+                    const storagePreference = localData.settings.dataStorage;
+                    
+                    if (storagePreference === 'sync') {
+                        // Load from sync storage
+                        chrome.storage.sync.get('settings', function(syncData) {
+                            resolve(syncData.settings || {});
+                        });
+                    } else {
+                        // Load from local storage
+                        resolve(localData.settings || {});
+                    }
+                } else {
+                    // If no preference is set, try both storages
+                    chrome.storage.sync.get('settings', function(syncData) {
+                        if (syncData.settings) {
+                            resolve(syncData.settings);
+                        } else {
+                            resolve(localData.settings || {});
+                        }
+                    });
+                }
+            });
         });
     }
 
@@ -870,6 +1021,27 @@ class SidebarController {
                console.warn(`Unknown action: ${action}`);
                this.updateStatusMessage(`Unknown action: ${action}`);
        }
+   }
+
+   // Handle TTS mode change
+   handleTTSModeChange(event) {
+       const mode = event.target.value;
+       console.log(`TTS mode changed to: ${mode}`);
+       
+       // Stop any active reading
+       if (this.ttsActive) {
+           this.sendMessageToActiveTab({ action: "stopTTS" });
+           this.setTTSActive(false);
+       }
+       
+       // Send the new reading mode to content script
+       this.sendMessageToActiveTab({
+           action: "setReadingMode",
+           mode: mode
+       });
+       
+       // Update status message
+       this.updateStatusMessage(`Reading mode set to: ${mode}`);
    }
 }
 

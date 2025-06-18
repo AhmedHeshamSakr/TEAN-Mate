@@ -48,16 +48,6 @@
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="sign-tab" data-bs-toggle="tab" data-bs-target="#sign" type="button" role="tab" aria-controls="sign" aria-selected="false">
-                    <i class="fas fa-sign-language me-2"></i>Sign Language
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="caption-tab" data-bs-toggle="tab" data-bs-target="#caption" type="button" role="tab" aria-controls="caption" aria-selected="false">
-                    <i class="fas fa-image me-2"></i>Image Captioning
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="shortcuts-tab" data-bs-toggle="tab" data-bs-target="#shortcuts" type="button" role="tab" aria-controls="shortcuts" aria-selected="false">
                     <i class="fas fa-keyboard me-2"></i>Shortcuts
                 </button>
@@ -86,22 +76,6 @@
                         
                         <div class="settings-row">
                             <div class="col-md-6">
-                                <label class="settings-label" for="defaultLanguage">Default Language</label>
-                                <select class="form-select" id="defaultLanguage">
-                                    <option value="en-US" selected>English (US)</option>
-                                    <option value="en-GB">English (UK)</option>
-                                    <option value="es-ES">Spanish</option>
-                                    <option value="fr-FR">French</option>
-                                    <option value="de-DE">German</option>
-                                    <option value="zh-CN">Chinese (Simplified)</option>
-                                    <option value="ja-JP">Japanese</option>
-                                </select>
-                                <div class="settings-description">Set the default language for all features</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
                                 <label class="settings-label" for="theme">Interface Theme</label>
                                 <select class="form-select" id="theme">
                                     <option value="system" selected>Follow System</option>
@@ -110,17 +84,6 @@
                                     <option value="high-contrast">High Contrast</option>
                                 </select>
                                 <div class="settings-description">Change the appearance of the extension interface</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="sidebarPosition">Sidebar Position</label>
-                                <select class="form-select" id="sidebarPosition">
-                                    <option value="right" selected>Right</option>
-                                    <option value="left">Left</option>
-                                </select>
-                                <div class="settings-description">Choose which side of the browser the sidebar appears</div>
                             </div>
                         </div>
                         
@@ -193,37 +156,6 @@
                                 </label>
                             </div>
                         </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="autoReadImages" checked>
-                                <label class="form-check-label" for="autoReadImages">
-                                    <div>Read image descriptions automatically</div>
-                                    <div class="settings-description">Automatically read aloud image captions when encountered</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="readingElement">Elements to Read</label>
-                                <select class="form-select" id="readingElement">
-                                    <option value="main" selected>Main Content Only</option>
-                                    <option value="all">All Page Content</option>
-                                    <option value="selected">Selected Text Only</option>
-                                    <option value="custom">Custom Elements</option>
-                                </select>
-                                <div class="settings-description">Choose which parts of the page should be read aloud</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row" id="customElementsRow" style="display: none;">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="customElements">Custom Elements CSS Selector</label>
-                                <input type="text" class="form-control" id="customElements" placeholder="article, .content, #main">
-                                <div class="settings-description">Specify CSS selectors for elements you want to be read</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -237,111 +169,6 @@
                     </div>
                     <div class="flex-grow-1">
                         <h3 class="settings-section-title">Speech to Text Modes</h3>
-                        <!-- Live Transcription Mode -->
-                        <div class="mode-settings mb-4">
-                            <h4><i class="fas fa-broadcast-tower me-2"></i>Live Transcription Settings</h4>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="showTranscriptionOverlay" checked>
-                                    <label class="form-check-label" for="showTranscriptionOverlay">
-                                        <div>Show overlay with transcriptions</div>
-                                        <div class="settings-description">Display a floating overlay with live transcription results</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="col-md-6">
-                                    <label class="settings-label" for="overlayPosition">Overlay Position</label>
-                                    <select class="form-select" id="overlayPosition">
-                                        <option value="bottom" selected>Bottom</option>
-                                        <option value="top">Top</option>
-                                        <option value="bottom-right">Bottom Right</option>
-                                        <option value="top-right">Top Right</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="autoScrollTranscript" checked>
-                                    <label class="form-check-label" for="autoScrollTranscript">
-                                        <div>Auto-scroll transcript</div>
-                                        <div class="settings-description">Automatically scroll to keep up with new transcription</div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Voice Commands Mode -->
-                        <div class="mode-settings mb-4">
-                            <h4><i class="fas fa-magic me-2"></i>Voice Commands Settings</h4>
-                            
-                            <div class="settings-row">
-                                <div class="col-md-6">
-                                    <label class="settings-label" for="commandWakeWord">Wake Word/Phrase</label>
-                                    <input type="text" class="form-control" id="commandWakeWord" value="Hey Assistant">
-                                    <div class="settings-description">Word or phrase to activate voice commands</div>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="continuousListening" checked>
-                                    <label class="form-check-label" for="continuousListening">
-                                        <div>Continuous listening mode</div>
-                                        <div class="settings-description">Listen continuously for wake word instead of requiring button press</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="showCommandHints" checked>
-                                    <label class="form-check-label" for="showCommandHints">
-                                        <div>Show command hints</div>
-                                        <div class="settings-description">Display available voice commands when activated</div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Text Input Mode -->
-                        <div class="mode-settings mb-4">
-                            <h4><i class="fas fa-keyboard me-2"></i>Text Input Settings</h4>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="autoInsertRecognized" checked>
-                                    <label class="form-check-label" for="autoInsertRecognized">
-                                        <div>Auto-insert text at cursor</div>
-                                        <div class="settings-description">Automatically insert recognized text at current cursor position</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="showDictationControls" checked>
-                                    <label class="form-check-label" for="showDictationControls">
-                                        <div>Show dictation controls</div>
-                                        <div class="settings-description">Display floating controls for dictation commands</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="col-md-6">
-                                    <label class="settings-label" for="inputTimeout">Input Timeout</label>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <input type="range" class="form-range" min="1" max="10" step="1" value="5" id="inputTimeout">
-                                        <span id="inputTimeoutValue">5 seconds</span>
-                                    </div>
-                                    <div class="settings-description">Time of silence before input session ends</div>
-                                </div>
-                            </div>
-                        </div>
                         
                         <!-- Save to File Mode -->
                         <div class="mode-settings">
@@ -360,250 +187,11 @@
                             </div>
                             
                             <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="includeSpeakerLabels">
-                                    <label class="form-check-label" for="includeSpeakerLabels">
-                                        <div>Include speaker labels</div>
-                                        <div class="settings-description">Attempt to identify and label different speakers</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="includeTimestamps" checked>
-                                    <label class="form-check-label" for="includeTimestamps">
-                                        <div>Include timestamps</div>
-                                        <div class="settings-description">Add timestamp information to saved transcriptions</div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="settings-row">
                                 <div class="col-md-6">
                                     <label class="settings-label" for="defaultSaveLocation">Default Save Location</label>
                                     <input type="text" class="form-control" id="defaultSaveLocation" value="TEAN Mate Transcriptions">
                                     <div class="settings-description">Default folder name for saved transcriptions</div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sign Language Tab -->
-            <div class="tab-pane fade" id="sign" role="tabpanel" aria-labelledby="sign-tab">
-                <div class="settings-section d-flex align-items-start">
-                    <div class="feature-icon icon-sign">
-                        <i class="fas fa-sign-language"></i>
-                    </div>
-                    <div class="flex-grow-1">
-                        <h3 class="settings-section-title">Sign Language Settings</h3>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="signLanguageSystem">Sign Language System</label>
-                                <select class="form-select" id="signLanguageSystem">
-                                    <option value="asl" selected>American Sign Language (ASL)</option>
-                                    <option value="bsl">British Sign Language (BSL)</option>
-                                    <option value="auslan">Australian Sign Language (Auslan)</option>
-                                    <option value="lsf">French Sign Language (LSF)</option>
-                                    <option value="dgs">German Sign Language (DGS)</option>
-                                </select>
-                                <div class="settings-description">Select which sign language system to use</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="enableSignDetection" checked>
-                                <label class="form-check-label" for="enableSignDetection">
-                                    <div>Enable sign language detection</div>
-                                    <div class="settings-description">Detect and interpret sign language from webcam</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="showSignTextOverlay" checked>
-                                <label class="form-check-label" for="showSignTextOverlay">
-                                    <div>Show text overlay</div>
-                                    <div class="settings-description">Display interpreted text overlay on video feed</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="speakSignInterpretation">
-                                <label class="form-check-label" for="speakSignInterpretation">
-                                    <div>Speak sign interpretations</div>
-                                    <div class="settings-description">Use text-to-speech to vocalize interpreted signs</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="detectionSensitivity">Detection Sensitivity</label>
-                                <div class="d-flex align-items-center gap-3">
-                                    <input type="range" class="form-range" min="0.1" max="1" step="0.1" value="0.7" id="detectionSensitivity">
-                                    <span id="detectionSensitivityValue">70%</span>
-                                </div>
-                                <div class="settings-description">Adjust sensitivity of sign detection algorithm</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="signCameraSource">Camera Source</label>
-                                <select class="form-select" id="signCameraSource">
-                                    <option value="default" selected>Default Camera</option>
-                                    <option value="front">Front Camera</option>
-                                    <option value="rear">Rear Camera</option>
-                                    <option value="external">External Camera</option>
-                                </select>
-                                <div class="settings-description">Select which camera to use for sign detection</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="signResolution">Camera Resolution</label>
-                                <select class="form-select" id="signResolution">
-                                    <option value="hd" selected>HD (720p)</option>
-                                    <option value="fullhd">Full HD (1080p)</option>
-                                    <option value="standard">Standard (480p)</option>
-                                    <option value="low">Low (360p)</option>
-                                </select>
-                                <div class="settings-description">Set camera resolution for sign detection</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="enableSignGlossary" checked>
-                                <label class="form-check-label" for="enableSignGlossary">
-                                    <div>Use specialized vocabulary</div>
-                                    <div class="settings-description">Enable domain-specific sign vocabularies when detected</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <button class="btn btn-outline-primary" id="calibrateCamera">
-                                <i class="fas fa-camera me-2"></i>Calibrate Camera
-                            </button>
-                            <div class="settings-description mt-2">Optimize camera settings for current lighting and environment</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Image Captioning Tab -->
-            <div class="tab-pane fade" id="caption" role="tabpanel" aria-labelledby="caption-tab">
-                <div class="settings-section d-flex align-items-start">
-                    <div class="feature-icon icon-caption">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <div class="flex-grow-1">
-                        <h3 class="settings-section-title">Image Captioning Settings</h3>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="autoCaptionImages" checked>
-                                <label class="form-check-label" for="autoCaptionImages">
-                                    <div>Auto-caption images</div>
-                                    <div class="settings-description">Automatically generate captions for images without alt text</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="integrateTTS" checked>
-                                <label class="form-check-label" for="integrateTTS">
-                                    <div>Integrate with text-to-speech</div>
-                                    <div class="settings-description">Allow text-to-speech to read image captions aloud</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="captionLength">Caption Detail Level</label>
-                                <select class="form-select" id="captionLength">
-                                    <option value="brief">Brief (1-2 sentences)</option>
-                                    <option value="standard" selected>Standard (2-3 sentences)</option>
-                                    <option value="detailed">Detailed (4+ sentences)</option>
-                                </select>
-                                <div class="settings-description">Set how detailed image descriptions should be</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="captionStyle">Caption Style</label>
-                                <select class="form-select" id="captionStyle">
-                                    <option value="factual" selected>Factual</option>
-                                    <option value="descriptive">Descriptive</option>
-                                    <option value="technical">Technical</option>
-                                    <option value="simple">Simple Language</option>
-                                </select>
-                                <div class="settings-description">Select the writing style for generated captions</div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="includeTechnicalDetails">
-                                <label class="form-check-label" for="includeTechnicalDetails">
-                                    <div>Include technical details</div>
-                                    <div class="settings-description">Include information like image resolution, format, etc.</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="includeOCR" checked>
-                                <label class="form-check-label" for="includeOCR">
-                                    <div>Extract text from images (OCR)</div>
-                                    <div class="settings-description">Include any visible text found in images</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="showCaptionOverlay" checked>
-                                <label class="form-check-label" for="showCaptionOverlay">
-                                    <div>Show caption overlay</div>
-                                    <div class="settings-description">Display captions as an overlay on hover</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="processDynamicImages" checked>
-                                <label class="form-check-label" for="processDynamicImages">
-                                    <div>Process dynamically loaded images</div>
-                                    <div class="settings-description">Caption images that load after the page is rendered</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-row">
-                            <div class="col-md-6">
-                                <label class="settings-label" for="captionModel">Caption Model</label>
-                                <select class="form-select" id="captionModel">
-                                    <option value="standard" selected>Standard (Balanced)</option>
-                                    <option value="fast">Fast (Lower quality)</option>
-                                    <option value="enhanced">Enhanced (Higher quality)</option>
-                                </select>
-                                <div class="settings-description">Select the AI model used for caption generation</div>
                             </div>
                         </div>
                     </div>

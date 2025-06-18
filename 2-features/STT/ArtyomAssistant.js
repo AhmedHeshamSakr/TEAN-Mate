@@ -13,14 +13,28 @@ export default class ArtyomAssistant {
     }
 
     getSettings(callback) {
-        // Try to get settings from sync storage first
-        chrome.storage.sync.get('settings', function(data) {
-            if (data.settings) {
-                callback(data.settings);
-            } else {
-                // Fall back to local storage if not found in sync
-                chrome.storage.local.get('settings', function(localData) {
+        // First check the storage preference
+        chrome.storage.local.get('settings', function(localData) {
+            if (localData.settings && localData.settings.dataStorage) {
+                const storagePreference = localData.settings.dataStorage;
+                
+                if (storagePreference === 'sync') {
+                    // Load from sync storage
+                    chrome.storage.sync.get('settings', function(syncData) {
+                        callback(syncData.settings || {});
+                    });
+                } else {
+                    // Load from local storage
                     callback(localData.settings || {});
+                }
+            } else {
+                // If no preference is set, try both storages
+                chrome.storage.sync.get('settings', function(syncData) {
+                    if (syncData.settings) {
+                        callback(syncData.settings);
+                    } else {
+                        callback(localData.settings || {});
+                    }
                 });
             }
         });

@@ -55467,6 +55467,20 @@ var InteractionHandler = /*#__PURE__*/function () {
         this.handleOptionSelection(element);
         return;
       }
+      if (role === 'treeitem') {
+        // Toggle expanded state
+        var isExpanded = element.getAttribute('aria-expanded') === 'true';
+        element.setAttribute('aria-expanded', !isExpanded);
+        element.click();
+        return;
+      }
+      if (role === 'button' && element.getAttribute('aria-haspopup') === 'true') {
+        // Handle button with popup
+        var _isExpanded = element.getAttribute('aria-expanded') === 'true';
+        element.click();
+        element.setAttribute('aria-expanded', !_isExpanded);
+        return;
+      }
       switch (tagName) {
         case 'button':
           element.click();
@@ -55958,7 +55972,7 @@ var InteractionHandler = /*#__PURE__*/function () {
 
       // Elements with interactive roles
       var role = element.getAttribute('role');
-      if (role && _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__(_context5 = ['button', 'link', 'checkbox', 'radio', 'menuitem', 'option', 'tab', 'combobox', 'listbox', 'switch']).call(_context5, role)) {
+      if (role && _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__(_context5 = ['button', 'link', 'checkbox', 'radio', 'menuitem', 'option', 'tab', 'combobox', 'listbox', 'switch', 'treeitem']).call(_context5, role)) {
         return true;
       }
 
@@ -56546,14 +56560,27 @@ var SpeechHandler = /*#__PURE__*/function () {
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(SpeechHandler, [{
     key: "getSettings",
     value: function getSettings(callback) {
-      // Try to get settings from sync storage first
-      chrome.storage.sync.get('settings', function (data) {
-        if (data.settings) {
-          callback(data.settings);
-        } else {
-          // Fall back to local storage if not found in sync
-          chrome.storage.local.get('settings', function (localData) {
+      // First check the storage preference
+      chrome.storage.local.get('settings', function (localData) {
+        if (localData.settings && localData.settings.dataStorage) {
+          var storagePreference = localData.settings.dataStorage;
+          if (storagePreference === 'sync') {
+            // Load from sync storage
+            chrome.storage.sync.get('settings', function (syncData) {
+              callback(syncData.settings || {});
+            });
+          } else {
+            // Load from local storage
             callback(localData.settings || {});
+          }
+        } else {
+          // If no preference is set, try both storages
+          chrome.storage.sync.get('settings', function (syncData) {
+            if (syncData.settings) {
+              callback(syncData.settings);
+            } else {
+              callback(localData.settings || {});
+            }
           });
         }
       });
@@ -56846,7 +56873,12 @@ var TextExtractor = /*#__PURE__*/function () {
       var stateText = '';
       switch (role.toLowerCase()) {
         case 'button':
-          stateText = element.disabled || element.getAttribute('aria-disabled') === 'true' ? 'Disabled button: ' : 'Button: ';
+          stateText = element.disabled ? 'Disabled button: ' : 'Button: ';
+          // Add expanded state if available
+          if (element.getAttribute('aria-expanded') !== null) {
+            var _isExpanded = element.getAttribute('aria-expanded') === 'true';
+            stateText = "".concat(_isExpanded ? 'Expanded' : 'Collapsed', " button: ");
+          }
           break;
         case 'checkbox':
           var checkedState = element.getAttribute('aria-checked');
@@ -56875,6 +56907,10 @@ var TextExtractor = /*#__PURE__*/function () {
         case 'listbox':
           var expanded = element.getAttribute('aria-expanded') === 'true';
           stateText = _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context11 = "".concat(role, " ")).call(_context11, expanded ? 'expanded' : 'collapsed');
+          break;
+        case 'treeitem':
+          var isExpanded = element.getAttribute('aria-expanded') === 'true';
+          stateText = "Tree item ".concat(isExpanded ? 'expanded' : 'collapsed');
           break;
         default:
           switch (tagName) {
@@ -64814,32 +64850,33 @@ var __webpack_exports__ = {};
   \******************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
-/* harmony import */ var _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../2-features/TTS/InteractionHandler.js */ "./2-features/TTS/InteractionHandler.js");
-/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
-/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
-/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
+/* harmony import */ var _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../2-features/TTS/InteractionHandler.js */ "./2-features/TTS/InteractionHandler.js");
+/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
+/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
+/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
 
 
 
@@ -64848,10 +64885,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_2__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_3__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_4__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context24; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context24 = {}.toString.call(r)).call(_context24, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_1__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_1__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_2__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_3__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context27; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_0__(_context27 = {}.toString.call(r)).call(_context27, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
 
 
 
@@ -64873,17 +64911,17 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 var ContentHandler = /*#__PURE__*/function () {
   function ContentHandler() {
     var _context2, _context3;
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__["default"])(this, ContentHandler);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_5__["default"])(this, ContentHandler);
     this.sections = [];
     this.pastBorderStyle = "";
     this.pastBackgroundStyle = "";
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_19__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
-    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
-    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_25__["default"]();
-    this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_26__["default"]();
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_20__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_22__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"]();
+    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_25__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
+    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_26__["default"]();
+    this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_27__["default"]();
     console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
     console.log('Sign Language handler initialized in content script:', this.signLanguageHandler);
     this.currentElement = null;
@@ -64912,12 +64950,13 @@ var ContentHandler = /*#__PURE__*/function () {
     // Reset reading state on page load
     this.resetReadingState();
   }
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__["default"])(ContentHandler, [{
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_6__["default"])(ContentHandler, [{
     key: "resetReadingState",
     value: function resetReadingState() {
       this.isReadingActive = false;
       this.wasSpeaking = false;
       this.settings = null;
+      this.readSelectedTextOnly = false;
       this.initializeSettings();
       this.currentElement = null;
       if (this.speechHandler.isSpeaking) {
@@ -65012,14 +65051,27 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "getSettings",
     value: function getSettings(callback) {
-      // Try to get settings from sync storage first
-      chrome.storage.sync.get('settings', function (data) {
-        if (data.settings) {
-          callback(data.settings);
-        } else {
-          // Fall back to local storage if not found in sync
-          chrome.storage.local.get('settings', function (localData) {
+      // First check the storage preference
+      chrome.storage.local.get('settings', function (localData) {
+        if (localData.settings && localData.settings.dataStorage) {
+          var storagePreference = localData.settings.dataStorage;
+          if (storagePreference === 'sync') {
+            // Load from sync storage
+            chrome.storage.sync.get('settings', function (syncData) {
+              callback(syncData.settings || {});
+            });
+          } else {
+            // Load from local storage
             callback(localData.settings || {});
+          }
+        } else {
+          // If no preference is set, try both storages
+          chrome.storage.sync.get('settings', function (syncData) {
+            if (syncData.settings) {
+              callback(syncData.settings);
+            } else {
+              callback(localData.settings || {});
+            }
           });
         }
       });
@@ -65034,7 +65086,6 @@ var ContentHandler = /*#__PURE__*/function () {
         self.settings = settings;
         self.highlightWhileReading = settings.highlightText || false;
         self.badge = settings.showIconBadge || false;
-        self.readSelectedTextOnly = settings.readingElement === 'selected';
         // Example: Use TTS rate setting
         var ttsRate = settings.ttsRate || 1.0;
         console.log('Using TTS rate:', ttsRate);
@@ -65043,6 +65094,7 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "getSelectedText",
     value: function getSelectedText() {
+      console.log('getSelectedText called');
       var selection = window.getSelection();
       if (selection.rangeCount > 0) {
         var _context5;
@@ -65061,54 +65113,78 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "getNextElement",
     value: function getNextElement() {
+      var _this = this;
       var elementsToReturn = [];
       var text = [];
       while (this.walker.nextNode()) {
         var element = this.walker.currentNode;
-        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
+        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
         if (this.isElementVisible(element)) {
-          var _element$tagName;
+          var _context6, _element$tagName;
+          // Check if element has any interactive children
+          var hasInteractiveChildren = _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_13__(_context6 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_8__(element.querySelectorAll('*'))).call(_context6, function (child) {
+            return _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(child) && _this.isElementVisible(child);
+          });
+
+          // Skip this element if it has interactive children
+          if (hasInteractiveChildren) {
+            continue;
+          }
           var tagName = (_element$tagName = element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (tagName === 'a' && element.href) {
-            var _context6, _context7;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_13__(element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context6 = element.textContent).call(_context6) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context7 = element.textContent).call(_context7)) : "Link to ".concat(domain));
+            var _context7, _context8;
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_14__(element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context7 = element.textContent).call(_context7) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context8 = element.textContent).call(_context8)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processAllDescendants(element);
-          } else if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isInteractiveElement(element)) {
-            var stateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].getElementState(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processAllDescendants(element);
+          } else if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(element)) {
+            var stateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].getElementState(element);
             var isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
             var isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
+            var isTreeItem = element.getAttribute('role') === 'treeitem';
+
+            // Get aria-label if available
+            var ariaLabel = element.getAttribute('aria-label');
 
             // Generic radio/checkbox text discovery
             if (isRadio || isCheckbox) {
-              var _context8;
+              var _context9;
               console.log("generic ".concat(isRadio ? 'radio' : 'checkbox', " text discovery"));
               var labelText = this.getInputLabelText(element);
-              text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context8 = "".concat(stateText, ". ")).call(_context8, labelText));
+              text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context9 = "".concat(stateText, ". ")).call(_context9, labelText));
               elementsToReturn.push(element);
               this.markInputLabelProcessed(element);
+            } else if (isTreeItem) {
+              var _context10, _context11;
+              console.log('treeitem text discovery');
+              var expanded = element.getAttribute('aria-expanded') === 'true';
+              var itemText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context10 = element.textContent).call(_context10);
+              text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context11 = "".concat(expanded ? 'Expanded' : 'Collapsed', " tree item: ")).call(_context11, itemText));
+              elementsToReturn.push(element);
+              this.currentLink = element;
             } else {
               // Check if this is a container with a radio button or checkbox child
               var radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
-              if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && !_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(radioOrCheckboxChild)) {
-                var _context9;
+              if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && !_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(radioOrCheckboxChild)) {
+                var _context12;
                 console.log('container with radio/checkbox child found');
-                var childStateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].getElementState(radioOrCheckboxChild);
+                var childStateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].getElementState(radioOrCheckboxChild);
                 var childLabelText = this.getInputLabelText(radioOrCheckboxChild);
-                text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context9 = "".concat(childStateText, ". ")).call(_context9, childLabelText));
+                text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context12 = "".concat(childStateText, ". ")).call(_context12, childLabelText));
                 elementsToReturn.push(radioOrCheckboxChild);
                 this.currentLink = radioOrCheckboxChild;
-                _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(radioOrCheckboxChild);
+                _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(radioOrCheckboxChild);
               } else {
-                var _context10, _context11;
+                var _context13, _context14;
                 console.log('non-radio/checkbox text discovery');
-                text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context10 = "".concat(stateText)).call(_context10, _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context11 = element.textContent).call(_context11)));
+                // Use aria-label if available, otherwise use text content
+                var elementText = ariaLabel || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context13 = element.textContent).call(_context13);
+                text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_11__(_context14 = "".concat(stateText)).call(_context14, elementText));
                 elementsToReturn.push(element);
               }
             }
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processAllDescendants(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processAllDescendants(element);
             this.currentLink = element;
           } else {
             var _iterator2 = _createForOfIteratorHelper(element.childNodes),
@@ -65118,8 +65194,8 @@ var ContentHandler = /*#__PURE__*/function () {
                 var child = _step2.value;
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
-                  var _context12;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context12 = child.textContent).call(_context12);
+                  var _context15;
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context15 = child.textContent).call(_context15);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(element);
@@ -65130,7 +65206,7 @@ var ContentHandler = /*#__PURE__*/function () {
                     text.push(textRes);
                     elementsToReturn.push(child);
                   }
-                  if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isInteractiveElement(child)) {
+                  if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(child)) {
                     this.currentLink = child;
                   } else this.currentLink = null;
                 }
@@ -65141,7 +65217,7 @@ var ContentHandler = /*#__PURE__*/function () {
               _iterator2.f();
             }
           }
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(element);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(element);
         }
         if (text.length > 0) {
           return {
@@ -65173,9 +65249,9 @@ var ContentHandler = /*#__PURE__*/function () {
               var child = _step3.value;
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
-                var _context13;
-                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.has(element)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context13 = child.textContent).call(_context13);
+                var _context16;
+                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.has(element)) continue;
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context16 = child.textContent).call(_context16);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(element);
@@ -65186,7 +65262,7 @@ var ContentHandler = /*#__PURE__*/function () {
                   text.push(textRes);
                   elementsToReturn.push(child);
                 }
-                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isInteractiveElement(child)) {
+                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(child)) {
                   this.currentLink = child;
                 } else this.currentLink = null;
               }
@@ -65212,114 +65288,114 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "speakCurrentSection",
     value: function () {
-      var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee2() {
-        var _this = this;
+      var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_4__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee2() {
+        var _this2 = this;
         var _this$currentElement, elementsToReturn, text, isSelectedText, _loop, i;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee2$(_context16) {
-          while (1) switch (_context16.prev = _context16.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee2$(_context19) {
+          while (1) switch (_context19.prev = _context19.next) {
             case 0:
               if (this.currentElement) {
-                _context16.next = 9;
+                _context19.next = 9;
                 break;
               }
               if (!this.readSelectedTextOnly) {
-                _context16.next = 8;
+                _context19.next = 8;
                 break;
               }
               this.currentElement = this.getSelectedText();
               // If no text is selected, don't read anything
               if (this.currentElement) {
-                _context16.next = 6;
+                _context19.next = 6;
                 break;
               }
               console.log('No text selected');
-              return _context16.abrupt("return");
+              return _context19.abrupt("return");
             case 6:
-              _context16.next = 9;
+              _context19.next = 9;
               break;
             case 8:
               this.currentElement = this.getNextElement();
             case 9:
               _this$currentElement = this.currentElement, elementsToReturn = _this$currentElement.elementsToReturn, text = _this$currentElement.text;
+              isSelectedText = elementsToReturn.length === 0 && text.length > 0;
+              if (!isSelectedText) {
+                _context19.next = 16;
+                break;
+              }
+              _context19.next = 14;
+              return this.speechHandler.speak(text[0], function () {});
+            case 14:
+              this.currentElement = null;
+              return _context19.abrupt("return");
+            case 16:
               if (!(!this.currentElement || !elementsToReturn || elementsToReturn.length === 0)) {
-                _context16.next = 14;
+                _context19.next = 20;
                 break;
               }
               this.currentElement = null;
               // Send a notification that speech has finished completely
               this.notifySpeechStopped();
-              return _context16.abrupt("return");
-            case 14:
-              isSelectedText = elementsToReturn.length === 0 && text.length > 0;
-              if (!isSelectedText) {
-                _context16.next = 20;
-                break;
-              }
-              _context16.next = 18;
-              return this.speechHandler.speak(text[0], function () {});
-            case 18:
-              this.currentElement = null;
-              return _context16.abrupt("return");
+              return _context19.abrupt("return");
             case 20:
               // Notify that speech has started
               this.notifySpeechStarted();
-              _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _loop(i) {
-                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _loop$(_context15) {
-                  while (1) switch (_context15.prev = _context15.next) {
+              _loop = /*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _loop(i) {
+                return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _loop$(_context18) {
+                  while (1) switch (_context18.prev = _context18.next) {
                     case 0:
-                      _context15.next = 2;
-                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__(/*#__PURE__*/function () {
-                        var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee(resolve) {
+                      _context18.next = 2;
+                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_15__(/*#__PURE__*/function () {
+                        var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_4__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee(resolve) {
                           var _elementsToReturn$i$t, _elementsToReturn$i$t2, caption;
-                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee$(_context14) {
-                            while (1) switch (_context14.prev = _context14.next) {
+                          return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee$(_context17) {
+                            while (1) switch (_context17.prev = _context17.next) {
                               case 0:
-                                _context14.prev = 0;
+                                _context17.prev = 0;
                                 // Add highlight first
-                                _this.highlightWhileReading ? _this.highlightBox.addHighlight(elementsToReturn[i]) : null;
+                                _this2.highlightWhileReading ? _this2.highlightBox.addHighlight(elementsToReturn[i]) : null;
                                 if (!(((_elementsToReturn$i$t = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t === void 0 ? void 0 : _elementsToReturn$i$t.toLowerCase()) === 'img')) {
-                                  _context14.next = 15;
+                                  _context17.next = 15;
                                   break;
                                 }
                                 console.log('🖼️ Detected image element:', elementsToReturn[i]);
-                                _context14.prev = 4;
-                                _context14.next = 7;
-                                return _this.imageCaptionHandler.generateCaptionForImage(elementsToReturn[i].src, elementsToReturn[i]);
+                                _context17.prev = 4;
+                                _context17.next = 7;
+                                return _this2.imageCaptionHandler.generateCaptionForImage(elementsToReturn[i].src, elementsToReturn[i]);
                               case 7:
-                                caption = _context14.sent;
+                                caption = _context17.sent;
                                 text[i] = "Image description: ".concat(caption);
-                                _context14.next = 15;
+                                _context17.next = 15;
                                 break;
                               case 11:
-                                _context14.prev = 11;
-                                _context14.t0 = _context14["catch"](4);
-                                console.error('Caption generation failed:', _context14.t0);
+                                _context17.prev = 11;
+                                _context17.t0 = _context17["catch"](4);
+                                console.error('Caption generation failed:', _context17.t0);
                                 text[i] = "Image description unavailable";
                               case 15:
                                 // If the element is interactive or a link, set focus to it
-                                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isInteractiveElement(elementsToReturn[i]) || ((_elementsToReturn$i$t2 = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t2 === void 0 ? void 0 : _elementsToReturn$i$t2.toLowerCase()) === 'a') {
-                                  _this.isProgrammaticFocus = true;
+                                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(elementsToReturn[i]) || ((_elementsToReturn$i$t2 = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t2 === void 0 ? void 0 : _elementsToReturn$i$t2.toLowerCase()) === 'a') {
+                                  _this2.isProgrammaticFocus = true;
                                   elementsToReturn[i].focus();
-                                  _this.isProgrammaticFocus = false;
+                                  _this2.isProgrammaticFocus = false;
                                 }
 
                                 // Wait for speech to complete
-                                _context14.next = 18;
-                                return _this.speechHandler.speak(text[i], function () {});
+                                _context17.next = 18;
+                                return _this2.speechHandler.speak(text[i], function () {});
                               case 18:
-                                _this.highlightWhileReading ? _this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _this2.highlightWhileReading ? _this2.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 resolve();
-                                _context14.next = 27;
+                                _context17.next = 27;
                                 break;
                               case 22:
-                                _context14.prev = 22;
-                                _context14.t1 = _context14["catch"](0);
-                                console.error('Error in sequence:', _context14.t1);
-                                _this.highlightWhileReading ? _this.highlightBox.removeHighlight(elementsToReturn[i]) : null;
-                                _this.isProgrammaticFocus = false;
+                                _context17.prev = 22;
+                                _context17.t1 = _context17["catch"](0);
+                                console.error('Error in sequence:', _context17.t1);
+                                _this2.highlightWhileReading ? _this2.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _this2.isProgrammaticFocus = false;
                               case 27:
                               case "end":
-                                return _context14.stop();
+                                return _context17.stop();
                             }
                           }, _callee, null, [[0, 22], [4, 11]]);
                         }));
@@ -65329,37 +65405,37 @@ var ContentHandler = /*#__PURE__*/function () {
                       }());
                     case 2:
                     case "end":
-                      return _context15.stop();
+                      return _context18.stop();
                   }
                 }, _loop);
               });
               i = 0;
             case 23:
               if (!(i < elementsToReturn.length)) {
-                _context16.next = 28;
+                _context19.next = 28;
                 break;
               }
-              return _context16.delegateYield(_loop(i), "t0", 25);
+              return _context19.delegateYield(_loop(i), "t0", 25);
             case 25:
               i++;
-              _context16.next = 23;
+              _context19.next = 23;
               break;
             case 28:
               this.currentElement = null; // Prepare for the next element
               if (!this.wasSpeaking) {
-                _context16.next = 34;
+                _context19.next = 34;
                 break;
               }
-              _context16.next = 32;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_14__(function (resolve) {
-                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(resolve, 50);
+              _context19.next = 32;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_15__(function (resolve) {
+                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_16__(resolve, 50);
               });
             case 32:
-              _context16.next = 34;
+              _context19.next = 34;
               return this.speakCurrentSection();
             case 34:
             case "end":
-              return _context16.stop();
+              return _context19.stop();
           }
         }, _callee2, this);
       }));
@@ -65374,39 +65450,39 @@ var ContentHandler = /*#__PURE__*/function () {
     value: function getInputLabelText(element) {
       console.log('getInputLabelText called');
       if (element.hasAttribute('aria-labelledby')) {
-        var _context17;
+        var _context20;
         var ids = element.getAttribute('aria-labelledby').split(' ');
-        var labelText = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_16__(_context17 = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_17__(ids).call(ids, function (id) {
+        var labelText = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_17__(_context20 = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_18__(ids).call(ids, function (id) {
           var labelEl = document.getElementById(id);
           if (labelEl) {
-            var _context18;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(labelEl);
-            return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context18 = labelEl.textContent).call(_context18);
+            var _context21;
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(labelEl);
+            return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context21 = labelEl.textContent).call(_context21);
           }
           return null;
-        })).call(_context17, Boolean).join(' ');
+        })).call(_context20, Boolean).join(' ');
         if (labelText) return labelText;
       }
       // 2. aria-label
       if (element.hasAttribute('aria-label')) {
-        var _context19;
-        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context19 = element.getAttribute('aria-label')).call(_context19);
+        var _context22;
+        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context22 = element.getAttribute('aria-label')).call(_context22);
       }
       // 3. <label for="...">
       if (element.id) {
         var forLabel = document.querySelector("label[for=\"".concat(element.id, "\"]"));
         if (forLabel) {
-          var _context20;
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(forLabel);
-          return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context20 = forLabel.textContent).call(_context20);
+          var _context23;
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(forLabel);
+          return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context23 = forLabel.textContent).call(_context23);
         }
       }
       // 4. Closest wrapping <label>
       var wrappingLabel = element.closest('label');
       if (wrappingLabel) {
-        var _context21;
-        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(wrappingLabel);
-        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context21 = wrappingLabel.textContent).call(_context21);
+        var _context24;
+        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(wrappingLabel);
+        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_12__(_context24 = wrappingLabel.textContent).call(_context24);
       }
       // 5. Fallback to value or empty
       var elementType = element.type || element.getAttribute('role');
@@ -65421,20 +65497,20 @@ var ContentHandler = /*#__PURE__*/function () {
       // Try ARIA-labelledby first
       if (inputElement.hasAttribute('aria-labelledby')) {
         var ids = inputElement.getAttribute('aria-labelledby').split(' ');
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_18__(ids).call(ids, function (id) {
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_19__(ids).call(ids, function (id) {
           var labelEl = document.getElementById(id);
-          if (labelEl) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(labelEl);
+          if (labelEl) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(labelEl);
         });
       }
       // Try closest label
       var label = inputElement.closest('label');
       if (label) {
-        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(label);
+        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(label);
       }
       // Try label[for]
       if (inputElement.id) {
         var forLabel = document.querySelector("label[for=\"".concat(inputElement.id, "\"]"));
-        if (forLabel) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_20__["default"].processedElements.add(forLabel);
+        if (forLabel) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_21__["default"].processedElements.add(forLabel);
       }
     }
 
@@ -65467,10 +65543,16 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "handleMessage",
     value: function handleMessage(request) {
-      var _this2 = this;
+      var _this3 = this;
       // Reset reading state if we're on a new page
       if (request.action === "pageLoad") {
         this.resetReadingState();
+        return;
+      }
+      if (request.action === "setReadingMode") {
+        console.log('[CONTENT] Setting reading mode to:', request.mode);
+        // Only need to check for selected text mode, everything else is "all content"
+        this.readSelectedTextOnly = request.mode === 'selected';
         return;
       }
       if (request.action === "activateImageCaptioning") {
@@ -65494,12 +65576,12 @@ var ContentHandler = /*#__PURE__*/function () {
             });
 
             // Show notification to start server
-            _this2.showServerNotification();
+            _this3.showServerNotification();
             return;
           }
 
           // Proceed with activation if server is available
-          _this2.signLanguageHandler.activate().then(function (success) {
+          _this3.signLanguageHandler.activate().then(function (success) {
             // Notify sidebar of activation result
             chrome.runtime.sendMessage({
               action: "screenSharingStatus",
@@ -65684,27 +65766,54 @@ var ContentHandler = /*#__PURE__*/function () {
           if (this.currentLink) {
             var _this$currentLink$tag;
             var tagName = (_this$currentLink$tag = this.currentLink.tagName) === null || _this$currentLink$tag === void 0 ? void 0 : _this$currentLink$tag.toLowerCase();
+            var role = this.currentLink.getAttribute('role');
             if (tagName === 'a') {
               this.linkHandler.accessLink(this.currentLink);
-            } else {
-              var _this$currentLink$tag2;
-              var role = this.currentLink.getAttribute('role');
-              var _tagName = (_this$currentLink$tag2 = this.currentLink.tagName) === null || _this$currentLink$tag2 === void 0 ? void 0 : _this$currentLink$tag2.toLowerCase();
+            } else if (role === 'treeitem') {
+              // Handle tree item interaction
+              // Find the expander element
+              var expander = this.currentLink.querySelector('.tree-expander');
+              if (expander) {
+                // Click the expander first
+                expander.click();
+              }
 
+              // Also click the tree item itself
+              this.currentLink.click();
+
+              // Toggle aria-expanded after click
+              var isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+              this.currentLink.setAttribute('aria-expanded', !isExpanded);
+
+              // Force a reflow to ensure the click is processed
+              this.currentLink.offsetHeight;
+            } else if (role === 'button' && this.currentLink.getAttribute('aria-haspopup') === 'true') {
+              // Handle button with popup
+              var _isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
+
+              // Click the button
+              this.currentLink.click();
+
+              // Toggle aria-expanded
+              this.currentLink.setAttribute('aria-expanded', !_isExpanded);
+
+              // Force a reflow to ensure the click is processed
+              this.currentLink.offsetHeight;
+            } else {
               // Save the next element before handling the dropdown
-              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isCustomDropdown(this.currentLink)) {
+              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isCustomDropdown(this.currentLink)) {
                 this.saveNextElementAfterListbox(this.currentLink);
               }
 
               // Always handle interaction regardless of element type
-              _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].handleInteraction(this.currentLink);
-              if (role === 'option' || _tagName === 'option') {
+              _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].handleInteraction(this.currentLink);
+              if (role === 'option' || tagName === 'option') {
                 this.restoreNextElementAfterListbox();
               }
 
               // Only check for custom dropdown if it's not a text field
-              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isCustomDropdown(this.currentLink)) {
-                _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].handleCustomDropdown(this.currentLink);
+              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isCustomDropdown(this.currentLink)) {
+                _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].handleCustomDropdown(this.currentLink);
               }
             }
           }
@@ -65776,31 +65885,31 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "checkServerConnectivity",
     value: function () {
-      var _checkServerConnectivity = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee3() {
+      var _checkServerConnectivity = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_4__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee3() {
         var response;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee3$(_context22) {
-          while (1) switch (_context22.prev = _context22.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee3$(_context25) {
+          while (1) switch (_context25.prev = _context25.next) {
             case 0:
-              _context22.prev = 0;
-              _context22.next = 3;
+              _context25.prev = 0;
+              _context25.next = 3;
               return fetch('http://localhost:8765/ping');
             case 3:
-              response = _context22.sent;
+              response = _context25.sent;
               if (!response.ok) {
-                _context22.next = 6;
+                _context25.next = 6;
                 break;
               }
-              return _context22.abrupt("return", true);
+              return _context25.abrupt("return", true);
             case 6:
-              return _context22.abrupt("return", false);
+              return _context25.abrupt("return", false);
             case 9:
-              _context22.prev = 9;
-              _context22.t0 = _context22["catch"](0);
-              console.error('[CONTENT] Server connectivity check failed:', _context22.t0);
-              return _context22.abrupt("return", false);
+              _context25.prev = 9;
+              _context25.t0 = _context25["catch"](0);
+              console.error('[CONTENT] Server connectivity check failed:', _context25.t0);
+              return _context25.abrupt("return", false);
             case 13:
             case "end":
-              return _context22.stop();
+              return _context25.stop();
           }
         }, _callee3, null, [[0, 9]]);
       }));
@@ -65836,7 +65945,7 @@ var ContentHandler = /*#__PURE__*/function () {
       });
 
       // Auto-dismiss after 10 seconds
-      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_16__(function () {
         if (document.body.contains(notification)) {
           document.body.removeChild(notification);
         }
@@ -65845,26 +65954,26 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "toggleImageCaptioning",
     value: function () {
-      var _toggleImageCaptioning = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.mark(function _callee4() {
+      var _toggleImageCaptioning = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_4__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.mark(function _callee4() {
         var isActive;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_8__.wrap(function _callee4$(_context23) {
-          while (1) switch (_context23.prev = _context23.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_7__.wrap(function _callee4$(_context26) {
+          while (1) switch (_context26.prev = _context26.next) {
             case 0:
-              _context23.prev = 0;
-              _context23.next = 3;
+              _context26.prev = 0;
+              _context26.next = 3;
               return this.imageCaptionHandler.toggle();
             case 3:
-              isActive = _context23.sent;
+              isActive = _context26.sent;
               console.log("Image captioning ".concat(isActive ? 'activated' : 'deactivated'));
-              return _context23.abrupt("return", isActive);
+              return _context26.abrupt("return", isActive);
             case 8:
-              _context23.prev = 8;
-              _context23.t0 = _context23["catch"](0);
-              console.error("Error toggling image captioning:", _context23.t0);
-              return _context23.abrupt("return", false);
+              _context26.prev = 8;
+              _context26.t0 = _context26["catch"](0);
+              console.error("Error toggling image captioning:", _context26.t0);
+              return _context26.abrupt("return", false);
             case 12:
             case "end":
-              return _context23.stop();
+              return _context26.stop();
           }
         }, _callee4, this, [[0, 8]]);
       }));
@@ -65882,9 +65991,10 @@ var ContentHandler = /*#__PURE__*/function () {
       }
       var style = window.getComputedStyle(element);
       var isNotHidden = style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0' && style.height !== '0px' && style.width !== '0px';
-      var isInteractive = _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_23__["default"].isInteractiveElement(element);
+      var isInteractive = _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_24__["default"].isInteractiveElement(element);
+      var isTreeItem = element.getAttribute('role') === 'treeitem';
       if (element.disabled || element.getAttribute('aria-disabled') === 'true') return false;
-      return isNotHidden || isInteractive;
+      return isNotHidden || isInteractive || isTreeItem;
     }
   }, {
     key: "saveNextElementAfterListbox",
