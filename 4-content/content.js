@@ -1,3 +1,6 @@
+// content.js - Complete implementation for video overlay only sign language display
+// This file replaces your existing content.js
+
 import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
@@ -7,30 +10,41 @@ import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandl
 import VideoOverlayManager from "../2-features/STT/VideoOverlayManager.js";
 import SignLanguageHandler from "../2-features/SignLanguage/SignLanguageHandler.js"; 
 
-
 class ContentHandler {
     constructor() {
+        // Text-to-Speech related properties
         this.sections = [];
         this.pastBorderStyle = "";
         this.pastBackgroundStyle = "";
 
+        // Initialize core TTS functionality
         this.highlightBox = new HighlightBox();
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
         this.linkHandler = new LinkHandler();
+        
+        // Initialize image captioning functionality
         this.imageCaptionHandler = new ImageCaptionHandler(chrome.runtime.getURL('Florence-2-base-ft'));
+        
+        // Initialize STT video overlay manager (for speech recognition overlays, separate from sign language)
         this.videoOverlayManager = new VideoOverlayManager();
+        
+        // Initialize sign language handler with video overlay capability
+        // This is the core component that will display translations as video captions
         this.signLanguageHandler = new SignLanguageHandler(); 
         
         console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
-        console.log('Sign Language handler initialized in content script:', this.signLanguageHandler);
+        console.log('Sign Language handler initialized for video overlay display only:', this.signLanguageHandler);
 
+        // TTS navigation state
         this.currentElement = null;
         this.currentLink = null;
         this.nextElementAfterListbox = null;
         this.isProgrammaticFocus = false;
         this.isReadingActive = false;
         this.wasSpeaking = false;
+        
+        // Create tree walker for DOM navigation
         this.walker = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_ELEMENT,
@@ -46,22 +60,26 @@ class ContentHandler {
             false
         );
 
-        // Add focus change listener
+        // Set up event listeners
         document.addEventListener('focusin', this.handleFocusChange.bind(this));
-        
-        // Listen for messages
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
-        // Reset reading state on page load
+        // Initialize the system
         this.resetReadingState();
     }
 
+    /**
+     * Reset and initialize all system state
+     * This method sets up event listeners for the video overlay system
+     */
     resetReadingState() {
+        // Reset TTS state
         this.isReadingActive = false;
         this.wasSpeaking = false;
         this.settings = null;
         this.initializeSettings();
 
+        // Reset current element tracking
         this.currentElement = null;
         if (this.speechHandler.isSpeaking) {
             this.speechHandler.stop();
@@ -72,25 +90,18 @@ class ContentHandler {
             }
         }
         
-        // Add speech event listeners for notification
-        // this.speechHandler.addEventListener('speechstart', () => {
-        //     this.notifySpeechStarted();
-        // });
-        
-        // this.speechHandler.addEventListener('speechend', () => {
-        //     this.notifySpeechStopped();
-        // });
-        
-        // Listen for hand landmarks detected events from the sign language handler
+        // Set up MediaPipe landmark detection monitoring
+        // This provides system health data but doesn't affect display
         window.addEventListener('handLandmarksDetected', (event) => {
             const { leftHand, rightHand, face, pose, timestamp, fps } = event.detail;
-            console.log(`[${new Date(timestamp).toLocaleTimeString()}] MediaPipe Holistic Detection (${fps.toFixed(1)} FPS)`, 
+            console.log(`[${new Date(timestamp).toLocaleTimeString()}] MediaPipe Detection (${fps.toFixed(1)} FPS)`, 
                 face ? 'Face detected' : 'No face',
                 pose ? 'Pose detected' : 'No pose',
                 leftHand ? 'Left hand detected' : 'No left hand', 
                 rightHand ? 'Right hand detected' : 'No right hand');
             
-            // Send to sidebar
+            // Send basic detection status to sidebar for monitoring only
+            // This is just for system health display, not for translation text
             chrome.runtime.sendMessage({
                 action: "handLandmarksUpdate",
                 face: face !== null,
@@ -102,25 +113,39 @@ class ContentHandler {
             });
         });
         
-        // CRITICAL ADDITION: Listen for sign language translation events from the sign language handler
-        // This is the bridge that catches translations from your SignLanguageHandler and forwards them to the sidebar
+        // CRITICAL: Set up sign language translation event listener for video overlay ONLY
+        // This completely replaces the previous sidebar forwarding approach
         window.addEventListener('signLanguageTranslation', (event) => {
             const { translatedText, timestamp, confidence, words, translationHistory } = event.detail;
             
-            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation: "${translatedText}"`);
+            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation for Video Overlay Only: "${translatedText}"`);
             
-            // Forward the translation to sidebar for display in the unified communication display
+            // The translation is already displayed as a video overlay by the SignLanguageHandler
+            // We only log this event for debugging and monitoring purposes
+            
+            // IMPORTANT: NO SIDEBAR FORWARDING FOR TRANSLATIONS
+            // The SignLanguageHandler.processTranslationForVideoOverlay() method handles all display logic
+            // This is the fundamental difference from the previous implementation
+            
+            console.log(`[CONTENT] Translation processed exclusively by video overlay system - no sidebar display`);
+            
+            // Optional: Send minimal data to sidebar for statistics/history tracking only
+            // This is NOT for display purposes - only for system monitoring
+            // Uncomment the following if you want basic sidebar statistics:
+            /*
             chrome.runtime.sendMessage({
-                action: "signLanguageTranslation",
+                action: "signLanguageStatistics",
                 translatedText: translatedText,
                 timestamp: timestamp,
                 confidence: confidence,
-                words: words,
-                translationHistory: translationHistory
+                displayMethod: 'video-overlay-only',
+                // Note: this is for statistics only, not display
+                isStatisticsOnly: true
             });
+            */
         });
         
-        // Listen for screen sharing ended event
+        // Set up screen sharing lifecycle event listeners
         window.addEventListener('screenSharingEnded', () => {
             console.log('Screen sharing ended event received');
             chrome.runtime.sendMessage({
@@ -129,7 +154,6 @@ class ContentHandler {
             });
         });
         
-        // Listen for screen sharing failed event
         window.addEventListener('screenSharingFailed', (event) => {
             console.error('Screen sharing failed:', event.detail?.reason || 'Unknown error');
             chrome.runtime.sendMessage({
@@ -140,27 +164,25 @@ class ContentHandler {
         });
     }
 
-    // Notify sidebar that speech has started
+    // TTS notification methods for sidebar integration
     notifySpeechStarted() {
         chrome.runtime.sendMessage({
             action: "ttsStarted"
         });
     }
     
-    // Notify sidebar that speech has stopped
     notifySpeechStopped() {
         chrome.runtime.sendMessage({
             action: "ttsStopped"
         });
     }
 
+    // Settings management
     getSettings(callback) {
-        // Try to get settings from sync storage first
         chrome.storage.sync.get('settings', function(data) {
             if (data.settings) {
                 callback(data.settings);
             } else {
-                // Fall back to local storage if not found in sync
                 chrome.storage.local.get('settings', function(localData) {
                     callback(localData.settings || {});
                 });
@@ -171,18 +193,17 @@ class ContentHandler {
     initializeSettings() {
         const self = this;
         this.getSettings(function(settings) {
-            // Now you can use the settings
             console.log('Loaded settings:', settings);
             self.settings = settings;
             self.highlightWhileReading = settings.highlightText || false;
             self.badge = settings.showIconBadge || false;
             self.readSelectedTextOnly = settings.readingElement === 'selected';
-            // Example: Use TTS rate setting
             const ttsRate = settings.ttsRate || 1.0;
             console.log('Using TTS rate:', ttsRate);
         });
     }
 
+    // TTS text selection methods
     getSelectedText() {
         console.log('getSelectedText called');
         const selection = window.getSelection();
@@ -200,6 +221,7 @@ class ContentHandler {
         return null;
     }
 
+    // TTS DOM navigation methods
     getNextElement() {
         let elementsToReturn = [];
         let text = [];
@@ -231,10 +253,8 @@ class ContentHandler {
                     const isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
                     const isTreeItem = element.getAttribute('role') === 'treeitem';
                     
-                    // Get aria-label if available
                     const ariaLabel = element.getAttribute('aria-label');
                     
-                    // Generic radio/checkbox text discovery
                     if (isRadio || isCheckbox) {
                         console.log(`generic ${isRadio ? 'radio' : 'checkbox'} text discovery`);
                         const labelText = this.getInputLabelText(element);
@@ -249,7 +269,6 @@ class ContentHandler {
                         elementsToReturn.push(element);
                         this.currentLink = element;
                     } else {
-                        // Check if this is a container with a radio button or checkbox child
                         const radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
                         if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) &&
                             !TextExtractor.processedElements.has(radioOrCheckboxChild)) {
@@ -262,7 +281,6 @@ class ContentHandler {
                             TextExtractor.processedElements.add(radioOrCheckboxChild);
                         } else {
                             console.log('non-radio/checkbox text discovery');
-                            // Use aria-label if available, otherwise use text content
                             const elementText = ariaLabel || element.textContent.trim();
                             text.push(`${stateText}${elementText}`);
                             elementsToReturn.push(element);
@@ -337,11 +355,11 @@ class ContentHandler {
         return { elementsToReturn, text };
     }
 
+    // TTS speech processing
     async speakCurrentSection() {
         if (!this.currentElement) {
             if (this.readSelectedTextOnly) {
                 this.currentElement = this.getSelectedText();
-                // If no text is selected, don't read anything
                 if (!this.currentElement) {
                     console.log('No text selected');
                     return;
@@ -355,7 +373,6 @@ class ContentHandler {
         const isSelectedText = elementsToReturn.length === 0 && text.length > 0;
     
         if (isSelectedText) {
-            // Just speak the text without highlighting
             await this.speechHandler.speak(text[0], ()=>{});
             this.currentElement = null;
             return;
@@ -363,27 +380,21 @@ class ContentHandler {
 
         if (!this.currentElement || !elementsToReturn || elementsToReturn.length === 0) {
             this.currentElement = null;
-            // Send a notification that speech has finished completely
             this.notifySpeechStopped();
             return;
         }
 
-    
-        // Notify that speech has started
         this.notifySpeechStarted();
     
         for (let i = 0; i < elementsToReturn.length; i++) {
             await new Promise(async (resolve) => {
               try {
-                // Add highlight first
                 this.highlightWhileReading? this.highlightBox.addHighlight(elementsToReturn[i]) : null;
 
                 if (elementsToReturn[i].tagName?.toLowerCase() === 'img') {
                     console.log('🖼️ Detected image element:', elementsToReturn[i]);
                     
                     try {
-                        // Pass both the URL and the element to the caption generator
-                        // This will trigger the processing sound and overlay
                         const caption = await this.imageCaptionHandler.generateCaptionForImage(elementsToReturn[i].src, elementsToReturn[i]);
                         text[i] = `Image description: ${caption}`;
                     } catch (error) {
@@ -392,7 +403,6 @@ class ContentHandler {
                     }
                 }
                 
-                // If the element is interactive or a link, set focus to it
                 if (InteractionHandler.isInteractiveElement(elementsToReturn[i]) || 
                     elementsToReturn[i].tagName?.toLowerCase() === 'a') {
                     this.isProgrammaticFocus = true;
@@ -400,7 +410,6 @@ class ContentHandler {
                     this.isProgrammaticFocus = false;
                 }
       
-                // Wait for speech to complete
                 await this.speechHandler.speak(text[i], ()=>{});
                 this.highlightWhileReading? this.highlightBox.removeHighlight(elementsToReturn[i]): null;
                 
@@ -412,15 +421,14 @@ class ContentHandler {
               }
             });
         }
-        this.currentElement = null; // Prepare for the next element
+        this.currentElement = null;
         if (this.wasSpeaking) {
             await new Promise(resolve => setTimeout(resolve, 50));
-            await this.speakCurrentSection(); // Add await
+            await this.speakCurrentSection();
         }
     }
 
-    // Modified label text extraction
-    // Renamed from getRadioLabelText to handle both radio buttons and checkboxes
+    // Input label processing methods
     getInputLabelText(element) {
         console.log('getInputLabelText called');
         if (element.hasAttribute('aria-labelledby')) {
@@ -435,11 +443,9 @@ class ContentHandler {
             }).filter(Boolean).join(' ');
             if (labelText) return labelText;
         }
-        // 2. aria-label
         if (element.hasAttribute('aria-label')) {
             return element.getAttribute('aria-label').trim();
         }
-        // 3. <label for="...">
         if (element.id) {
             const forLabel = document.querySelector(`label[for="${element.id}"]`);
             if (forLabel) {
@@ -447,21 +453,17 @@ class ContentHandler {
                 return forLabel.textContent.trim();
             }
         }
-        // 4. Closest wrapping <label>
         const wrappingLabel = element.closest('label');
         if (wrappingLabel) {
             TextExtractor.processedElements.add(wrappingLabel);
             return wrappingLabel.textContent.trim();
         }
-        // 5. Fallback to value or empty
         const elementType = element.type || element.getAttribute('role');
         return element.value || `no ${elementType} label text found`;
     }
     
-    // Renamed from markRadioLabelProcessed to handle both radio buttons and checkboxes
     markInputLabelProcessed(inputElement) {
         console.log('markInputLabelProcessed called');
-        // Try ARIA-labelledby first
         if (inputElement.hasAttribute('aria-labelledby')) {
             const ids = inputElement.getAttribute('aria-labelledby').split(' ');
             ids.forEach(id => {
@@ -469,19 +471,16 @@ class ContentHandler {
                 if (labelEl) TextExtractor.processedElements.add(labelEl);
             });
         }
-        // Try closest label
         const label = inputElement.closest('label');
         if (label) {
             TextExtractor.processedElements.add(label);
         }
-        // Try label[for]
         if (inputElement.id) {
             const forLabel = document.querySelector(`label[for="${inputElement.id}"]`);
             if (forLabel) TextExtractor.processedElements.add(forLabel);
         }
     }
     
-    // Update findAssociatedLabel
     findAssociatedLabel(element) {
         const isInput = element.getAttribute('role') === 'radio' || 
                         element.type === 'radio' ||
@@ -489,49 +488,107 @@ class ContentHandler {
                         element.type === 'checkbox';
         if (!isInput) return null;
         
-        // Check ARIA first
         if (element.hasAttribute('aria-labelledby')) {
             return document.getElementById(element.getAttribute('aria-labelledby'));
         }
         
-        // Then check standard label associations
         return element.closest('label') || 
                document.querySelector(`label[for="${element.id}"]`);
     }
 
+    /**
+     * Display STT (Speech-to-Text) overlay text on videos
+     * This is separate from sign language overlays - this is for speech recognition overlays
+     */
     displayOverlayText(text, isFinal = false) {
         if (!this.videoOverlayManager) {
             console.error('VideoOverlayManager not initialized!');
             return;
         }
         
-        console.log('ContentHandler: Sending text to overlay:', text, isFinal);
+        console.log('ContentHandler: Sending STT text to video overlay:', text, isFinal);
         this.videoOverlayManager.displayText(text, isFinal);
     }
+
+    /**
+     * NEW: Update sign language caption settings for video overlay system
+     * Allows dynamic customization of caption appearance from sidebar controls
+     */
+    updateSignLanguageCaptionSettings(settings) {
+        if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+            this.signLanguageHandler.updateCaptionSettings(settings);
+            console.log('[CONTENT] Updated sign language caption settings:', settings);
+        } else {
+            console.warn('[CONTENT] Cannot update caption settings - sign language handler not active');
+        }
+    }
+
+    /**
+     * NEW: Clear all sign language video captions
+     * Provides immediate caption clearing functionality
+     */
+    clearSignLanguageCaptions() {
+        if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+            this.signLanguageHandler.clearAllVideoCaptions();
+            console.log('[CONTENT] Cleared all sign language video captions');
+        } else {
+            console.warn('[CONTENT] Cannot clear captions - sign language handler not active');
+        }
+    }
+
+    /**
+     * NEW: Get comprehensive sign language status including caption information
+     * Provides detailed system status for monitoring and debugging
+     */
+    getSignLanguageStatus() {
+        if (!this.signLanguageHandler) {
+            return { 
+                status: 'Not Available', 
+                error: 'Handler not initialized',
+                displayMethod: 'video-overlay-only' 
+            };
+        }
+        
+        const debugInfo = this.signLanguageHandler.getDebugInfo();
+        return {
+            status: this.signLanguageHandler.isActive ? 'Active' : 'Inactive',
+            displayMethod: 'video-overlay-only',
+            captionSystemActive: this.signLanguageHandler.isActive,
+            ...debugInfo
+        };
+    }
     
+    /**
+     * Main message handler for all extension communication
+     * Routes messages to appropriate handlers based on action type
+     */
     handleMessage(request) {
-        // Reset reading state if we're on a new page
+        // Handle page load reset
         if (request.action === "pageLoad") {
             this.resetReadingState();
             return;
         }
 
+        // Image captioning handlers
         if (request.action === "activateImageCaptioning") {
-            console.log('[CONTENT] Received captioning activation');
+            console.log('[CONTENT] Received image captioning activation');
             this.imageCaptionHandler.setCaptionType(request.captionType);
             this.imageCaptionHandler.activate();
         } else if (request.action === "deactivateImageCaptioning") {
-            console.log('[CONTENT] Received captioning deactivation');
+            console.log('[CONTENT] Received image captioning deactivation');
             this.imageCaptionHandler.deactivate();
-        } else if (request.action === "startScreenCapture") {
-            console.log('[CONTENT] Screen capture activation requested');
+        } 
+        
+        // Sign language detection handlers (video overlay system)
+        else if (request.action === "startScreenCapture") {
+            console.log('[CONTENT] Screen capture activation requested for video overlay system');
             
             this.checkServerConnectivity()
                 .then(serverAvailable => {
                     console.log('[CONTENT] Server connectivity check result:', serverAvailable);
                     
                     if (!serverAvailable) {
-                        console.log('[CONTENT] Server not available, showing notification');
+                        console.log('[CONTENT] MediaPipe server not available, showing notification');
                         chrome.runtime.sendMessage({
                             action: "screenSharingStatus",
                             status: 'Error',
@@ -541,23 +598,29 @@ class ContentHandler {
                         return;
                     }
                     
-                    console.log('[CONTENT] Server available, proceeding with SignLanguageHandler activation');
+                    console.log('[CONTENT] Server available, activating video overlay system');
                     this.signLanguageHandler.activate()
                         .then(success => {
-                            console.log('[CONTENT] SignLanguageHandler activation result:', success);
+                            console.log('[CONTENT] Video overlay system activation result:', success);
                             chrome.runtime.sendMessage({
                                 action: "screenSharingStatus",
-                                status: success ? 'Active' : 'Error'
+                                status: success ? 'Active' : 'Error',
+                                displayMethod: 'video-overlay-only'
                             });
                             
                             if (success) {
-                                console.log('[CONTENT] Screen sharing with MediaPipe Holistic activated successfully');
+                                console.log('[CONTENT] Sign language video overlay system activated successfully');
                             } else {
-                                console.error('[CONTENT] Failed to activate screen sharing with MediaPipe Holistic');
+                                console.error('[CONTENT] Failed to activate sign language video overlay system');
                             }
                         })
                         .catch(error => {
-                            console.error('[CONTENT] SignLanguageHandler activation failed with error:', error);
+                            console.error('[CONTENT] Video overlay system activation failed:', error);
+                            chrome.runtime.sendMessage({
+                                action: "screenSharingStatus",
+                                status: 'Error',
+                                message: error.message
+                            });
                         });
                 })
                 .catch(error => {
@@ -567,46 +630,69 @@ class ContentHandler {
             console.log('[CONTENT] Received screen capture deactivation');
             this.signLanguageHandler.deactivate();
             
-            // Notify sidebar of deactivation
             chrome.runtime.sendMessage({
                 action: "screenSharingStatus",
                 status: 'Off'
             });
-        } else if (request.action === "toggleVideoOverlay") {
-            console.log('[CONTENT] Toggle video overlay:', request.enabled);
-            // Enable/disable the overlay
+        } 
+        
+        // STT video overlay handlers (separate from sign language)
+        else if (request.action === "toggleVideoOverlay") {
+            console.log('[CONTENT] Toggle STT video overlay (not sign language):', request.enabled);
             this.videoOverlayManager.setActive(request.enabled);
-            // Notify background script to disable/enable commands
             chrome.runtime.sendMessage({
                 action: "setCommandsEnabled",
                 enabled: !request.enabled
             });
-        } else if (request.action === "toggleDebugMode") {
-            console.log('[CONTENT] Toggle debug mode for MediaPipe visualization');
+        } else if (request.action === "displayOverlayText") {
+            console.log('[CONTENT] Received STT text for video overlay:', request.text);
+            this.displayOverlayText(request.text, request.isFinal);
+        } 
+        
+        // Debug mode handler
+        else if (request.action === "toggleDebugMode") {
+            console.log('[CONTENT] Toggle debug mode for sign language video overlay');
             const debugEnabled = this.signLanguageHandler.toggleDebugMode();
             chrome.runtime.sendMessage({
                 action: "debugModeStatus",
                 enabled: debugEnabled
             });
-        } else if (request.action === "displayOverlayText") {
-            console.log('[CONTENT] Received text for overlay:', request.text);
-            this.displayOverlayText(request.text, request.isFinal);
-        } else if (request.action === "getTranslationHistory") {
-            // ADDITION: Handle requests for translation history from sidebar
+        } 
+        
+        // NEW: Sign language caption management handlers
+        else if (request.action === "updateSignLanguageCaptionSettings") {
+            console.log('[CONTENT] Updating sign language caption settings:', request.settings);
+            this.updateSignLanguageCaptionSettings(request.settings);
+        } else if (request.action === "clearSignLanguageCaptions") {
+            console.log('[CONTENT] Clearing sign language video captions');
+            this.clearSignLanguageCaptions();
+        } else if (request.action === "getSignLanguageStatus") {
+            const status = this.getSignLanguageStatus();
+            chrome.runtime.sendMessage({
+                action: "signLanguageStatusResponse",
+                ...status
+            });
+        } 
+        
+        // Translation history handlers (now for video overlay system)
+        else if (request.action === "getTranslationHistory") {
             const history = this.signLanguageHandler.getTranslationHistory();
             chrome.runtime.sendMessage({
                 action: "translationHistoryResponse",
-                history: history
+                history: history,
+                source: 'video-overlay'
             });
         } else if (request.action === "clearTranslationHistory") {
-            // ADDITION: Handle requests to clear translation history
             this.signLanguageHandler.clearTranslationHistory();
             chrome.runtime.sendMessage({
-                action: "translationHistoryCleared"
+                action: "translationHistoryCleared",
+                source: 'video-overlay'
             });
-        } else if (request.action === "extractText") {
+        } 
+        
+        // TTS (Text-to-Speech) handlers
+        else if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) {
-                // If already speaking, stop it first
                 this.speechHandler.stop();
                 if (this.currentElement && this.currentElement.elementsToReturn) {
                     for (let el of this.currentElement.elementsToReturn) {
@@ -626,7 +712,6 @@ class ContentHandler {
                 text: "TTS" 
             }) : null;
         } else if (request.action === "stopTTS") {
-            // Complete stop of TTS
             this.speechHandler.stop();
             if (this.currentElement && this.currentElement.elementsToReturn) {
                 for (let el of this.currentElement.elementsToReturn) {
@@ -690,7 +775,6 @@ class ContentHandler {
                 this.speechHandler.stop();
                 this.notifySpeechStopped();
                 
-                // Check if the current link is a form element or a link
                 if (this.currentLink) {
                     const tagName = this.currentLink.tagName?.toLowerCase();
                     const role = this.currentLink.getAttribute('role');
@@ -698,49 +782,34 @@ class ContentHandler {
                     if (tagName === 'a') {
                         this.linkHandler.accessLink(this.currentLink);
                     } else if (role === 'treeitem') {
-                        // Handle tree item interaction
-                        // Find the expander element
                         const expander = this.currentLink.querySelector('.tree-expander');
                         if (expander) {
-                            // Click the expander first
                             expander.click();
                         }
                         
-                        // Also click the tree item itself
                         this.currentLink.click();
                         
-                        // Toggle aria-expanded after click
                         const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
                         this.currentLink.setAttribute('aria-expanded', !isExpanded);
                         
-                        // Force a reflow to ensure the click is processed
                         this.currentLink.offsetHeight;
                     } else if (role === 'button' && this.currentLink.getAttribute('aria-haspopup') === 'true') {
-                        // Handle button with popup
                         const isExpanded = this.currentLink.getAttribute('aria-expanded') === 'true';
                         
-                        // Click the button
                         this.currentLink.click();
-                        
-                        // Toggle aria-expanded
                         this.currentLink.setAttribute('aria-expanded', !isExpanded);
-                        
-                        // Force a reflow to ensure the click is processed
                         this.currentLink.offsetHeight;
                     } else {
-                        // Save the next element before handling the dropdown
                         if (InteractionHandler.isCustomDropdown(this.currentLink)) {
                             this.saveNextElementAfterListbox(this.currentLink);
                         }
                         
-                        // Always handle interaction regardless of element type
                         InteractionHandler.handleInteraction(this.currentLink);
 
                         if (role === 'option' || tagName === 'option') {
                             this.restoreNextElementAfterListbox();
                         }
                         
-                        // Only check for custom dropdown if it's not a text field
                         if (InteractionHandler.isCustomDropdown(this.currentLink)) {
                             InteractionHandler.handleCustomDropdown(this.currentLink);
                         }
@@ -781,19 +850,18 @@ class ContentHandler {
         } else if (request.action === "toggleImageCaptioning") {
             this.toggleImageCaptioning();
         } else if (request.action === "getScreenSharingStatus") {
-            // Return the current status of screen sharing
+            // Return comprehensive status including video overlay information
+            const status = this.getSignLanguageStatus();
             chrome.runtime.sendMessage({
                 action: "screenSharingStatus",
-                status: this.signLanguageHandler.isActive ? 'Active' : 'Off',
-                fps: this.signLanguageHandler.fps || 0,
-                face: this.signLanguageHandler.faceLandmarks !== null,
-                pose: this.signLanguageHandler.poseLandmarks !== null,
-                leftHand: this.signLanguageHandler.leftHandLandmarks !== null,
-                rightHand: this.signLanguageHandler.rightHandLandmarks !== null
+                status: status.status === 'Active' ? 'Active' : 'Off',
+                displayMethod: 'video-overlay-only',
+                ...status
             });
         }
     }
 
+    // MediaPipe server connectivity check
     async checkServerConnectivity() {
         try {
             const response = await fetch('http://localhost:8766/ping');
@@ -808,8 +876,8 @@ class ContentHandler {
         }
     }
     
+    // Show server connectivity notification to user
     showServerNotification() {
-        // Create a notification to inform user to start the server
         const notification = document.createElement('div');
         notification.style.position = 'fixed';
         notification.style.top = '20px';
@@ -827,18 +895,16 @@ class ContentHandler {
         
         notification.innerHTML = `
             <p><strong>MediaPipe Server Not Running</strong></p>
-            <p>Please start the Python server to use sign language detection.</p>
+            <p>Please start the Python server to use sign language detection with video overlays.</p>
             <button id="dismissBtn" style="background: #721c24; color: white; border: none; padding: 5px 10px; margin-top: 10px; cursor: pointer; border-radius: 3px;">Dismiss</button>
         `;
         
         document.body.appendChild(notification);
         
-        // Add event listener to dismiss button
         document.getElementById('dismissBtn').addEventListener('click', () => {
             document.body.removeChild(notification);
         });
         
-        // Auto-dismiss after 10 seconds
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);
@@ -846,6 +912,7 @@ class ContentHandler {
         }, 10000);
     }
 
+    // Image captioning toggle functionality
     async toggleImageCaptioning() {
         try {
             const isActive = await this.imageCaptionHandler.toggle();
@@ -857,6 +924,7 @@ class ContentHandler {
         }
     }
 
+    // Element visibility detection
     isElementVisible(element) {
         if (!(element instanceof HTMLElement)) return false;
         if (element.offsetHeight === 0 || element.offsetWidth === 0) {
@@ -876,14 +944,12 @@ class ContentHandler {
         return isNotHidden || isInteractive || isTreeItem;
     }
 
+    // Navigation state management for complex elements
     saveNextElementAfterListbox(listbox) {
-        // Try to find a semantic container
         let container = listbox.closest('[role="listitem"], section, article, .question-block, .form-section');
-        // Fallback: use parent or grandparent if no semantic container found
         if (!container) container = listbox.parentElement;
         if (!container) container = listbox;
 
-        // Find the next sibling that is an element node
         let next = container.nextElementSibling;
         while (next && next.nodeType !== 1) {
             next = next.nextElementSibling;
@@ -897,21 +963,19 @@ class ContentHandler {
     restoreNextElementAfterListbox() {
         console.log('restoreNextElementAfterListbox: ', this.nextElementAfterListbox);
         if (this.nextElementAfterListbox) {
-            // Clear the processed elements set to ensure we can process the next element
             this.textExtractor.clearProcessedElements();
             this.walker.currentNode = this.nextElementAfterListbox;
             this.nextElementAfterListbox = null;
         }
     }
 
+    // Focus change handler for TTS navigation
     handleFocusChange(event) {
-        // Skip if this is a programmatic focus change or reading is not active
         if (this.isProgrammaticFocus || !this.isReadingActive) return;
 
         const focusedElement = event.target;
         if (!focusedElement) return;
 
-        // Stop current speech if any
         if (this.speechHandler.isSpeaking) {
             this.speechHandler.stop();
             if (this.currentElement && this.currentElement.elementsToReturn) {
@@ -921,20 +985,14 @@ class ContentHandler {
             }
         }
 
-        // Update walker position to the focused element
         this.walker.currentNode = focusedElement;
-        
-        // Clear processed elements to ensure we can process the focused element
         this.textExtractor.clearProcessedElements();
-        
-        // Set current element to null to force a new element fetch
         this.currentElement = null;
-        
-        // Start speaking from the focused element
         this.speakCurrentSection();
         this.wasSpeaking = true;
     }
 }
 
-// Instantiate the content handler
+// Initialize the content handler with video overlay functionality
+console.log('[CONTENT] Initializing ContentHandler with video overlay sign language system');
 new ContentHandler();

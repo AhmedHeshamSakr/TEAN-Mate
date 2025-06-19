@@ -2923,3 +2923,4 @@ TypeError: __init__() got an unexpected keyword argument 'use_gpu'
 2025-06-17 20:37:56,627 - HolisticSignLanguage - INFO - Performance: 18.2 output FPS, 34.5ms avg processing, Quality: 0.92
 2025-06-17 20:37:56,944 - HolisticSignLanguage - INFO - Frame 240: Pose detected (Quality: 0.95) - Wrists: L(0.28, 0.57), R(0.24, 0.50)
 2025-06-17 20:37:57,239 - HolisticSignLanguage - INFO - Connection state changed to closed
+2025-06-19 21:35:37,866 - HolisticSignLanguage - INFO - GPU available: False
