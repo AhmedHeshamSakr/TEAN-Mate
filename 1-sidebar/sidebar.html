@@ -60,18 +60,15 @@
                         </span>
                         <span id="caption-status" class="badge bg-secondary">Off</span>
                     </button>
+                    <!-- Caption type dropdown - always visible but only functional when active -->
                     <div class="caption-controls mt-2">
-                        <div class="d-flex">
-                            <select id="caption-type-select" class="form-select form-select-sm me-2">
-                                <option value="<CAPTION>">Basic Caption</option>
-                                <option value="<DETAILED_CAPTION>">Detailed Caption</option>
-                                <option value="<MORE_DETAILED_CAPTION>" selected>More Detailed</option>
-                            </select>
-                            <button id="confirm-caption-type" class="btn btn-primary btn-sm">Activate</button>
-                        </div>
+                        <select id="caption-type-select" class="form-select form-select-sm" disabled>
+                            <option value="<CAPTION>">Basic Caption</option>
+                            <option value="<DETAILED_CAPTION>">Detailed Caption</option>
+                            <option value="<MORE_DETAILED_CAPTION>" selected>More Detailed</option>
+                        </select>
                     </div>
                 </div>
-
                 <!-- Sign Language button with simplified functionality -->
                 <div class="sign-language-container">
                     <button class="accessibility-button btn btn-outline-info d-flex justify-content-between align-items-center">

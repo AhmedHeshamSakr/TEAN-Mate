@@ -568,7 +568,17 @@ class ContentHandler {
         } else if (request.action === "displayOverlayText") {
             console.log('[CONTENT] Received text for overlay:', request.text);
             this.displayOverlayText(request.text, request.isFinal);
-        } else if (request.action === "extractText") {
+        } else if (request.action === "updateCaptionType") {
+            console.log('[CONTENT] Received caption type update:', request.captionType);
+            
+            // Only update if image captioning is currently active
+            if (this.imageCaptionHandler.isActive) {
+                this.imageCaptionHandler.setCaptionType(request.captionType);
+                console.log('[CONTENT] Caption type updated to:', request.captionType);
+            } else {
+                console.warn('[CONTENT] Attempted to update caption type while feature is inactive');
+            }
+        }else if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) {
                 // If already speaking, stop it first
                 this.speechHandler.stop();
