@@ -3,27 +3,37 @@ import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js";
 import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
 import SignLanguageHandler from "../2-features/SignLanguage/SignLanguageHandler.js"; 
 
-// Update the SidebarController
+/**
+ * SidebarController manages all the accessibility features and their interactions.
+ * This updated version includes streamlined image captioning where the main button
+ * directly toggles activation, and users can change caption types in real-time.
+ */
 class SidebarController {
     constructor() {
-        this.buttons = {}; // Store button references for easy access
-        this.artyomAssistant = new ArtyomAssistant(this); // Initialize ArtyomAssistant with SidebarController instance
-        this.imageCaptionHandler = new ImageCaptionHandler(); // Add this line
-        this.signLanguageHandler = new SignLanguageHandler(); // Add sign language handler
-
-        // Initialize state variables
-        this.pushToTalkActive = false;
-        this.screenSharingActive = false; // Track if screen sharing is active
-        this.ttsActive = false; // Add a state tracking variable for TTS
-        this.accumulatedSpeech = ''; // Track accumulated speech for continuous mode
-        this.debugModeActive = false; // Track if debug visualization is active
+        // Store button references for easy access across methods
+        this.buttons = {};
         
-        this.initialize(); // Set up event listeners and initial state
+        // Initialize feature handlers - these manage the core functionality
+        this.artyomAssistant = new ArtyomAssistant(this); // Speech-to-text with voice commands
+        this.imageCaptionHandler = new ImageCaptionHandler(); // AI-powered image descriptions
+        this.signLanguageHandler = new SignLanguageHandler(); // MediaPipe-based sign language detection
+
+        // State tracking variables - these help maintain consistency across the interface
+        this.pushToTalkActive = false; // Tracks if user is currently holding space to talk
+        this.screenSharingActive = false; // Tracks MediaPipe screen capture status
+        this.ttsActive = false; // Tracks if text-to-speech is currently reading
+        this.accumulatedSpeech = ''; // Stores speech text in continuous mode
+        this.debugModeActive = false; // Tracks if MediaPipe visualization is enabled
+        
+        this.initialize(); // Set up the entire sidebar interface
     }
 
-    // Initialize sidebar
+    /**
+     * Initialize the sidebar interface and all its components.
+     * This method orchestrates the setup of audio, UI, event listeners, and settings.
+     */
     initialize() {
-        // Play the welcome audio
+        // Welcome the user with audio feedback - this creates a more engaging experience
         const audio = new Audio(welcomeAudio);
         audio.play().then(() => {
             console.log("Welcome audio played successfully");
@@ -31,17 +41,17 @@ class SidebarController {
             console.error("Error playing welcome audio:", error);
         });
     
-        // Set sidebar title using the extension's name
+        // Set the sidebar title from the extension manifest - keeps branding consistent
         document.getElementById("sidebar-title").textContent = chrome.runtime.getManifest().name;
     
-        // Wait for DOM to load before attaching event listeners
+        // Wait for the DOM to be fully loaded before setting up interactions
         document.addEventListener("DOMContentLoaded", () => {
-            this.setupEventListeners();
-            this.initializeSTTListeners();
-            this.initializeUIElements();
-            this.initializeScreenSharingListeners();
+            this.setupEventListeners(); // Main button interactions
+            this.initializeSTTListeners(); // Keyboard shortcuts for speech-to-text
+            this.initializeUIElements(); // Dropdowns, checkboxes, and other controls
+            this.initializeScreenSharingListeners(); // MediaPipe-related event handling
             
-            // Check if screen sharing is already active from a previous session
+            // Check if screen sharing was active from a previous session
             setTimeout(() => {
                 this.sendMessageToActiveTab({
                     action: "getScreenSharingStatus"
@@ -49,31 +59,32 @@ class SidebarController {
             }, 1000);
         });
     
-        // Get sidebar position and theme preferences
+        // Apply user theme preferences (light, dark, high-contrast, or system)
         const self = this;
         this.getSettings(function(settings) {
-            // Apply theme
             self.applyTheme(settings.theme || 'system');
         });
-        this.setupSystemThemeListener(); 
+        this.setupSystemThemeListener(); // React to system theme changes
     
-        // Add listener for messages from content scripts and background
+        // Set up message handling for communication with content scripts and background
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             this.handleIncomingMessages(message, sender, sendResponse);
         });
     }
-    
 
-    // Handle incoming messages from content scripts or background
+    /**
+     * Handle all incoming messages from content scripts and background processes.
+     * This central message handler keeps all communication organized and maintainable.
+     */
     handleIncomingMessages(message, sender, sendResponse) {
         if (message.action === "ttsStarted") {
-            // Update TTS button state when reading starts
+            // Text-to-speech has begun reading - update button state
             this.setTTSActive(true);
         } else if (message.action === "ttsStopped") {
-            // Update TTS button state when reading stops
+            // Text-to-speech has finished - reset button state
             this.setTTSActive(false);
         } else if (message.action === "setCommandsEnabled") {
-            // Update ArtyomAssistant command state
+            // Enable/disable voice commands (typically when video overlay is active)
             if (this.artyomAssistant) {
                 this.artyomAssistant.setCommandsEnabled(message.enabled);
                 if (!message.enabled) {
@@ -83,7 +94,7 @@ class SidebarController {
                 }
             }
         } else if (message.action === "screenSharingStatus") {
-            // Update screen sharing status based on content script response
+            // MediaPipe screen sharing status has changed
             const status = message.status;
             this.updateScreenSharingStatus(status);
             
@@ -100,23 +111,25 @@ class SidebarController {
                 this.updateStatusMessage('Screen sharing stopped');
             }
         } else if (message.action === "handLandmarksUpdate") {
-            // Handle hand landmarks update from content script
+            // Real-time updates from MediaPipe hand tracking
             this.handleLandmarksUpdate(message);
         } else if (message.action === "screenSharingEnded") {
-            // Handle screen sharing ended event
+            // Screen sharing has ended (user stopped or error occurred)
             this.screenSharingActive = false;
             this.buttons.signLanguage.classList.remove('active');
             this.updateScreenSharingStatus('Off');
             this.updateStatusMessage('Screen sharing ended');
         } else if (message.action === "debugModeStatus") {
-            // Handle debug mode status update
+            // MediaPipe debug visualization has been toggled
             this.debugModeActive = message.enabled;
             this.updateStatusMessage(`Debug visualization ${message.enabled ? 'enabled' : 'disabled'}`);
         }
     }
-    
 
-    // Set TTS button active state
+    /**
+     * Update the visual state of the text-to-speech button.
+     * This provides clear feedback about whether TTS is currently active.
+     */
     setTTSActive(active) {
         this.ttsActive = active;
         
@@ -131,9 +144,12 @@ class SidebarController {
         }
     }
 
-    // Initialize listeners for screen sharing events
+    /**
+     * Initialize event listeners for screen sharing functionality.
+     * These handle the complex MediaPipe integration for sign language detection.
+     */
     initializeScreenSharingListeners() {
-        // Listen for screen sharing ended event
+        // Listen for screen sharing ended event from the sign language handler
         window.addEventListener('screenSharingEnded', () => {
             this.screenSharingActive = false;
             this.buttons.signLanguage.classList.remove('active');
@@ -142,27 +158,31 @@ class SidebarController {
         });
     }
 
-    // Initialize UI elements that need event listeners
+    /**
+     * Initialize all UI elements that need interactive behavior.
+     * This method sets up the complex interactions between different interface components.
+     */
     initializeUIElements() {
-        // Add listener for mode change
+        // Speech-to-text mode switching (push-to-talk vs continuous)
         const modeSelect = document.getElementById('stt-mode-select');
         if (modeSelect) {
             modeSelect.addEventListener('change', this.handleSTTModeChange.bind(this));
         }
 
-        // Add listener for caption type confirmation
-        const confirmCaptionBtn = document.getElementById('confirm-caption-type');
-        if (confirmCaptionBtn) {
-            confirmCaptionBtn.addEventListener('click', this.handleCaptionTypeConfirm.bind(this));
+        // NEW: Real-time caption type changes - this is the key improvement
+        // Users can now change caption detail levels while the feature is active
+        const captionTypeSelect = document.getElementById('caption-type-select');
+        if (captionTypeSelect) {
+            captionTypeSelect.addEventListener('change', this.handleCaptionTypeChange.bind(this));
         }
 
-        // Add listener for shortcuts button
+        // Keyboard shortcuts panel toggle
         const shortcutsBtn = document.getElementById('shortcutsButton');
         if (shortcutsBtn) {
             shortcutsBtn.addEventListener('click', this.toggleShortcutsPanel.bind(this));
         }
 
-        // Add listeners for speech buttons
+        // Speech recognition text management buttons
         const copyBtn = document.getElementById('copy-speech-btn');
         const saveBtn = document.getElementById('save-speech-btn');
         const clearBtn = document.getElementById('clear-speech-btn');
@@ -171,13 +191,13 @@ class SidebarController {
         if (saveBtn) saveBtn.addEventListener('click', this.handleSaveSpeech.bind(this));
         if (clearBtn) clearBtn.addEventListener('click', this.handleClearSpeech.bind(this));
 
-        // Add listener for video overlay checkbox
+        // Video overlay for speech-to-text in continuous mode
         const videoOverlayCheckbox = document.getElementById('video-overlay-checkbox');
         if (videoOverlayCheckbox) {
             videoOverlayCheckbox.addEventListener('change', (event) => {
                 const isEnabled = event.target.checked;
                 
-                // Send message to content script to enable/disable video overlay
+                // Communicate with content script to show/hide video overlay
                 this.sendMessageToActiveTab({
                     action: "toggleVideoOverlay",
                     enabled: isEnabled
@@ -187,11 +207,54 @@ class SidebarController {
             });
         }
         
-        // Set initial status message
+        // Set initial ready state
         this.updateStatusMessage('Ready to assist');
     }
 
-    // Toggle shortcuts panel visibility
+    /**
+     * NEW: Handle real-time caption type changes while the feature is active.
+     * This is a major UX improvement - users no longer need to restart the feature
+     * to try different caption detail levels.
+     */
+    handleCaptionTypeChange(event) {
+        const newType = event.target.value;
+        
+        // Only apply changes when image captioning is currently running
+        if (this.imageCaptionHandler.isActive) {
+            console.log('[SIDEBAR] Changing caption type to:', newType);
+            
+            // Update the local handler configuration
+            this.imageCaptionHandler.setCaptionType(newType);
+            
+            // Notify the content script about the change
+            this.sendMessageToActiveTab({ 
+                action: "updateCaptionType",
+                captionType: newType 
+            });
+            
+            // Provide immediate feedback to the user
+            this.updateStatusMessage(`Caption type changed to: ${this.getCaptionTypeDisplayName(newType)}`);
+        }
+        // If the feature isn't active, the selection is just stored for when it activates
+    }
+
+    /**
+     * Convert internal caption type identifiers to user-friendly display names.
+     * This abstraction makes the interface more accessible and the code more maintainable.
+     */
+    getCaptionTypeDisplayName(type) {
+        switch(type) {
+            case '<CAPTION>': return 'Basic';
+            case '<DETAILED_CAPTION>': return 'Detailed';
+            case '<MORE_DETAILED_CAPTION>': return 'More Detailed';
+            default: return type;
+        }
+    }
+
+    /**
+     * Toggle the keyboard shortcuts help panel.
+     * This provides users with quick reference for available keyboard commands.
+     */
     toggleShortcutsPanel() {
         const panel = document.getElementById('shortcuts-panel');
         if (panel) {
@@ -200,6 +263,10 @@ class SidebarController {
         }
     }
 
+    /**
+     * Copy accumulated speech text to the system clipboard.
+     * This enables users to easily transfer recognized speech to other applications.
+     */
     handleCopySpeech() {
         if (!this.accumulatedSpeech) return;
         
@@ -213,6 +280,10 @@ class SidebarController {
             });
     }
     
+    /**
+     * Save accumulated speech text as a downloadable file.
+     * This provides a convenient way to preserve longer speech sessions.
+     */
     handleSaveSpeech() {
         if (!this.accumulatedSpeech) return;
         
@@ -229,6 +300,10 @@ class SidebarController {
         this.updateStatusMessage('Text saved as file');
     }
     
+    /**
+     * Update the word count display for accumulated speech.
+     * This helps users track how much content they've dictated.
+     */
     updateWordCount() {
         const wordCountElement = document.getElementById('word-count');
         if (!wordCountElement) return;
@@ -238,23 +313,27 @@ class SidebarController {
             return;
         }
         
-        // Count words by splitting on whitespace
+        // Count words by splitting on whitespace and filtering empty strings
         const wordCount = this.accumulatedSpeech.trim().split(/\s+/).length;
         wordCountElement.textContent = `${wordCount} ${wordCount === 1 ? 'word' : 'words'}`;
     }
     
-    // Update the updateSpeechDisplay method to include word count updates
+    /**
+     * Update the speech recognition display with new text.
+     * This handles both push-to-talk and continuous modes differently.
+     */
     updateSpeechDisplay(text, isFinal = false) {
         const recognizedTextDiv = document.getElementById("recognizedText");
         const speechModeLabel = document.getElementById("speech-mode-label");
         const accumulationIndicator = document.getElementById("speech-accumulation-indicator");
         
-        // Update mode display
+        // Update the mode display to keep users informed
         const mode = this.getSTTMode();
         if (speechModeLabel) {
             speechModeLabel.textContent = `Mode: ${mode === 'continuous' ? 'Continuous' : 'Push-to-Talk'}`;
         }
 
+        // Send text to video overlay if enabled in continuous mode
         const videoOverlayCheckbox = document.getElementById('video-overlay-checkbox');
         if (mode === 'continuous' && videoOverlayCheckbox && videoOverlayCheckbox.checked) {
             this.sendMessageToActiveTab({
@@ -264,36 +343,36 @@ class SidebarController {
             });
         }
         
-        // Enable buttons if there is any text to work with
+        // Enable action buttons when there's text to work with
         const hasText = text && text.trim().length > 0;
         document.getElementById('copy-speech-btn').disabled = !hasText;
         document.getElementById('save-speech-btn').disabled = !hasText;
         document.getElementById('clear-speech-btn').disabled = !hasText;
         
-        // If in continuous mode and text is final, accumulate it
+        // Handle text accumulation in continuous mode
         if (mode === 'continuous' && isFinal && text.trim()) {
-            // Show accumulation indicator
+            // Show visual indicator that text is being accumulated
             if (accumulationIndicator) {
                 accumulationIndicator.style.display = 'inline-block';
             }
             
-            // Add the new text with proper spacing
+            // Append new text with proper spacing
             if (this.accumulatedSpeech) {
                 this.accumulatedSpeech += ' ' + text;
             } else {
                 this.accumulatedSpeech = text;
             }
             
-            // Update the display with accumulated text
+            // Update display with all accumulated text
             recognizedTextDiv.textContent = this.accumulatedSpeech;
             recognizedTextDiv.classList.add('accumulating');
             
-            // Update word count
+            // Keep word count current
             this.updateWordCount();
         } 
-        // In push-to-talk mode or for interim results, just show current recognition
+        // In push-to-talk mode, just show the current recognition
         else {
-            // Hide accumulation indicator
+            // Hide accumulation indicator for immediate results
             if (accumulationIndicator) {
                 accumulationIndicator.style.display = 'none';
             }
@@ -303,51 +382,57 @@ class SidebarController {
         }
     }
     
-    // Update handleClearSpeech to reset word count
+    /**
+     * Clear all accumulated speech text and reset the interface.
+     * This provides a fresh start for new speech sessions.
+     */
     handleClearSpeech() {
         this.accumulatedSpeech = '';
         
-        // Reset speech recognition display
+        // Reset the speech recognition display to its initial state
         document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
         document.getElementById('recognizedText').classList.remove('accumulating');
         
-        // Hide accumulation indicator
+        // Hide the accumulation indicator
         const accumulationIndicator = document.getElementById("speech-accumulation-indicator");
         if (accumulationIndicator) {
             accumulationIndicator.style.display = 'none';
         }
         
-        // Disable buttons when text is cleared
+        // Disable action buttons since there's no text to act on
         document.getElementById('copy-speech-btn').disabled = true;
         document.getElementById('save-speech-btn').disabled = true;
         document.getElementById('clear-speech-btn').disabled = true;
         
-        // Reset word count
+        // Reset word count and provide feedback
         this.updateWordCount();
         this.updateStatusMessage('Speech text cleared');
     }
     
-    // Update the handleSTTModeChange method to reset accumulated speech when changing modes
+    /**
+     * Handle changes to the speech-to-text mode (push-to-talk vs continuous).
+     * This method manages the transition between different interaction paradigms.
+     */
     handleSTTModeChange(event) {
         const mode = event.target.value;
         console.log(`STT mode changed to: ${mode}`);
         
-        // Stop any active listening when changing modes
+        // Stop any active listening when switching modes to prevent confusion
         if (this.artyomAssistant.isListening) {
             this.artyomAssistant.stopListening();
             this.updateSTTStatus('Ready');
         }
         
-        // Reset accumulated speech when changing modes
+        // Clear accumulated speech when changing modes for a fresh start
         this.accumulatedSpeech = '';
         document.getElementById('recognizedText').textContent = 'Start speaking to see the text here...';
         
-        // Disable buttons
+        // Reset action buttons
         document.getElementById('copy-speech-btn').disabled = true;
         document.getElementById('save-speech-btn').disabled = true;
         document.getElementById('clear-speech-btn').disabled = true;
         
-        // Show/hide video overlay option based on mode
+        // Show or hide video overlay option based on the selected mode
         const videoOverlayOption = document.getElementById('video-overlay-option');
         if (videoOverlayOption) {
             videoOverlayOption.style.display = mode === 'continuous' ? 'block' : 'none';
@@ -355,7 +440,7 @@ class SidebarController {
             document.getElementById('video-overlay-checkbox').checked = false;
         }
         
-        // Show appropriate guidance in status area
+        // Provide mode-appropriate guidance
         if (mode === 'push-to-talk') {
             this.updateStatusMessage('Hold SPACE key to speak');
         } else {
@@ -363,67 +448,75 @@ class SidebarController {
         }
     }
 
-    // Handle screen sharing button click
+    /**
+     * Handle the screen sharing button for MediaPipe sign language detection.
+     * This manages the complex setup required for computer vision-based accessibility.
+     */
     handleScreenSharing() {
         console.log("Screen Sharing button clicked");
         
-        // Toggle the active state
         if (this.screenSharingActive) {
-            // Deactivate
+            // Deactivate screen sharing
             this.screenSharingActive = false;
             this.buttons.signLanguage.classList.remove('active');
             this.updateStatusMessage('Screen sharing with MediaPipe deactivated');
             this.updateScreenSharingStatus('Off');
             
-            // Send deactivation message to content script
+            // Notify content script to stop capture
             this.sendMessageToActiveTab({
                 action: "stopScreenCapture"
             });
             
         } else {
-            // Activate
+            // Activate screen sharing
             this.buttons.signLanguage.classList.add('active');
             this.updateStatusMessage('Preparing screen sharing with MediaPipe Holistic...');
             this.updateScreenSharingStatus('Processing');
             
-            // Send activation command to content script
+            // Request content script to start capture
             this.sendMessageToActiveTab({
                 action: "startScreenCapture"
             });
             
-            // Set a timeout to check if activation succeeded
+            // Provide feedback if activation takes too long
             setTimeout(() => {
                 if (!this.screenSharingActive) {
-                    // If still processing after 5 seconds, show a hint
                     this.updateStatusMessage('Waiting for screen share permission...');
                 }
             }, 5000);
         }
     }
     
-    // Toggle debug visualization mode
+    /**
+     * Toggle MediaPipe debug visualization mode.
+     * This helps developers and advanced users understand what the AI is detecting.
+     */
     toggleDebugMode() {
         this.sendMessageToActiveTab({
             action: "toggleDebugMode"
         });
     }
     
-    // Add this method to handle incoming landmarks updates
+    /**
+     * Handle real-time hand landmarks updates from MediaPipe.
+     * This processes the computer vision data and provides user feedback.
+     */
     handleLandmarksUpdate(message) {
         if (!this.screenSharingActive) return;
         
         const { face, pose, leftHand, rightHand, fps, timestamp } = message;
         
-        // Update status message with detection info
+        // Create human-readable status based on detection results
         const time = new Date(timestamp).toLocaleTimeString();
         
-        // Build status text based on detected landmarks
+        // Build a list of what's currently being detected
         let detectedParts = [];
         if (face) detectedParts.push("Face");
         if (pose) detectedParts.push("Pose");
         if (leftHand) detectedParts.push("Left Hand");
         if (rightHand) detectedParts.push("Right Hand");
         
+        // Format the status message with timing and performance info
         let statusText = `[${time}] `;
         if (detectedParts.length > 0) {
             statusText += `Detected: ${detectedParts.join(", ")}`;
@@ -436,15 +529,18 @@ class SidebarController {
         this.updateStatusMessage(statusText);
     }
     
-    // Update screen sharing status indicator
+    /**
+     * Update the visual status indicator for screen sharing.
+     * This provides clear feedback about the MediaPipe system state.
+     */
     updateScreenSharingStatus(status) {
         const indicator = document.getElementById('sign-status-indicator');
         if (!indicator) return;
         
-        // Remove all existing status classes
+        // Clear all existing status classes
         indicator.classList.remove('bg-secondary', 'bg-success', 'bg-danger', 'bg-warning');
         
-        // Apply appropriate status
+        // Apply appropriate status styling and text
         switch(status) {
             case 'Active':
                 this.screenSharingActive = true;
@@ -467,12 +563,15 @@ class SidebarController {
         }
     }
 
-    // Update STT status indicator
+    /**
+     * Update the visual status indicator for speech-to-text.
+     * This helps users understand when the system is actively listening.
+     */
     updateSTTStatus(status) {
         const indicator = document.getElementById('stt-status-indicator');
         if (!indicator) return;
         
-        // Remove all existing status classes
+        // Clear existing status classes
         indicator.classList.remove('bg-secondary', 'bg-success', 'bg-danger');
         
         // Apply appropriate status
@@ -490,18 +589,21 @@ class SidebarController {
                 indicator.textContent = 'Ready';
         }
         
-        // Update status message
+        // Update status message for listening state
         if (status === 'Listening') {
             this.updateStatusMessage('Speech recognition active...');
         }
     }
 
-    // Update caption status indicator
+    /**
+     * Update the visual status indicator for image captioning.
+     * This shows users whether AI image analysis is currently enabled.
+     */
     updateCaptionStatus(status) {
         const indicator = document.getElementById('caption-status');
         if (!indicator) return;
         
-        // Remove all existing status classes
+        // Clear existing status classes
         indicator.classList.remove('bg-secondary', 'bg-success', 'bg-danger', 'bg-warning');
         
         // Apply appropriate status
@@ -524,7 +626,10 @@ class SidebarController {
         }
     }
 
-    // Update the status message area
+    /**
+     * Update the main status message area.
+     * This provides centralized user feedback across all features.
+     */
     updateStatusMessage(message) {
         const statusMessage = document.getElementById('status-message');
         if (statusMessage) {
@@ -532,36 +637,40 @@ class SidebarController {
         }
     }
 
-    // Apply theme based on settings or system preference
+    /**
+     * Apply the selected theme (light, dark, high-contrast, or system).
+     * This ensures the interface matches user preferences and accessibility needs.
+     */
     applyTheme(themeSetting) {
-        // Get the document element (html tag)
         const htmlElement = document.documentElement;
         
         if (themeSetting === 'system') {
-            // Check system preference
+            // Respect the user's system-wide theme preference
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 htmlElement.setAttribute('data-theme', 'dark');
             } else {
                 htmlElement.setAttribute('data-theme', 'light');
             }
         } else {
-            // Apply the selected theme directly
+            // Apply the explicitly selected theme
             htmlElement.setAttribute('data-theme', themeSetting);
         }
         
         console.log(`Applied theme: ${themeSetting}`);
     }
     
-    // Add this method to listen for system theme changes
+    /**
+     * Listen for system theme changes and respond appropriately.
+     * This keeps the interface in sync when users change their system settings.
+     */
     setupSystemThemeListener() {
         const self = this;
         if (window.matchMedia) {
             const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
             
-            // Add listener for theme changes
+            // React to theme changes only if set to follow system
             colorSchemeQuery.addEventListener('change', (e) => {
                 self.getSettings(function(settings) {
-                    // Only update if set to system theme
                     if (settings.theme === 'system') {
                         self.applyTheme('system');
                     }
@@ -570,14 +679,16 @@ class SidebarController {
         }
     }
 
-    // Get user settings from storage
+    /**
+     * Retrieve user settings from Chrome storage.
+     * This tries sync storage first, then falls back to local storage.
+     */
     getSettings(callback) {
-        // Try to get settings from sync storage first
         chrome.storage.sync.get('settings', function(data) {
             if (data.settings) {
                 callback(data.settings);
             } else {
-                // Fall back to local storage if not found in sync
+                // Fallback to local storage
                 chrome.storage.local.get('settings', function(localData) {
                     callback(localData.settings || {});
                 });
@@ -585,7 +696,10 @@ class SidebarController {
         });
     }
 
-    // Set up event listeners for all buttons
+    /**
+     * Set up event listeners for all main accessibility feature buttons.
+     * This creates the primary interaction points for users.
+     */
     setupEventListeners() {
         const buttons = document.querySelectorAll(".accessibility-button");
         if (!buttons.length) {
@@ -593,27 +707,31 @@ class SidebarController {
             return;
         }
 
-        // Assign buttons dynamically and bind their handlers
+        // Map buttons to their handler methods
         this.buttons.tts = buttons[0];
         this.buttons.stt = buttons[1];
         this.buttons.imageCaption = buttons[2];
         this.buttons.signLanguage = buttons[3];
         this.buttons.options = document.getElementById('settingsButton');
 
+        // Bind event handlers to each button
         this.addButtonListener(this.buttons.tts, this.handleTTS.bind(this));
         this.addButtonListener(this.buttons.stt, this.handleSTT.bind(this));
         this.addButtonListener(this.buttons.imageCaption, this.handleImageCaption.bind(this));
         this.addButtonListener(this.buttons.signLanguage, this.handleScreenSharing.bind(this));
         this.addButtonListener(this.buttons.options, this.handleOptions.bind(this));
         
-        // Add debug mode toggle to the Screen Sharing button - double click to toggle
+        // Add debug mode toggle via double-click on sign language button
         this.buttons.signLanguage.addEventListener('dblclick', (e) => {
             e.preventDefault();
             this.toggleDebugMode();
         });
     }
 
-    // Add an event listener to a button, with error handling
+    /**
+     * Safely add an event listener to a button with error handling.
+     * This prevents the entire interface from breaking if one button fails.
+     */
     addButtonListener(button, handler) {
         if (!button) {
             console.warn("Button not found, skipping event binding.");
@@ -622,34 +740,39 @@ class SidebarController {
         button.addEventListener("click", handler);
     }
 
-    // Handle Text-to-Speech button click
+    /**
+     * Handle Text-to-Speech button clicks.
+     * This toggles between starting and stopping page reading.
+     */
     handleTTS() {
         console.log("Text-to-Speech button clicked");
         
-        // If TTS is already active, stop it
         if (this.ttsActive) {
+            // If currently reading, stop it
             this.sendMessageToActiveTab({ action: "stopTTS" });
             this.setTTSActive(false);
         } else {
-            // Otherwise start TTS
+            // Start reading the page content
             this.sendMessageToActiveTab({ action: "extractText" });
             this.updateStatusMessage('Extracting text from page...');
-            // The active state will be set when we receive "ttsStarted" message
         }
     }
 
-    // Handle Speech-to-Text button click
+    /**
+     * Handle Speech-to-Text button clicks.
+     * This manages different behaviors based on the selected mode.
+     */
     handleSTT() {
         console.log("Speech-to-Text button clicked");
         const mode = this.getSTTMode();
         
-        // For push-to-talk mode, just show instructions
+        // In push-to-talk mode, the button just shows instructions
         if (mode === 'push-to-talk') {
             this.updateStatusMessage('Hold SPACE key to speak');
             return;
         }
         
-        // For continuous mode, toggle listening state
+        // In continuous mode, the button toggles listening state
         if (!this.artyomAssistant.isListening) {
             this.artyomAssistant.startListening();
             this.buttons.stt.classList.add('active');
@@ -662,67 +785,73 @@ class SidebarController {
         }
     }
 
-    // Handle Image Captioning button click - Updated to toggle functionality
+    /**
+     * UPDATED: Handle Image Captioning button clicks with streamlined UX.
+     * The main button now directly toggles activation, eliminating the extra confirmation step.
+     */
     async handleImageCaption() {
         console.log("Image Captioning button clicked");
         
-        // If already active, deactivate
         if (this.imageCaptionHandler.isActive) {
+            // Deactivate the feature and clean up
             await this.imageCaptionHandler.deactivate();
             this.updateCaptionStatus('Off');
             this.updateStatusMessage('Image captioning turned off');
             this.buttons.imageCaption.classList.remove('active');
             
-            // Send deactivation message to content script
+            // Disable the caption type dropdown when inactive
+            const captionTypeSelect = document.getElementById('caption-type-select');
+            if (captionTypeSelect) {
+                captionTypeSelect.disabled = true;
+            }
+            
+            // Notify content script to stop captioning
             this.sendMessageToActiveTab({ 
                 action: "deactivateImageCaptioning" 
             });
             return;
         }
         
-        // Show the caption controls if not already visible
-        const controls = document.querySelector('.caption-controls');
-        if (controls) {
-            controls.style.display = 'block';
-            this.updateStatusMessage('Select caption type and click Activate');
+        // Activate with the currently selected caption type
+        const captionTypeSelect = document.getElementById('caption-type-select');
+        const selectedType = captionTypeSelect ? captionTypeSelect.value : '<MORE_DETAILED_CAPTION>';
+        
+        console.log('[SIDEBAR] Activating with caption type:', selectedType);
+        
+        // Configure and activate the caption handler
+        this.imageCaptionHandler.setCaptionType(selectedType);
+        this.imageCaptionHandler.isActive = true;
+        
+        // Enable the dropdown for real-time type changes
+        if (captionTypeSelect) {
+            captionTypeSelect.disabled = false;
         }
-    }
-
-    // Handle caption type confirmation
-    handleCaptionTypeConfirm() {
-        const select = document.getElementById('caption-type-select');
-        const type = select.value;
         
-        console.log('[SIDEBAR] Selected caption type:', type);
-        
-        this.imageCaptionHandler.setCaptionType(type);
-        this.imageCaptionHandler.isActive = true; // Set active state
-        
-        // Send activation command to content script
+        // Notify content script to start captioning
         this.sendMessageToActiveTab({ 
             action: "activateImageCaptioning",
-            captionType: type 
+            captionType: selectedType 
         });
         
-        // Update UI
+        // Update interface to show active state
         this.buttons.imageCaption.classList.add('active');
         this.updateCaptionStatus('Active');
-        this.updateStatusMessage('Image captioning activated');
-        
-        // Hide the caption controls
-        const controls = document.querySelector('.caption-controls');
-        if (controls) {
-            controls.style.display = 'none';
-        }
+        this.updateStatusMessage(`Image captioning activated with ${this.getCaptionTypeDisplayName(selectedType)} captions`);
     }
 
+    /**
+     * Handle Options button clicks.
+     * This opens the extension's settings page in a new browser tab.
+     */
     handleOptions() {
         console.log("Options button clicked");
-        // Open the options page in a new tab
         chrome.runtime.openOptionsPage();
     }
 
-    // Send a message to the active tab
+    /**
+     * Send a message to the active browser tab.
+     * This is the primary way the sidebar communicates with content scripts.
+     */
     sendMessageToActiveTab(message) {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
@@ -734,11 +863,14 @@ class SidebarController {
         });
     }
 
-    // Initialize listeners for STT push-to-talk
+    /**
+     * Initialize keyboard shortcuts for speech-to-text push-to-talk functionality.
+     * This sets up the space bar as a voice activation key.
+     */
     initializeSTTListeners() {
-        // Space key down - start listening
+        // Space key down - start listening in push-to-talk mode
         window.addEventListener("keydown", (event) => {
-            // Only respond if in push-to-talk mode
+            // Only respond in push-to-talk mode
             if (this.getSTTMode() !== 'push-to-talk') return;
             
             if (event.code === "Space" && !this.artyomAssistant.isListening && !this.pushToTalkActive) {
@@ -750,9 +882,9 @@ class SidebarController {
             }
         });
         
-        // Space key up - stop listening
+        // Space key up - stop listening in push-to-talk mode
         window.addEventListener("keyup", (event) => {
-            // Only respond if currently in push-to-talk mode and listening
+            // Only respond if currently in push-to-talk mode and actively listening
             if (this.getSTTMode() !== 'push-to-talk' || !this.pushToTalkActive) return;
             
             if (event.code === "Space" && this.artyomAssistant.isListening) {
@@ -764,7 +896,7 @@ class SidebarController {
             }
         });
 
-        // Add Escape key to cancel any action
+        // Escape key - cancel any active operation
         window.addEventListener("keydown", (event) => {
             if (event.code === "Escape") {
                 if (this.artyomAssistant.isListening) {
@@ -778,41 +910,49 @@ class SidebarController {
         });
     }
 
-    // Get the currently selected STT mode
+    /**
+     * Get the currently selected speech-to-text mode.
+     * This determines whether to use push-to-talk or continuous listening.
+     */
     getSTTMode() {
         const modeSelect = document.getElementById('stt-mode-select');
         return modeSelect ? modeSelect.value : 'push-to-talk';
     }
 
-    // Handle Options button click
-    handleOptions() {
-        console.log("Options button clicked");
-        // Open the options page in a new tab
-        chrome.runtime.openOptionsPage();
-    }
-
-    // Handle skipping to next item
+    /**
+     * Handle navigation commands for skipping to the next readable item.
+     * This supports keyboard-driven page navigation for accessibility.
+     */
     handleSkipNext() {
         console.log("Skipping to next item...");
         this.sendMessageToActiveTab({ action: "skipToNext" });
         this.updateStatusMessage('Skipping to next item...');
     }
     
-    // Handle skipping to previous item
+    /**
+     * Handle navigation commands for skipping to the previous readable item.
+     * This enables backward navigation through page content.
+     */
     handleSkipPrevious() {
         console.log("Skipping to previous item...");
         this.sendMessageToActiveTab({ action: "skipToPrevious" });
         this.updateStatusMessage('Skipping to previous item...');
     }
     
-    // Handle accessing the current link
+    /**
+     * Handle activation of the currently focused interactive element.
+     * This provides a way to "click" links and buttons via voice commands.
+     */
     handleAccessLink() {
         console.log("Accessing link...");
         this.sendMessageToActiveTab({ action: "accessLink" });
         this.updateStatusMessage('Accessing selected link...');
     }
     
-    // Handle stopping text reading
+    /**
+     * Handle stopping the current text-to-speech reading.
+     * This provides immediate control over audio output.
+     */
     handleStopReading() {
         console.log("Reading Stopped...");
         this.sendMessageToActiveTab({ action: "pauseTTS" });
@@ -820,10 +960,12 @@ class SidebarController {
         this.updateStatusMessage('Reading paused');
     }
 
-    // Handle search functionality
+    /**
+     * Handle web search functionality triggered by voice commands.
+     * This opens search results in a new tab for user convenience.
+     */
     handleSearch(query) {
         console.log(`Searching for: ${query}`);
-        // Send message to content script to perform the search
         this.sendMessageToActiveTab({ 
             action: "performSearch", 
             query: query 
@@ -831,7 +973,10 @@ class SidebarController {
         this.updateStatusMessage(`Searching for: ${query}`);
    }
 
-   // Trigger button action programmatically
+   /**
+    * Programmatically trigger button actions from voice commands.
+    * This creates a bridge between speech recognition and interface actions.
+    */
    triggerButtonAction(action, query = null) {
        switch (action) {
            case "search":
@@ -873,6 +1018,6 @@ class SidebarController {
    }
 }
 
-// Instantiate the SidebarController
+// Create and export the sidebar controller instance
 const sidebarController = new SidebarController();
 export default sidebarController;
