@@ -65,17 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show/hide custom elements row based on reading element selection
-    const readingElementSelect = document.getElementById('readingElement');
-    const customElementsRow = document.getElementById('customElementsRow');
-    
-    if (readingElementSelect && customElementsRow) {
-        readingElementSelect.addEventListener('change', function() {
-            customElementsRow.style.display = this.value === 'custom' ? 'block' : 'none';
-            saveSettings();
-        });
-    }
-
     // Handle clear data button
     const clearDataBtn = document.getElementById('clearData');
     if (clearDataBtn) {
@@ -131,24 +120,32 @@ document.addEventListener('DOMContentLoaded', function() {
         settings.theme = theme;
         applyThemeToOptionsPage(theme);
         
-        // Save to Chrome storage (both sync and local for redundancy)
-        chrome.storage.sync.set({ settings: settings }, function() {
-            console.log('Settings saved to sync storage');
-            
-            // Also save to local storage as backup
+        // Get the storage preference
+        const storagePreference = document.getElementById('dataStorage').value;
+        
+        if (storagePreference === 'sync') {
+            // Save to Chrome sync storage
+            chrome.storage.sync.set({ settings: settings }, function() {
+                console.log('Settings saved to sync storage');
+                notifySettingsUpdated(settings);
+            });
+        } else {
+            // Save to Chrome local storage
             chrome.storage.local.set({ settings: settings }, function() {
                 console.log('Settings saved to local storage');
-                
-                // Dispatch an event that settings were updated
-                chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings }, function(response) {
-                    if (chrome.runtime.lastError) {
-                        console.log('Error sending message to background script:', chrome.runtime.lastError.message);
-                        // Continue with your code even if the message fails
-                    } else {
-                        console.log('Message successfully sent to background script');
-                    }
-                });
+                notifySettingsUpdated(settings);
             });
+        }
+    }
+
+    function notifySettingsUpdated(settings) {
+        // Dispatch an event that settings were updated
+        chrome.runtime.sendMessage({ action: "settingsUpdated", settings: settings }, function(response) {
+            if (chrome.runtime.lastError) {
+                console.log('Error sending message to background script:', chrome.runtime.lastError.message);
+            } else {
+                console.log('Message successfully sent to background script');
+            }
         });
     }
 
@@ -169,13 +166,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadSettings() {
-        chrome.storage.sync.get('settings', function(data) {
-            if (data.settings) {
-                applySettings(data.settings);
-            } else {
-                // If not in sync, try local storage
-                chrome.storage.local.get('settings', function(localData) {
+        // First try to get the storage preference
+        chrome.storage.local.get('settings', function(localData) {
+            if (localData.settings && localData.settings.dataStorage) {
+                const storagePreference = localData.settings.dataStorage;
+                
+                if (storagePreference === 'sync') {
+                    // Load from sync storage
+                    chrome.storage.sync.get('settings', function(syncData) {
+                        if (syncData.settings) {
+                            applySettings(syncData.settings);
+                        }
+                    });
+                } else {
+                    // Load from local storage
                     if (localData.settings) {
+                        applySettings(localData.settings);
+                    }
+                }
+            } else {
+                // If no preference is set, try both storages
+                chrome.storage.sync.get('settings', function(syncData) {
+                    if (syncData.settings) {
+                        applySettings(syncData.settings);
+                    } else if (localData.settings) {
                         applySettings(localData.settings);
                     }
                 });
@@ -198,14 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (input.type === 'range') {
                     const event = new Event('input');
                     input.dispatchEvent(event);
-                }
-                
-                // Handle special case for reading element select
-                if (id === 'readingElement') {
-                    const customElementsRow = document.getElementById('customElementsRow');
-                    if (customElementsRow) {
-                        customElementsRow.style.display = input.value === 'custom' ? 'block' : 'none';
-                    }
                 }
             }
         });
@@ -243,13 +249,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reset All Settings
     document.getElementById('resetAll').addEventListener('click', function() {
         if (confirm("Are you sure you want to reset all settings to their default values?")) {
-            // Clear settings from storage
-            chrome.storage.sync.remove('settings', function() {
-                chrome.storage.local.remove('settings', function() {
-                    // Reload the page to reset all form elements
+            // Get the current storage preference
+            const storagePreference = document.getElementById('dataStorage').value;
+            
+            if (storagePreference === 'sync') {
+                // Clear sync storage
+                chrome.storage.sync.remove('settings', function() {
                     location.reload();
                 });
-            });
+            } else {
+                // Clear local storage
+                chrome.storage.local.remove('settings', function() {
+                    location.reload();
+                });
+            }
         }
     });
 
