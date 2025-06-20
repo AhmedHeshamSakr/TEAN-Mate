@@ -24,6 +24,7 @@
                         Text to Speech
                     </button>
                  </div>
+                
                 <!-- Speech to Text container with mode selection -->
                 <div class="stt-feature-container">
                     <button class="accessibility-button btn btn-outline-success d-flex justify-content-between align-items-center">
@@ -41,11 +42,11 @@
                                 <option value="continuous">Continuous Listening</option>
                             </select>
                         </div>
-                        <!-- Add video overlay option that appears only when continuous mode is selected -->
+                        <!-- STT video overlay option that appears only when continuous mode is selected -->
                         <div id="video-overlay-option" class="form-check" style="display: none;">
                             <input class="form-check-input" type="checkbox" value="" id="video-overlay-checkbox">
                             <label class="form-check-label small" for="video-overlay-checkbox">
-                                Display text overlay on videos
+                                Display STT text overlay on videos
                             </label>
                         </div>
                     </div>
@@ -72,29 +73,58 @@
                     </div>
                 </div>
 
-                <!-- Sign Language button with simplified functionality -->
+                <!-- ENHANCED: Sign Language button with webpage video overlay functionality -->
                 <div class="sign-language-container">
                     <button class="accessibility-button btn btn-outline-info d-flex justify-content-between align-items-center">
                         <span>
                             <i class="fas fa-sign-language"></i>
-                           Sign Language
+                           Sign Language Detection
                         </span>
                         <span id="sign-status-indicator" class="badge bg-secondary">Off</span>
                     </button>
+                    
+                    <!-- NEW: Webpage video information display -->
+                    <div id="webpage-video-info" class="mt-2 p-2 border rounded bg-light" style="display: none;">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="small text-muted">Videos Detected</div>
+                                <div id="detected-videos-count" class="fw-bold text-primary">0</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="small text-muted">Active Target</div>
+                                <div id="active-video-target" class="fw-bold">None</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <div class="small text-muted">Display Method</div>
+                            <div class="fw-bold text-success">Webpage Video Captions</div>
+                        </div>
+                        
+                        <!-- NEW: Video management controls -->
+                        <div class="mt-2 d-flex gap-2">
+                            <button id="redetect-videos-btn" class="btn btn-outline-primary btn-sm flex-fill" title="Re-scan page for videos">
+                                <i class="fas fa-search"></i> Re-detect
+                            </button>
+                            <button id="toggle-monitoring-btn" class="btn btn-outline-secondary btn-sm flex-fill" title="Toggle MediaPipe monitoring window">
+                                <i class="fas fa-eye"></i> Monitor
+                            </button>
+                        </div>
+                    </div>
+                    
+                   
                 </div>                
             </div>
 
             <!-- Status/feedback area -->
             <div id="status-area" class="status-area mt-3 p-2 border rounded">
-                <div id="status-message" class="status-message text-center text-muted small">Ready to assist</div>
+                <div id="status-message" class="status-message text-center text-muted small">Ready to assist with webpage video captions</div>
             </div>
 
-
-            <!-- Enhanced speech-display section for unified communication -->
+            <!-- Speech communication display (simplified - speech only, no sign language) -->
             <div id="speech-display" class="speech-display mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <!-- Updated title to reflect unified functionality -->
-                    <h3 class="h5 mb-0">Communication Output:</h3>
+                    <!-- Updated title to reflect speech-only functionality -->
+                    <h3 class="h5 mb-0">Speech Recognition:</h3>
                     <div class="btn-group btn-group-sm">
                         <button id="copy-speech-btn" class="btn btn-outline-secondary" title="Copy text" disabled>
                             <i class="fas fa-copy"></i>
@@ -108,7 +138,7 @@
                     </div>
                 </div>
                 
-                <!-- Enhanced mode indicator that shows current input source -->
+                <!-- Speech mode indicator -->
                 <div class="speech-mode-indicator mb-2">
                     <small class="text-muted">
                         <span id="speech-mode-label">Mode: Push-to-Talk</span>
@@ -116,23 +146,33 @@
                     </small>
                 </div>
                 
-                <!-- Enhanced recognized text display with inclusive placeholder -->
+                <!-- Speech text display -->
                 <div id="recognizedText" class="p-2 border rounded bg-light">
-                    Start speaking or signing to see text here...
+                    Start speaking to see text here...
                 </div>
                 
-                <!-- Enhanced word count display that shows source information -->
+                <!-- Word count display for speech -->
                 <div class="text-end mt-1">
                     <small id="word-count" class="text-muted">0 words</small>
                 </div>
             </div>
 
-            <!-- Keyboard shortcuts panel (initially hidden) -->
+            <!-- ENHANCED: Keyboard shortcuts panel with webpage video information -->
             <div id="shortcuts-panel" class="shortcuts-panel mt-3 p-2 border rounded" style="display: none;">
-                <h5>Keyboard Shortcuts</h5>
+                <h5>Keyboard Shortcuts & Features</h5>
                 <ul class="list-unstyled">
-                    <li><kbd>Space</kbd> - Hold for Push-to-Talk</li>
+                    <li><kbd>Space</kbd> - Hold for Push-to-Talk (Speech)</li>
                     <li><kbd>Esc</kbd> - Stop current action</li>
+                    <li><strong>Sign Language:</strong> Captions appear on webpage videos</li>
+                    <li><small class="text-muted">Supports: YouTube, Netflix, Vimeo, HTML5 videos</small></li>
+                </ul>
+                
+                <h6 class="mt-3">Video Caption System:</h6>
+                <ul class="list-unstyled small">
+                    <li>• Automatically detects videos on current page</li>
+                    <li>• Captions appear directly over video content</li>
+                    <li>• Works with Single Page Applications (SPAs)</li>
+                    <li>• Optional MediaPipe monitoring window</li>
                 </ul>
             </div>
             
@@ -143,7 +183,7 @@
                 </button>
                 
                 <!-- Keyboard shortcuts button -->
-                <button id="shortcutsButton" class="sidebar-button btn btn-sm btn-outline-secondary" title="Keyboard Shortcuts">
+                <button id="shortcutsButton" class="sidebar-button btn btn-sm btn-outline-secondary" title="Keyboard Shortcuts & Info">
                     <i class="fas fa-keyboard"></i>
                 </button>
                 

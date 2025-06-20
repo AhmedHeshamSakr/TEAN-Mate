@@ -1,24 +1,31 @@
-// sidebar.js - Complete implementation with sign language display removed (video overlay only)
+// sidebar.js - Enhanced for webpage video overlay system
+// Manages sign language detection that displays captions directly on webpage videos
+
 import welcomeAudio from '../2-features/TTS/messages/welcome.wav';
 import ArtyomAssistant from "../2-features/STT/ArtyomAssistant.js"; 
 import ImageCaptionHandler from "../2-features/ImageCaptioning/ImageCaptionHandler.js"; 
 
-// Updated SidebarController - streamlined for video overlay system
+// Enhanced SidebarController for webpage video overlay system
 class SidebarController {
     constructor() {
         this.buttons = {}; // Store button references for easy access
-        this.artyomAssistant = new ArtyomAssistant(this); // Initialize ArtyomAssistant with SidebarController instance
+        this.artyomAssistant = new ArtyomAssistant(this); // Initialize ArtyomAssistant
         this.imageCaptionHandler = new ImageCaptionHandler(); // Image captioning handler
 
-        // Initialize state variables (no sign language display state needed)
+        // Initialize state variables
         this.pushToTalkActive = false;
-        this.screenSharingActive = false; // Track if screen sharing is active
+        this.screenSharingActive = false; // Track if sign language detection is active
         this.ttsActive = false; // State tracking for TTS
         this.accumulatedSpeech = ''; // Track accumulated speech for continuous mode
         this.debugModeActive = false; // Track if debug visualization is active
         
+        // Webpage video overlay specific state
+        this.webpageVideosDetected = 0; // Number of videos detected on current page
+        this.activeVideoTarget = 'none'; // Type of video currently targeted for captions
+        this.monitoringWindowVisible = true; // Whether MediaPipe monitoring window is shown
+        
         // Simplified communication tracking (speech only, no sign language display)
-        this.communicationHistory = []; // Now stores speech only
+        this.communicationHistory = []; // Stores speech only
         this.currentDisplayText = ''; // Current text being displayed (for copy operations)
 
         this.initialize(); // Set up event listeners and initial state
@@ -79,31 +86,46 @@ class SidebarController {
             if (this.artyomAssistant) {
                 this.artyomAssistant.setCommandsEnabled(message.enabled);
                 if (!message.enabled) {
-                    this.updateStatusMessage('Voice commands disabled during video overlay');
+                    this.updateStatusMessage('Voice commands disabled during STT video overlay');
                 } else {
                     this.updateStatusMessage('Voice commands re-enabled');
                 }
             }
         } else if (message.action === "screenSharingStatus") {
-            // Update screen sharing status based on content script response
+            // ENHANCED: Handle screen sharing status with webpage video information
             const status = message.status;
             this.updateScreenSharingStatus(status);
             
+            // Store webpage video information
+            if (message.webpageVideosDetected !== undefined) {
+                this.webpageVideosDetected = message.webpageVideosDetected;
+            }
+            if (message.activeVideoTarget !== undefined) {
+                this.activeVideoTarget = message.activeVideoTarget;
+            }
+            
             if (status === 'Active') {
                 this.screenSharingActive = true;
-                // Updated message to reflect video overlay system
-                this.updateStatusMessage('Sign language detection active - translations shown as video overlays');
+                // Enhanced message with webpage video information
+                let statusText = 'Sign language detection active - captions appear on webpage videos';
+                if (this.webpageVideosDetected > 0) {
+                    statusText += ` (${this.webpageVideosDetected} videos detected)`;
+                }
+                this.updateStatusMessage(statusText);
+                this.updateWebpageVideoInfo();
             } else if (status === 'Error') {
                 this.screenSharingActive = false;
                 this.buttons.signLanguage.classList.remove('active');
                 this.updateStatusMessage('Failed to start sign language detection: ' + (message.message || 'Unknown error'));
+                this.clearWebpageVideoInfo();
             } else if (status === 'Off') {
                 this.screenSharingActive = false;
                 this.buttons.signLanguage.classList.remove('active');
                 this.updateStatusMessage('Sign language detection stopped');
+                this.clearWebpageVideoInfo();
             }
         } else if (message.action === "handLandmarksUpdate") {
-            // Handle hand landmarks update from content script (for monitoring only)
+            // Handle hand landmarks update for monitoring display
             this.handleLandmarksUpdate(message);
         } else if (message.action === "screenSharingEnded") {
             // Handle screen sharing ended event
@@ -111,14 +133,85 @@ class SidebarController {
             this.buttons.signLanguage.classList.remove('active');
             this.updateScreenSharingStatus('Off');
             this.updateStatusMessage('Screen sharing ended');
+            this.clearWebpageVideoInfo();
         } else if (message.action === "debugModeStatus") {
             // Handle debug mode status update
             this.debugModeActive = message.enabled;
             this.updateStatusMessage(`Debug visualization ${message.enabled ? 'enabled' : 'disabled'}`);
-        } 
-        // NOTE: Removed signLanguageTranslation handling since translations are now video overlays only
-        // NOTE: Removed translationHistoryResponse handling since history is managed by video overlay system
-        // NOTE: Removed translationHistoryCleared handling since clearing is managed by video overlay system
+        } else if (message.action === "signLanguageStatistics") {
+            // NEW: Handle translation statistics (not for display, just for monitoring)
+            if (message.isStatisticsOnly) {
+                this.handleTranslationStatistics(message);
+            }
+        } else if (message.action === "monitoringWindowToggled") {
+            // NEW: Handle monitoring window visibility toggle
+            this.monitoringWindowVisible = message.visible;
+            this.updateStatusMessage(`MediaPipe monitoring window ${message.visible ? 'shown' : 'hidden'}`);
+        } else if (message.action === "videoRedetectionResult") {
+            // NEW: Handle video re-detection results
+            if (message.success) {
+                this.webpageVideosDetected = message.videosDetected;
+                this.activeVideoTarget = message.activeTarget || 'none';
+                this.updateWebpageVideoInfo();
+                this.updateStatusMessage(`Re-detected ${message.videosDetected} videos on page`);
+            }
+        }
+        // NOTE: No signLanguageTranslation handling since translations appear on webpage videos only
+    }
+
+    // NEW: Handle translation statistics for monitoring purposes
+    handleTranslationStatistics(message) {
+        const { translatedText, timestamp, confidence, activeVideoType } = message;
+        const timeStr = new Date(timestamp).toLocaleTimeString();
+        
+        // Update active video target info
+        if (activeVideoType && activeVideoType !== 'unknown') {
+            this.activeVideoTarget = activeVideoType;
+        }
+        
+        // Show brief status update
+        let statusText = `[${timeStr}] Translated: "${translatedText}"`;
+        if (confidence && confidence < 0.85) {
+            const confidencePercent = Math.round(confidence * 100);
+            statusText += ` (${confidencePercent}% confidence)`;
+        }
+        statusText += ` → ${this.activeVideoTarget} video`;
+        
+        this.updateStatusMessage(statusText);
+        
+        // Update webpage video info display
+        this.updateWebpageVideoInfo();
+    }
+
+    // NEW: Update webpage video information display
+    updateWebpageVideoInfo() {
+        const videoInfoContainer = document.getElementById('webpage-video-info');
+        if (videoInfoContainer) {
+            if (this.screenSharingActive && this.webpageVideosDetected > 0) {
+                videoInfoContainer.style.display = 'block';
+                
+                const videosText = document.getElementById('detected-videos-count');
+                const activeTargetText = document.getElementById('active-video-target');
+                
+                if (videosText) {
+                    videosText.textContent = this.webpageVideosDetected;
+                }
+                
+                if (activeTargetText) {
+                    activeTargetText.textContent = this.activeVideoTarget === 'none' ? 'No active target' : `${this.activeVideoTarget} video`;
+                    activeTargetText.style.color = this.activeVideoTarget === 'none' ? '#999' : '#4CAF50';
+                }
+            } else {
+                videoInfoContainer.style.display = 'none';
+            }
+        }
+    }
+
+    // NEW: Clear webpage video information display
+    clearWebpageVideoInfo() {
+        this.webpageVideosDetected = 0;
+        this.activeVideoTarget = 'none';
+        this.updateWebpageVideoInfo();
     }
 
     // Set TTS button active state
@@ -144,6 +237,7 @@ class SidebarController {
             this.buttons.signLanguage.classList.remove('active');
             this.updateScreenSharingStatus('Off');
             this.updateStatusMessage('Screen sharing ended');
+            this.clearWebpageVideoInfo();
         });
     }
 
@@ -176,7 +270,7 @@ class SidebarController {
         if (saveBtn) saveBtn.addEventListener('click', this.handleSaveSpeech.bind(this));
         if (clearBtn) clearBtn.addEventListener('click', this.handleClearSpeech.bind(this));
 
-        // Add listener for video overlay checkbox
+        // Add listener for STT video overlay checkbox
         const videoOverlayCheckbox = document.getElementById('video-overlay-checkbox');
         if (videoOverlayCheckbox) {
             videoOverlayCheckbox.addEventListener('change', (event) => {
@@ -189,6 +283,26 @@ class SidebarController {
                 });
                 
                 this.updateStatusMessage(`STT video overlay ${isEnabled ? 'enabled' : 'disabled'}`);
+            });
+        }
+
+        // NEW: Add listeners for webpage video overlay controls
+        const redetectVideosBtn = document.getElementById('redetect-videos-btn');
+        if (redetectVideosBtn) {
+            redetectVideosBtn.addEventListener('click', () => {
+                this.sendMessageToActiveTab({
+                    action: "redetectWebpageVideos"
+                });
+                this.updateStatusMessage('Re-detecting videos on current page...');
+            });
+        }
+
+        const toggleMonitoringBtn = document.getElementById('toggle-monitoring-btn');
+        if (toggleMonitoringBtn) {
+            toggleMonitoringBtn.addEventListener('click', () => {
+                this.sendMessageToActiveTab({
+                    action: "toggleMonitoringWindow"
+                });
             });
         }
         
@@ -450,7 +564,7 @@ class SidebarController {
         }
     }
 
-    // Handle screen sharing button click (for sign language detection with video overlays)
+    // ENHANCED: Handle sign language detection button click for webpage video overlay system
     handleScreenSharing() {
         console.log("Sign Language Detection button clicked");
         
@@ -461,6 +575,7 @@ class SidebarController {
             this.buttons.signLanguage.classList.remove('active');
             this.updateStatusMessage('Sign language detection deactivated');
             this.updateScreenSharingStatus('Off');
+            this.clearWebpageVideoInfo();
             
             // Send deactivation message to content script
             this.sendMessageToActiveTab({
@@ -470,7 +585,7 @@ class SidebarController {
         } else {
             // Activate
             this.buttons.signLanguage.classList.add('active');
-            this.updateStatusMessage('Activating sign language detection with video overlays...');
+            this.updateStatusMessage('Activating sign language detection for webpage videos...');
             this.updateScreenSharingStatus('Processing');
             
             // Send activation command to content script
@@ -494,13 +609,13 @@ class SidebarController {
         });
     }
     
-    // Handle incoming landmarks updates (for monitoring purposes only)
+    // ENHANCED: Handle incoming landmarks updates with webpage video information
     handleLandmarksUpdate(message) {
         if (!this.screenSharingActive) return;
         
         const { face, pose, leftHand, rightHand, fps, timestamp } = message;
         
-        // Update status message with detection info
+        // Update status message with detection info and webpage video context
         const time = new Date(timestamp).toLocaleTimeString();
         
         // Build status text based on detected landmarks
@@ -517,7 +632,14 @@ class SidebarController {
             statusText += "No landmarks detected";
         }
         
-        statusText += ` (${fps.toFixed(1)} FPS) - Translations shown as video overlays`;
+        statusText += ` (${fps.toFixed(1)} FPS)`;
+        
+        // Add webpage video context
+        if (this.webpageVideosDetected > 0) {
+            statusText += ` → Captions on ${this.activeVideoTarget} video`;
+        } else {
+            statusText += ` → No videos detected on page`;
+        }
         
         this.updateStatusMessage(statusText);
     }
@@ -934,6 +1056,6 @@ class SidebarController {
    }
 }
 
-// Instantiate the SidebarController (simplified for video overlay system)
+// Instantiate the enhanced SidebarController for webpage video overlay system
 const sidebarController = new SidebarController();
 export default sidebarController;

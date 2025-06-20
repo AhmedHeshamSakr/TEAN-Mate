@@ -60910,42 +60910,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SignLanguageHandler)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
-
-
-
-
-
-
-
-
-
-
-
-function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_0__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_1__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_2__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context10, _context11; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(_context10 = ownKeys(Object(t), !0)).call(_context10, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_5__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_4__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(_context11 = ownKeys(Object(t))).call(_context11, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_6__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3__(t, r)); }); } return e; }
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/symbol */ "./node_modules/@babel/runtime-corejs3/core-js-stable/symbol.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js/get-iterator-method */ "./node_modules/@babel/runtime-corejs3/core-js/get-iterator-method.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
 
 
 
@@ -60958,89 +60953,117 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _co
 
 
 
-// SignLanguageHandler.js - Complete implementation with video overlay captions only
-// This file replaces your existing empty SignLanguageHandler.js
+
+
+
+function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_3__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_5__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context22, _context23; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context22 = ownKeys(Object(t), !0)).call(_context22, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_10__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_8__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context23 = ownKeys(Object(t))).call(_context23, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_9__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__(t, r)); }); } return e; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_0__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_1__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_2__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context21; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__(_context21 = {}.toString.call(r)).call(_context21, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SignLanguageHandler.js - Complete implementation with captions on main webpage videos
 var SignLanguageHandler = /*#__PURE__*/function () {
   function SignLanguageHandler() {
-    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_9__["default"])(this, SignLanguageHandler);
+    (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_13__["default"])(this, SignLanguageHandler);
     // Core system state
     this.isActive = false;
-    this.serverUrl = 'http://localhost:8766';
+    this.serverUrl = 'https://acknowledged-shared-card-stages.trycloudflare.com';
     this.peerConnection = null;
     this.dataChannel = null;
     this.stream = null;
 
-    // Video elements for MediaPipe integration
+    // MediaPipe monitoring elements (smaller, optional display)
     this.videoElement = null; // Hidden input video (receives screen share)
-    this.displayElement = null; // Visible output video (shows processed stream)
+    this.displayElement = null; // Optional monitoring video (can be hidden)
+    this.monitoringContainer = null; // Container for MediaPipe monitoring
 
-    // Video caption overlay system - the heart of our new approach
-    this.captionContainer = null; // Container for all caption overlays
-    this.captionElement = null; // Currently active caption element
-    this.captionQueue = []; // Queue for managing multiple captions
-    this.captionDisplayTimer = null; // Timer for caption lifecycle management
+    // MAIN FEATURE: Webpage video caption system
+    this.webpageVideos = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__(); // Track all videos found on the current webpage
+    this.videoCaptionContainers = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__(); // Caption containers for each video
+    this.videoObserver = null; // Observer to detect new videos added to page
+    this.activeVideoTarget = null; // Currently targeted video for captions
+
+    // Caption management
     this.captionIdCounter = 0; // Unique identifier for each caption
+    this.activeCaptions = new _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_20__(); // Track all active caption elements
 
-    // Caption appearance and behavior settings - fully customizable
+    // Caption appearance and behavior settings - optimized for webpage integration
     this.captionSettings = {
       displayDuration: 4000,
       // How long each caption stays visible (4 seconds)
       fadeOutDuration: 500,
       // Smooth fade-out animation duration (0.5 seconds)
       maxCaptionsVisible: 2,
-      // Maximum number of captions shown at once
-      fontSize: '16px',
-      // Readable font size for accessibility
-      fontFamily: 'Arial, sans-serif',
-      // Clean, widely available font
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-      // Semi-transparent black background
+      // Maximum number of captions shown at once per video
+      fontSize: '18px',
+      // Larger font for webpage videos (more readable)
+      fontFamily: 'Arial, sans-serif, "Segoe UI", "Roboto"',
+      // Web-safe fonts
+      backgroundColor: 'rgba(0, 0, 0, 0.85)',
+      // Slightly more opaque for webpage contrast
       textColor: '#ffffff',
       // High contrast white text
-      borderRadius: '4px',
-      // Subtle rounded corners for modern look
-      padding: '6px 12px',
-      // Comfortable padding around text
-      maxWidth: '80%',
-      // Prevent captions from spanning full video width
-      position: 'bottom-center' // Standard caption positioning
+      borderRadius: '6px',
+      // Slightly larger radius for webpage display
+      padding: '8px 16px',
+      // More generous padding for webpage videos
+      maxWidth: '85%',
+      // Allow wider captions on webpage videos
+      position: 'bottom-center',
+      // Standard caption positioning
+      zIndex: 2147483647,
+      // Maximum z-index to appear above all webpage content
+      marginBottom: '60px' // Space from bottom to avoid video controls
     };
 
-    // MediaPipe landmark detection data
-    this.faceLandmarks = null; // Face detection landmarks
-    this.poseLandmarks = null; // Body pose landmarks  
-    this.leftHandLandmarks = null; // Left hand gesture landmarks
-    this.rightHandLandmarks = null; // Right hand gesture landmarks
+    // MediaPipe detection and performance tracking
+    this.faceLandmarks = null;
+    this.poseLandmarks = null;
+    this.leftHandLandmarks = null;
+    this.rightHandLandmarks = null;
+    this.lastFrameTime = 0;
+    this.fps = 0;
+    this.frameCount = 0;
+    this.serverPerformanceData = null;
+    this.lastLandmarkUpdate = null;
 
-    // Performance monitoring for system health
-    this.lastFrameTime = 0; // Previous frame timestamp
-    this.fps = 0; // Current frames per second
-    this.frameCount = 0; // Total processed frames
+    // Translation data management
+    this.lastTranslation = null;
+    this.translationHistory = [];
 
-    // Server communication and performance data
-    this.serverPerformanceData = null; // Latest performance metrics from MediaPipe server
-    this.lastLandmarkUpdate = null; // Most recent landmark detection data
-
-    // Translation data management - now exclusively for video overlays
-    this.lastTranslation = null; // Most recent translation received
-    this.translationHistory = []; // Historical translations for reference
-
-    // System preferences and debug options
-    this.showDetailedInfo = false; // Toggle for detailed console logging
-    this.debugModeActive = false; // Debug visualization mode
+    // System preferences
+    this.showDetailedInfo = false;
+    this.debugModeActive = false;
+    this.showMonitoringWindow = true; // Toggle for MediaPipe monitoring window
   }
 
   /**
-   * Activate the sign language detection system with video overlay captions
-   * This method orchestrates the entire activation process step by step
+   * Activate the sign language detection system with webpage video overlay captions
+   * This method sets up both MediaPipe processing and webpage video detection
    */
-  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_10__["default"])(SignLanguageHandler, [{
+  return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_14__["default"])(SignLanguageHandler, [{
     key: "activate",
     value: (function () {
-      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_12__.mark(function _callee() {
+      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.mark(function _callee() {
         var _this = this;
         var _context, serverAvailable, offer, response, answer;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_12__.wrap(function _callee$(_context2) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.wrap(function _callee$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               if (!this.isActive) {
@@ -61051,9 +61074,9 @@ var SignLanguageHandler = /*#__PURE__*/function () {
               return _context2.abrupt("return", true);
             case 3:
               _context2.prev = 3;
-              console.log("[SignLanguageHandler] Beginning activation sequence for video overlay system");
+              console.log("[SignLanguageHandler] Activating webpage video overlay system");
 
-              // Step 1: Verify MediaPipe server connectivity before proceeding
+              // Step 1: Verify MediaPipe server connectivity
               console.log("[SignLanguageHandler] Step 1: Testing MediaPipe server connectivity");
               _context2.next = 8;
               return this.pingServer();
@@ -61065,180 +61088,153 @@ var SignLanguageHandler = /*#__PURE__*/function () {
               }
               throw new Error("MediaPipe server is not available at " + this.serverUrl);
             case 11:
-              console.log("[SignLanguageHandler] MediaPipe server confirmed available");
+              // Step 2: Set up webpage video detection and caption system
+              console.log("[SignLanguageHandler] Step 2: Setting up webpage video detection");
+              this.initializeWebpageVideoDetection();
 
-              // Step 2: Create the video interface with integrated caption overlay system
-              console.log("[SignLanguageHandler] Step 2: Creating video interface with caption overlay");
-              this.createVideoElementsWithCaptionOverlay();
+              // Step 3: Create optional MediaPipe monitoring interface
+              console.log("[SignLanguageHandler] Step 3: Creating MediaPipe monitoring interface");
+              this.createMediaPipeMonitoringInterface();
 
-              // Step 3: Request screen sharing permission from user
-              console.log("[SignLanguageHandler] Step 3: Requesting screen sharing permission");
-              _context2.next = 17;
+              // Step 4: Request screen sharing permission
+              console.log("[SignLanguageHandler] Step 4: Requesting screen sharing permission");
+              _context2.next = 18;
               return navigator.mediaDevices.getDisplayMedia({
                 video: {
                   cursor: 'always',
-                  // Show cursor for better user feedback
                   frameRate: {
                     ideal: 30,
                     max: 30
                   },
-                  // Optimal frame rate for sign language
                   width: {
                     ideal: 1280,
                     max: 1920
                   },
-                  // High quality for gesture recognition
                   height: {
                     ideal: 720,
                     max: 1080
                   }
                 },
-                audio: false // Audio not needed for sign language recognition
+                audio: false
               });
-            case 17:
+            case 18:
               this.stream = _context2.sent;
-              console.log("[SignLanguageHandler] Screen sharing permission granted successfully");
-
-              // Step 4: Initialize video playback for processing
+              // Step 5: Initialize MediaPipe video processing
               this.videoElement.srcObject = this.stream;
               _context2.next = 22;
               return this.videoElement.play();
             case 22:
-              console.log("[SignLanguageHandler] Input video stream initialized");
+              console.log("[SignLanguageHandler] MediaPipe input video initialized");
 
-              // Step 5: Establish WebRTC connection with MediaPipe server
-              console.log("[SignLanguageHandler] Step 5: Establishing WebRTC connection");
+              // Step 6: Establish WebRTC connection with MediaPipe server
+              console.log("[SignLanguageHandler] Step 6: Establishing WebRTC connection");
               this.peerConnection = new RTCPeerConnection({
                 iceServers: [{
                   urls: 'stun:stun.l.google.com:19302'
                 }]
               });
 
-              // Monitor connection health for robust operation
+              // Monitor connection health
               this.peerConnection.onconnectionstatechange = function () {
                 var state = _this.peerConnection.connectionState;
                 console.log("[SignLanguageHandler] WebRTC connection state: ".concat(state));
                 if (state === 'connected') {
-                  console.log('[SignLanguageHandler] MediaPipe connection established successfully');
-                  _this.showConnectionStatus('Connected to MediaPipe Server', 'success');
+                  console.log('[SignLanguageHandler] MediaPipe connection established');
+                  _this.showStatus('Connected to MediaPipe - Webpage captions ready', 'success');
                 } else if (state === 'failed') {
                   console.error('[SignLanguageHandler] WebRTC connection failed');
-                  _this.showConnectionStatus('Connection Failed', 'error');
-                  _this.deactivate(); // Clean shutdown on connection failure
+                  _this.showStatus('Connection Failed', 'error');
+                  _this.deactivate();
                 }
               };
 
-              // Monitor ICE connection state for troubleshooting
-              this.peerConnection.oniceconnectionstatechange = function () {
-                console.log("[SignLanguageHandler] ICE connection state: ".concat(_this.peerConnection.iceConnectionState));
-              };
-
-              // Step 6: Create data channel for receiving translation data
-              console.log("[SignLanguageHandler] Step 6: Setting up translation data channel");
+              // Step 7: Set up translation data channel
               this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
               this.setupTranslationDataChannel();
 
-              // Step 7: Handle processed video stream from MediaPipe server
+              // Step 8: Handle processed video stream (for monitoring)
               this.peerConnection.ontrack = function (event) {
-                console.log("[SignLanguageHandler] Received processed video track from MediaPipe");
-                _this.displayElement.srcObject = new MediaStream([event.track]);
-                _this.displayElement.play()["catch"](function (e) {
-                  console.error("[SignLanguageHandler] Error displaying processed video:", e);
-                });
+                console.log("[SignLanguageHandler] Received processed video track");
+                if (_this.displayElement) {
+                  _this.displayElement.srcObject = new MediaStream([event.track]);
+                  _this.displayElement.play()["catch"](function (e) {
+                    console.error("[SignLanguageHandler] Error displaying processed video:", e);
+                  });
+                }
               };
 
-              // Step 8: Send our video stream to MediaPipe server for processing
-              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(_context = this.stream.getTracks()).call(_context, function (track) {
-                console.log("[SignLanguageHandler] Adding ".concat(track.kind, " track to peer connection"));
+              // Step 9: Send video stream to MediaPipe
+              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context = this.stream.getTracks()).call(_context, function (track) {
                 _this.peerConnection.addTrack(track, _this.stream);
               });
 
-              // Step 9: Create and send WebRTC offer to establish connection
-              console.log("[SignLanguageHandler] Step 9: Creating WebRTC offer");
-              _context2.next = 35;
+              // Step 10: Complete WebRTC handshake
+              _context2.next = 32;
               return this.peerConnection.createOffer();
-            case 35:
+            case 32:
               offer = _context2.sent;
-              _context2.next = 38;
+              _context2.next = 35;
               return this.peerConnection.setLocalDescription(offer);
-            case 38:
-              // Step 10: Wait for ICE candidate gathering to complete
-              console.log("[SignLanguageHandler] Step 10: Waiting for ICE gathering to complete");
-              _context2.next = 41;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_13__(function (resolve) {
+            case 35:
+              _context2.next = 37;
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_21__(function (resolve) {
                 if (_this.peerConnection.iceGatheringState === 'complete') {
-                  console.log("[SignLanguageHandler] ICE gathering already complete");
                   resolve();
                 } else {
                   _this.peerConnection.onicegatheringstatechange = function () {
-                    console.log("[SignLanguageHandler] ICE gathering state: ".concat(_this.peerConnection.iceGatheringState));
                     if (_this.peerConnection.iceGatheringState === 'complete') {
-                      console.log("[SignLanguageHandler] ICE gathering completed");
                       resolve();
                     }
                   };
                 }
               });
-            case 41:
-              // Step 11: Send offer to MediaPipe server and receive answer
-              console.log("[SignLanguageHandler] Step 11: Sending offer to MediaPipe server");
-              _context2.next = 44;
+            case 37:
+              _context2.next = 39;
               return fetch("".concat(this.serverUrl, "/offer"), {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_14__({
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_22__({
                   sdp: {
                     type: this.peerConnection.localDescription.type,
                     sdp: this.peerConnection.localDescription.sdp
                   }
                 })
               });
-            case 44:
+            case 39:
               response = _context2.sent;
               if (response.ok) {
-                _context2.next = 47;
+                _context2.next = 42;
                 break;
               }
-              throw new Error("MediaPipe server responded with error status: ".concat(response.status));
-            case 47:
-              _context2.next = 49;
+              throw new Error("MediaPipe server error: ".concat(response.status));
+            case 42:
+              _context2.next = 44;
               return response.json();
-            case 49:
+            case 44:
               answer = _context2.sent;
-              console.log("[SignLanguageHandler] Received answer from MediaPipe server");
-
-              // Step 12: Complete WebRTC handshake
-              console.log("[SignLanguageHandler] Step 12: Completing WebRTC handshake");
-              _context2.next = 54;
+              _context2.next = 47;
               return this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer.sdp));
-            case 54:
-              // Step 13: Activation complete - show video interface
-              console.log("[SignLanguageHandler] Activation sequence completed successfully");
+            case 47:
+              // Step 11: Activation complete
               this.isActive = true;
-              this.showVideoContainer();
-              this.showConnectionStatus('Sign Language Detection Active - Translations shown as video overlays', 'success');
+              this.showMonitoringInterface();
+              this.showStatus('Sign Language Detection Active - Captions will appear on webpage videos', 'success');
+              console.log("[SignLanguageHandler] Webpage video overlay system activated successfully");
               return _context2.abrupt("return", true);
-            case 61:
-              _context2.prev = 61;
+            case 54:
+              _context2.prev = 54;
               _context2.t0 = _context2["catch"](3);
               console.error('[SignLanguageHandler] Activation failed:', _context2.t0);
               this.cleanupResources();
-              this.showConnectionStatus("Activation Failed: ".concat(_context2.t0.message), 'error');
-
-              // Dispatch failure event for other components to handle
-              window.dispatchEvent(new CustomEvent('screenSharingFailed', {
-                detail: {
-                  reason: _context2.t0.message || _context2.t0.name || "Unknown activation error"
-                }
-              }));
+              this.showStatus("Activation Failed: ".concat(_context2.t0.message), 'error');
               return _context2.abrupt("return", false);
-            case 68:
+            case 60:
             case "end":
               return _context2.stop();
           }
-        }, _callee, this, [[3, 61]]);
+        }, _callee, this, [[3, 54]]);
       }));
       function activate() {
         return _activate.apply(this, arguments);
@@ -61246,71 +61242,432 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       return activate;
     }()
     /**
-     * Set up the data channel specifically for receiving translation data from MediaPipe
-     * This method handles all communication with the MediaPipe server
+     * CORE FEATURE: Initialize webpage video detection and caption overlay system
+     * This method finds all videos on the current webpage and sets up caption containers
      */
     )
   }, {
+    key: "initializeWebpageVideoDetection",
+    value: function initializeWebpageVideoDetection() {
+      var _context3, _context4;
+      console.log("[SignLanguageHandler] Initializing webpage video detection system");
+
+      // Find all existing videos on the page
+      this.detectExistingVideos();
+
+      // Set up observer to detect dynamically added videos (for SPAs, lazy loading, etc.)
+      this.setupVideoObserver();
+
+      // Set up window resize handler to adjust caption positioning
+      window.addEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context3 = this.handleWindowResize).call(_context3, this));
+
+      // Set up scroll handler to update caption positions
+      window.addEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context4 = this.handlePageScroll).call(_context4, this), {
+        passive: true
+      });
+      console.log("[SignLanguageHandler] Video detection initialized - found ".concat(this.webpageVideos.size, " videos"));
+    }
+
+    /**
+     * Detect all existing video elements on the current webpage
+     * Supports HTML5 videos, YouTube, Vimeo, and other embedded players
+     */
+  }, {
+    key: "detectExistingVideos",
+    value: function detectExistingVideos() {
+      var _this2 = this;
+      // Find HTML5 video elements
+      var html5Videos = document.querySelectorAll('video');
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(html5Videos).call(html5Videos, function (video) {
+        return _this2.registerVideo(video, 'html5');
+      });
+
+      // Find YouTube players (both iframe and div containers)
+      var youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(youtubeIframes).call(youtubeIframes, function (iframe) {
+        return _this2.registerVideo(iframe, 'youtube-iframe');
+      });
+      var youtubeContainers = document.querySelectorAll('#movie_player, .html5-video-container');
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(youtubeContainers).call(youtubeContainers, function (container) {
+        return _this2.registerVideo(container, 'youtube-container');
+      });
+
+      // Find Vimeo players
+      var vimeoIframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(vimeoIframes).call(vimeoIframes, function (iframe) {
+        return _this2.registerVideo(iframe, 'vimeo');
+      });
+
+      // Find other common video containers
+      var videoContainers = document.querySelectorAll('.video-player, .player, .video-container, .video-wrapper, ' + '[class*="video"], [class*="player"], [data-video], [data-player]');
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(videoContainers).call(videoContainers, function (container) {
+        // Only register if it doesn't contain a video we've already found
+        if (!container.querySelector('video, iframe[src*="youtube"], iframe[src*="vimeo"]')) {
+          _this2.registerVideo(container, 'generic-container');
+        }
+      });
+    }
+
+    /**
+     * Register a video element and create caption overlay system for it
+     * Each video gets its own caption container positioned relative to the video
+     */
+  }, {
+    key: "registerVideo",
+    value: function registerVideo(videoElement, type) {
+      var _context5;
+      if (!videoElement || this.webpageVideos.has(videoElement)) {
+        return; // Skip if already registered
+      }
+      console.log("[SignLanguageHandler] Registering ".concat(type, " video:"), videoElement);
+
+      // Store video information
+      var videoInfo = {
+        element: videoElement,
+        type: type,
+        id: _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context5 = "video-".concat(_babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(), "-")).call(_context5, Math.random().toString(36).substr(2, 9)),
+        captionContainer: null,
+        isVisible: this.isVideoVisible(videoElement),
+        lastKnownBounds: null
+      };
+      this.webpageVideos.set(videoElement, videoInfo);
+
+      // Create caption overlay container for this video
+      this.createCaptionContainerForVideo(videoInfo);
+
+      // Set up intersection observer to track when video enters/leaves viewport
+      this.observeVideoVisibility(videoInfo);
+
+      // If this is the first visible video, make it the active target
+      if (videoInfo.isVisible && !this.activeVideoTarget) {
+        this.setActiveVideoTarget(videoInfo);
+      }
+    }
+
+    /**
+     * Create a caption overlay container positioned relative to a specific video
+     * This container will hold all captions for this particular video
+     */
+  }, {
+    key: "createCaptionContainerForVideo",
+    value: function createCaptionContainerForVideo(videoInfo) {
+      var captionContainer = document.createElement('div');
+      captionContainer.id = "sign-language-captions-".concat(videoInfo.id);
+      captionContainer.className = 'sign-language-webpage-captions';
+
+      // Position the container absolutely over the video
+      captionContainer.style.position = 'absolute';
+      captionContainer.style.top = '0';
+      captionContainer.style.left = '0';
+      captionContainer.style.width = '100%';
+      captionContainer.style.height = '100%';
+      captionContainer.style.pointerEvents = 'none'; // Allow clicks to pass through
+      captionContainer.style.zIndex = this.captionSettings.zIndex;
+      captionContainer.style.display = 'flex';
+      captionContainer.style.flexDirection = 'column';
+      captionContainer.style.justifyContent = 'flex-end'; // Align captions to bottom
+      captionContainer.style.alignItems = 'center'; // Center captions horizontally
+      captionContainer.style.padding = '20px';
+      captionContainer.style.boxSizing = 'border-box';
+
+      // Position the container relative to the video element
+      this.positionCaptionContainer(videoInfo, captionContainer);
+
+      // Add to the page
+      document.body.appendChild(captionContainer);
+
+      // Store references
+      videoInfo.captionContainer = captionContainer;
+      this.videoCaptionContainers.set(videoInfo.element, captionContainer);
+      console.log("[SignLanguageHandler] Created caption container for ".concat(videoInfo.type, " video"));
+    }
+
+    /**
+     * Position caption container to match the video element's position and size
+     * This ensures captions appear exactly over the video content
+     */
+  }, {
+    key: "positionCaptionContainer",
+    value: function positionCaptionContainer(videoInfo, captionContainer) {
+      var videoElement = videoInfo.element;
+
+      // Get video element's position and dimensions
+      var rect = videoElement.getBoundingClientRect();
+      var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Position container to exactly match video bounds
+      captionContainer.style.position = 'absolute';
+      captionContainer.style.left = "".concat(rect.left + scrollX, "px");
+      captionContainer.style.top = "".concat(rect.top + scrollY, "px");
+      captionContainer.style.width = "".concat(rect.width, "px");
+      captionContainer.style.height = "".concat(rect.height, "px");
+
+      // Store bounds for comparison in future updates
+      videoInfo.lastKnownBounds = {
+        left: rect.left + scrollX,
+        top: rect.top + scrollY,
+        width: rect.width,
+        height: rect.height
+      };
+
+      // Special handling for different video types
+      if (videoInfo.type === 'youtube-container' || videoInfo.type === 'youtube-iframe') {
+        // YouTube videos might need slight adjustments for player controls
+        captionContainer.style.paddingBottom = '80px'; // Extra space for YouTube controls
+      } else if (videoInfo.type === 'vimeo') {
+        // Vimeo videos might need different spacing
+        captionContainer.style.paddingBottom = '70px';
+      }
+    }
+
+    /**
+     * Set up MutationObserver to detect dynamically added videos
+     * This handles Single Page Applications and lazy-loaded content
+     */
+  }, {
+    key: "setupVideoObserver",
+    value: function setupVideoObserver() {
+      var _this3 = this;
+      this.videoObserver = new MutationObserver(function (mutations) {
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(mutations).call(mutations, function (mutation) {
+          var _context6;
+          _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context6 = mutation.addedNodes).call(_context6, function (node) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              // Check if the added node is a video
+              if (node.tagName === 'VIDEO') {
+                _this3.registerVideo(node, 'html5');
+              } else if (node.tagName === 'IFRAME') {
+                var _context7, _context8;
+                if (node.src && (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context7 = node.src).call(_context7, 'youtube') || _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context8 = node.src).call(_context8, 'vimeo'))) {
+                  var _context9;
+                  _this3.registerVideo(node, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context9 = node.src).call(_context9, 'youtube') ? 'youtube-iframe' : 'vimeo');
+                }
+              } else {
+                // Check for videos within the added node
+                var videos = node.querySelectorAll('video');
+                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(videos).call(videos, function (video) {
+                  return _this3.registerVideo(video, 'html5');
+                });
+                var iframes = node.querySelectorAll('iframe[src*="youtube"], iframe[src*="vimeo"]');
+                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(iframes).call(iframes, function (iframe) {
+                  var _context10;
+                  _this3.registerVideo(iframe, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context10 = iframe.src).call(_context10, 'youtube') ? 'youtube-iframe' : 'vimeo');
+                });
+              }
+            }
+          });
+        });
+      });
+
+      // Start observing
+      this.videoObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    /**
+     * Check if a video element is currently visible in the viewport
+     */
+  }, {
+    key: "isVideoVisible",
+    value: function isVideoVisible(videoElement) {
+      var rect = videoElement.getBoundingClientRect();
+      var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+      // Consider video visible if it's at least partially in viewport and has reasonable size
+      return rect.bottom > 0 && rect.right > 0 && rect.top < windowHeight && rect.left < windowWidth && rect.width > 100 &&
+      // Minimum width to be considered a real video
+      rect.height > 100 // Minimum height to be considered a real video
+      ;
+    }
+
+    /**
+     * Set up intersection observer to track video visibility changes
+     */
+  }, {
+    key: "observeVideoVisibility",
+    value: function observeVideoVisibility(videoInfo) {
+      var _this4 = this;
+      var observer = new IntersectionObserver(function (entries) {
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(entries).call(entries, function (entry) {
+          var wasVisible = videoInfo.isVisible;
+          videoInfo.isVisible = entry.isIntersecting && entry.intersectionRatio > 0.1;
+          if (videoInfo.isVisible && !wasVisible) {
+            // Video became visible
+            console.log("[SignLanguageHandler] Video became visible:", videoInfo.type);
+            if (!_this4.activeVideoTarget) {
+              _this4.setActiveVideoTarget(videoInfo);
+            }
+          } else if (!videoInfo.isVisible && wasVisible) {
+            // Video became hidden
+            console.log("[SignLanguageHandler] Video became hidden:", videoInfo.type);
+            if (_this4.activeVideoTarget === videoInfo) {
+              _this4.findNextActiveVideo();
+            }
+          }
+        });
+      }, {
+        threshold: [0, 0.1, 0.5, 1.0] // Multiple thresholds for better tracking
+      });
+      observer.observe(videoInfo.element);
+      videoInfo.visibilityObserver = observer;
+    }
+
+    /**
+     * Set the active video target for caption display
+     * Captions will appear on this video when translations are received
+     */
+  }, {
+    key: "setActiveVideoTarget",
+    value: function setActiveVideoTarget(videoInfo) {
+      if (this.activeVideoTarget === videoInfo) return;
+      console.log("[SignLanguageHandler] Setting active video target:", videoInfo.type);
+      this.activeVideoTarget = videoInfo;
+
+      // Update visual indicator (if monitoring window is shown)
+      this.updateActiveVideoIndicator();
+    }
+
+    /**
+     * Find the next best video to target for captions when current target becomes unavailable
+     */
+  }, {
+    key: "findNextActiveVideo",
+    value: function findNextActiveVideo() {
+      // Find the largest visible video as the new target
+      var bestVideo = null;
+      var bestSize = 0;
+      var _iterator = _createForOfIteratorHelper(this.webpageVideos),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var _step$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__["default"])(_step.value, 2),
+            element = _step$value[0],
+            videoInfo = _step$value[1];
+          if (videoInfo.isVisible) {
+            var rect = element.getBoundingClientRect();
+            var size = rect.width * rect.height;
+            if (size > bestSize) {
+              bestSize = size;
+              bestVideo = videoInfo;
+            }
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      if (bestVideo) {
+        this.setActiveVideoTarget(bestVideo);
+      } else {
+        this.activeVideoTarget = null;
+        console.log("[SignLanguageHandler] No visible videos found for caption target");
+      }
+    }
+
+    /**
+     * Handle window resize events to update caption container positions
+     */
+  }, {
+    key: "handleWindowResize",
+    value: function handleWindowResize() {
+      var _this5 = this;
+      // Debounce resize events
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+        _this5.updateAllCaptionContainerPositions();
+      }, 100);
+    }
+
+    /**
+     * Handle page scroll events to update caption container positions
+     */
+  }, {
+    key: "handlePageScroll",
+    value: function handlePageScroll() {
+      var _this6 = this;
+      // Throttle scroll events for performance
+      if (!this.scrollThrottled) {
+        this.scrollThrottled = true;
+        requestAnimationFrame(function () {
+          _this6.updateAllCaptionContainerPositions();
+          _this6.scrollThrottled = false;
+        });
+      }
+    }
+
+    /**
+     * Update positions of all caption containers to match their video elements
+     */
+  }, {
+    key: "updateAllCaptionContainerPositions",
+    value: function updateAllCaptionContainerPositions() {
+      var _iterator2 = _createForOfIteratorHelper(this.webpageVideos),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _step2$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__["default"])(_step2.value, 2),
+            element = _step2$value[0],
+            videoInfo = _step2$value[1];
+          if (videoInfo.captionContainer && videoInfo.isVisible) {
+            this.positionCaptionContainer(videoInfo, videoInfo.captionContainer);
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    }
+
+    /**
+     * Set up translation data channel for receiving MediaPipe translations
+     */
+  }, {
     key: "setupTranslationDataChannel",
     value: function setupTranslationDataChannel() {
-      var _this2 = this;
-      // Handle successful data channel connection
+      var _this7 = this;
       this.dataChannel.onopen = function () {
-        console.log("[SignLanguageHandler] Translation data channel opened - video overlays ready");
-        _this2.updateConnectionStatus('connected');
-        _this2.showConnectionStatus('Ready for Sign Language Detection', 'success');
-
-        // Send initial requests to MediaPipe server
-        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
-          if (_this2.dataChannel.readyState === 'open') {
-            console.log("[SignLanguageHandler] Sending initial data requests to MediaPipe");
-            _this2.dataChannel.send('get_landmarks'); // Request landmark detection data
-            _this2.dataChannel.send('get_performance'); // Request performance metrics
+        console.log("[SignLanguageHandler] Translation data channel opened");
+        _this7.updateConnectionStatus('connected');
+        _this7.showStatus('Ready for Sign Language Detection on Webpage Videos', 'success');
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+          if (_this7.dataChannel.readyState === 'open') {
+            _this7.dataChannel.send('get_landmarks');
+            _this7.dataChannel.send('get_performance');
           }
         }, 1000);
-
-        // Set up periodic requests for translation data
-        _this2.landmarkInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_16__(function () {
-          if (_this2.dataChannel.readyState === 'open') {
-            _this2.dataChannel.send('get_translation'); // Regular translation requests
+        _this7.landmarkInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_28__(function () {
+          if (_this7.dataChannel.readyState === 'open') {
+            _this7.dataChannel.send('get_translation');
           }
-        }, 1000); // Check for new translations every second
+        }, 1000);
       };
-
-      // Handle data channel closure
       this.dataChannel.onclose = function () {
         console.log("[SignLanguageHandler] Translation data channel closed");
-        _this2.updateConnectionStatus('disconnected');
-        _this2.showConnectionStatus('Connection Lost', 'warning');
+        _this7.updateConnectionStatus('disconnected');
       };
-
-      // Handle data channel errors
       this.dataChannel.onerror = function (error) {
         console.error("[SignLanguageHandler] Data channel error:", error);
-        _this2.showConnectionStatus('Data Channel Error', 'error');
       };
-
-      // Handle incoming messages from MediaPipe server
       this.dataChannel.onmessage = function (event) {
         try {
           var data = JSON.parse(event.data);
-
-          // Process different types of messages from the server
           if (data.type === 'holistic_landmarks') {
-            // MediaPipe landmark detection data (hands, face, pose)
-            _this2.processLandmarksData(data);
+            _this7.processLandmarksData(data);
           } else if (data.type === 'performance_stats') {
-            // Server performance metrics (FPS, processing time, etc.)
-            _this2.processPerformanceData(data);
+            _this7.processPerformanceData(data);
           } else if (data.type === 'translation') {
-            // SIGN LANGUAGE TRANSLATION - This is the key message type
-            // Process translation and display as video overlay caption
-            console.log("[SignLanguageHandler] Translation received for video overlay:", data.text);
-            _this2.processTranslationForVideoOverlay(data);
+            // CORE FUNCTIONALITY: Display translation on active webpage video
+            console.log("[SignLanguageHandler] Translation received for webpage video:", data.text);
+            _this7.processTranslationForWebpageVideo(data);
           } else if (data.type === 'stats' && data.fps !== undefined) {
-            // Real-time FPS updates
-            _this2.fps = data.fps;
-            _this2.updateFPSDisplay();
+            _this7.fps = data.fps;
+            _this7.updateFPSDisplay();
           }
         } catch (error) {
           console.error("[SignLanguageHandler] Error processing server message:", error);
@@ -61319,193 +61676,196 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     }
 
     /**
-     * CORE METHOD: Process translation data and display as video overlay caption
-     * This method is the heart of the video overlay system - it takes translation
-     * data from MediaPipe and converts it into YouTube-style video captions
+     * CORE METHOD: Process translation and display on active webpage video
+     * This is the main method that creates captions on the user's video content
      */
   }, {
-    key: "processTranslationForVideoOverlay",
-    value: function processTranslationForVideoOverlay(data) {
+    key: "processTranslationForWebpageVideo",
+    value: function processTranslationForWebpageVideo(data) {
       var translatedText = data.text;
       var confidence = data.confidence || null;
-      var timestamp = _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_17__();
-      console.log("[SignLanguageHandler] Processing translation for video overlay: \"".concat(translatedText, "\""));
+      var timestamp = _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__();
+      console.log("[SignLanguageHandler] Processing translation for webpage video: \"".concat(translatedText, "\""));
 
-      // Store translation data for history and debugging
+      // Store translation data
       this.lastTranslation = {
         text: translatedText,
         timestamp: timestamp,
         confidence: confidence,
         words: data.words || null,
-        displayMethod: 'video-overlay' // Track how this translation was displayed
+        displayMethod: 'webpage-video-overlay'
       };
 
-      // Maintain translation history for analytics and debugging
+      // Add to history
       this.translationHistory.push(this.lastTranslation);
       if (this.translationHistory.length > 20) {
-        this.translationHistory.shift(); // Keep history manageable
+        this.translationHistory.shift();
       }
 
-      // THE KEY FUNCTIONALITY: Display translation as video caption overlay
-      this.displayTranslationAsVideoCaption(translatedText, confidence, timestamp);
+      // Display translation on the active webpage video
+      if (this.activeVideoTarget && this.activeVideoTarget.captionContainer) {
+        this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
+      } else {
+        console.warn("[SignLanguageHandler] No active video target available for caption display");
+        // Try to find a video target
+        this.findNextActiveVideo();
+        if (this.activeVideoTarget) {
+          this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
+        }
+      }
 
-      // Update system status to show translation activity
-      this.showConnectionStatus("Translated: \"".concat(translatedText, "\""), 'translation');
-
-      // Note: NO sidebar forwarding - translations are displayed exclusively as video overlays
-      // This is the fundamental difference from the previous implementation
-      console.log("[SignLanguageHandler] Translation displayed as video overlay only - no sidebar forwarding");
+      // Update status
+      this.showStatus("Translated on webpage: \"".concat(translatedText, "\""), 'translation');
     }
 
     /**
-     * CORE METHOD: Display translation as YouTube-style caption overlay on video
-     * This method creates the actual caption elements that appear on the video
+     * CORE METHOD: Display caption on a specific webpage video
+     * Creates and animates caption overlays on the actual video content the user is watching
      */
   }, {
-    key: "displayTranslationAsVideoCaption",
-    value: function displayTranslationAsVideoCaption(text) {
-      var _context3;
-      var confidence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      var timestamp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_17__();
-      // Validate that we have the necessary components
-      if (!this.captionContainer || !text || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(text).call(text) === '') {
-        console.warn("[SignLanguageHandler] Cannot display caption - missing container or text");
+    key: "displayCaptionOnWebpageVideo",
+    value: function displayCaptionOnWebpageVideo(videoInfo, text) {
+      var _context11;
+      var confidence = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var timestamp = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__();
+      if (!videoInfo.captionContainer || !text || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__(text).call(text) === '') {
+        console.warn("[SignLanguageHandler] Cannot display webpage caption - missing container or text");
         return;
       }
 
-      // Generate unique identifier for this caption
-      var captionId = "caption-".concat(this.captionIdCounter++);
-      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_19__(_context3 = "[SignLanguageHandler] Creating video caption: \"".concat(text, "\" (ID: ")).call(_context3, captionId, ")"));
+      // Update caption container position before adding new caption
+      this.positionCaptionContainer(videoInfo, videoInfo.captionContainer);
+      var captionId = "webpage-caption-".concat(this.captionIdCounter++);
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context11 = "[SignLanguageHandler] Creating webpage video caption: \"".concat(text, "\" (ID: ")).call(_context11, captionId, ")"));
 
-      // Create the caption element
+      // Create caption element
       var captionElement = document.createElement('div');
-      captionElement.className = 'sign-language-video-caption';
+      captionElement.className = 'sign-language-webpage-caption';
       captionElement.id = captionId;
 
-      // Prepare the display text with optional confidence indicator
-      var displayText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_18__(text).call(text);
-
-      // Show confidence indicator when translation uncertainty is high (below 85%)
+      // Prepare display text with confidence indicator
+      var displayText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__(text).call(text);
       if (confidence !== null && confidence < 0.85) {
         var confidencePercent = Math.round(confidence * 100);
         displayText += " [".concat(confidencePercent, "% confidence]");
       }
       captionElement.textContent = displayText;
 
-      // Apply professional YouTube-style styling
-      this.applyVideoCaptionStyling(captionElement);
+      // Apply webpage-optimized styling
+      this.applyWebpageCaptionStyling(captionElement);
 
-      // Add caption to the video overlay container
-      this.captionContainer.appendChild(captionElement);
+      // Add to the video's caption container
+      videoInfo.captionContainer.appendChild(captionElement);
 
-      // Animate caption appearance with smooth fade-in
+      // Track active caption
+      this.activeCaptions.add(captionElement);
+
+      // Animate appearance
       this.animateCaptionEntry(captionElement);
 
-      // Schedule automatic removal after display duration
-      this.scheduleCaptionRemoval(captionElement, captionId);
+      // Schedule removal
+      this.scheduleCaptionRemoval(captionElement, captionId, videoInfo);
 
-      // Manage the number of visible captions to prevent screen clutter
-      this.limitSimultaneousCaptions();
-      console.log("[SignLanguageHandler] Video caption displayed successfully: \"".concat(displayText, "\""));
+      // Manage caption count for this video
+      this.limitCaptionsForVideo(videoInfo);
+      console.log("[SignLanguageHandler] Webpage video caption displayed: \"".concat(displayText, "\""));
     }
 
     /**
-     * Apply professional YouTube-style styling to caption elements
-     * This method ensures captions are readable and visually appealing
+     * Apply styling optimized for webpage video captions
+     * These styles are designed to work well over any webpage video content
      */
   }, {
-    key: "applyVideoCaptionStyling",
-    value: function applyVideoCaptionStyling(captionElement) {
+    key: "applyWebpageCaptionStyling",
+    value: function applyWebpageCaptionStyling(captionElement) {
       var settings = this.captionSettings;
 
-      // Core layout and positioning - ensures captions appear correctly on video
+      // Core positioning and layout
       captionElement.style.position = 'relative';
       captionElement.style.display = 'block';
       captionElement.style.width = 'auto';
       captionElement.style.maxWidth = settings.maxWidth;
-      captionElement.style.margin = '0 auto 8px auto'; // Center horizontally with spacing
+      captionElement.style.margin = '0 auto';
+      captionElement.style.marginBottom = '12px'; // Space between multiple captions
 
-      // Typography optimized for video overlay readability
+      // Typography optimized for webpage videos
       captionElement.style.fontSize = settings.fontSize;
       captionElement.style.fontFamily = settings.fontFamily;
-      captionElement.style.fontWeight = 'bold'; // Bold text for better visibility
-      captionElement.style.lineHeight = '1.2'; // Comfortable line spacing
-      captionElement.style.textAlign = 'center'; // Center-aligned like YouTube captions
-      captionElement.style.wordWrap = 'break-word'; // Handle long words gracefully
-      captionElement.style.whiteSpace = 'pre-wrap'; // Preserve spacing if needed
+      captionElement.style.fontWeight = 'bold';
+      captionElement.style.lineHeight = '1.3';
+      captionElement.style.textAlign = 'center';
+      captionElement.style.wordWrap = 'break-word';
+      captionElement.style.whiteSpace = 'pre-wrap';
 
       // Visual styling for maximum readability over video content
       captionElement.style.color = settings.textColor;
       captionElement.style.backgroundColor = settings.backgroundColor;
       captionElement.style.padding = settings.padding;
       captionElement.style.borderRadius = settings.borderRadius;
-      captionElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)'; // Subtle depth
-      captionElement.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)'; // Text outline effect
+      captionElement.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; // Stronger shadow for webpage
+      captionElement.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 1)'; // Stronger text shadow
+      captionElement.style.border = '1px solid rgba(255, 255, 255, 0.2)'; // Subtle border for definition
 
-      // Interaction properties - captions should not interfere with video controls
-      captionElement.style.pointerEvents = 'none'; // Allow clicks to pass through to video
-      captionElement.style.userSelect = 'none'; // Prevent text selection
+      // Interaction properties
+      captionElement.style.pointerEvents = 'none';
+      captionElement.style.userSelect = 'none';
+      captionElement.style.zIndex = settings.zIndex;
 
-      // Initial animation state - caption starts invisible and slightly offset
+      // Animation setup
       captionElement.style.opacity = '0';
-      captionElement.style.transform = 'translateY(15px) scale(0.95)';
-      captionElement.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'; // Smooth material design animation
+      captionElement.style.transform = 'translateY(20px) scale(0.9)';
+      captionElement.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
     }
 
     /**
-     * Animate caption entry with smooth, professional animation
-     * Uses modern CSS transforms for hardware-accelerated performance
+     * Animate caption entry with smooth appearance
      */
   }, {
     key: "animateCaptionEntry",
     value: function animateCaptionEntry(captionElement) {
-      // Use double requestAnimationFrame for smooth animation timing
-      // This ensures the initial styles are applied before starting the animation
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          captionElement.style.opacity = '1'; // Fade in
-          captionElement.style.transform = 'translateY(0) scale(1)'; // Slide up and scale to normal size
+          captionElement.style.opacity = '1';
+          captionElement.style.transform = 'translateY(0) scale(1)';
         });
       });
     }
 
     /**
-     * Schedule automatic caption removal with smooth fade-out animation
-     * Manages caption lifecycle to prevent accumulation of old captions
+     * Schedule caption removal with cleanup
      */
   }, {
     key: "scheduleCaptionRemoval",
-    value: function scheduleCaptionRemoval(captionElement, captionId) {
-      var _this3 = this;
-      var removalTimer = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
-        _this3.removeCaptionWithAnimation(captionElement, captionId);
+    value: function scheduleCaptionRemoval(captionElement, captionId, videoInfo) {
+      var _this8 = this;
+      var removalTimer = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+        _this8.removeCaptionWithAnimation(captionElement, captionId);
       }, this.captionSettings.displayDuration);
-
-      // Store timer reference for potential cleanup (if caption is removed manually)
       captionElement.dataset.removalTimer = removalTimer;
+      captionElement.dataset.videoId = videoInfo.id;
     }
 
     /**
-     * Remove caption with smooth fade-out animation
-     * Provides polished visual feedback when captions disappear
+     * Remove caption with smooth animation
      */
   }, {
     key: "removeCaptionWithAnimation",
     value: function removeCaptionWithAnimation(captionElement, captionId) {
-      // Check if element still exists (might have been removed already)
       if (!captionElement || !captionElement.parentNode) {
-        console.log("[SignLanguageHandler] Caption ".concat(captionId, " already removed"));
         return;
       }
-      console.log("[SignLanguageHandler] Removing video caption: ".concat(captionId));
+      console.log("[SignLanguageHandler] Removing webpage caption: ".concat(captionId));
 
-      // Apply smooth fade-out animation
+      // Remove from tracking
+      this.activeCaptions["delete"](captionElement);
+
+      // Animate removal
       captionElement.style.transition = "all ".concat(this.captionSettings.fadeOutDuration, "ms cubic-bezier(0.4, 0, 0.6, 1)");
-      captionElement.style.opacity = '0'; // Fade out
-      captionElement.style.transform = 'translateY(-10px) scale(0.95)'; // Slide up and shrink slightly
+      captionElement.style.opacity = '0';
+      captionElement.style.transform = 'translateY(-15px) scale(0.9)';
 
-      // Remove element from DOM after animation completes
-      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
+      // Remove from DOM
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
         if (captionElement.parentNode) {
           captionElement.parentNode.removeChild(captionElement);
         }
@@ -61513,109 +61873,226 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     }
 
     /**
-     * Limit the number of simultaneous captions to prevent screen clutter
-     * Automatically removes older captions when the limit is exceeded
+     * Limit number of captions per video to prevent overcrowding
      */
   }, {
-    key: "limitSimultaneousCaptions",
-    value: function limitSimultaneousCaptions() {
-      var _this4 = this;
-      if (!this.captionContainer) return;
-      var captions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
+    key: "limitCaptionsForVideo",
+    value: function limitCaptionsForVideo(videoInfo) {
+      var _this9 = this;
+      if (!videoInfo.captionContainer) return;
+      var captions = videoInfo.captionContainer.querySelectorAll('.sign-language-webpage-caption');
       var maxVisible = this.captionSettings.maxCaptionsVisible;
       if (captions.length > maxVisible) {
-        var _context4, _context5;
-        // Calculate how many captions need to be removed
+        var _context12;
         var excessCount = captions.length - maxVisible;
-        var captionsToRemove = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_20__(_context4 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_21__(captions)).call(_context4, 0, excessCount);
-        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_19__(_context5 = "[SignLanguageHandler] Removing ".concat(excessCount, " excess captions to maintain limit of ")).call(_context5, maxVisible));
-
-        // Remove excess captions with staggered timing for smooth transition
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(captionsToRemove).call(captionsToRemove, function (caption, index) {
-          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_15__(function () {
-            _this4.removeCaptionWithAnimation(caption, caption.id);
-          }, index * 100); // 100ms delay between each removal
+        var captionsToRemove = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__(_context12 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(captions)).call(_context12, 0, excessCount);
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(captionsToRemove).call(captionsToRemove, function (caption, index) {
+          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+            _this9.removeCaptionWithAnimation(caption, caption.id);
+          }, index * 150);
         });
       }
     }
 
     /**
-     * Clear all visible captions immediately
-     * Useful for reset scenarios or when pausing the system
+     * Clear all captions from all webpage videos
      */
   }, {
-    key: "clearAllVideoCaptions",
-    value: function clearAllVideoCaptions() {
-      if (!this.captionContainer) {
-        console.log("[SignLanguageHandler] No caption container to clear");
-        return;
-      }
-      var captions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
-      console.log("[SignLanguageHandler] Clearing ".concat(captions.length, " video captions"));
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(captions).call(captions, function (caption) {
-        // Clear any pending removal timers to prevent conflicts
+    key: "clearAllWebpageVideoCaptions",
+    value: function clearAllWebpageVideoCaptions() {
+      var _context13;
+      console.log("[SignLanguageHandler] Clearing all webpage video captions");
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context13 = this.activeCaptions).call(_context13, function (caption) {
         if (caption.dataset.removalTimer) {
           clearTimeout(caption.dataset.removalTimer);
         }
-
-        // Remove immediately without animation for instant clearing
         if (caption.parentNode) {
           caption.parentNode.removeChild(caption);
         }
       });
-      console.log("[SignLanguageHandler] All video captions cleared");
+      this.activeCaptions.clear();
+      console.log("[SignLanguageHandler] All webpage video captions cleared");
     }
 
     /**
-     * Update caption display settings dynamically
-     * Allows real-time customization of caption appearance and behavior
+     * Create optional MediaPipe monitoring interface
+     * This is a smaller window for system monitoring, separate from main video captions
      */
   }, {
-    key: "updateCaptionSettings",
-    value: function updateCaptionSettings(newSettings) {
-      // Merge new settings with existing ones
-      this.captionSettings = _objectSpread(_objectSpread({}, this.captionSettings), newSettings);
-      console.log("[SignLanguageHandler] Caption settings updated:", this.captionSettings);
+    key: "createMediaPipeMonitoringInterface",
+    value: function createMediaPipeMonitoringInterface() {
+      var _this10 = this;
+      if (!this.showMonitoringWindow) return;
 
-      // Apply new settings to any existing captions
-      if (this.captionContainer) {
-        var existingCaptions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(existingCaptions).call(existingCaptions, function (caption) {
-          // Update styling properties that can be changed dynamically
-          if (newSettings.fontSize) caption.style.fontSize = newSettings.fontSize;
-          if (newSettings.fontFamily) caption.style.fontFamily = newSettings.fontFamily;
-          if (newSettings.backgroundColor) caption.style.backgroundColor = newSettings.backgroundColor;
-          if (newSettings.textColor) caption.style.color = newSettings.textColor;
-        });
-        console.log("[SignLanguageHandler] Applied new settings to ".concat(existingCaptions.length, " existing captions"));
+      // Remove any existing monitoring container
+      var container = document.getElementById('signLanguageMonitoringContainer');
+      if (container) {
+        document.body.removeChild(container);
+      }
+
+      // Create compact monitoring container
+      container = document.createElement('div');
+      container.id = 'signLanguageMonitoringContainer';
+      container.style.position = 'fixed';
+      container.style.bottom = '20px';
+      container.style.right = '20px';
+      container.style.width = '280px';
+      container.style.height = 'auto';
+      container.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+      container.style.border = '1px solid #00BCD4';
+      container.style.borderRadius = '8px';
+      container.style.padding = '10px';
+      container.style.zIndex = '2147483646'; // Just below captions
+      container.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
+      container.style.backdropFilter = 'blur(10px)';
+      container.style.display = 'none';
+      container.style.fontFamily = 'Arial, sans-serif';
+      container.style.fontSize = '12px';
+      container.style.color = 'white';
+
+      // Title bar
+      var titleBar = document.createElement('div');
+      titleBar.style.display = 'flex';
+      titleBar.style.justifyContent = 'space-between';
+      titleBar.style.alignItems = 'center';
+      titleBar.style.marginBottom = '8px';
+      titleBar.style.paddingBottom = '5px';
+      titleBar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+      var title = document.createElement('div');
+      title.textContent = 'MediaPipe Monitor';
+      title.style.fontWeight = 'bold';
+      title.style.fontSize = '13px';
+      var closeButton = document.createElement('button');
+      closeButton.textContent = '×';
+      closeButton.style.background = 'none';
+      closeButton.style.border = 'none';
+      closeButton.style.color = '#999';
+      closeButton.style.fontSize = '16px';
+      closeButton.style.cursor = 'pointer';
+      closeButton.style.padding = '0';
+      closeButton.style.width = '20px';
+      closeButton.style.height = '20px';
+      closeButton.onclick = function () {
+        return container.style.display = 'none';
+      };
+      titleBar.appendChild(title);
+      titleBar.appendChild(closeButton);
+      container.appendChild(titleBar);
+
+      // Hidden processing video
+      this.videoElement = document.createElement('video');
+      this.videoElement.autoplay = true;
+      this.videoElement.muted = true;
+      this.videoElement.playsInline = true;
+      this.videoElement.style.display = 'none';
+      container.appendChild(this.videoElement);
+
+      // Optional: Small display video for monitoring
+      this.displayElement = document.createElement('video');
+      this.displayElement.autoplay = true;
+      this.displayElement.playsInline = true;
+      this.displayElement.muted = true;
+      this.displayElement.style.width = '100%';
+      this.displayElement.style.height = '120px';
+      this.displayElement.style.borderRadius = '4px';
+      this.displayElement.style.backgroundColor = '#000';
+      container.appendChild(this.displayElement);
+
+      // Status information
+      var statusContainer = document.createElement('div');
+      statusContainer.style.marginTop = '8px';
+      statusContainer.style.paddingTop = '5px';
+      statusContainer.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
+      var statusRow1 = document.createElement('div');
+      statusRow1.style.display = 'flex';
+      statusRow1.style.justifyContent = 'space-between';
+      statusRow1.style.marginBottom = '4px';
+      var fpsDisplay = document.createElement('div');
+      fpsDisplay.id = 'signLanguageFPS';
+      fpsDisplay.textContent = '0.0 FPS';
+      fpsDisplay.style.fontWeight = 'bold';
+      var connectionStatus = document.createElement('div');
+      connectionStatus.id = 'connectionStatus';
+      connectionStatus.textContent = 'Connecting...';
+      connectionStatus.style.fontSize = '10px';
+      statusRow1.appendChild(fpsDisplay);
+      statusRow1.appendChild(connectionStatus);
+      var statusRow2 = document.createElement('div');
+      var detectionStatus = document.createElement('div');
+      detectionStatus.id = 'signLanguageDetection';
+      detectionStatus.textContent = 'Initializing...';
+      detectionStatus.style.fontSize = '10px';
+      detectionStatus.style.textAlign = 'center';
+      statusRow2.appendChild(detectionStatus);
+      var activeVideoDisplay = document.createElement('div');
+      activeVideoDisplay.id = 'activeVideoDisplay';
+      activeVideoDisplay.textContent = 'No active video target';
+      activeVideoDisplay.style.fontSize = '10px';
+      activeVideoDisplay.style.textAlign = 'center';
+      activeVideoDisplay.style.marginTop = '4px';
+      activeVideoDisplay.style.color = '#ccc';
+      statusContainer.appendChild(statusRow1);
+      statusContainer.appendChild(statusRow2);
+      statusContainer.appendChild(activeVideoDisplay);
+      container.appendChild(statusContainer);
+
+      // Add double-click for debug mode
+      container.addEventListener('dblclick', function () {
+        _this10.toggleDebugMode();
+      });
+      document.body.appendChild(container);
+      this.monitoringContainer = container;
+      console.log("[SignLanguageHandler] MediaPipe monitoring interface created");
+    }
+
+    /**
+     * Show the monitoring interface
+     */
+  }, {
+    key: "showMonitoringInterface",
+    value: function showMonitoringInterface() {
+      if (this.monitoringContainer && this.showMonitoringWindow) {
+        this.monitoringContainer.style.display = 'block';
       }
     }
 
     /**
-     * Process MediaPipe landmark detection data for system monitoring
-     * Updates detection status without affecting caption display
+     * Update active video indicator in monitoring interface
+     */
+  }, {
+    key: "updateActiveVideoIndicator",
+    value: function updateActiveVideoIndicator() {
+      var activeVideoDisplay = document.getElementById('activeVideoDisplay');
+      if (activeVideoDisplay) {
+        if (this.activeVideoTarget) {
+          activeVideoDisplay.textContent = "Active: ".concat(this.activeVideoTarget.type, " video");
+          activeVideoDisplay.style.color = '#4CAF50';
+        } else {
+          activeVideoDisplay.textContent = 'No active video target';
+          activeVideoDisplay.style.color = '#ccc';
+        }
+      }
+    }
+
+    /**
+     * Process MediaPipe landmark data for monitoring
      */
   }, {
     key: "processLandmarksData",
     value: function processLandmarksData(data) {
-      // Update landmark state for system monitoring
       this.faceLandmarks = data.has_face ? {} : null;
       this.poseLandmarks = data.has_pose ? data.pose_info || {} : null;
       this.leftHandLandmarks = data.has_left_hand ? {} : null;
       this.rightHandLandmarks = data.has_right_hand ? {} : null;
-
-      // Store detection metadata for debugging and analytics
       this.lastLandmarkUpdate = {
-        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_17__(),
+        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(),
         frame_id: data.frame_id,
         quality_score: data.quality_score,
         processing_scale: data.processing_scale
       };
-
-      // Update detection status display in video container
       this.updateDetectionStatus(data);
 
-      // Dispatch event for external monitoring (sidebar, analytics, etc.)
+      // Dispatch for external monitoring
       var event = new CustomEvent('handLandmarksDetected', {
         detail: {
           leftHand: this.leftHandLandmarks,
@@ -61623,7 +62100,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
           face: this.faceLandmarks,
           pose: this.poseLandmarks,
           fps: this.fps,
-          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_17__(),
+          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(),
           frameId: data.frame_id,
           qualityScore: data.quality_score
         }
@@ -61632,48 +62109,35 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     }
 
     /**
-     * Process performance data from MediaPipe server
-     * Monitors system health and updates performance displays
+     * Process performance data from MediaPipe
      */
   }, {
     key: "processPerformanceData",
     value: function processPerformanceData(data) {
-      // Store comprehensive performance data
       this.serverPerformanceData = data;
-
-      // Update FPS from server data
       if (data.output_fps !== undefined) {
         this.fps = data.output_fps;
       }
-
-      // Update performance displays
       this.updateFPSDisplay();
-
-      // Log detailed performance information in debug mode
       if (this.showDetailedInfo) {
-        var _data$output_fps, _data$avg_processing_, _data$quality_score;
-        console.log("[SignLanguageHandler] Performance: ".concat(((_data$output_fps = data.output_fps) === null || _data$output_fps === void 0 ? void 0 : _data$output_fps.toFixed(1)) || 'N/A', " FPS, ") + "Processing: ".concat(((_data$avg_processing_ = data.avg_processing_ms) === null || _data$avg_processing_ === void 0 ? void 0 : _data$avg_processing_.toFixed(1)) || 'N/A', "ms, ") + "Quality: ".concat(((_data$quality_score = data.quality_score) === null || _data$quality_score === void 0 ? void 0 : _data$quality_score.toFixed(2)) || 'N/A'));
+        var _data$output_fps;
+        console.log("[SignLanguageHandler] Performance: ".concat(((_data$output_fps = data.output_fps) === null || _data$output_fps === void 0 ? void 0 : _data$output_fps.toFixed(1)) || 'N/A', " FPS"));
       }
     }
 
     /**
-     * Show connection status as temporary overlay message
-     * Provides user feedback about system state
+     * Show status message
      */
   }, {
-    key: "showConnectionStatus",
-    value: function showConnectionStatus(message) {
-      var _context6;
+    key: "showStatus",
+    value: function showStatus(message) {
+      var _context14;
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'info';
-      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_19__(_context6 = "[SignLanguageHandler] Status (".concat(type, "): ")).call(_context6, message));
-
-      // You can extend this method to show visual status indicators
-      // For example, temporary overlay messages or status bar updates
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context14 = "[SignLanguageHandler] Status (".concat(type, "): ")).call(_context14, message));
     }
 
     /**
-     * Update connection status indicator in video container
-     * Provides real-time feedback about MediaPipe server connection
+     * Update connection status
      */
   }, {
     key: "updateConnectionStatus",
@@ -61683,23 +62147,21 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         switch (status) {
           case 'connected':
             statusElement.textContent = 'Connected';
-            statusElement.style.color = '#4CAF50'; // Green for success
+            statusElement.style.color = '#4CAF50';
             break;
           case 'disconnected':
             statusElement.textContent = 'Disconnected';
-            statusElement.style.color = '#F44336'; // Red for error
+            statusElement.style.color = '#F44336';
             break;
           default:
             statusElement.textContent = 'Connecting...';
             statusElement.style.color = '#FFC107';
-          // Yellow for pending
         }
       }
     }
 
     /**
-     * Update FPS display with performance-based color coding
-     * Provides visual feedback about system performance
+     * Update FPS display
      */
   }, {
     key: "updateFPSDisplay",
@@ -61708,53 +62170,44 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       if (fpsElement) {
         var displayFPS = this.fps || 0;
         fpsElement.textContent = "".concat(displayFPS.toFixed(1), " FPS");
-
-        // Color-code based on performance thresholds
         if (displayFPS >= 20) {
-          fpsElement.style.color = '#4CAF50'; // Green - excellent performance
+          fpsElement.style.color = '#4CAF50';
         } else if (displayFPS >= 10) {
-          fpsElement.style.color = '#FFC107'; // Yellow - good performance
+          fpsElement.style.color = '#FFC107';
         } else if (displayFPS > 0) {
-          fpsElement.style.color = '#FF9800'; // Orange - poor performance
+          fpsElement.style.color = '#FF9800';
         } else {
-          fpsElement.style.color = '#F44336'; // Red - no data
+          fpsElement.style.color = '#F44336';
         }
       }
     }
 
     /**
-     * Update detection status display with readable format
-     * Shows which body parts are being detected by MediaPipe
+     * Update detection status
      */
   }, {
     key: "updateDetectionStatus",
     value: function updateDetectionStatus(data) {
       var detectionElement = document.getElementById('signLanguageDetection');
       if (detectionElement) {
-        // Build list of detected body parts
         var detectedParts = [];
         if (data.has_face) detectedParts.push("Face");
         if (data.has_pose) detectedParts.push("Pose");
         if (data.has_left_hand) detectedParts.push("Left Hand");
         if (data.has_right_hand) detectedParts.push("Right Hand");
-
-        // Update display based on detection results
         if (detectedParts.length > 0) {
           detectionElement.textContent = detectedParts.join(" • ");
-          detectionElement.style.color = '#4CAF50'; // Green for active detection
+          detectionElement.style.color = '#4CAF50';
         } else {
           detectionElement.textContent = 'No detection';
-          detectionElement.style.color = '#999'; // Gray for no detection
+          detectionElement.style.color = '#999';
         }
       }
-
-      // Always update FPS display when we have fresh detection data
       this.updateFPSDisplay();
     }
 
     /**
-     * Toggle debug mode for detailed system information
-     * Enables/disables verbose logging and detailed displays
+     * Toggle debug mode
      */
   }, {
     key: "toggleDebugMode",
@@ -61766,251 +62219,126 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     }
 
     /**
-     * Create video elements with integrated caption overlay system
-     * This method builds the complete video interface including caption container
+     * Update caption settings dynamically
      */
   }, {
-    key: "createVideoElementsWithCaptionOverlay",
-    value: function createVideoElementsWithCaptionOverlay() {
-      var _this5 = this;
-      // Remove any existing video container
-      var container = document.getElementById('signLanguageVideoContainer');
-      if (container) {
-        document.body.removeChild(container);
-      }
+    key: "updateCaptionSettings",
+    value: function updateCaptionSettings(newSettings) {
+      var _context15;
+      this.captionSettings = _objectSpread(_objectSpread({}, this.captionSettings), newSettings);
+      console.log("[SignLanguageHandler] Caption settings updated:", this.captionSettings);
 
-      // Create main container with modern, professional styling
-      container = document.createElement('div');
-      container.id = 'signLanguageVideoContainer';
-      container.style.position = 'fixed';
-      container.style.bottom = '20px';
-      container.style.right = '20px';
-      container.style.width = '420px'; // Wider than before for better caption display
-      container.style.height = 'auto';
-      container.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
-      container.style.border = '1px solid #00BCD4';
-      container.style.borderRadius = '12px';
-      container.style.padding = '12px';
-      container.style.zIndex = '10000'; // Very high z-index to ensure visibility over all content
-      container.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)';
-      container.style.backdropFilter = 'blur(15px)'; // Modern glass effect
-      container.style.display = 'none'; // Initially hidden
-      container.style.fontFamily = 'Arial, sans-serif';
-
-      // Create title bar with professional appearance and close functionality
-      var titleBar = document.createElement('div');
-      titleBar.style.display = 'flex';
-      titleBar.style.justifyContent = 'space-between';
-      titleBar.style.alignItems = 'center';
-      titleBar.style.marginBottom = '12px';
-      titleBar.style.paddingBottom = '8px';
-      titleBar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
-      var title = document.createElement('div');
-      title.textContent = 'Sign Language Detection';
-      title.style.color = 'white';
-      title.style.fontWeight = 'bold';
-      title.style.fontSize = '14px';
-      var closeButton = document.createElement('button');
-      closeButton.textContent = '×';
-      closeButton.style.background = 'none';
-      closeButton.style.border = 'none';
-      closeButton.style.color = '#999';
-      closeButton.style.fontSize = '18px';
-      closeButton.style.cursor = 'pointer';
-      closeButton.style.padding = '0';
-      closeButton.style.width = '24px';
-      closeButton.style.height = '24px';
-      closeButton.style.borderRadius = '50%';
-      closeButton.style.transition = 'all 0.2s ease';
-
-      // Close button functionality
-      closeButton.onclick = function () {
-        container.style.display = 'none';
-      };
-
-      // Close button hover effects
-      closeButton.onmouseenter = function () {
-        closeButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-        closeButton.style.color = 'white';
-      };
-      closeButton.onmouseleave = function () {
-        closeButton.style.backgroundColor = 'transparent';
-        closeButton.style.color = '#999';
-      };
-      titleBar.appendChild(title);
-      titleBar.appendChild(closeButton);
-      container.appendChild(titleBar);
-
-      // Hidden input video element (receives original screen share)
-      this.videoElement = document.createElement('video');
-      this.videoElement.autoplay = true;
-      this.videoElement.muted = true;
-      this.videoElement.playsInline = true;
-      this.videoElement.style.display = 'none'; // Hidden - only used for MediaPipe processing
-      container.appendChild(this.videoElement);
-
-      // Create video wrapper with caption overlay capability - this is the key structure
-      var videoWrapper = document.createElement('div');
-      videoWrapper.style.position = 'relative'; // Critical for absolute positioning of captions
-      videoWrapper.style.width = '100%';
-      videoWrapper.style.borderRadius = '8px';
-      videoWrapper.style.overflow = 'hidden';
-      videoWrapper.style.backgroundColor = '#000';
-      videoWrapper.style.minHeight = '200px'; // Ensure space for captions even with no video
-
-      // Main display video (shows processed stream from MediaPipe with overlaid landmarks)
-      this.displayElement = document.createElement('video');
-      this.displayElement.autoplay = true;
-      this.displayElement.playsInline = true;
-      this.displayElement.muted = true;
-      this.displayElement.style.width = '100%';
-      this.displayElement.style.height = 'auto';
-      this.displayElement.style.display = 'block';
-      this.displayElement.style.borderRadius = '8px';
-
-      // CREATE THE CAPTION OVERLAY CONTAINER - This is the heart of our video overlay system
-      this.captionContainer = document.createElement('div');
-      this.captionContainer.id = 'signLanguageCaptionOverlay';
-      this.captionContainer.style.position = 'absolute'; // Positioned over the video
-      this.captionContainer.style.bottom = '12px'; // Standard caption position from bottom
-      this.captionContainer.style.left = '12px'; // Left padding
-      this.captionContainer.style.right = '12px'; // Right padding
-      this.captionContainer.style.zIndex = '15'; // Above video, below controls
-      this.captionContainer.style.pointerEvents = 'none'; // Allow interaction with video below
-      this.captionContainer.style.display = 'flex';
-      this.captionContainer.style.flexDirection = 'column'; // Stack multiple captions vertically
-      this.captionContainer.style.alignItems = 'center'; // Center captions horizontally
-      this.captionContainer.style.gap = '4px'; // Space between multiple captions
-
-      // Assemble the complete video interface
-      videoWrapper.appendChild(this.displayElement); // Video layer (bottom)
-      videoWrapper.appendChild(this.captionContainer); // Caption layer (top)
-      container.appendChild(videoWrapper);
-
-      // Create status bar for system information and monitoring
-      var statusBar = document.createElement('div');
-      statusBar.style.display = 'flex';
-      statusBar.style.justifyContent = 'space-between';
-      statusBar.style.alignItems = 'center';
-      statusBar.style.marginTop = '12px';
-      statusBar.style.paddingTop = '8px';
-      statusBar.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
-      statusBar.style.fontSize = '11px';
-      statusBar.style.color = '#ccc';
-
-      // FPS performance indicator
-      var fpsDisplay = document.createElement('div');
-      fpsDisplay.id = 'signLanguageFPS';
-      fpsDisplay.textContent = '0.0 FPS';
-      fpsDisplay.style.fontWeight = 'bold';
-
-      // Connection status indicator
-      var connectionStatus = document.createElement('div');
-      connectionStatus.id = 'connectionStatus';
-      connectionStatus.textContent = 'Connecting...';
-      connectionStatus.style.fontSize = '10px';
-
-      // Detection status indicator
-      var detectionStatus = document.createElement('div');
-      detectionStatus.id = 'signLanguageDetection';
-      detectionStatus.textContent = 'Initializing...';
-      detectionStatus.style.fontSize = '10px';
-      detectionStatus.style.textAlign = 'right';
-      statusBar.appendChild(fpsDisplay);
-      statusBar.appendChild(connectionStatus);
-      statusBar.appendChild(detectionStatus);
-      container.appendChild(statusBar);
-
-      // Add double-click handler for debug mode toggle
-      container.addEventListener('dblclick', function () {
-        _this5.toggleDebugMode();
+      // Apply to existing captions
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context15 = this.activeCaptions).call(_context15, function (caption) {
+        if (newSettings.fontSize) caption.style.fontSize = newSettings.fontSize;
+        if (newSettings.fontFamily) caption.style.fontFamily = newSettings.fontFamily;
+        if (newSettings.backgroundColor) caption.style.backgroundColor = newSettings.backgroundColor;
+        if (newSettings.textColor) caption.style.color = newSettings.textColor;
       });
-
-      // Add the complete video interface to the page
-      document.body.appendChild(container);
-      console.log("[SignLanguageHandler] Video interface with caption overlay system created successfully");
     }
 
     /**
-     * Show the video container with caption overlay system
-     * Makes the video interface visible and ready for use
-     */
-  }, {
-    key: "showVideoContainer",
-    value: function showVideoContainer() {
-      var container = document.getElementById('signLanguageVideoContainer');
-      if (container) {
-        container.style.display = 'block';
-        console.log("[SignLanguageHandler] Video overlay system interface is now visible and ready");
-      }
-    }
-
-    /**
-     * Deactivate the sign language handler and cleanup all resources
-     * Ensures clean shutdown with no resource leaks
+     * Deactivate the system and cleanup
      */
   }, {
     key: "deactivate",
     value: function deactivate() {
+      var _context16, _context17;
       if (!this.isActive) {
-        console.log("[SignLanguageHandler] System already inactive - skipping deactivation");
+        console.log("[SignLanguageHandler] Already inactive");
         return;
       }
-      console.log("[SignLanguageHandler] Beginning deactivation sequence");
+      console.log("[SignLanguageHandler] Deactivating webpage video overlay system");
 
-      // Clear all video captions before hiding interface
-      this.clearAllVideoCaptions();
+      // Clear all captions
+      this.clearAllWebpageVideoCaptions();
 
-      // Hide the video container
-      var container = document.getElementById('signLanguageVideoContainer');
-      if (container) {
-        container.style.display = 'none';
+      // Hide monitoring interface
+      if (this.monitoringContainer) {
+        this.monitoringContainer.style.display = 'none';
       }
 
-      // Clear periodic server communication intervals
+      // Stop video observer
+      if (this.videoObserver) {
+        this.videoObserver.disconnect();
+        this.videoObserver = null;
+      }
+
+      // Stop visibility observers
+      var _iterator3 = _createForOfIteratorHelper(this.webpageVideos),
+        _step3;
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var _step3$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__["default"])(_step3.value, 2),
+            element = _step3$value[0],
+            videoInfo = _step3$value[1];
+          if (videoInfo.visibilityObserver) {
+            videoInfo.visibilityObserver.disconnect();
+          }
+        }
+
+        // Remove caption containers
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+      var _iterator4 = _createForOfIteratorHelper(this.videoCaptionContainers),
+        _step4;
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var _step4$value = (0,_babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__["default"])(_step4.value, 2),
+            _element = _step4$value[0],
+            container = _step4$value[1];
+          if (container.parentNode) {
+            container.parentNode.removeChild(container);
+          }
+        }
+
+        // Clear data structures
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      this.webpageVideos.clear();
+      this.videoCaptionContainers.clear();
+      this.activeCaptions.clear();
+      this.activeVideoTarget = null;
+
+      // Remove event listeners
+      window.removeEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context16 = this.handleWindowResize).call(_context16, this));
+      window.removeEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context17 = this.handlePageScroll).call(_context17, this));
+
+      // Clear intervals
       if (this.landmarkInterval) {
         clearInterval(this.landmarkInterval);
         this.landmarkInterval = null;
       }
 
-      // Perform complete resource cleanup
-      this.cleanupResources();
+      // Cleanup MediaPipe resources
+      this.cleanupMediaPipeResources();
       this.isActive = false;
-      console.log("[SignLanguageHandler] Deactivation completed successfully");
+      console.log("[SignLanguageHandler] Webpage video overlay system deactivated");
     }
 
     /**
-     * Clean up all system resources to prevent memory leaks
-     * Critical for proper extension lifecycle management
+     * Cleanup MediaPipe-specific resources
      */
   }, {
-    key: "cleanupResources",
-    value: function cleanupResources() {
-      console.log("[SignLanguageHandler] Cleaning up system resources");
-
-      // Clear caption-related timers and references
-      if (this.captionDisplayTimer) {
-        clearTimeout(this.captionDisplayTimer);
-        this.captionDisplayTimer = null;
-      }
-
-      // Close WebRTC connection cleanly
+    key: "cleanupMediaPipeResources",
+    value: function cleanupMediaPipeResources() {
       if (this.peerConnection) {
         this.peerConnection.close();
         this.peerConnection = null;
       }
-
-      // Stop all media streams
       if (this.stream) {
-        var _context7;
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_11__(_context7 = this.stream.getTracks()).call(_context7, function (track) {
-          track.stop();
-          console.log("[SignLanguageHandler] Stopped ".concat(track.kind, " track"));
+        var _context18;
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context18 = this.stream.getTracks()).call(_context18, function (track) {
+          return track.stop();
         });
         this.stream = null;
       }
-
-      // Clear video element sources
       if (this.videoElement) {
         this.videoElement.srcObject = null;
       }
@@ -62018,7 +62346,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         this.displayElement.srcObject = null;
       }
 
-      // Reset all detection and performance state
+      // Reset state
       this.faceLandmarks = null;
       this.poseLandmarks = null;
       this.leftHandLandmarks = null;
@@ -62026,133 +62354,105 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       this.serverPerformanceData = null;
       this.lastLandmarkUpdate = null;
       this.fps = 0;
-
-      // Reset caption system state
-      this.captionContainer = null;
-      this.captionElement = null;
-      this.captionQueue = [];
-      this.captionIdCounter = 0;
-      console.log("[SignLanguageHandler] Resource cleanup completed");
+      console.log("[SignLanguageHandler] MediaPipe resources cleaned up");
     }
 
     /**
-     * Test connectivity to MediaPipe server
-     * Verifies server availability before attempting connection
+     * Test MediaPipe server connectivity
      */
   }, {
     key: "pingServer",
     value: (function () {
-      var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_12__.mark(function _callee2() {
+      var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.mark(function _callee2() {
         var response, data;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_12__.wrap(function _callee2$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.wrap(function _callee2$(_context19) {
+          while (1) switch (_context19.prev = _context19.next) {
             case 0:
-              _context8.prev = 0;
-              console.log('[SignLanguageHandler] Testing MediaPipe server connectivity...');
-              _context8.next = 4;
+              _context19.prev = 0;
+              _context19.next = 3;
               return fetch("".concat(this.serverUrl, "/ping"));
-            case 4:
-              response = _context8.sent;
+            case 3:
+              response = _context19.sent;
               if (!response.ok) {
-                _context8.next = 13;
+                _context19.next = 10;
                 break;
               }
-              _context8.next = 8;
+              _context19.next = 7;
               return response.json();
-            case 8:
-              data = _context8.sent;
-              console.log("[SignLanguageHandler] Server responded successfully: ".concat(data.message));
-              return _context8.abrupt("return", true);
+            case 7:
+              data = _context19.sent;
+              console.log("[SignLanguageHandler] Server available: ".concat(data.message));
+              return _context19.abrupt("return", true);
+            case 10:
+              return _context19.abrupt("return", false);
             case 13:
-              console.log("[SignLanguageHandler] Server returned error status: ".concat(response.status));
-              return _context8.abrupt("return", false);
-            case 15:
-              _context8.next = 21;
-              break;
+              _context19.prev = 13;
+              _context19.t0 = _context19["catch"](0);
+              console.error("[SignLanguageHandler] Server connectivity failed: ".concat(_context19.t0.message));
+              return _context19.abrupt("return", false);
             case 17:
-              _context8.prev = 17;
-              _context8.t0 = _context8["catch"](0);
-              console.error("[SignLanguageHandler] Server connectivity test failed: ".concat(_context8.t0.message));
-              return _context8.abrupt("return", false);
-            case 21:
             case "end":
-              return _context8.stop();
+              return _context19.stop();
           }
-        }, _callee2, this, [[0, 17]]);
+        }, _callee2, this, [[0, 13]]);
       }));
       function pingServer() {
         return _pingServer.apply(this, arguments);
       }
       return pingServer;
-    }()
-    /**
-     * Get the most recent translation
-     * Useful for external components that need current translation data
-     */
+    }() // Public API methods for external access
     )
   }, {
     key: "getLastTranslation",
     value: function getLastTranslation() {
       return this.lastTranslation;
     }
-
-    /**
-     * Get complete translation history
-     * Provides access to all translations received during this session
-     */
   }, {
     key: "getTranslationHistory",
     value: function getTranslationHistory() {
       return this.translationHistory;
     }
-
-    /**
-     * Clear translation history and all video captions
-     * Resets the translation system to initial state
-     */
   }, {
     key: "clearTranslationHistory",
     value: function clearTranslationHistory() {
       this.translationHistory = [];
       this.lastTranslation = null;
-      this.clearAllVideoCaptions();
-      console.log("[SignLanguageHandler] Translation history and video captions cleared");
+      this.clearAllWebpageVideoCaptions();
+      console.log("[SignLanguageHandler] Translation history and captions cleared");
     }
-
-    /**
-     * Get comprehensive debug information about system state
-     * Useful for troubleshooting and system monitoring
-     */
+  }, {
+    key: "toggleMonitoringWindow",
+    value: function toggleMonitoringWindow() {
+      this.showMonitoringWindow = !this.showMonitoringWindow;
+      if (this.monitoringContainer) {
+        this.monitoringContainer.style.display = this.showMonitoringWindow ? 'block' : 'none';
+      }
+      return this.showMonitoringWindow;
+    }
   }, {
     key: "getDebugInfo",
     value: function getDebugInfo() {
-      var _context9;
+      var _context20;
       return {
-        // Core system state
         isActive: this.isActive,
         connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
         dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
-        // Media stream state
-        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_22__(_context9 = this.stream.getVideoTracks()).call(_context9, function (track) {
+        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_30__(_context20 = this.stream.getVideoTracks()).call(_context20, function (track) {
           return track.readyState === 'live';
         }),
-        // Performance metrics
         fps: this.fps,
-        // Detection state
         faceLandmarks: this.faceLandmarks !== null,
         poseLandmarks: this.poseLandmarks !== null,
         leftHandLandmarks: this.leftHandLandmarks !== null,
         rightHandLandmarks: this.rightHandLandmarks !== null,
-        // Server communication
-        serverPerformanceData: this.serverPerformanceData,
-        lastLandmarkUpdate: this.lastLandmarkUpdate,
-        // Debug and display settings
         debugModeActive: this.debugModeActive,
         captionSettings: this.captionSettings,
-        // Caption system state
-        activeCaptions: this.captionContainer ? this.captionContainer.children.length : 0,
+        webpageVideosCount: this.webpageVideos.size,
+        activeCaptionsCount: this.activeCaptions.size,
+        activeVideoTarget: this.activeVideoTarget ? this.activeVideoTarget.type : 'none',
         translationHistoryCount: this.translationHistory.length,
-        lastTranslation: this.lastTranslation
+        lastTranslation: this.lastTranslation,
+        showMonitoringWindow: this.showMonitoringWindow
       };
     }
   }]);
@@ -69708,12 +70008,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/url */ "./node_modules/@babel/runtime-corejs3/core-js-stable/url.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
@@ -69757,9 +70057,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 
 
 
-// content.js - Complete implementation for video overlay only sign language display
-// This file replaces your existing content.js
-
+// content.js - Complete implementation for webpage video overlay captions
 
 
 
@@ -69777,7 +70075,7 @@ var ContentHandler = /*#__PURE__*/function () {
     this.pastBorderStyle = "";
     this.pastBackgroundStyle = "";
 
-    // Initialize core TTS functionality
+    // Initialize core accessibility functionality
     this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_27__["default"]();
     this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"]();
     this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_29__["default"]();
@@ -69786,14 +70084,14 @@ var ContentHandler = /*#__PURE__*/function () {
     // Initialize image captioning functionality
     this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
 
-    // Initialize STT video overlay manager (for speech recognition overlays, separate from sign language)
+    // Initialize STT video overlay manager (for speech recognition overlays on videos)
     this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_33__["default"]();
 
-    // Initialize sign language handler with video overlay capability
-    // This is the core component that will display translations as video captions
+    // Initialize ENHANCED sign language handler with webpage video caption capability
+    // This is the core component that detects videos on the current page and overlays translations
     this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_34__["default"]();
     console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
-    console.log('Sign Language handler initialized for video overlay display only:', this.signLanguageHandler);
+    console.log('Enhanced Sign Language handler initialized for webpage video overlay display:', this.signLanguageHandler);
 
     // TTS navigation state
     this.currentElement = null;
@@ -69803,7 +70101,7 @@ var ContentHandler = /*#__PURE__*/function () {
     this.isReadingActive = false;
     this.wasSpeaking = false;
 
-    // Create tree walker for DOM navigation
+    // Create tree walker for DOM navigation during TTS
     this.walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
       acceptNode: function acceptNode(node) {
         var _node$tagName, _context;
@@ -69815,21 +70113,25 @@ var ContentHandler = /*#__PURE__*/function () {
       }
     }, false);
 
-    // Set up event listeners
+    // Set up core event listeners
     document.addEventListener('focusin', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_19__(_context2 = this.handleFocusChange).call(_context2, this));
     chrome.runtime.onMessage.addListener(_babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_19__(_context3 = this.handleMessage).call(_context3, this));
 
-    // Initialize the system
+    // Initialize the system and set up webpage video detection
     this.resetReadingState();
+
+    // Set up page navigation detection for Single Page Applications
+    this.setupSPANavigationDetection();
   }
 
   /**
    * Reset and initialize all system state
-   * This method sets up event listeners for the video overlay system
+   * Enhanced to support webpage video detection and caption overlay system
    */
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_13__["default"])(ContentHandler, [{
     key: "resetReadingState",
     value: function resetReadingState() {
+      var _this = this;
       // Reset TTS state
       this.isReadingActive = false;
       this.wasSpeaking = false;
@@ -69856,8 +70158,7 @@ var ContentHandler = /*#__PURE__*/function () {
         }
       }
 
-      // Set up MediaPipe landmark detection monitoring
-      // This provides system health data but doesn't affect display
+      // Set up MediaPipe landmark detection monitoring for system health
       window.addEventListener('handLandmarksDetected', function (event) {
         var _context4;
         var _event$detail = event.detail,
@@ -69869,8 +70170,7 @@ var ContentHandler = /*#__PURE__*/function () {
           fps = _event$detail.fps;
         console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context4 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] MediaPipe Detection (")).call(_context4, fps.toFixed(1), " FPS)"), face ? 'Face detected' : 'No face', pose ? 'Pose detected' : 'No pose', leftHand ? 'Left hand detected' : 'No left hand', rightHand ? 'Right hand detected' : 'No right hand');
 
-        // Send basic detection status to sidebar for monitoring only
-        // This is just for system health display, not for translation text
+        // Send detection status to sidebar for system monitoring
         chrome.runtime.sendMessage({
           action: "handLandmarksUpdate",
           face: face !== null,
@@ -69882,41 +70182,34 @@ var ContentHandler = /*#__PURE__*/function () {
         });
       });
 
-      // CRITICAL: Set up sign language translation event listener for video overlay ONLY
-      // This completely replaces the previous sidebar forwarding approach
+      // ENHANCED: Set up sign language translation event listener for WEBPAGE VIDEO OVERLAY
+      // This is the key difference - translations now appear on the main webpage videos
       window.addEventListener('signLanguageTranslation', function (event) {
-        var _context5;
+        var _context5, _this$signLanguageHan;
         var _event$detail2 = event.detail,
           translatedText = _event$detail2.translatedText,
           timestamp = _event$detail2.timestamp,
           confidence = _event$detail2.confidence,
           words = _event$detail2.words,
           translationHistory = _event$detail2.translationHistory;
-        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context5 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] Sign Language Translation for Video Overlay Only: \"")).call(_context5, translatedText, "\""));
+        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context5 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] Sign Language Translation for Webpage Video: \"")).call(_context5, translatedText, "\""));
 
-        // The translation is already displayed as a video overlay by the SignLanguageHandler
-        // We only log this event for debugging and monitoring purposes
+        // The translation is automatically displayed on webpage videos by the SignLanguageHandler
+        // We log this for monitoring and can optionally send statistics to sidebar
 
-        // IMPORTANT: NO SIDEBAR FORWARDING FOR TRANSLATIONS
-        // The SignLanguageHandler.processTranslationForVideoOverlay() method handles all display logic
-        // This is the fundamental difference from the previous implementation
+        console.log("[CONTENT] Translation displayed on webpage video - no sidebar forwarding needed");
 
-        console.log("[CONTENT] Translation processed exclusively by video overlay system - no sidebar display");
-
-        // Optional: Send minimal data to sidebar for statistics/history tracking only
-        // This is NOT for display purposes - only for system monitoring
-        // Uncomment the following if you want basic sidebar statistics:
-        /*
+        // Optional: Send statistics to sidebar for monitoring (not for display)
+        // This provides system health information without duplicating the caption display
         chrome.runtime.sendMessage({
-            action: "signLanguageStatistics",
-            translatedText: translatedText,
-            timestamp: timestamp,
-            confidence: confidence,
-            displayMethod: 'video-overlay-only',
-            // Note: this is for statistics only, not display
-            isStatisticsOnly: true
+          action: "signLanguageStatistics",
+          translatedText: translatedText,
+          timestamp: timestamp,
+          confidence: confidence,
+          displayMethod: 'webpage-video-overlay',
+          activeVideoType: ((_this$signLanguageHan = _this.signLanguageHandler.activeVideoTarget) === null || _this$signLanguageHan === void 0 ? void 0 : _this$signLanguageHan.type) || 'unknown',
+          isStatisticsOnly: true // Flag to indicate this is not for display
         });
-        */
       });
 
       // Set up screen sharing lifecycle event listeners
@@ -69938,6 +70231,46 @@ var ContentHandler = /*#__PURE__*/function () {
       });
     }
 
+    /**
+     * NEW: Set up detection for Single Page Application navigation
+     * This ensures video detection works even when pages change without full reload
+     */
+  }, {
+    key: "setupSPANavigationDetection",
+    value: function setupSPANavigationDetection() {
+      var _this2 = this;
+      // Monitor URL changes (for SPAs like YouTube, Netflix, etc.)
+      var lastUrl = location.href;
+      var urlChangeObserver = new MutationObserver(function () {
+        if (lastUrl !== location.href) {
+          lastUrl = location.href;
+          console.log('[CONTENT] Page navigation detected, re-initializing video detection');
+
+          // Small delay to allow new content to load
+          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_21__(function () {
+            if (_this2.signLanguageHandler && _this2.signLanguageHandler.isActive) {
+              // Re-initialize video detection for new page content
+              _this2.signLanguageHandler.initializeWebpageVideoDetection();
+            }
+          }, 1000);
+        }
+      });
+      urlChangeObserver.observe(document, {
+        subtree: true,
+        childList: true
+      });
+
+      // Also listen for popstate events (back/forward navigation)
+      window.addEventListener('popstate', function () {
+        console.log('[CONTENT] Popstate navigation detected');
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_21__(function () {
+          if (_this2.signLanguageHandler && _this2.signLanguageHandler.isActive) {
+            _this2.signLanguageHandler.initializeWebpageVideoDetection();
+          }
+        }, 1000);
+      });
+    }
+
     // TTS notification methods for sidebar integration
   }, {
     key: "notifySpeechStarted",
@@ -69954,7 +70287,7 @@ var ContentHandler = /*#__PURE__*/function () {
       });
     }
 
-    // Settings management
+    // Settings management (unchanged from original)
   }, {
     key: "getSettings",
     value: function getSettings(callback) {
@@ -69983,7 +70316,7 @@ var ContentHandler = /*#__PURE__*/function () {
       });
     }
 
-    // TTS text selection methods
+    // TTS text selection and navigation methods (unchanged from original)
   }, {
     key: "getSelectedText",
     value: function getSelectedText() {
@@ -69992,23 +70325,20 @@ var ContentHandler = /*#__PURE__*/function () {
       if (selection.rangeCount > 0) {
         var _context6;
         var range = selection.getRangeAt(0);
-        var selectedText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context6 = range.toString()).call(_context6);
+        var selectedText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context6 = range.toString()).call(_context6);
         if (selectedText) {
           return {
             elementsToReturn: [],
-            // Empty array to prevent highlighting
             text: [selectedText]
           };
         }
       }
       return null;
     }
-
-    // TTS DOM navigation methods
   }, {
     key: "getNextElement",
     value: function getNextElement() {
-      var _this = this;
+      var _this3 = this;
       var elementsToReturn = [];
       var text = [];
       while (this.walker.nextNode()) {
@@ -70016,20 +70346,17 @@ var ContentHandler = /*#__PURE__*/function () {
         if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.has(element)) continue;
         if (this.isElementVisible(element)) {
           var _context7, _element$tagName;
-          // Check if element has any interactive children
-          var hasInteractiveChildren = _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_22__(_context7 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(element.querySelectorAll('*'))).call(_context7, function (child) {
-            return _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(child) && _this.isElementVisible(child);
+          var hasInteractiveChildren = _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_23__(_context7 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(element.querySelectorAll('*'))).call(_context7, function (child) {
+            return _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(child) && _this3.isElementVisible(child);
           });
-
-          // Skip this element if it has interactive children
           if (hasInteractiveChildren) {
             continue;
           }
           var tagName = (_element$tagName = element.tagName) === null || _element$tagName === void 0 ? void 0 : _element$tagName.toLowerCase();
           if (tagName === 'a' && element.href) {
             var _context8, _context9;
-            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_23__(element.href).hostname.replace('www.', '');
-            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context8 = element.textContent).call(_context8) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context9 = element.textContent).call(_context9)) : "Link to ".concat(domain));
+            var domain = new _babel_runtime_corejs3_core_js_stable_url__WEBPACK_IMPORTED_MODULE_24__(element.href).hostname.replace('www.', '');
+            text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context8 = element.textContent).call(_context8) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context9 = element.textContent).call(_context9)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
             _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processAllDescendants(element);
@@ -70050,7 +70377,7 @@ var ContentHandler = /*#__PURE__*/function () {
               var _context11, _context12;
               console.log('treeitem text discovery');
               var expanded = element.getAttribute('aria-expanded') === 'true';
-              var itemText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context11 = element.textContent).call(_context11);
+              var itemText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context11 = element.textContent).call(_context11);
               text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context12 = "".concat(expanded ? 'Expanded' : 'Collapsed', " tree item: ")).call(_context12, itemText));
               elementsToReturn.push(element);
               this.currentLink = element;
@@ -70068,7 +70395,7 @@ var ContentHandler = /*#__PURE__*/function () {
               } else {
                 var _context14, _context15;
                 console.log('non-radio/checkbox text discovery');
-                var elementText = ariaLabel || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context14 = element.textContent).call(_context14);
+                var elementText = ariaLabel || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context14 = element.textContent).call(_context14);
                 text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context15 = "".concat(stateText)).call(_context15, elementText));
                 elementsToReturn.push(element);
               }
@@ -70084,7 +70411,7 @@ var ContentHandler = /*#__PURE__*/function () {
                 var textRes = '';
                 if (child.nodeType === Node.TEXT_NODE) {
                   var _context16;
-                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context16 = child.textContent).call(_context16);
+                  textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context16 = child.textContent).call(_context16);
                   if (textRes !== '') {
                     text.push(textRes);
                     elementsToReturn.push(element);
@@ -70140,7 +70467,7 @@ var ContentHandler = /*#__PURE__*/function () {
               if (child.nodeType === Node.TEXT_NODE) {
                 var _context17;
                 if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.has(element)) continue;
-                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context17 = child.textContent).call(_context17);
+                textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context17 = child.textContent).call(_context17);
                 if (textRes !== '') {
                   text.push(textRes);
                   elementsToReturn.push(element);
@@ -70175,12 +70502,12 @@ var ContentHandler = /*#__PURE__*/function () {
       };
     }
 
-    // TTS speech processing
+    // TTS speech processing (unchanged from original)
   }, {
     key: "speakCurrentSection",
     value: function () {
       var _speakCurrentSection = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_11__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_16__.mark(function _callee2() {
-        var _this2 = this;
+        var _this4 = this;
         var _this$currentElement, elementsToReturn, text, isSelectedText, _loop, i;
         return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_16__.wrap(function _callee2$(_context20) {
           while (1) switch (_context20.prev = _context20.next) {
@@ -70232,14 +70559,14 @@ var ContentHandler = /*#__PURE__*/function () {
                   while (1) switch (_context19.prev = _context19.next) {
                     case 0:
                       _context19.next = 2;
-                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_24__(/*#__PURE__*/function () {
+                      return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_25__(/*#__PURE__*/function () {
                         var _ref = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_11__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_16__.mark(function _callee(resolve) {
                           var _elementsToReturn$i$t, _elementsToReturn$i$t2, caption;
                           return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_16__.wrap(function _callee$(_context18) {
                             while (1) switch (_context18.prev = _context18.next) {
                               case 0:
                                 _context18.prev = 0;
-                                _this2.highlightWhileReading ? _this2.highlightBox.addHighlight(elementsToReturn[i]) : null;
+                                _this4.highlightWhileReading ? _this4.highlightBox.addHighlight(elementsToReturn[i]) : null;
                                 if (!(((_elementsToReturn$i$t = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t === void 0 ? void 0 : _elementsToReturn$i$t.toLowerCase()) === 'img')) {
                                   _context18.next = 15;
                                   break;
@@ -70247,7 +70574,7 @@ var ContentHandler = /*#__PURE__*/function () {
                                 console.log('🖼️ Detected image element:', elementsToReturn[i]);
                                 _context18.prev = 4;
                                 _context18.next = 7;
-                                return _this2.imageCaptionHandler.generateCaptionForImage(elementsToReturn[i].src, elementsToReturn[i]);
+                                return _this4.imageCaptionHandler.generateCaptionForImage(elementsToReturn[i].src, elementsToReturn[i]);
                               case 7:
                                 caption = _context18.sent;
                                 text[i] = "Image description: ".concat(caption);
@@ -70260,14 +70587,14 @@ var ContentHandler = /*#__PURE__*/function () {
                                 text[i] = "Image description unavailable";
                               case 15:
                                 if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(elementsToReturn[i]) || ((_elementsToReturn$i$t2 = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t2 === void 0 ? void 0 : _elementsToReturn$i$t2.toLowerCase()) === 'a') {
-                                  _this2.isProgrammaticFocus = true;
+                                  _this4.isProgrammaticFocus = true;
                                   elementsToReturn[i].focus();
-                                  _this2.isProgrammaticFocus = false;
+                                  _this4.isProgrammaticFocus = false;
                                 }
                                 _context18.next = 18;
-                                return _this2.speechHandler.speak(text[i], function () {});
+                                return _this4.speechHandler.speak(text[i], function () {});
                               case 18:
-                                _this2.highlightWhileReading ? _this2.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _this4.highlightWhileReading ? _this4.highlightBox.removeHighlight(elementsToReturn[i]) : null;
                                 resolve();
                                 _context18.next = 27;
                                 break;
@@ -70275,8 +70602,8 @@ var ContentHandler = /*#__PURE__*/function () {
                                 _context18.prev = 22;
                                 _context18.t1 = _context18["catch"](0);
                                 console.error('Error in sequence:', _context18.t1);
-                                _this2.highlightWhileReading ? _this2.highlightBox.removeHighlight(elementsToReturn[i]) : null;
-                                _this2.isProgrammaticFocus = false;
+                                _this4.highlightWhileReading ? _this4.highlightBox.removeHighlight(elementsToReturn[i]) : null;
+                                _this4.isProgrammaticFocus = false;
                               case 27:
                               case "end":
                                 return _context18.stop();
@@ -70311,8 +70638,8 @@ var ContentHandler = /*#__PURE__*/function () {
                 break;
               }
               _context20.next = 32;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_24__(function (resolve) {
-                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_25__(resolve, 50);
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_25__(function (resolve) {
+                return _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_21__(resolve, 50);
               });
             case 32:
               _context20.next = 34;
@@ -70327,7 +70654,7 @@ var ContentHandler = /*#__PURE__*/function () {
         return _speakCurrentSection.apply(this, arguments);
       }
       return speakCurrentSection;
-    }() // Input label processing methods
+    }() // Input label processing methods (unchanged from original)
   }, {
     key: "getInputLabelText",
     value: function getInputLabelText(element) {
@@ -70340,7 +70667,7 @@ var ContentHandler = /*#__PURE__*/function () {
           if (labelEl) {
             var _context22;
             _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(labelEl);
-            return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context22 = labelEl.textContent).call(_context22);
+            return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context22 = labelEl.textContent).call(_context22);
           }
           return null;
         })).call(_context21, Boolean).join(' ');
@@ -70348,21 +70675,21 @@ var ContentHandler = /*#__PURE__*/function () {
       }
       if (element.hasAttribute('aria-label')) {
         var _context23;
-        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context23 = element.getAttribute('aria-label')).call(_context23);
+        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context23 = element.getAttribute('aria-label')).call(_context23);
       }
       if (element.id) {
         var forLabel = document.querySelector("label[for=\"".concat(element.id, "\"]"));
         if (forLabel) {
           var _context24;
           _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(forLabel);
-          return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context24 = forLabel.textContent).call(_context24);
+          return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context24 = forLabel.textContent).call(_context24);
         }
       }
       var wrappingLabel = element.closest('label');
       if (wrappingLabel) {
         var _context25;
         _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(wrappingLabel);
-        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_21__(_context25 = wrappingLabel.textContent).call(_context25);
+        return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context25 = wrappingLabel.textContent).call(_context25);
       }
       var elementType = element.type || element.getAttribute('role');
       return element.value || "no ".concat(elementType, " label text found");
@@ -70415,38 +70742,36 @@ var ContentHandler = /*#__PURE__*/function () {
     }
 
     /**
-     * NEW: Update sign language caption settings for video overlay system
-     * Allows dynamic customization of caption appearance from sidebar controls
+     * ENHANCED: Update sign language caption settings for webpage video overlay system
+     * Now supports settings for captions that appear on main webpage videos
      */
   }, {
     key: "updateSignLanguageCaptionSettings",
     value: function updateSignLanguageCaptionSettings(settings) {
       if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
         this.signLanguageHandler.updateCaptionSettings(settings);
-        console.log('[CONTENT] Updated sign language caption settings:', settings);
+        console.log('[CONTENT] Updated webpage video caption settings:', settings);
       } else {
         console.warn('[CONTENT] Cannot update caption settings - sign language handler not active');
       }
     }
 
     /**
-     * NEW: Clear all sign language video captions
-     * Provides immediate caption clearing functionality
+     * ENHANCED: Clear all sign language captions from webpage videos
      */
   }, {
-    key: "clearSignLanguageCaptions",
-    value: function clearSignLanguageCaptions() {
+    key: "clearSignLanguageWebpageCaptions",
+    value: function clearSignLanguageWebpageCaptions() {
       if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
-        this.signLanguageHandler.clearAllVideoCaptions();
-        console.log('[CONTENT] Cleared all sign language video captions');
+        this.signLanguageHandler.clearAllWebpageVideoCaptions();
+        console.log('[CONTENT] Cleared all webpage video captions');
       } else {
         console.warn('[CONTENT] Cannot clear captions - sign language handler not active');
       }
     }
 
     /**
-     * NEW: Get comprehensive sign language status including caption information
-     * Provides detailed system status for monitoring and debugging
+     * ENHANCED: Get comprehensive sign language status including webpage video information
      */
   }, {
     key: "getSignLanguageStatus",
@@ -70455,32 +70780,73 @@ var ContentHandler = /*#__PURE__*/function () {
         return {
           status: 'Not Available',
           error: 'Handler not initialized',
-          displayMethod: 'video-overlay-only'
+          displayMethod: 'webpage-video-overlay'
         };
       }
       var debugInfo = this.signLanguageHandler.getDebugInfo();
       return _objectSpread({
         status: this.signLanguageHandler.isActive ? 'Active' : 'Inactive',
-        displayMethod: 'video-overlay-only',
-        captionSystemActive: this.signLanguageHandler.isActive
+        displayMethod: 'webpage-video-overlay',
+        webpageVideosDetected: debugInfo.webpageVideosCount,
+        activeVideoTarget: debugInfo.activeVideoTarget,
+        activeCaptionsCount: debugInfo.activeCaptionsCount,
+        monitoringWindowVisible: debugInfo.showMonitoringWindow
       }, debugInfo);
     }
 
     /**
+     * NEW: Toggle the MediaPipe monitoring window visibility
+     * Users can choose to show/hide the small monitoring window while keeping captions on webpage videos
+     */
+  }, {
+    key: "toggleSignLanguageMonitoringWindow",
+    value: function toggleSignLanguageMonitoringWindow() {
+      if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+        var isVisible = this.signLanguageHandler.toggleMonitoringWindow();
+        console.log("[CONTENT] MediaPipe monitoring window ".concat(isVisible ? 'shown' : 'hidden'));
+        return isVisible;
+      }
+      return false;
+    }
+
+    /**
+     * NEW: Manually trigger webpage video re-detection
+     * Useful for dynamically loaded content or when videos are added after page load
+     */
+  }, {
+    key: "redetectWebpageVideos",
+    value: function redetectWebpageVideos() {
+      if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+        this.signLanguageHandler.initializeWebpageVideoDetection();
+        console.log('[CONTENT] Triggered webpage video re-detection');
+        var status = this.getSignLanguageStatus();
+        return {
+          success: true,
+          videosDetected: status.webpageVideosDetected,
+          activeTarget: status.activeVideoTarget
+        };
+      }
+      return {
+        success: false,
+        error: 'Sign language handler not active'
+      };
+    }
+
+    /**
      * Main message handler for all extension communication
-     * Routes messages to appropriate handlers based on action type
+     * Enhanced to support webpage video overlay functionality
      */
   }, {
     key: "handleMessage",
     value: function handleMessage(request) {
-      var _this3 = this;
+      var _this5 = this;
       // Handle page load reset
       if (request.action === "pageLoad") {
         this.resetReadingState();
         return;
       }
 
-      // Image captioning handlers
+      // Image captioning handlers (unchanged)
       if (request.action === "activateImageCaptioning") {
         console.log('[CONTENT] Received image captioning activation');
         this.imageCaptionHandler.setCaptionType(request.captionType);
@@ -70490,9 +70856,9 @@ var ContentHandler = /*#__PURE__*/function () {
         this.imageCaptionHandler.deactivate();
       }
 
-      // Sign language detection handlers (video overlay system)
+      // ENHANCED: Sign language detection handlers for webpage video overlay system
       else if (request.action === "startScreenCapture") {
-        console.log('[CONTENT] Screen capture activation requested for video overlay system');
+        console.log('[CONTENT] Screen capture activation requested for webpage video overlay system');
         this.checkServerConnectivity().then(function (serverAvailable) {
           console.log('[CONTENT] Server connectivity check result:', serverAvailable);
           if (!serverAvailable) {
@@ -70502,24 +70868,27 @@ var ContentHandler = /*#__PURE__*/function () {
               status: 'Error',
               message: "Python MediaPipe server is not running"
             });
-            _this3.showServerNotification();
+            _this5.showServerNotification();
             return;
           }
-          console.log('[CONTENT] Server available, activating video overlay system');
-          _this3.signLanguageHandler.activate().then(function (success) {
-            console.log('[CONTENT] Video overlay system activation result:', success);
+          console.log('[CONTENT] Server available, activating webpage video overlay system');
+          _this5.signLanguageHandler.activate().then(function (success) {
+            console.log('[CONTENT] Webpage video overlay system activation result:', success);
+            var status = _this5.getSignLanguageStatus();
             chrome.runtime.sendMessage({
               action: "screenSharingStatus",
               status: success ? 'Active' : 'Error',
-              displayMethod: 'video-overlay-only'
+              displayMethod: 'webpage-video-overlay',
+              webpageVideosDetected: status.webpageVideosDetected,
+              activeVideoTarget: status.activeVideoTarget
             });
             if (success) {
-              console.log('[CONTENT] Sign language video overlay system activated successfully');
+              console.log("[CONTENT] Webpage video overlay system activated successfully - ".concat(status.webpageVideosDetected, " videos detected"));
             } else {
-              console.error('[CONTENT] Failed to activate sign language video overlay system');
+              console.error('[CONTENT] Failed to activate webpage video overlay system');
             }
           })["catch"](function (error) {
-            console.error('[CONTENT] Video overlay system activation failed:', error);
+            console.error('[CONTENT] Webpage video overlay system activation failed:', error);
             chrome.runtime.sendMessage({
               action: "screenSharingStatus",
               status: 'Error',
@@ -70538,7 +70907,7 @@ var ContentHandler = /*#__PURE__*/function () {
         });
       }
 
-      // STT video overlay handlers (separate from sign language)
+      // STT video overlay handlers (separate from sign language - unchanged)
       else if (request.action === "toggleVideoOverlay") {
         console.log('[CONTENT] Toggle STT video overlay (not sign language):', request.enabled);
         this.videoOverlayManager.setActive(request.enabled);
@@ -70553,7 +70922,7 @@ var ContentHandler = /*#__PURE__*/function () {
 
       // Debug mode handler
       else if (request.action === "toggleDebugMode") {
-        console.log('[CONTENT] Toggle debug mode for sign language video overlay');
+        console.log('[CONTENT] Toggle debug mode for webpage video overlay');
         var debugEnabled = this.signLanguageHandler.toggleDebugMode();
         chrome.runtime.sendMessage({
           action: "debugModeStatus",
@@ -70561,13 +70930,13 @@ var ContentHandler = /*#__PURE__*/function () {
         });
       }
 
-      // NEW: Sign language caption management handlers
+      // ENHANCED: Webpage video caption management handlers
       else if (request.action === "updateSignLanguageCaptionSettings") {
-        console.log('[CONTENT] Updating sign language caption settings:', request.settings);
+        console.log('[CONTENT] Updating webpage video caption settings:', request.settings);
         this.updateSignLanguageCaptionSettings(request.settings);
       } else if (request.action === "clearSignLanguageCaptions") {
-        console.log('[CONTENT] Clearing sign language video captions');
-        this.clearSignLanguageCaptions();
+        console.log('[CONTENT] Clearing webpage video captions');
+        this.clearSignLanguageWebpageCaptions();
       } else if (request.action === "getSignLanguageStatus") {
         var status = this.getSignLanguageStatus();
         chrome.runtime.sendMessage(_objectSpread({
@@ -70575,23 +70944,39 @@ var ContentHandler = /*#__PURE__*/function () {
         }, status));
       }
 
-      // Translation history handlers (now for video overlay system)
+      // NEW: Additional webpage video management handlers
+      else if (request.action === "toggleMonitoringWindow") {
+        console.log('[CONTENT] Toggle MediaPipe monitoring window');
+        var isVisible = this.toggleSignLanguageMonitoringWindow();
+        chrome.runtime.sendMessage({
+          action: "monitoringWindowToggled",
+          visible: isVisible
+        });
+      } else if (request.action === "redetectWebpageVideos") {
+        console.log('[CONTENT] Re-detecting webpage videos');
+        var result = this.redetectWebpageVideos();
+        chrome.runtime.sendMessage(_objectSpread({
+          action: "videoRedetectionResult"
+        }, result));
+      }
+
+      // Translation history handlers (now for webpage video overlay system)
       else if (request.action === "getTranslationHistory") {
         var history = this.signLanguageHandler.getTranslationHistory();
         chrome.runtime.sendMessage({
           action: "translationHistoryResponse",
           history: history,
-          source: 'video-overlay'
+          source: 'webpage-video-overlay'
         });
       } else if (request.action === "clearTranslationHistory") {
         this.signLanguageHandler.clearTranslationHistory();
         chrome.runtime.sendMessage({
           action: "translationHistoryCleared",
-          source: 'video-overlay'
+          source: 'webpage-video-overlay'
         });
       }
 
-      // TTS (Text-to-Speech) handlers
+      // TTS (Text-to-Speech) handlers (unchanged from original)
       else if (request.action === "extractText") {
         if (this.speechHandler.isSpeaking) {
           this.speechHandler.stop();
@@ -70815,17 +71200,17 @@ var ContentHandler = /*#__PURE__*/function () {
       } else if (request.action === "toggleImageCaptioning") {
         this.toggleImageCaptioning();
       } else if (request.action === "getScreenSharingStatus") {
-        // Return comprehensive status including video overlay information
+        // Return comprehensive status including webpage video overlay information
         var _status = this.getSignLanguageStatus();
         chrome.runtime.sendMessage(_objectSpread({
           action: "screenSharingStatus",
           status: _status.status === 'Active' ? 'Active' : 'Off',
-          displayMethod: 'video-overlay-only'
+          displayMethod: 'webpage-video-overlay'
         }, _status));
       }
     }
 
-    // MediaPipe server connectivity check
+    // MediaPipe server connectivity check (unchanged)
   }, {
     key: "checkServerConnectivity",
     value: function () {
@@ -70836,7 +71221,7 @@ var ContentHandler = /*#__PURE__*/function () {
             case 0:
               _context26.prev = 0;
               _context26.next = 3;
-              return fetch('http://localhost:8766/ping');
+              return fetch('https://acknowledged-shared-card-stages.trycloudflare.com/ping');
             case 3:
               response = _context26.sent;
               if (!response.ok) {
@@ -70861,7 +71246,7 @@ var ContentHandler = /*#__PURE__*/function () {
         return _checkServerConnectivity.apply(this, arguments);
       }
       return checkServerConnectivity;
-    }() // Show server connectivity notification to user
+    }() // Show server connectivity notification to user (enhanced for webpage videos)
   }, {
     key: "showServerNotification",
     value: function showServerNotification() {
@@ -70874,24 +71259,24 @@ var ContentHandler = /*#__PURE__*/function () {
       notification.style.backgroundColor = '#f8d7da';
       notification.style.color = '#721c24';
       notification.style.borderRadius = '5px';
-      notification.style.zIndex = '9999';
+      notification.style.zIndex = '2147483647'; // Maximum z-index to appear above everything
       notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
       notification.style.maxWidth = '80%';
-      notification.style.width = '400px';
+      notification.style.width = '450px';
       notification.style.textAlign = 'center';
-      notification.innerHTML = "\n            <p><strong>MediaPipe Server Not Running</strong></p>\n            <p>Please start the Python server to use sign language detection with video overlays.</p>\n            <button id=\"dismissBtn\" style=\"background: #721c24; color: white; border: none; padding: 5px 10px; margin-top: 10px; cursor: pointer; border-radius: 3px;\">Dismiss</button>\n        ";
+      notification.innerHTML = "\n            <p><strong>MediaPipe Server Not Running</strong></p>\n            <p>Please start the Python server to use sign language detection with webpage video captions.</p>\n            <p style=\"font-size: 12px; color: #856404; margin-top: 10px;\">Captions will appear directly on your videos (YouTube, Netflix, etc.)</p>\n            <button id=\"dismissBtn\" style=\"background: #721c24; color: white; border: none; padding: 5px 10px; margin-top: 10px; cursor: pointer; border-radius: 3px;\">Dismiss</button>\n        ";
       document.body.appendChild(notification);
       document.getElementById('dismissBtn').addEventListener('click', function () {
         document.body.removeChild(notification);
       });
-      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_25__(function () {
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_21__(function () {
         if (document.body.contains(notification)) {
           document.body.removeChild(notification);
         }
-      }, 10000);
+      }, 12000); // Slightly longer display time for more information
     }
 
-    // Image captioning toggle functionality
+    // Image captioning toggle functionality (unchanged)
   }, {
     key: "toggleImageCaptioning",
     value: function () {
@@ -70922,7 +71307,7 @@ var ContentHandler = /*#__PURE__*/function () {
         return _toggleImageCaptioning.apply(this, arguments);
       }
       return toggleImageCaptioning;
-    }() // Element visibility detection
+    }() // Element visibility detection (unchanged)
   }, {
     key: "isElementVisible",
     value: function isElementVisible(element) {
@@ -70938,7 +71323,7 @@ var ContentHandler = /*#__PURE__*/function () {
       return isNotHidden || isInteractive || isTreeItem;
     }
 
-    // Navigation state management for complex elements
+    // Navigation state management for complex elements (unchanged)
   }, {
     key: "saveNextElementAfterListbox",
     value: function saveNextElementAfterListbox(listbox) {
@@ -70965,7 +71350,7 @@ var ContentHandler = /*#__PURE__*/function () {
       }
     }
 
-    // Focus change handler for TTS navigation
+    // Focus change handler for TTS navigation (unchanged)
   }, {
     key: "handleFocusChange",
     value: function handleFocusChange(event) {
@@ -70996,8 +71381,8 @@ var ContentHandler = /*#__PURE__*/function () {
       this.wasSpeaking = true;
     }
   }]);
-}(); // Initialize the content handler with video overlay functionality
-console.log('[CONTENT] Initializing ContentHandler with video overlay sign language system');
+}(); // Initialize the enhanced content handler with webpage video overlay functionality
+console.log('[CONTENT] Initializing Enhanced ContentHandler with webpage video overlay sign language system');
 new ContentHandler();
 
 /***/ }),
@@ -72933,7 +73318,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("6fed43135348376eea09")
+/******/ 		__webpack_require__.h = () => ("a3d3b28c521a8a025c29")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

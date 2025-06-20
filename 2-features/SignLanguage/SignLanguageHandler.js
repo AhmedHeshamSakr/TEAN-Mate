@@ -1,80 +1,80 @@
-// SignLanguageHandler.js - Complete implementation with video overlay captions only
-// This file replaces your existing empty SignLanguageHandler.js
-
+// SignLanguageHandler.js - Complete implementation with captions on main webpage videos
 export default class SignLanguageHandler {
     constructor() {
         // Core system state
         this.isActive = false;
-        this.serverUrl = 'http://localhost:8766';
+        this.serverUrl = 'https://acknowledged-shared-card-stages.trycloudflare.com';
         this.peerConnection = null;
         this.dataChannel = null;
         this.stream = null;
         
-        // Video elements for MediaPipe integration
+        // MediaPipe monitoring elements (smaller, optional display)
         this.videoElement = null;        // Hidden input video (receives screen share)
-        this.displayElement = null;      // Visible output video (shows processed stream)
+        this.displayElement = null;      // Optional monitoring video (can be hidden)
+        this.monitoringContainer = null; // Container for MediaPipe monitoring
         
-        // Video caption overlay system - the heart of our new approach
-        this.captionContainer = null;    // Container for all caption overlays
-        this.captionElement = null;      // Currently active caption element
-        this.captionQueue = [];          // Queue for managing multiple captions
-        this.captionDisplayTimer = null; // Timer for caption lifecycle management
+        // MAIN FEATURE: Webpage video caption system
+        this.webpageVideos = new Map();      // Track all videos found on the current webpage
+        this.videoCaptionContainers = new Map(); // Caption containers for each video
+        this.videoObserver = null;          // Observer to detect new videos added to page
+        this.activeVideoTarget = null;      // Currently targeted video for captions
+        
+        // Caption management
         this.captionIdCounter = 0;       // Unique identifier for each caption
+        this.activeCaptions = new Set();  // Track all active caption elements
         
-        // Caption appearance and behavior settings - fully customizable
+        // Caption appearance and behavior settings - optimized for webpage integration
         this.captionSettings = {
             displayDuration: 4000,    // How long each caption stays visible (4 seconds)
             fadeOutDuration: 500,     // Smooth fade-out animation duration (0.5 seconds)
-            maxCaptionsVisible: 2,    // Maximum number of captions shown at once
-            fontSize: '16px',         // Readable font size for accessibility
-            fontFamily: 'Arial, sans-serif', // Clean, widely available font
-            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent black background
+            maxCaptionsVisible: 2,    // Maximum number of captions shown at once per video
+            fontSize: '18px',         // Larger font for webpage videos (more readable)
+            fontFamily: 'Arial, sans-serif, "Segoe UI", "Roboto"', // Web-safe fonts
+            backgroundColor: 'rgba(0, 0, 0, 0.85)', // Slightly more opaque for webpage contrast
             textColor: '#ffffff',     // High contrast white text
-            borderRadius: '4px',      // Subtle rounded corners for modern look
-            padding: '6px 12px',      // Comfortable padding around text
-            maxWidth: '80%',          // Prevent captions from spanning full video width
-            position: 'bottom-center' // Standard caption positioning
+            borderRadius: '6px',      // Slightly larger radius for webpage display
+            padding: '8px 16px',      // More generous padding for webpage videos
+            maxWidth: '85%',          // Allow wider captions on webpage videos
+            position: 'bottom-center', // Standard caption positioning
+            zIndex: 2147483647,       // Maximum z-index to appear above all webpage content
+            marginBottom: '60px'      // Space from bottom to avoid video controls
         };
         
-        // MediaPipe landmark detection data
-        this.faceLandmarks = null;       // Face detection landmarks
-        this.poseLandmarks = null;       // Body pose landmarks  
-        this.leftHandLandmarks = null;   // Left hand gesture landmarks
-        this.rightHandLandmarks = null;  // Right hand gesture landmarks
+        // MediaPipe detection and performance tracking
+        this.faceLandmarks = null;
+        this.poseLandmarks = null;
+        this.leftHandLandmarks = null;
+        this.rightHandLandmarks = null;
+        this.lastFrameTime = 0;
+        this.fps = 0;
+        this.frameCount = 0;
+        this.serverPerformanceData = null;
+        this.lastLandmarkUpdate = null;
         
-        // Performance monitoring for system health
-        this.lastFrameTime = 0;          // Previous frame timestamp
-        this.fps = 0;                    // Current frames per second
-        this.frameCount = 0;             // Total processed frames
+        // Translation data management
+        this.lastTranslation = null;
+        this.translationHistory = [];
         
-        // Server communication and performance data
-        this.serverPerformanceData = null; // Latest performance metrics from MediaPipe server
-        this.lastLandmarkUpdate = null;    // Most recent landmark detection data
-        
-        // Translation data management - now exclusively for video overlays
-        this.lastTranslation = null;       // Most recent translation received
-        this.translationHistory = [];      // Historical translations for reference
-        
-        // System preferences and debug options
-        this.showDetailedInfo = false;     // Toggle for detailed console logging
-        this.debugModeActive = false;      // Debug visualization mode
+        // System preferences
+        this.showDetailedInfo = false;
+        this.debugModeActive = false;
+        this.showMonitoringWindow = true; // Toggle for MediaPipe monitoring window
     }
     
     /**
-     * Activate the sign language detection system with video overlay captions
-     * This method orchestrates the entire activation process step by step
+     * Activate the sign language detection system with webpage video overlay captions
+     * This method sets up both MediaPipe processing and webpage video detection
      */
     async activate() {
-        // Prevent double activation
         if (this.isActive) {
             console.log("[SignLanguageHandler] System already active - skipping activation");
             return true;
         }
         
         try {
-            console.log("[SignLanguageHandler] Beginning activation sequence for video overlay system");
+            console.log("[SignLanguageHandler] Activating webpage video overlay system");
             
-            // Step 1: Verify MediaPipe server connectivity before proceeding
+            // Step 1: Verify MediaPipe server connectivity
             console.log("[SignLanguageHandler] Step 1: Testing MediaPipe server connectivity");
             const serverAvailable = await this.pingServer();
             
@@ -82,101 +82,88 @@ export default class SignLanguageHandler {
                 throw new Error("MediaPipe server is not available at " + this.serverUrl);
             }
             
-            console.log("[SignLanguageHandler] MediaPipe server confirmed available");
+            // Step 2: Set up webpage video detection and caption system
+            console.log("[SignLanguageHandler] Step 2: Setting up webpage video detection");
+            this.initializeWebpageVideoDetection();
             
-            // Step 2: Create the video interface with integrated caption overlay system
-            console.log("[SignLanguageHandler] Step 2: Creating video interface with caption overlay");
-            this.createVideoElementsWithCaptionOverlay();
+            // Step 3: Create optional MediaPipe monitoring interface
+            console.log("[SignLanguageHandler] Step 3: Creating MediaPipe monitoring interface");
+            this.createMediaPipeMonitoringInterface();
             
-            // Step 3: Request screen sharing permission from user
-            console.log("[SignLanguageHandler] Step 3: Requesting screen sharing permission");
+            // Step 4: Request screen sharing permission
+            console.log("[SignLanguageHandler] Step 4: Requesting screen sharing permission");
             this.stream = await navigator.mediaDevices.getDisplayMedia({
                 video: { 
-                    cursor: 'always',           // Show cursor for better user feedback
-                    frameRate: { ideal: 30, max: 30 }, // Optimal frame rate for sign language
-                    width: { ideal: 1280, max: 1920 },  // High quality for gesture recognition
+                    cursor: 'always',
+                    frameRate: { ideal: 30, max: 30 },
+                    width: { ideal: 1280, max: 1920 },
                     height: { ideal: 720, max: 1080 }
                 },
-                audio: false // Audio not needed for sign language recognition
+                audio: false
             });
             
-            console.log("[SignLanguageHandler] Screen sharing permission granted successfully");
-            
-            // Step 4: Initialize video playback for processing
+            // Step 5: Initialize MediaPipe video processing
             this.videoElement.srcObject = this.stream;
             await this.videoElement.play();
-            console.log("[SignLanguageHandler] Input video stream initialized");
+            console.log("[SignLanguageHandler] MediaPipe input video initialized");
             
-            // Step 5: Establish WebRTC connection with MediaPipe server
-            console.log("[SignLanguageHandler] Step 5: Establishing WebRTC connection");
+            // Step 6: Establish WebRTC connection with MediaPipe server
+            console.log("[SignLanguageHandler] Step 6: Establishing WebRTC connection");
             this.peerConnection = new RTCPeerConnection({
                 iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
             });
             
-            // Monitor connection health for robust operation
+            // Monitor connection health
             this.peerConnection.onconnectionstatechange = () => {
                 const state = this.peerConnection.connectionState;
                 console.log(`[SignLanguageHandler] WebRTC connection state: ${state}`);
                 
                 if (state === 'connected') {
-                    console.log('[SignLanguageHandler] MediaPipe connection established successfully');
-                    this.showConnectionStatus('Connected to MediaPipe Server', 'success');
+                    console.log('[SignLanguageHandler] MediaPipe connection established');
+                    this.showStatus('Connected to MediaPipe - Webpage captions ready', 'success');
                 } else if (state === 'failed') {
                     console.error('[SignLanguageHandler] WebRTC connection failed');
-                    this.showConnectionStatus('Connection Failed', 'error');
-                    this.deactivate(); // Clean shutdown on connection failure
+                    this.showStatus('Connection Failed', 'error');
+                    this.deactivate();
                 }
             };
             
-            // Monitor ICE connection state for troubleshooting
-            this.peerConnection.oniceconnectionstatechange = () => {
-                console.log(`[SignLanguageHandler] ICE connection state: ${this.peerConnection.iceConnectionState}`);
-            };
-            
-            // Step 6: Create data channel for receiving translation data
-            console.log("[SignLanguageHandler] Step 6: Setting up translation data channel");
+            // Step 7: Set up translation data channel
             this.dataChannel = this.peerConnection.createDataChannel('holistic-landmarks');
             this.setupTranslationDataChannel();
             
-            // Step 7: Handle processed video stream from MediaPipe server
+            // Step 8: Handle processed video stream (for monitoring)
             this.peerConnection.ontrack = (event) => {
-                console.log(`[SignLanguageHandler] Received processed video track from MediaPipe`);
-                this.displayElement.srcObject = new MediaStream([event.track]);
-                this.displayElement.play().catch(e => {
-                    console.error("[SignLanguageHandler] Error displaying processed video:", e);
-                });
+                console.log(`[SignLanguageHandler] Received processed video track`);
+                if (this.displayElement) {
+                    this.displayElement.srcObject = new MediaStream([event.track]);
+                    this.displayElement.play().catch(e => {
+                        console.error("[SignLanguageHandler] Error displaying processed video:", e);
+                    });
+                }
             };
             
-            // Step 8: Send our video stream to MediaPipe server for processing
+            // Step 9: Send video stream to MediaPipe
             this.stream.getTracks().forEach(track => {
-                console.log(`[SignLanguageHandler] Adding ${track.kind} track to peer connection`);
                 this.peerConnection.addTrack(track, this.stream);
             });
             
-            // Step 9: Create and send WebRTC offer to establish connection
-            console.log("[SignLanguageHandler] Step 9: Creating WebRTC offer");
+            // Step 10: Complete WebRTC handshake
             const offer = await this.peerConnection.createOffer();
             await this.peerConnection.setLocalDescription(offer);
             
-            // Step 10: Wait for ICE candidate gathering to complete
-            console.log("[SignLanguageHandler] Step 10: Waiting for ICE gathering to complete");
             await new Promise(resolve => {
                 if (this.peerConnection.iceGatheringState === 'complete') {
-                    console.log("[SignLanguageHandler] ICE gathering already complete");
                     resolve();
                 } else {
                     this.peerConnection.onicegatheringstatechange = () => {
-                        console.log(`[SignLanguageHandler] ICE gathering state: ${this.peerConnection.iceGatheringState}`);
                         if (this.peerConnection.iceGatheringState === 'complete') {
-                            console.log("[SignLanguageHandler] ICE gathering completed");
                             resolve();
                         }
                     };
                 }
             });
             
-            // Step 11: Send offer to MediaPipe server and receive answer
-            console.log("[SignLanguageHandler] Step 11: Sending offer to MediaPipe server");
             const response = await fetch(`${this.serverUrl}/offer`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -189,98 +176,402 @@ export default class SignLanguageHandler {
             });
             
             if (!response.ok) {
-                throw new Error(`MediaPipe server responded with error status: ${response.status}`);
+                throw new Error(`MediaPipe server error: ${response.status}`);
             }
             
             const answer = await response.json();
-            console.log("[SignLanguageHandler] Received answer from MediaPipe server");
-            
-            // Step 12: Complete WebRTC handshake
-            console.log("[SignLanguageHandler] Step 12: Completing WebRTC handshake");
             await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer.sdp));
             
-            // Step 13: Activation complete - show video interface
-            console.log("[SignLanguageHandler] Activation sequence completed successfully");
+            // Step 11: Activation complete
             this.isActive = true;
-            this.showVideoContainer();
-            this.showConnectionStatus('Sign Language Detection Active - Translations shown as video overlays', 'success');
+            this.showMonitoringInterface();
+            this.showStatus('Sign Language Detection Active - Captions will appear on webpage videos', 'success');
             
+            console.log("[SignLanguageHandler] Webpage video overlay system activated successfully");
             return true;
             
         } catch (error) {
             console.error('[SignLanguageHandler] Activation failed:', error);
             this.cleanupResources();
-            this.showConnectionStatus(`Activation Failed: ${error.message}`, 'error');
-            
-            // Dispatch failure event for other components to handle
-            window.dispatchEvent(new CustomEvent('screenSharingFailed', {
-                detail: { reason: error.message || error.name || "Unknown activation error" }
-            }));
-            
+            this.showStatus(`Activation Failed: ${error.message}`, 'error');
             return false;
         }
     }
     
     /**
-     * Set up the data channel specifically for receiving translation data from MediaPipe
-     * This method handles all communication with the MediaPipe server
+     * CORE FEATURE: Initialize webpage video detection and caption overlay system
+     * This method finds all videos on the current webpage and sets up caption containers
+     */
+    initializeWebpageVideoDetection() {
+        console.log("[SignLanguageHandler] Initializing webpage video detection system");
+        
+        // Find all existing videos on the page
+        this.detectExistingVideos();
+        
+        // Set up observer to detect dynamically added videos (for SPAs, lazy loading, etc.)
+        this.setupVideoObserver();
+        
+        // Set up window resize handler to adjust caption positioning
+        window.addEventListener('resize', this.handleWindowResize.bind(this));
+        
+        // Set up scroll handler to update caption positions
+        window.addEventListener('scroll', this.handlePageScroll.bind(this), { passive: true });
+        
+        console.log(`[SignLanguageHandler] Video detection initialized - found ${this.webpageVideos.size} videos`);
+    }
+    
+    /**
+     * Detect all existing video elements on the current webpage
+     * Supports HTML5 videos, YouTube, Vimeo, and other embedded players
+     */
+    detectExistingVideos() {
+        // Find HTML5 video elements
+        const html5Videos = document.querySelectorAll('video');
+        html5Videos.forEach(video => this.registerVideo(video, 'html5'));
+        
+        // Find YouTube players (both iframe and div containers)
+        const youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
+        youtubeIframes.forEach(iframe => this.registerVideo(iframe, 'youtube-iframe'));
+        
+        const youtubeContainers = document.querySelectorAll('#movie_player, .html5-video-container');
+        youtubeContainers.forEach(container => this.registerVideo(container, 'youtube-container'));
+        
+        // Find Vimeo players
+        const vimeoIframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+        vimeoIframes.forEach(iframe => this.registerVideo(iframe, 'vimeo'));
+        
+        // Find other common video containers
+        const videoContainers = document.querySelectorAll(
+            '.video-player, .player, .video-container, .video-wrapper, ' +
+            '[class*="video"], [class*="player"], [data-video], [data-player]'
+        );
+        videoContainers.forEach(container => {
+            // Only register if it doesn't contain a video we've already found
+            if (!container.querySelector('video, iframe[src*="youtube"], iframe[src*="vimeo"]')) {
+                this.registerVideo(container, 'generic-container');
+            }
+        });
+    }
+    
+    /**
+     * Register a video element and create caption overlay system for it
+     * Each video gets its own caption container positioned relative to the video
+     */
+    registerVideo(videoElement, type) {
+        if (!videoElement || this.webpageVideos.has(videoElement)) {
+            return; // Skip if already registered
+        }
+        
+        console.log(`[SignLanguageHandler] Registering ${type} video:`, videoElement);
+        
+        // Store video information
+        const videoInfo = {
+            element: videoElement,
+            type: type,
+            id: `video-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            captionContainer: null,
+            isVisible: this.isVideoVisible(videoElement),
+            lastKnownBounds: null
+        };
+        
+        this.webpageVideos.set(videoElement, videoInfo);
+        
+        // Create caption overlay container for this video
+        this.createCaptionContainerForVideo(videoInfo);
+        
+        // Set up intersection observer to track when video enters/leaves viewport
+        this.observeVideoVisibility(videoInfo);
+        
+        // If this is the first visible video, make it the active target
+        if (videoInfo.isVisible && !this.activeVideoTarget) {
+            this.setActiveVideoTarget(videoInfo);
+        }
+    }
+    
+    /**
+     * Create a caption overlay container positioned relative to a specific video
+     * This container will hold all captions for this particular video
+     */
+    createCaptionContainerForVideo(videoInfo) {
+        const captionContainer = document.createElement('div');
+        captionContainer.id = `sign-language-captions-${videoInfo.id}`;
+        captionContainer.className = 'sign-language-webpage-captions';
+        
+        // Position the container absolutely over the video
+        captionContainer.style.position = 'absolute';
+        captionContainer.style.top = '0';
+        captionContainer.style.left = '0';
+        captionContainer.style.width = '100%';
+        captionContainer.style.height = '100%';
+        captionContainer.style.pointerEvents = 'none'; // Allow clicks to pass through
+        captionContainer.style.zIndex = this.captionSettings.zIndex;
+        captionContainer.style.display = 'flex';
+        captionContainer.style.flexDirection = 'column';
+        captionContainer.style.justifyContent = 'flex-end'; // Align captions to bottom
+        captionContainer.style.alignItems = 'center'; // Center captions horizontally
+        captionContainer.style.padding = '20px';
+        captionContainer.style.boxSizing = 'border-box';
+        
+        // Position the container relative to the video element
+        this.positionCaptionContainer(videoInfo, captionContainer);
+        
+        // Add to the page
+        document.body.appendChild(captionContainer);
+        
+        // Store references
+        videoInfo.captionContainer = captionContainer;
+        this.videoCaptionContainers.set(videoInfo.element, captionContainer);
+        
+        console.log(`[SignLanguageHandler] Created caption container for ${videoInfo.type} video`);
+    }
+    
+    /**
+     * Position caption container to match the video element's position and size
+     * This ensures captions appear exactly over the video content
+     */
+    positionCaptionContainer(videoInfo, captionContainer) {
+        const videoElement = videoInfo.element;
+        
+        // Get video element's position and dimensions
+        const rect = videoElement.getBoundingClientRect();
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Position container to exactly match video bounds
+        captionContainer.style.position = 'absolute';
+        captionContainer.style.left = `${rect.left + scrollX}px`;
+        captionContainer.style.top = `${rect.top + scrollY}px`;
+        captionContainer.style.width = `${rect.width}px`;
+        captionContainer.style.height = `${rect.height}px`;
+        
+        // Store bounds for comparison in future updates
+        videoInfo.lastKnownBounds = {
+            left: rect.left + scrollX,
+            top: rect.top + scrollY,
+            width: rect.width,
+            height: rect.height
+        };
+        
+        // Special handling for different video types
+        if (videoInfo.type === 'youtube-container' || videoInfo.type === 'youtube-iframe') {
+            // YouTube videos might need slight adjustments for player controls
+            captionContainer.style.paddingBottom = '80px'; // Extra space for YouTube controls
+        } else if (videoInfo.type === 'vimeo') {
+            // Vimeo videos might need different spacing
+            captionContainer.style.paddingBottom = '70px';
+        }
+    }
+    
+    /**
+     * Set up MutationObserver to detect dynamically added videos
+     * This handles Single Page Applications and lazy-loaded content
+     */
+    setupVideoObserver() {
+        this.videoObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        // Check if the added node is a video
+                        if (node.tagName === 'VIDEO') {
+                            this.registerVideo(node, 'html5');
+                        } else if (node.tagName === 'IFRAME') {
+                            if (node.src && (node.src.includes('youtube') || node.src.includes('vimeo'))) {
+                                this.registerVideo(node, node.src.includes('youtube') ? 'youtube-iframe' : 'vimeo');
+                            }
+                        } else {
+                            // Check for videos within the added node
+                            const videos = node.querySelectorAll('video');
+                            videos.forEach(video => this.registerVideo(video, 'html5'));
+                            
+                            const iframes = node.querySelectorAll('iframe[src*="youtube"], iframe[src*="vimeo"]');
+                            iframes.forEach(iframe => {
+                                this.registerVideo(iframe, iframe.src.includes('youtube') ? 'youtube-iframe' : 'vimeo');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Start observing
+        this.videoObserver.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+    
+    /**
+     * Check if a video element is currently visible in the viewport
+     */
+    isVideoVisible(videoElement) {
+        const rect = videoElement.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+        
+        // Consider video visible if it's at least partially in viewport and has reasonable size
+        return (
+            rect.bottom > 0 &&
+            rect.right > 0 &&
+            rect.top < windowHeight &&
+            rect.left < windowWidth &&
+            rect.width > 100 &&  // Minimum width to be considered a real video
+            rect.height > 100    // Minimum height to be considered a real video
+        );
+    }
+    
+    /**
+     * Set up intersection observer to track video visibility changes
+     */
+    observeVideoVisibility(videoInfo) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const wasVisible = videoInfo.isVisible;
+                videoInfo.isVisible = entry.isIntersecting && entry.intersectionRatio > 0.1;
+                
+                if (videoInfo.isVisible && !wasVisible) {
+                    // Video became visible
+                    console.log(`[SignLanguageHandler] Video became visible:`, videoInfo.type);
+                    if (!this.activeVideoTarget) {
+                        this.setActiveVideoTarget(videoInfo);
+                    }
+                } else if (!videoInfo.isVisible && wasVisible) {
+                    // Video became hidden
+                    console.log(`[SignLanguageHandler] Video became hidden:`, videoInfo.type);
+                    if (this.activeVideoTarget === videoInfo) {
+                        this.findNextActiveVideo();
+                    }
+                }
+            });
+        }, {
+            threshold: [0, 0.1, 0.5, 1.0] // Multiple thresholds for better tracking
+        });
+        
+        observer.observe(videoInfo.element);
+        videoInfo.visibilityObserver = observer;
+    }
+    
+    /**
+     * Set the active video target for caption display
+     * Captions will appear on this video when translations are received
+     */
+    setActiveVideoTarget(videoInfo) {
+        if (this.activeVideoTarget === videoInfo) return;
+        
+        console.log(`[SignLanguageHandler] Setting active video target:`, videoInfo.type);
+        this.activeVideoTarget = videoInfo;
+        
+        // Update visual indicator (if monitoring window is shown)
+        this.updateActiveVideoIndicator();
+    }
+    
+    /**
+     * Find the next best video to target for captions when current target becomes unavailable
+     */
+    findNextActiveVideo() {
+        // Find the largest visible video as the new target
+        let bestVideo = null;
+        let bestSize = 0;
+        
+        for (const [element, videoInfo] of this.webpageVideos) {
+            if (videoInfo.isVisible) {
+                const rect = element.getBoundingClientRect();
+                const size = rect.width * rect.height;
+                if (size > bestSize) {
+                    bestSize = size;
+                    bestVideo = videoInfo;
+                }
+            }
+        }
+        
+        if (bestVideo) {
+            this.setActiveVideoTarget(bestVideo);
+        } else {
+            this.activeVideoTarget = null;
+            console.log("[SignLanguageHandler] No visible videos found for caption target");
+        }
+    }
+    
+    /**
+     * Handle window resize events to update caption container positions
+     */
+    handleWindowResize() {
+        // Debounce resize events
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.updateAllCaptionContainerPositions();
+        }, 100);
+    }
+    
+    /**
+     * Handle page scroll events to update caption container positions
+     */
+    handlePageScroll() {
+        // Throttle scroll events for performance
+        if (!this.scrollThrottled) {
+            this.scrollThrottled = true;
+            requestAnimationFrame(() => {
+                this.updateAllCaptionContainerPositions();
+                this.scrollThrottled = false;
+            });
+        }
+    }
+    
+    /**
+     * Update positions of all caption containers to match their video elements
+     */
+    updateAllCaptionContainerPositions() {
+        for (const [element, videoInfo] of this.webpageVideos) {
+            if (videoInfo.captionContainer && videoInfo.isVisible) {
+                this.positionCaptionContainer(videoInfo, videoInfo.captionContainer);
+            }
+        }
+    }
+    
+    /**
+     * Set up translation data channel for receiving MediaPipe translations
      */
     setupTranslationDataChannel() {
-        // Handle successful data channel connection
         this.dataChannel.onopen = () => {
-            console.log("[SignLanguageHandler] Translation data channel opened - video overlays ready");
+            console.log("[SignLanguageHandler] Translation data channel opened");
             this.updateConnectionStatus('connected');
-            this.showConnectionStatus('Ready for Sign Language Detection', 'success');
+            this.showStatus('Ready for Sign Language Detection on Webpage Videos', 'success');
             
-            // Send initial requests to MediaPipe server
             setTimeout(() => {
                 if (this.dataChannel.readyState === 'open') {
-                    console.log("[SignLanguageHandler] Sending initial data requests to MediaPipe");
-                    this.dataChannel.send('get_landmarks');    // Request landmark detection data
-                    this.dataChannel.send('get_performance');  // Request performance metrics
+                    this.dataChannel.send('get_landmarks');
+                    this.dataChannel.send('get_performance');
                 }
             }, 1000);
             
-            // Set up periodic requests for translation data
             this.landmarkInterval = setInterval(() => {
                 if (this.dataChannel.readyState === 'open') {
-                    this.dataChannel.send('get_translation'); // Regular translation requests
+                    this.dataChannel.send('get_translation');
                 }
-            }, 1000); // Check for new translations every second
+            }, 1000);
         };
         
-        // Handle data channel closure
         this.dataChannel.onclose = () => {
             console.log("[SignLanguageHandler] Translation data channel closed");
             this.updateConnectionStatus('disconnected');
-            this.showConnectionStatus('Connection Lost', 'warning');
         };
         
-        // Handle data channel errors
         this.dataChannel.onerror = (error) => {
             console.error("[SignLanguageHandler] Data channel error:", error);
-            this.showConnectionStatus('Data Channel Error', 'error');
         };
         
-        // Handle incoming messages from MediaPipe server
         this.dataChannel.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
                 
-                // Process different types of messages from the server
                 if (data.type === 'holistic_landmarks') {
-                    // MediaPipe landmark detection data (hands, face, pose)
                     this.processLandmarksData(data);
                 } else if (data.type === 'performance_stats') {
-                    // Server performance metrics (FPS, processing time, etc.)
                     this.processPerformanceData(data);
                 } else if (data.type === 'translation') {
-                    // SIGN LANGUAGE TRANSLATION - This is the key message type
-                    // Process translation and display as video overlay caption
-                    console.log("[SignLanguageHandler] Translation received for video overlay:", data.text);
-                    this.processTranslationForVideoOverlay(data);
+                    // CORE FUNCTIONALITY: Display translation on active webpage video
+                    console.log("[SignLanguageHandler] Translation received for webpage video:", data.text);
+                    this.processTranslationForWebpageVideo(data);
                 } else if (data.type === 'stats' && data.fps !== undefined) {
-                    // Real-time FPS updates
                     this.fps = data.fps;
                     this.updateFPSDisplay();
                 }
@@ -292,68 +583,70 @@ export default class SignLanguageHandler {
     }
     
     /**
-     * CORE METHOD: Process translation data and display as video overlay caption
-     * This method is the heart of the video overlay system - it takes translation
-     * data from MediaPipe and converts it into YouTube-style video captions
+     * CORE METHOD: Process translation and display on active webpage video
+     * This is the main method that creates captions on the user's video content
      */
-    processTranslationForVideoOverlay(data) {
+    processTranslationForWebpageVideo(data) {
         const translatedText = data.text;
         const confidence = data.confidence || null;
         const timestamp = Date.now();
         
-        console.log(`[SignLanguageHandler] Processing translation for video overlay: "${translatedText}"`);
+        console.log(`[SignLanguageHandler] Processing translation for webpage video: "${translatedText}"`);
         
-        // Store translation data for history and debugging
+        // Store translation data
         this.lastTranslation = {
             text: translatedText,
             timestamp: timestamp,
             confidence: confidence,
             words: data.words || null,
-            displayMethod: 'video-overlay' // Track how this translation was displayed
+            displayMethod: 'webpage-video-overlay'
         };
         
-        // Maintain translation history for analytics and debugging
+        // Add to history
         this.translationHistory.push(this.lastTranslation);
         if (this.translationHistory.length > 20) {
-            this.translationHistory.shift(); // Keep history manageable
+            this.translationHistory.shift();
         }
         
-        // THE KEY FUNCTIONALITY: Display translation as video caption overlay
-        this.displayTranslationAsVideoCaption(translatedText, confidence, timestamp);
+        // Display translation on the active webpage video
+        if (this.activeVideoTarget && this.activeVideoTarget.captionContainer) {
+            this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
+        } else {
+            console.warn("[SignLanguageHandler] No active video target available for caption display");
+            // Try to find a video target
+            this.findNextActiveVideo();
+            if (this.activeVideoTarget) {
+                this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
+            }
+        }
         
-        // Update system status to show translation activity
-        this.showConnectionStatus(`Translated: "${translatedText}"`, 'translation');
-        
-        // Note: NO sidebar forwarding - translations are displayed exclusively as video overlays
-        // This is the fundamental difference from the previous implementation
-        console.log(`[SignLanguageHandler] Translation displayed as video overlay only - no sidebar forwarding`);
+        // Update status
+        this.showStatus(`Translated on webpage: "${translatedText}"`, 'translation');
     }
     
     /**
-     * CORE METHOD: Display translation as YouTube-style caption overlay on video
-     * This method creates the actual caption elements that appear on the video
+     * CORE METHOD: Display caption on a specific webpage video
+     * Creates and animates caption overlays on the actual video content the user is watching
      */
-    displayTranslationAsVideoCaption(text, confidence = null, timestamp = Date.now()) {
-        // Validate that we have the necessary components
-        if (!this.captionContainer || !text || text.trim() === '') {
-            console.warn("[SignLanguageHandler] Cannot display caption - missing container or text");
+    displayCaptionOnWebpageVideo(videoInfo, text, confidence = null, timestamp = Date.now()) {
+        if (!videoInfo.captionContainer || !text || text.trim() === '') {
+            console.warn("[SignLanguageHandler] Cannot display webpage caption - missing container or text");
             return;
         }
-
-        // Generate unique identifier for this caption
-        const captionId = `caption-${this.captionIdCounter++}`;
         
-        console.log(`[SignLanguageHandler] Creating video caption: "${text}" (ID: ${captionId})`);
+        // Update caption container position before adding new caption
+        this.positionCaptionContainer(videoInfo, videoInfo.captionContainer);
         
-        // Create the caption element
+        const captionId = `webpage-caption-${this.captionIdCounter++}`;
+        console.log(`[SignLanguageHandler] Creating webpage video caption: "${text}" (ID: ${captionId})`);
+        
+        // Create caption element
         const captionElement = document.createElement('div');
-        captionElement.className = 'sign-language-video-caption';
+        captionElement.className = 'sign-language-webpage-caption';
         captionElement.id = captionId;
         
-        // Prepare the display text with optional confidence indicator
+        // Prepare display text with confidence indicator
         let displayText = text.trim();
-        
-        // Show confidence indicator when translation uncertainty is high (below 85%)
         if (confidence !== null && confidence < 0.85) {
             const confidencePercent = Math.round(confidence * 100);
             displayText += ` [${confidencePercent}% confidence]`;
@@ -361,112 +654,114 @@ export default class SignLanguageHandler {
         
         captionElement.textContent = displayText;
         
-        // Apply professional YouTube-style styling
-        this.applyVideoCaptionStyling(captionElement);
+        // Apply webpage-optimized styling
+        this.applyWebpageCaptionStyling(captionElement);
         
-        // Add caption to the video overlay container
-        this.captionContainer.appendChild(captionElement);
+        // Add to the video's caption container
+        videoInfo.captionContainer.appendChild(captionElement);
         
-        // Animate caption appearance with smooth fade-in
+        // Track active caption
+        this.activeCaptions.add(captionElement);
+        
+        // Animate appearance
         this.animateCaptionEntry(captionElement);
         
-        // Schedule automatic removal after display duration
-        this.scheduleCaptionRemoval(captionElement, captionId);
+        // Schedule removal
+        this.scheduleCaptionRemoval(captionElement, captionId, videoInfo);
         
-        // Manage the number of visible captions to prevent screen clutter
-        this.limitSimultaneousCaptions();
+        // Manage caption count for this video
+        this.limitCaptionsForVideo(videoInfo);
         
-        console.log(`[SignLanguageHandler] Video caption displayed successfully: "${displayText}"`);
+        console.log(`[SignLanguageHandler] Webpage video caption displayed: "${displayText}"`);
     }
     
     /**
-     * Apply professional YouTube-style styling to caption elements
-     * This method ensures captions are readable and visually appealing
+     * Apply styling optimized for webpage video captions
+     * These styles are designed to work well over any webpage video content
      */
-    applyVideoCaptionStyling(captionElement) {
+    applyWebpageCaptionStyling(captionElement) {
         const settings = this.captionSettings;
         
-        // Core layout and positioning - ensures captions appear correctly on video
+        // Core positioning and layout
         captionElement.style.position = 'relative';
         captionElement.style.display = 'block';
         captionElement.style.width = 'auto';
         captionElement.style.maxWidth = settings.maxWidth;
-        captionElement.style.margin = '0 auto 8px auto'; // Center horizontally with spacing
+        captionElement.style.margin = '0 auto';
+        captionElement.style.marginBottom = '12px'; // Space between multiple captions
         
-        // Typography optimized for video overlay readability
+        // Typography optimized for webpage videos
         captionElement.style.fontSize = settings.fontSize;
         captionElement.style.fontFamily = settings.fontFamily;
-        captionElement.style.fontWeight = 'bold';        // Bold text for better visibility
-        captionElement.style.lineHeight = '1.2';         // Comfortable line spacing
-        captionElement.style.textAlign = 'center';       // Center-aligned like YouTube captions
-        captionElement.style.wordWrap = 'break-word';    // Handle long words gracefully
-        captionElement.style.whiteSpace = 'pre-wrap';    // Preserve spacing if needed
+        captionElement.style.fontWeight = 'bold';
+        captionElement.style.lineHeight = '1.3';
+        captionElement.style.textAlign = 'center';
+        captionElement.style.wordWrap = 'break-word';
+        captionElement.style.whiteSpace = 'pre-wrap';
         
         // Visual styling for maximum readability over video content
         captionElement.style.color = settings.textColor;
         captionElement.style.backgroundColor = settings.backgroundColor;
         captionElement.style.padding = settings.padding;
         captionElement.style.borderRadius = settings.borderRadius;
-        captionElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)'; // Subtle depth
-        captionElement.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)'; // Text outline effect
+        captionElement.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; // Stronger shadow for webpage
+        captionElement.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 1)'; // Stronger text shadow
+        captionElement.style.border = '1px solid rgba(255, 255, 255, 0.2)'; // Subtle border for definition
         
-        // Interaction properties - captions should not interfere with video controls
-        captionElement.style.pointerEvents = 'none'; // Allow clicks to pass through to video
-        captionElement.style.userSelect = 'none';     // Prevent text selection
+        // Interaction properties
+        captionElement.style.pointerEvents = 'none';
+        captionElement.style.userSelect = 'none';
+        captionElement.style.zIndex = settings.zIndex;
         
-        // Initial animation state - caption starts invisible and slightly offset
+        // Animation setup
         captionElement.style.opacity = '0';
-        captionElement.style.transform = 'translateY(15px) scale(0.95)';
-        captionElement.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'; // Smooth material design animation
+        captionElement.style.transform = 'translateY(20px) scale(0.9)';
+        captionElement.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
     }
     
     /**
-     * Animate caption entry with smooth, professional animation
-     * Uses modern CSS transforms for hardware-accelerated performance
+     * Animate caption entry with smooth appearance
      */
     animateCaptionEntry(captionElement) {
-        // Use double requestAnimationFrame for smooth animation timing
-        // This ensures the initial styles are applied before starting the animation
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                captionElement.style.opacity = '1';              // Fade in
-                captionElement.style.transform = 'translateY(0) scale(1)'; // Slide up and scale to normal size
+                captionElement.style.opacity = '1';
+                captionElement.style.transform = 'translateY(0) scale(1)';
             });
         });
     }
     
     /**
-     * Schedule automatic caption removal with smooth fade-out animation
-     * Manages caption lifecycle to prevent accumulation of old captions
+     * Schedule caption removal with cleanup
      */
-    scheduleCaptionRemoval(captionElement, captionId) {
+    scheduleCaptionRemoval(captionElement, captionId, videoInfo) {
         const removalTimer = setTimeout(() => {
             this.removeCaptionWithAnimation(captionElement, captionId);
         }, this.captionSettings.displayDuration);
         
-        // Store timer reference for potential cleanup (if caption is removed manually)
         captionElement.dataset.removalTimer = removalTimer;
+        captionElement.dataset.videoId = videoInfo.id;
     }
     
     /**
-     * Remove caption with smooth fade-out animation
-     * Provides polished visual feedback when captions disappear
+     * Remove caption with smooth animation
      */
     removeCaptionWithAnimation(captionElement, captionId) {
-        // Check if element still exists (might have been removed already)
         if (!captionElement || !captionElement.parentNode) {
-            console.log(`[SignLanguageHandler] Caption ${captionId} already removed`);
             return;
         }
         
-        console.log(`[SignLanguageHandler] Removing video caption: ${captionId}`);
+        console.log(`[SignLanguageHandler] Removing webpage caption: ${captionId}`);
         
-        // Apply smooth fade-out animation
+        // Remove from tracking
+        this.activeCaptions.delete(captionElement);
+        
+        // Animate removal
         captionElement.style.transition = `all ${this.captionSettings.fadeOutDuration}ms cubic-bezier(0.4, 0, 0.6, 1)`;
-        captionElement.style.opacity = '0';              // Fade out
-        captionElement.style.transform = 'translateY(-10px) scale(0.95)'; // Slide up and shrink slightly
+        captionElement.style.opacity = '0';
+        captionElement.style.transform = 'translateY(-15px) scale(0.9)';
         
-        // Remove element from DOM after animation completes
+        // Remove from DOM
         setTimeout(() => {
             if (captionElement.parentNode) {
                 captionElement.parentNode.removeChild(captionElement);
@@ -475,95 +770,218 @@ export default class SignLanguageHandler {
     }
     
     /**
-     * Limit the number of simultaneous captions to prevent screen clutter
-     * Automatically removes older captions when the limit is exceeded
+     * Limit number of captions per video to prevent overcrowding
      */
-    limitSimultaneousCaptions() {
-        if (!this.captionContainer) return;
+    limitCaptionsForVideo(videoInfo) {
+        if (!videoInfo.captionContainer) return;
         
-        const captions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
+        const captions = videoInfo.captionContainer.querySelectorAll('.sign-language-webpage-caption');
         const maxVisible = this.captionSettings.maxCaptionsVisible;
         
         if (captions.length > maxVisible) {
-            // Calculate how many captions need to be removed
             const excessCount = captions.length - maxVisible;
             const captionsToRemove = Array.from(captions).slice(0, excessCount);
             
-            console.log(`[SignLanguageHandler] Removing ${excessCount} excess captions to maintain limit of ${maxVisible}`);
-            
-            // Remove excess captions with staggered timing for smooth transition
             captionsToRemove.forEach((caption, index) => {
                 setTimeout(() => {
                     this.removeCaptionWithAnimation(caption, caption.id);
-                }, index * 100); // 100ms delay between each removal
+                }, index * 150);
             });
         }
     }
     
     /**
-     * Clear all visible captions immediately
-     * Useful for reset scenarios or when pausing the system
+     * Clear all captions from all webpage videos
      */
-    clearAllVideoCaptions() {
-        if (!this.captionContainer) {
-            console.log("[SignLanguageHandler] No caption container to clear");
-            return;
-        }
+    clearAllWebpageVideoCaptions() {
+        console.log("[SignLanguageHandler] Clearing all webpage video captions");
         
-        const captions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
-        console.log(`[SignLanguageHandler] Clearing ${captions.length} video captions`);
-        
-        captions.forEach(caption => {
-            // Clear any pending removal timers to prevent conflicts
+        this.activeCaptions.forEach(caption => {
             if (caption.dataset.removalTimer) {
                 clearTimeout(caption.dataset.removalTimer);
             }
-            
-            // Remove immediately without animation for instant clearing
             if (caption.parentNode) {
                 caption.parentNode.removeChild(caption);
             }
         });
         
-        console.log("[SignLanguageHandler] All video captions cleared");
+        this.activeCaptions.clear();
+        console.log("[SignLanguageHandler] All webpage video captions cleared");
     }
     
     /**
-     * Update caption display settings dynamically
-     * Allows real-time customization of caption appearance and behavior
+     * Create optional MediaPipe monitoring interface
+     * This is a smaller window for system monitoring, separate from main video captions
      */
-    updateCaptionSettings(newSettings) {
-        // Merge new settings with existing ones
-        this.captionSettings = { ...this.captionSettings, ...newSettings };
-        console.log("[SignLanguageHandler] Caption settings updated:", this.captionSettings);
+    createMediaPipeMonitoringInterface() {
+        if (!this.showMonitoringWindow) return;
         
-        // Apply new settings to any existing captions
-        if (this.captionContainer) {
-            const existingCaptions = this.captionContainer.querySelectorAll('.sign-language-video-caption');
-            existingCaptions.forEach(caption => {
-                // Update styling properties that can be changed dynamically
-                if (newSettings.fontSize) caption.style.fontSize = newSettings.fontSize;
-                if (newSettings.fontFamily) caption.style.fontFamily = newSettings.fontFamily;
-                if (newSettings.backgroundColor) caption.style.backgroundColor = newSettings.backgroundColor;
-                if (newSettings.textColor) caption.style.color = newSettings.textColor;
-            });
-            
-            console.log(`[SignLanguageHandler] Applied new settings to ${existingCaptions.length} existing captions`);
+        // Remove any existing monitoring container
+        let container = document.getElementById('signLanguageMonitoringContainer');
+        if (container) {
+            document.body.removeChild(container);
+        }
+        
+        // Create compact monitoring container
+        container = document.createElement('div');
+        container.id = 'signLanguageMonitoringContainer';
+        container.style.position = 'fixed';
+        container.style.bottom = '20px';
+        container.style.right = '20px';
+        container.style.width = '280px';
+        container.style.height = 'auto';
+        container.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+        container.style.border = '1px solid #00BCD4';
+        container.style.borderRadius = '8px';
+        container.style.padding = '10px';
+        container.style.zIndex = '2147483646'; // Just below captions
+        container.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
+        container.style.backdropFilter = 'blur(10px)';
+        container.style.display = 'none';
+        container.style.fontFamily = 'Arial, sans-serif';
+        container.style.fontSize = '12px';
+        container.style.color = 'white';
+        
+        // Title bar
+        const titleBar = document.createElement('div');
+        titleBar.style.display = 'flex';
+        titleBar.style.justifyContent = 'space-between';
+        titleBar.style.alignItems = 'center';
+        titleBar.style.marginBottom = '8px';
+        titleBar.style.paddingBottom = '5px';
+        titleBar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+        
+        const title = document.createElement('div');
+        title.textContent = 'MediaPipe Monitor';
+        title.style.fontWeight = 'bold';
+        title.style.fontSize = '13px';
+        
+        const closeButton = document.createElement('button');
+        closeButton.textContent = '×';
+        closeButton.style.background = 'none';
+        closeButton.style.border = 'none';
+        closeButton.style.color = '#999';
+        closeButton.style.fontSize = '16px';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.padding = '0';
+        closeButton.style.width = '20px';
+        closeButton.style.height = '20px';
+        closeButton.onclick = () => container.style.display = 'none';
+        
+        titleBar.appendChild(title);
+        titleBar.appendChild(closeButton);
+        container.appendChild(titleBar);
+        
+        // Hidden processing video
+        this.videoElement = document.createElement('video');
+        this.videoElement.autoplay = true;
+        this.videoElement.muted = true;
+        this.videoElement.playsInline = true;
+        this.videoElement.style.display = 'none';
+        container.appendChild(this.videoElement);
+        
+        // Optional: Small display video for monitoring
+        this.displayElement = document.createElement('video');
+        this.displayElement.autoplay = true;
+        this.displayElement.playsInline = true;
+        this.displayElement.muted = true;
+        this.displayElement.style.width = '100%';
+        this.displayElement.style.height = '120px';
+        this.displayElement.style.borderRadius = '4px';
+        this.displayElement.style.backgroundColor = '#000';
+        container.appendChild(this.displayElement);
+        
+        // Status information
+        const statusContainer = document.createElement('div');
+        statusContainer.style.marginTop = '8px';
+        statusContainer.style.paddingTop = '5px';
+        statusContainer.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
+        
+        const statusRow1 = document.createElement('div');
+        statusRow1.style.display = 'flex';
+        statusRow1.style.justifyContent = 'space-between';
+        statusRow1.style.marginBottom = '4px';
+        
+        const fpsDisplay = document.createElement('div');
+        fpsDisplay.id = 'signLanguageFPS';
+        fpsDisplay.textContent = '0.0 FPS';
+        fpsDisplay.style.fontWeight = 'bold';
+        
+        const connectionStatus = document.createElement('div');
+        connectionStatus.id = 'connectionStatus';
+        connectionStatus.textContent = 'Connecting...';
+        connectionStatus.style.fontSize = '10px';
+        
+        statusRow1.appendChild(fpsDisplay);
+        statusRow1.appendChild(connectionStatus);
+        
+        const statusRow2 = document.createElement('div');
+        const detectionStatus = document.createElement('div');
+        detectionStatus.id = 'signLanguageDetection';
+        detectionStatus.textContent = 'Initializing...';
+        detectionStatus.style.fontSize = '10px';
+        detectionStatus.style.textAlign = 'center';
+        
+        statusRow2.appendChild(detectionStatus);
+        
+        const activeVideoDisplay = document.createElement('div');
+        activeVideoDisplay.id = 'activeVideoDisplay';
+        activeVideoDisplay.textContent = 'No active video target';
+        activeVideoDisplay.style.fontSize = '10px';
+        activeVideoDisplay.style.textAlign = 'center';
+        activeVideoDisplay.style.marginTop = '4px';
+        activeVideoDisplay.style.color = '#ccc';
+        
+        statusContainer.appendChild(statusRow1);
+        statusContainer.appendChild(statusRow2);
+        statusContainer.appendChild(activeVideoDisplay);
+        container.appendChild(statusContainer);
+        
+        // Add double-click for debug mode
+        container.addEventListener('dblclick', () => {
+            this.toggleDebugMode();
+        });
+        
+        document.body.appendChild(container);
+        this.monitoringContainer = container;
+        
+        console.log("[SignLanguageHandler] MediaPipe monitoring interface created");
+    }
+    
+    /**
+     * Show the monitoring interface
+     */
+    showMonitoringInterface() {
+        if (this.monitoringContainer && this.showMonitoringWindow) {
+            this.monitoringContainer.style.display = 'block';
         }
     }
     
     /**
-     * Process MediaPipe landmark detection data for system monitoring
-     * Updates detection status without affecting caption display
+     * Update active video indicator in monitoring interface
+     */
+    updateActiveVideoIndicator() {
+        const activeVideoDisplay = document.getElementById('activeVideoDisplay');
+        if (activeVideoDisplay) {
+            if (this.activeVideoTarget) {
+                activeVideoDisplay.textContent = `Active: ${this.activeVideoTarget.type} video`;
+                activeVideoDisplay.style.color = '#4CAF50';
+            } else {
+                activeVideoDisplay.textContent = 'No active video target';
+                activeVideoDisplay.style.color = '#ccc';
+            }
+        }
+    }
+    
+    /**
+     * Process MediaPipe landmark data for monitoring
      */
     processLandmarksData(data) {
-        // Update landmark state for system monitoring
         this.faceLandmarks = data.has_face ? {} : null;
         this.poseLandmarks = data.has_pose ? (data.pose_info || {}) : null;
         this.leftHandLandmarks = data.has_left_hand ? {} : null;
         this.rightHandLandmarks = data.has_right_hand ? {} : null;
         
-        // Store detection metadata for debugging and analytics
         this.lastLandmarkUpdate = {
             timestamp: Date.now(),
             frame_id: data.frame_id,
@@ -571,10 +989,9 @@ export default class SignLanguageHandler {
             processing_scale: data.processing_scale
         };
         
-        // Update detection status display in video container
         this.updateDetectionStatus(data);
         
-        // Dispatch event for external monitoring (sidebar, analytics, etc.)
+        // Dispatch for external monitoring
         const event = new CustomEvent('handLandmarksDetected', {
             detail: {
                 leftHand: this.leftHandLandmarks,
@@ -591,43 +1008,31 @@ export default class SignLanguageHandler {
     }
     
     /**
-     * Process performance data from MediaPipe server
-     * Monitors system health and updates performance displays
+     * Process performance data from MediaPipe
      */
     processPerformanceData(data) {
-        // Store comprehensive performance data
         this.serverPerformanceData = data;
         
-        // Update FPS from server data
         if (data.output_fps !== undefined) {
             this.fps = data.output_fps;
         }
         
-        // Update performance displays
         this.updateFPSDisplay();
         
-        // Log detailed performance information in debug mode
         if (this.showDetailedInfo) {
-            console.log(`[SignLanguageHandler] Performance: ${data.output_fps?.toFixed(1) || 'N/A'} FPS, ` +
-                       `Processing: ${data.avg_processing_ms?.toFixed(1) || 'N/A'}ms, ` +
-                       `Quality: ${data.quality_score?.toFixed(2) || 'N/A'}`);
+            console.log(`[SignLanguageHandler] Performance: ${data.output_fps?.toFixed(1) || 'N/A'} FPS`);
         }
     }
     
     /**
-     * Show connection status as temporary overlay message
-     * Provides user feedback about system state
+     * Show status message
      */
-    showConnectionStatus(message, type = 'info') {
+    showStatus(message, type = 'info') {
         console.log(`[SignLanguageHandler] Status (${type}): ${message}`);
-        
-        // You can extend this method to show visual status indicators
-        // For example, temporary overlay messages or status bar updates
     }
     
     /**
-     * Update connection status indicator in video container
-     * Provides real-time feedback about MediaPipe server connection
+     * Update connection status
      */
     updateConnectionStatus(status) {
         const statusElement = document.getElementById('connectionStatus');
@@ -635,22 +1040,21 @@ export default class SignLanguageHandler {
             switch(status) {
                 case 'connected':
                     statusElement.textContent = 'Connected';
-                    statusElement.style.color = '#4CAF50'; // Green for success
+                    statusElement.style.color = '#4CAF50';
                     break;
                 case 'disconnected':
                     statusElement.textContent = 'Disconnected';
-                    statusElement.style.color = '#F44336'; // Red for error
+                    statusElement.style.color = '#F44336';
                     break;
                 default:
                     statusElement.textContent = 'Connecting...';
-                    statusElement.style.color = '#FFC107'; // Yellow for pending
+                    statusElement.style.color = '#FFC107';
             }
         }
     }
     
     /**
-     * Update FPS display with performance-based color coding
-     * Provides visual feedback about system performance
+     * Update FPS display
      */
     updateFPSDisplay() {
         const fpsElement = document.getElementById('signLanguageFPS');
@@ -658,303 +1062,144 @@ export default class SignLanguageHandler {
             const displayFPS = this.fps || 0;
             fpsElement.textContent = `${displayFPS.toFixed(1)} FPS`;
             
-            // Color-code based on performance thresholds
             if (displayFPS >= 20) {
-                fpsElement.style.color = '#4CAF50'; // Green - excellent performance
+                fpsElement.style.color = '#4CAF50';
             } else if (displayFPS >= 10) {
-                fpsElement.style.color = '#FFC107'; // Yellow - good performance
+                fpsElement.style.color = '#FFC107';
             } else if (displayFPS > 0) {
-                fpsElement.style.color = '#FF9800'; // Orange - poor performance
+                fpsElement.style.color = '#FF9800';
             } else {
-                fpsElement.style.color = '#F44336'; // Red - no data
+                fpsElement.style.color = '#F44336';
             }
         }
     }
     
     /**
-     * Update detection status display with readable format
-     * Shows which body parts are being detected by MediaPipe
+     * Update detection status
      */
     updateDetectionStatus(data) {
         const detectionElement = document.getElementById('signLanguageDetection');
         if (detectionElement) {
-            // Build list of detected body parts
             const detectedParts = [];
             if (data.has_face) detectedParts.push("Face");
             if (data.has_pose) detectedParts.push("Pose");
             if (data.has_left_hand) detectedParts.push("Left Hand");
             if (data.has_right_hand) detectedParts.push("Right Hand");
             
-            // Update display based on detection results
             if (detectedParts.length > 0) {
                 detectionElement.textContent = detectedParts.join(" • ");
-                detectionElement.style.color = '#4CAF50'; // Green for active detection
+                detectionElement.style.color = '#4CAF50';
             } else {
                 detectionElement.textContent = 'No detection';
-                detectionElement.style.color = '#999'; // Gray for no detection
+                detectionElement.style.color = '#999';
             }
         }
         
-        // Always update FPS display when we have fresh detection data
         this.updateFPSDisplay();
     }
     
     /**
-     * Toggle debug mode for detailed system information
-     * Enables/disables verbose logging and detailed displays
+     * Toggle debug mode
      */
     toggleDebugMode() {
         this.debugModeActive = !this.debugModeActive;
         this.showDetailedInfo = this.debugModeActive;
-        
         console.log(`[SignLanguageHandler] Debug mode ${this.debugModeActive ? 'enabled' : 'disabled'}`);
-        
         return this.debugModeActive;
     }
     
     /**
-     * Create video elements with integrated caption overlay system
-     * This method builds the complete video interface including caption container
+     * Update caption settings dynamically
      */
-    createVideoElementsWithCaptionOverlay() {
-        // Remove any existing video container
-        let container = document.getElementById('signLanguageVideoContainer');
-        if (container) {
-            document.body.removeChild(container);
-        }
+    updateCaptionSettings(newSettings) {
+        this.captionSettings = { ...this.captionSettings, ...newSettings };
+        console.log("[SignLanguageHandler] Caption settings updated:", this.captionSettings);
         
-        // Create main container with modern, professional styling
-        container = document.createElement('div');
-        container.id = 'signLanguageVideoContainer';
-        container.style.position = 'fixed';
-        container.style.bottom = '20px';
-        container.style.right = '20px';
-        container.style.width = '420px';  // Wider than before for better caption display
-        container.style.height = 'auto';
-        container.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
-        container.style.border = '1px solid #00BCD4';
-        container.style.borderRadius = '12px';
-        container.style.padding = '12px';
-        container.style.zIndex = '10000'; // Very high z-index to ensure visibility over all content
-        container.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)';
-        container.style.backdropFilter = 'blur(15px)'; // Modern glass effect
-        container.style.display = 'none'; // Initially hidden
-        container.style.fontFamily = 'Arial, sans-serif';
-        
-        // Create title bar with professional appearance and close functionality
-        const titleBar = document.createElement('div');
-        titleBar.style.display = 'flex';
-        titleBar.style.justifyContent = 'space-between';
-        titleBar.style.alignItems = 'center';
-        titleBar.style.marginBottom = '12px';
-        titleBar.style.paddingBottom = '8px';
-        titleBar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
-        
-        const title = document.createElement('div');
-        title.textContent = 'Sign Language Detection';
-        title.style.color = 'white';
-        title.style.fontWeight = 'bold';
-        title.style.fontSize = '14px';
-        
-        const closeButton = document.createElement('button');
-        closeButton.textContent = '×';
-        closeButton.style.background = 'none';
-        closeButton.style.border = 'none';
-        closeButton.style.color = '#999';
-        closeButton.style.fontSize = '18px';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.padding = '0';
-        closeButton.style.width = '24px';
-        closeButton.style.height = '24px';
-        closeButton.style.borderRadius = '50%';
-        closeButton.style.transition = 'all 0.2s ease';
-        
-        // Close button functionality
-        closeButton.onclick = () => {
-            container.style.display = 'none';
-        };
-        
-        // Close button hover effects
-        closeButton.onmouseenter = () => {
-            closeButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-            closeButton.style.color = 'white';
-        };
-        closeButton.onmouseleave = () => {
-            closeButton.style.backgroundColor = 'transparent';
-            closeButton.style.color = '#999';
-        };
-        
-        titleBar.appendChild(title);
-        titleBar.appendChild(closeButton);
-        container.appendChild(titleBar);
-        
-        // Hidden input video element (receives original screen share)
-        this.videoElement = document.createElement('video');
-        this.videoElement.autoplay = true;
-        this.videoElement.muted = true;
-        this.videoElement.playsInline = true;
-        this.videoElement.style.display = 'none'; // Hidden - only used for MediaPipe processing
-        container.appendChild(this.videoElement);
-        
-        // Create video wrapper with caption overlay capability - this is the key structure
-        const videoWrapper = document.createElement('div');
-        videoWrapper.style.position = 'relative'; // Critical for absolute positioning of captions
-        videoWrapper.style.width = '100%';
-        videoWrapper.style.borderRadius = '8px';
-        videoWrapper.style.overflow = 'hidden';
-        videoWrapper.style.backgroundColor = '#000';
-        videoWrapper.style.minHeight = '200px'; // Ensure space for captions even with no video
-        
-        // Main display video (shows processed stream from MediaPipe with overlaid landmarks)
-        this.displayElement = document.createElement('video');
-        this.displayElement.autoplay = true;
-        this.displayElement.playsInline = true;
-        this.displayElement.muted = true;
-        this.displayElement.style.width = '100%';
-        this.displayElement.style.height = 'auto';
-        this.displayElement.style.display = 'block';
-        this.displayElement.style.borderRadius = '8px';
-        
-        // CREATE THE CAPTION OVERLAY CONTAINER - This is the heart of our video overlay system
-        this.captionContainer = document.createElement('div');
-        this.captionContainer.id = 'signLanguageCaptionOverlay';
-        this.captionContainer.style.position = 'absolute';     // Positioned over the video
-        this.captionContainer.style.bottom = '12px';           // Standard caption position from bottom
-        this.captionContainer.style.left = '12px';             // Left padding
-        this.captionContainer.style.right = '12px';            // Right padding
-        this.captionContainer.style.zIndex = '15';             // Above video, below controls
-        this.captionContainer.style.pointerEvents = 'none';    // Allow interaction with video below
-        this.captionContainer.style.display = 'flex';
-        this.captionContainer.style.flexDirection = 'column';  // Stack multiple captions vertically
-        this.captionContainer.style.alignItems = 'center';     // Center captions horizontally
-        this.captionContainer.style.gap = '4px';               // Space between multiple captions
-        
-        // Assemble the complete video interface
-        videoWrapper.appendChild(this.displayElement);         // Video layer (bottom)
-        videoWrapper.appendChild(this.captionContainer);       // Caption layer (top)
-        container.appendChild(videoWrapper);
-        
-        // Create status bar for system information and monitoring
-        const statusBar = document.createElement('div');
-        statusBar.style.display = 'flex';
-        statusBar.style.justifyContent = 'space-between';
-        statusBar.style.alignItems = 'center';
-        statusBar.style.marginTop = '12px';
-        statusBar.style.paddingTop = '8px';
-        statusBar.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
-        statusBar.style.fontSize = '11px';
-        statusBar.style.color = '#ccc';
-        
-        // FPS performance indicator
-        const fpsDisplay = document.createElement('div');
-        fpsDisplay.id = 'signLanguageFPS';
-        fpsDisplay.textContent = '0.0 FPS';
-        fpsDisplay.style.fontWeight = 'bold';
-        
-        // Connection status indicator
-        const connectionStatus = document.createElement('div');
-        connectionStatus.id = 'connectionStatus';
-        connectionStatus.textContent = 'Connecting...';
-        connectionStatus.style.fontSize = '10px';
-        
-        // Detection status indicator
-        const detectionStatus = document.createElement('div');
-        detectionStatus.id = 'signLanguageDetection';
-        detectionStatus.textContent = 'Initializing...';
-        detectionStatus.style.fontSize = '10px';
-        detectionStatus.style.textAlign = 'right';
-        
-        statusBar.appendChild(fpsDisplay);
-        statusBar.appendChild(connectionStatus);
-        statusBar.appendChild(detectionStatus);
-        container.appendChild(statusBar);
-        
-        // Add double-click handler for debug mode toggle
-        container.addEventListener('dblclick', () => {
-            this.toggleDebugMode();
+        // Apply to existing captions
+        this.activeCaptions.forEach(caption => {
+            if (newSettings.fontSize) caption.style.fontSize = newSettings.fontSize;
+            if (newSettings.fontFamily) caption.style.fontFamily = newSettings.fontFamily;
+            if (newSettings.backgroundColor) caption.style.backgroundColor = newSettings.backgroundColor;
+            if (newSettings.textColor) caption.style.color = newSettings.textColor;
         });
-        
-        // Add the complete video interface to the page
-        document.body.appendChild(container);
-        
-        console.log("[SignLanguageHandler] Video interface with caption overlay system created successfully");
     }
     
     /**
-     * Show the video container with caption overlay system
-     * Makes the video interface visible and ready for use
-     */
-    showVideoContainer() {
-        const container = document.getElementById('signLanguageVideoContainer');
-        if (container) {
-            container.style.display = 'block';
-            console.log("[SignLanguageHandler] Video overlay system interface is now visible and ready");
-        }
-    }
-    
-    /**
-     * Deactivate the sign language handler and cleanup all resources
-     * Ensures clean shutdown with no resource leaks
+     * Deactivate the system and cleanup
      */
     deactivate() {
         if (!this.isActive) {
-            console.log("[SignLanguageHandler] System already inactive - skipping deactivation");
+            console.log("[SignLanguageHandler] Already inactive");
             return;
         }
         
-        console.log("[SignLanguageHandler] Beginning deactivation sequence");
+        console.log("[SignLanguageHandler] Deactivating webpage video overlay system");
         
-        // Clear all video captions before hiding interface
-        this.clearAllVideoCaptions();
+        // Clear all captions
+        this.clearAllWebpageVideoCaptions();
         
-        // Hide the video container
-        const container = document.getElementById('signLanguageVideoContainer');
-        if (container) {
-            container.style.display = 'none';
+        // Hide monitoring interface
+        if (this.monitoringContainer) {
+            this.monitoringContainer.style.display = 'none';
         }
         
-        // Clear periodic server communication intervals
+        // Stop video observer
+        if (this.videoObserver) {
+            this.videoObserver.disconnect();
+            this.videoObserver = null;
+        }
+        
+        // Stop visibility observers
+        for (const [element, videoInfo] of this.webpageVideos) {
+            if (videoInfo.visibilityObserver) {
+                videoInfo.visibilityObserver.disconnect();
+            }
+        }
+        
+        // Remove caption containers
+        for (const [element, container] of this.videoCaptionContainers) {
+            if (container.parentNode) {
+                container.parentNode.removeChild(container);
+            }
+        }
+        
+        // Clear data structures
+        this.webpageVideos.clear();
+        this.videoCaptionContainers.clear();
+        this.activeCaptions.clear();
+        this.activeVideoTarget = null;
+        
+        // Remove event listeners
+        window.removeEventListener('resize', this.handleWindowResize.bind(this));
+        window.removeEventListener('scroll', this.handlePageScroll.bind(this));
+        
+        // Clear intervals
         if (this.landmarkInterval) {
             clearInterval(this.landmarkInterval);
             this.landmarkInterval = null;
         }
         
-        // Perform complete resource cleanup
-        this.cleanupResources();
+        // Cleanup MediaPipe resources
+        this.cleanupMediaPipeResources();
         this.isActive = false;
         
-        console.log("[SignLanguageHandler] Deactivation completed successfully");
+        console.log("[SignLanguageHandler] Webpage video overlay system deactivated");
     }
     
     /**
-     * Clean up all system resources to prevent memory leaks
-     * Critical for proper extension lifecycle management
+     * Cleanup MediaPipe-specific resources
      */
-    cleanupResources() {
-        console.log("[SignLanguageHandler] Cleaning up system resources");
-        
-        // Clear caption-related timers and references
-        if (this.captionDisplayTimer) {
-            clearTimeout(this.captionDisplayTimer);
-            this.captionDisplayTimer = null;
-        }
-        
-        // Close WebRTC connection cleanly
+    cleanupMediaPipeResources() {
         if (this.peerConnection) {
             this.peerConnection.close();
             this.peerConnection = null;
         }
         
-        // Stop all media streams
         if (this.stream) {
-            this.stream.getTracks().forEach(track => {
-                track.stop();
-                console.log(`[SignLanguageHandler] Stopped ${track.kind} track`);
-            });
+            this.stream.getTracks().forEach(track => track.stop());
             this.stream = null;
         }
         
-        // Clear video element sources
         if (this.videoElement) {
             this.videoElement.srcObject = null;
         }
@@ -963,7 +1208,7 @@ export default class SignLanguageHandler {
             this.displayElement.srcObject = null;
         }
         
-        // Reset all detection and performance state
+        // Reset state
         this.faceLandmarks = null;
         this.poseLandmarks = null;
         this.leftHandLandmarks = null;
@@ -972,101 +1217,72 @@ export default class SignLanguageHandler {
         this.lastLandmarkUpdate = null;
         this.fps = 0;
         
-        // Reset caption system state
-        this.captionContainer = null;
-        this.captionElement = null;
-        this.captionQueue = [];
-        this.captionIdCounter = 0;
-        
-        console.log("[SignLanguageHandler] Resource cleanup completed");
+        console.log("[SignLanguageHandler] MediaPipe resources cleaned up");
     }
     
     /**
-     * Test connectivity to MediaPipe server
-     * Verifies server availability before attempting connection
+     * Test MediaPipe server connectivity
      */
     async pingServer() {
         try {
-            console.log('[SignLanguageHandler] Testing MediaPipe server connectivity...');
             const response = await fetch(`${this.serverUrl}/ping`);
             
             if (response.ok) {
                 const data = await response.json();
-                console.log(`[SignLanguageHandler] Server responded successfully: ${data.message}`);
+                console.log(`[SignLanguageHandler] Server available: ${data.message}`);
                 return true;
-            } else {
-                console.log(`[SignLanguageHandler] Server returned error status: ${response.status}`);
-                return false;
             }
+            return false;
         } catch (error) {
-            console.error(`[SignLanguageHandler] Server connectivity test failed: ${error.message}`);
+            console.error(`[SignLanguageHandler] Server connectivity failed: ${error.message}`);
             return false;
         }
     }
     
-    /**
-     * Get the most recent translation
-     * Useful for external components that need current translation data
-     */
+    // Public API methods for external access
     getLastTranslation() {
         return this.lastTranslation;
     }
     
-    /**
-     * Get complete translation history
-     * Provides access to all translations received during this session
-     */
     getTranslationHistory() {
         return this.translationHistory;
     }
     
-    /**
-     * Clear translation history and all video captions
-     * Resets the translation system to initial state
-     */
     clearTranslationHistory() {
         this.translationHistory = [];
         this.lastTranslation = null;
-        this.clearAllVideoCaptions();
-        console.log("[SignLanguageHandler] Translation history and video captions cleared");
+        this.clearAllWebpageVideoCaptions();
+        console.log("[SignLanguageHandler] Translation history and captions cleared");
     }
     
-    /**
-     * Get comprehensive debug information about system state
-     * Useful for troubleshooting and system monitoring
-     */
+    toggleMonitoringWindow() {
+        this.showMonitoringWindow = !this.showMonitoringWindow;
+        if (this.monitoringContainer) {
+            this.monitoringContainer.style.display = this.showMonitoringWindow ? 'block' : 'none';
+        }
+        return this.showMonitoringWindow;
+    }
+    
     getDebugInfo() {
         return {
-            // Core system state
             isActive: this.isActive,
             connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
             dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
-            
-            // Media stream state
             streamActive: this.stream !== null && 
                 this.stream.getVideoTracks().some(track => track.readyState === 'live'),
-            
-            // Performance metrics
             fps: this.fps,
-            
-            // Detection state
             faceLandmarks: this.faceLandmarks !== null,
             poseLandmarks: this.poseLandmarks !== null,
             leftHandLandmarks: this.leftHandLandmarks !== null,
             rightHandLandmarks: this.rightHandLandmarks !== null,
-            
-            // Server communication
-            serverPerformanceData: this.serverPerformanceData,
-            lastLandmarkUpdate: this.lastLandmarkUpdate,
-            
-            // Debug and display settings
             debugModeActive: this.debugModeActive,
             captionSettings: this.captionSettings,
-            
-            // Caption system state
-            activeCaptions: this.captionContainer ? this.captionContainer.children.length : 0,
+            webpageVideosCount: this.webpageVideos.size,
+            activeCaptionsCount: this.activeCaptions.size,
+            activeVideoTarget: this.activeVideoTarget ? this.activeVideoTarget.type : 'none',
             translationHistoryCount: this.translationHistory.length,
-            lastTranslation: this.lastTranslation
+            lastTranslation: this.lastTranslation,
+            showMonitoringWindow: this.showMonitoringWindow
         };
     }
 }

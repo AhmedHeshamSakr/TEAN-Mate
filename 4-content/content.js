@@ -1,6 +1,4 @@
-// content.js - Complete implementation for video overlay only sign language display
-// This file replaces your existing content.js
-
+// content.js - Complete implementation for webpage video overlay captions
 import HighlightBox from "../2-features/TTS/HighlightBox.js";
 import TextExtractor from "../2-features/TTS/TextExtractor.js";
 import SpeechHandler from "../2-features/TTS/SpeechHandler.js";
@@ -17,7 +15,7 @@ class ContentHandler {
         this.pastBorderStyle = "";
         this.pastBackgroundStyle = "";
 
-        // Initialize core TTS functionality
+        // Initialize core accessibility functionality
         this.highlightBox = new HighlightBox();
         this.textExtractor = new TextExtractor();
         this.speechHandler = new SpeechHandler();
@@ -26,15 +24,15 @@ class ContentHandler {
         // Initialize image captioning functionality
         this.imageCaptionHandler = new ImageCaptionHandler(chrome.runtime.getURL('Florence-2-base-ft'));
         
-        // Initialize STT video overlay manager (for speech recognition overlays, separate from sign language)
+        // Initialize STT video overlay manager (for speech recognition overlays on videos)
         this.videoOverlayManager = new VideoOverlayManager();
         
-        // Initialize sign language handler with video overlay capability
-        // This is the core component that will display translations as video captions
+        // Initialize ENHANCED sign language handler with webpage video caption capability
+        // This is the core component that detects videos on the current page and overlays translations
         this.signLanguageHandler = new SignLanguageHandler(); 
         
         console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
-        console.log('Sign Language handler initialized for video overlay display only:', this.signLanguageHandler);
+        console.log('Enhanced Sign Language handler initialized for webpage video overlay display:', this.signLanguageHandler);
 
         // TTS navigation state
         this.currentElement = null;
@@ -44,7 +42,7 @@ class ContentHandler {
         this.isReadingActive = false;
         this.wasSpeaking = false;
         
-        // Create tree walker for DOM navigation
+        // Create tree walker for DOM navigation during TTS
         this.walker = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_ELEMENT,
@@ -60,17 +58,20 @@ class ContentHandler {
             false
         );
 
-        // Set up event listeners
+        // Set up core event listeners
         document.addEventListener('focusin', this.handleFocusChange.bind(this));
         chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
 
-        // Initialize the system
+        // Initialize the system and set up webpage video detection
         this.resetReadingState();
+        
+        // Set up page navigation detection for Single Page Applications
+        this.setupSPANavigationDetection();
     }
 
     /**
      * Reset and initialize all system state
-     * This method sets up event listeners for the video overlay system
+     * Enhanced to support webpage video detection and caption overlay system
      */
     resetReadingState() {
         // Reset TTS state
@@ -90,8 +91,7 @@ class ContentHandler {
             }
         }
         
-        // Set up MediaPipe landmark detection monitoring
-        // This provides system health data but doesn't affect display
+        // Set up MediaPipe landmark detection monitoring for system health
         window.addEventListener('handLandmarksDetected', (event) => {
             const { leftHand, rightHand, face, pose, timestamp, fps } = event.detail;
             console.log(`[${new Date(timestamp).toLocaleTimeString()}] MediaPipe Detection (${fps.toFixed(1)} FPS)`, 
@@ -100,8 +100,7 @@ class ContentHandler {
                 leftHand ? 'Left hand detected' : 'No left hand', 
                 rightHand ? 'Right hand detected' : 'No right hand');
             
-            // Send basic detection status to sidebar for monitoring only
-            // This is just for system health display, not for translation text
+            // Send detection status to sidebar for system monitoring
             chrome.runtime.sendMessage({
                 action: "handLandmarksUpdate",
                 face: face !== null,
@@ -113,36 +112,29 @@ class ContentHandler {
             });
         });
         
-        // CRITICAL: Set up sign language translation event listener for video overlay ONLY
-        // This completely replaces the previous sidebar forwarding approach
+        // ENHANCED: Set up sign language translation event listener for WEBPAGE VIDEO OVERLAY
+        // This is the key difference - translations now appear on the main webpage videos
         window.addEventListener('signLanguageTranslation', (event) => {
             const { translatedText, timestamp, confidence, words, translationHistory } = event.detail;
             
-            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation for Video Overlay Only: "${translatedText}"`);
+            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation for Webpage Video: "${translatedText}"`);
             
-            // The translation is already displayed as a video overlay by the SignLanguageHandler
-            // We only log this event for debugging and monitoring purposes
+            // The translation is automatically displayed on webpage videos by the SignLanguageHandler
+            // We log this for monitoring and can optionally send statistics to sidebar
             
-            // IMPORTANT: NO SIDEBAR FORWARDING FOR TRANSLATIONS
-            // The SignLanguageHandler.processTranslationForVideoOverlay() method handles all display logic
-            // This is the fundamental difference from the previous implementation
+            console.log(`[CONTENT] Translation displayed on webpage video - no sidebar forwarding needed`);
             
-            console.log(`[CONTENT] Translation processed exclusively by video overlay system - no sidebar display`);
-            
-            // Optional: Send minimal data to sidebar for statistics/history tracking only
-            // This is NOT for display purposes - only for system monitoring
-            // Uncomment the following if you want basic sidebar statistics:
-            /*
+            // Optional: Send statistics to sidebar for monitoring (not for display)
+            // This provides system health information without duplicating the caption display
             chrome.runtime.sendMessage({
                 action: "signLanguageStatistics",
                 translatedText: translatedText,
                 timestamp: timestamp,
                 confidence: confidence,
-                displayMethod: 'video-overlay-only',
-                // Note: this is for statistics only, not display
-                isStatisticsOnly: true
+                displayMethod: 'webpage-video-overlay',
+                activeVideoType: this.signLanguageHandler.activeVideoTarget?.type || 'unknown',
+                isStatisticsOnly: true // Flag to indicate this is not for display
             });
-            */
         });
         
         // Set up screen sharing lifecycle event listeners
@@ -164,6 +156,45 @@ class ContentHandler {
         });
     }
 
+    /**
+     * NEW: Set up detection for Single Page Application navigation
+     * This ensures video detection works even when pages change without full reload
+     */
+    setupSPANavigationDetection() {
+        // Monitor URL changes (for SPAs like YouTube, Netflix, etc.)
+        let lastUrl = location.href;
+        
+        const urlChangeObserver = new MutationObserver(() => {
+            if (lastUrl !== location.href) {
+                lastUrl = location.href;
+                console.log('[CONTENT] Page navigation detected, re-initializing video detection');
+                
+                // Small delay to allow new content to load
+                setTimeout(() => {
+                    if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+                        // Re-initialize video detection for new page content
+                        this.signLanguageHandler.initializeWebpageVideoDetection();
+                    }
+                }, 1000);
+            }
+        });
+        
+        urlChangeObserver.observe(document, { 
+            subtree: true, 
+            childList: true 
+        });
+        
+        // Also listen for popstate events (back/forward navigation)
+        window.addEventListener('popstate', () => {
+            console.log('[CONTENT] Popstate navigation detected');
+            setTimeout(() => {
+                if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+                    this.signLanguageHandler.initializeWebpageVideoDetection();
+                }
+            }, 1000);
+        });
+    }
+
     // TTS notification methods for sidebar integration
     notifySpeechStarted() {
         chrome.runtime.sendMessage({
@@ -177,7 +208,7 @@ class ContentHandler {
         });
     }
 
-    // Settings management
+    // Settings management (unchanged from original)
     getSettings(callback) {
         chrome.storage.sync.get('settings', function(data) {
             if (data.settings) {
@@ -203,7 +234,7 @@ class ContentHandler {
         });
     }
 
-    // TTS text selection methods
+    // TTS text selection and navigation methods (unchanged from original)
     getSelectedText() {
         console.log('getSelectedText called');
         const selection = window.getSelection();
@@ -213,7 +244,7 @@ class ContentHandler {
             
             if (selectedText) {
                 return { 
-                    elementsToReturn: [], // Empty array to prevent highlighting
+                    elementsToReturn: [],
                     text: [selectedText]
                 };
             }
@@ -221,7 +252,6 @@ class ContentHandler {
         return null;
     }
 
-    // TTS DOM navigation methods
     getNextElement() {
         let elementsToReturn = [];
         let text = [];
@@ -229,12 +259,10 @@ class ContentHandler {
             const element = this.walker.currentNode;
             if(TextExtractor.processedElements.has(element)) continue;
             if (this.isElementVisible(element)) {
-                // Check if element has any interactive children
                 const hasInteractiveChildren = Array.from(element.querySelectorAll('*')).some(child => 
                     InteractionHandler.isInteractiveElement(child) && this.isElementVisible(child)
                 );
 
-                // Skip this element if it has interactive children
                 if (hasInteractiveChildren) {
                     continue;
                 }
@@ -355,7 +383,7 @@ class ContentHandler {
         return { elementsToReturn, text };
     }
 
-    // TTS speech processing
+    // TTS speech processing (unchanged from original)
     async speakCurrentSection() {
         if (!this.currentElement) {
             if (this.readSelectedTextOnly) {
@@ -428,7 +456,7 @@ class ContentHandler {
         }
     }
 
-    // Input label processing methods
+    // Input label processing methods (unchanged from original)
     getInputLabelText(element) {
         console.log('getInputLabelText called');
         if (element.hasAttribute('aria-labelledby')) {
@@ -511,56 +539,89 @@ class ContentHandler {
     }
 
     /**
-     * NEW: Update sign language caption settings for video overlay system
-     * Allows dynamic customization of caption appearance from sidebar controls
+     * ENHANCED: Update sign language caption settings for webpage video overlay system
+     * Now supports settings for captions that appear on main webpage videos
      */
     updateSignLanguageCaptionSettings(settings) {
         if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
             this.signLanguageHandler.updateCaptionSettings(settings);
-            console.log('[CONTENT] Updated sign language caption settings:', settings);
+            console.log('[CONTENT] Updated webpage video caption settings:', settings);
         } else {
             console.warn('[CONTENT] Cannot update caption settings - sign language handler not active');
         }
     }
 
     /**
-     * NEW: Clear all sign language video captions
-     * Provides immediate caption clearing functionality
+     * ENHANCED: Clear all sign language captions from webpage videos
      */
-    clearSignLanguageCaptions() {
+    clearSignLanguageWebpageCaptions() {
         if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
-            this.signLanguageHandler.clearAllVideoCaptions();
-            console.log('[CONTENT] Cleared all sign language video captions');
+            this.signLanguageHandler.clearAllWebpageVideoCaptions();
+            console.log('[CONTENT] Cleared all webpage video captions');
         } else {
             console.warn('[CONTENT] Cannot clear captions - sign language handler not active');
         }
     }
 
     /**
-     * NEW: Get comprehensive sign language status including caption information
-     * Provides detailed system status for monitoring and debugging
+     * ENHANCED: Get comprehensive sign language status including webpage video information
      */
     getSignLanguageStatus() {
         if (!this.signLanguageHandler) {
             return { 
                 status: 'Not Available', 
                 error: 'Handler not initialized',
-                displayMethod: 'video-overlay-only' 
+                displayMethod: 'webpage-video-overlay' 
             };
         }
         
         const debugInfo = this.signLanguageHandler.getDebugInfo();
         return {
             status: this.signLanguageHandler.isActive ? 'Active' : 'Inactive',
-            displayMethod: 'video-overlay-only',
-            captionSystemActive: this.signLanguageHandler.isActive,
+            displayMethod: 'webpage-video-overlay',
+            webpageVideosDetected: debugInfo.webpageVideosCount,
+            activeVideoTarget: debugInfo.activeVideoTarget,
+            activeCaptionsCount: debugInfo.activeCaptionsCount,
+            monitoringWindowVisible: debugInfo.showMonitoringWindow,
             ...debugInfo
         };
+    }
+
+    /**
+     * NEW: Toggle the MediaPipe monitoring window visibility
+     * Users can choose to show/hide the small monitoring window while keeping captions on webpage videos
+     */
+    toggleSignLanguageMonitoringWindow() {
+        if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+            const isVisible = this.signLanguageHandler.toggleMonitoringWindow();
+            console.log(`[CONTENT] MediaPipe monitoring window ${isVisible ? 'shown' : 'hidden'}`);
+            return isVisible;
+        }
+        return false;
+    }
+
+    /**
+     * NEW: Manually trigger webpage video re-detection
+     * Useful for dynamically loaded content or when videos are added after page load
+     */
+    redetectWebpageVideos() {
+        if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+            this.signLanguageHandler.initializeWebpageVideoDetection();
+            console.log('[CONTENT] Triggered webpage video re-detection');
+            
+            const status = this.getSignLanguageStatus();
+            return {
+                success: true,
+                videosDetected: status.webpageVideosDetected,
+                activeTarget: status.activeVideoTarget
+            };
+        }
+        return { success: false, error: 'Sign language handler not active' };
     }
     
     /**
      * Main message handler for all extension communication
-     * Routes messages to appropriate handlers based on action type
+     * Enhanced to support webpage video overlay functionality
      */
     handleMessage(request) {
         // Handle page load reset
@@ -569,7 +630,7 @@ class ContentHandler {
             return;
         }
 
-        // Image captioning handlers
+        // Image captioning handlers (unchanged)
         if (request.action === "activateImageCaptioning") {
             console.log('[CONTENT] Received image captioning activation');
             this.imageCaptionHandler.setCaptionType(request.captionType);
@@ -579,9 +640,9 @@ class ContentHandler {
             this.imageCaptionHandler.deactivate();
         } 
         
-        // Sign language detection handlers (video overlay system)
+        // ENHANCED: Sign language detection handlers for webpage video overlay system
         else if (request.action === "startScreenCapture") {
-            console.log('[CONTENT] Screen capture activation requested for video overlay system');
+            console.log('[CONTENT] Screen capture activation requested for webpage video overlay system');
             
             this.checkServerConnectivity()
                 .then(serverAvailable => {
@@ -598,24 +659,28 @@ class ContentHandler {
                         return;
                     }
                     
-                    console.log('[CONTENT] Server available, activating video overlay system');
+                    console.log('[CONTENT] Server available, activating webpage video overlay system');
                     this.signLanguageHandler.activate()
                         .then(success => {
-                            console.log('[CONTENT] Video overlay system activation result:', success);
+                            console.log('[CONTENT] Webpage video overlay system activation result:', success);
+                            const status = this.getSignLanguageStatus();
+                            
                             chrome.runtime.sendMessage({
                                 action: "screenSharingStatus",
                                 status: success ? 'Active' : 'Error',
-                                displayMethod: 'video-overlay-only'
+                                displayMethod: 'webpage-video-overlay',
+                                webpageVideosDetected: status.webpageVideosDetected,
+                                activeVideoTarget: status.activeVideoTarget
                             });
                             
                             if (success) {
-                                console.log('[CONTENT] Sign language video overlay system activated successfully');
+                                console.log(`[CONTENT] Webpage video overlay system activated successfully - ${status.webpageVideosDetected} videos detected`);
                             } else {
-                                console.error('[CONTENT] Failed to activate sign language video overlay system');
+                                console.error('[CONTENT] Failed to activate webpage video overlay system');
                             }
                         })
                         .catch(error => {
-                            console.error('[CONTENT] Video overlay system activation failed:', error);
+                            console.error('[CONTENT] Webpage video overlay system activation failed:', error);
                             chrome.runtime.sendMessage({
                                 action: "screenSharingStatus",
                                 status: 'Error',
@@ -636,7 +701,7 @@ class ContentHandler {
             });
         } 
         
-        // STT video overlay handlers (separate from sign language)
+        // STT video overlay handlers (separate from sign language - unchanged)
         else if (request.action === "toggleVideoOverlay") {
             console.log('[CONTENT] Toggle STT video overlay (not sign language):', request.enabled);
             this.videoOverlayManager.setActive(request.enabled);
@@ -651,7 +716,7 @@ class ContentHandler {
         
         // Debug mode handler
         else if (request.action === "toggleDebugMode") {
-            console.log('[CONTENT] Toggle debug mode for sign language video overlay');
+            console.log('[CONTENT] Toggle debug mode for webpage video overlay');
             const debugEnabled = this.signLanguageHandler.toggleDebugMode();
             chrome.runtime.sendMessage({
                 action: "debugModeStatus",
@@ -659,13 +724,13 @@ class ContentHandler {
             });
         } 
         
-        // NEW: Sign language caption management handlers
+        // ENHANCED: Webpage video caption management handlers
         else if (request.action === "updateSignLanguageCaptionSettings") {
-            console.log('[CONTENT] Updating sign language caption settings:', request.settings);
+            console.log('[CONTENT] Updating webpage video caption settings:', request.settings);
             this.updateSignLanguageCaptionSettings(request.settings);
         } else if (request.action === "clearSignLanguageCaptions") {
-            console.log('[CONTENT] Clearing sign language video captions');
-            this.clearSignLanguageCaptions();
+            console.log('[CONTENT] Clearing webpage video captions');
+            this.clearSignLanguageWebpageCaptions();
         } else if (request.action === "getSignLanguageStatus") {
             const status = this.getSignLanguageStatus();
             chrome.runtime.sendMessage({
@@ -674,23 +739,40 @@ class ContentHandler {
             });
         } 
         
-        // Translation history handlers (now for video overlay system)
+        // NEW: Additional webpage video management handlers
+        else if (request.action === "toggleMonitoringWindow") {
+            console.log('[CONTENT] Toggle MediaPipe monitoring window');
+            const isVisible = this.toggleSignLanguageMonitoringWindow();
+            chrome.runtime.sendMessage({
+                action: "monitoringWindowToggled",
+                visible: isVisible
+            });
+        } else if (request.action === "redetectWebpageVideos") {
+            console.log('[CONTENT] Re-detecting webpage videos');
+            const result = this.redetectWebpageVideos();
+            chrome.runtime.sendMessage({
+                action: "videoRedetectionResult",
+                ...result
+            });
+        }
+        
+        // Translation history handlers (now for webpage video overlay system)
         else if (request.action === "getTranslationHistory") {
             const history = this.signLanguageHandler.getTranslationHistory();
             chrome.runtime.sendMessage({
                 action: "translationHistoryResponse",
                 history: history,
-                source: 'video-overlay'
+                source: 'webpage-video-overlay'
             });
         } else if (request.action === "clearTranslationHistory") {
             this.signLanguageHandler.clearTranslationHistory();
             chrome.runtime.sendMessage({
                 action: "translationHistoryCleared",
-                source: 'video-overlay'
+                source: 'webpage-video-overlay'
             });
         } 
         
-        // TTS (Text-to-Speech) handlers
+        // TTS (Text-to-Speech) handlers (unchanged from original)
         else if (request.action === "extractText") {
             if (this.speechHandler.isSpeaking) {
                 this.speechHandler.stop();
@@ -850,21 +932,21 @@ class ContentHandler {
         } else if (request.action === "toggleImageCaptioning") {
             this.toggleImageCaptioning();
         } else if (request.action === "getScreenSharingStatus") {
-            // Return comprehensive status including video overlay information
+            // Return comprehensive status including webpage video overlay information
             const status = this.getSignLanguageStatus();
             chrome.runtime.sendMessage({
                 action: "screenSharingStatus",
                 status: status.status === 'Active' ? 'Active' : 'Off',
-                displayMethod: 'video-overlay-only',
+                displayMethod: 'webpage-video-overlay',
                 ...status
             });
         }
     }
 
-    // MediaPipe server connectivity check
+    // MediaPipe server connectivity check (unchanged)
     async checkServerConnectivity() {
         try {
-            const response = await fetch('http://localhost:8766/ping');
+            const response = await fetch('https://acknowledged-shared-card-stages.trycloudflare.com/ping');
             
             if (response.ok) {
                 return true;
@@ -876,7 +958,7 @@ class ContentHandler {
         }
     }
     
-    // Show server connectivity notification to user
+    // Show server connectivity notification to user (enhanced for webpage videos)
     showServerNotification() {
         const notification = document.createElement('div');
         notification.style.position = 'fixed';
@@ -887,15 +969,16 @@ class ContentHandler {
         notification.style.backgroundColor = '#f8d7da';
         notification.style.color = '#721c24';
         notification.style.borderRadius = '5px';
-        notification.style.zIndex = '9999';
+        notification.style.zIndex = '2147483647'; // Maximum z-index to appear above everything
         notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
         notification.style.maxWidth = '80%';
-        notification.style.width = '400px';
+        notification.style.width = '450px';
         notification.style.textAlign = 'center';
         
         notification.innerHTML = `
             <p><strong>MediaPipe Server Not Running</strong></p>
-            <p>Please start the Python server to use sign language detection with video overlays.</p>
+            <p>Please start the Python server to use sign language detection with webpage video captions.</p>
+            <p style="font-size: 12px; color: #856404; margin-top: 10px;">Captions will appear directly on your videos (YouTube, Netflix, etc.)</p>
             <button id="dismissBtn" style="background: #721c24; color: white; border: none; padding: 5px 10px; margin-top: 10px; cursor: pointer; border-radius: 3px;">Dismiss</button>
         `;
         
@@ -909,10 +992,10 @@ class ContentHandler {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);
             }
-        }, 10000);
+        }, 12000); // Slightly longer display time for more information
     }
 
-    // Image captioning toggle functionality
+    // Image captioning toggle functionality (unchanged)
     async toggleImageCaptioning() {
         try {
             const isActive = await this.imageCaptionHandler.toggle();
@@ -924,7 +1007,7 @@ class ContentHandler {
         }
     }
 
-    // Element visibility detection
+    // Element visibility detection (unchanged)
     isElementVisible(element) {
         if (!(element instanceof HTMLElement)) return false;
         if (element.offsetHeight === 0 || element.offsetWidth === 0) {
@@ -944,7 +1027,7 @@ class ContentHandler {
         return isNotHidden || isInteractive || isTreeItem;
     }
 
-    // Navigation state management for complex elements
+    // Navigation state management for complex elements (unchanged)
     saveNextElementAfterListbox(listbox) {
         let container = listbox.closest('[role="listitem"], section, article, .question-block, .form-section');
         if (!container) container = listbox.parentElement;
@@ -969,7 +1052,7 @@ class ContentHandler {
         }
     }
 
-    // Focus change handler for TTS navigation
+    // Focus change handler for TTS navigation (unchanged)
     handleFocusChange(event) {
         if (this.isProgrammaticFocus || !this.isReadingActive) return;
 
@@ -993,6 +1076,6 @@ class ContentHandler {
     }
 }
 
-// Initialize the content handler with video overlay functionality
-console.log('[CONTENT] Initializing ContentHandler with video overlay sign language system');
+// Initialize the enhanced content handler with webpage video overlay functionality
+console.log('[CONTENT] Initializing Enhanced ContentHandler with webpage video overlay sign language system');
 new ContentHandler();
