@@ -3531,6 +3531,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/instance/entries */
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/instance/every */ "./node_modules/core-js-pure/stable/instance/every.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js":
 /*!*******************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js ***!
@@ -3778,6 +3788,16 @@ module.exports = __webpack_require__(/*! core-js-pure/stable/object/keys */ "./n
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/object/values */ "./node_modules/core-js-pure/stable/object/values.js");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/parse-float.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/parse-float.js ***!
+  \***************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! core-js-pure/stable/parse-float */ "./node_modules/core-js-pure/stable/parse-float.js");
 
 /***/ }),
 
@@ -4538,6 +4558,22 @@ module.exports = getBuiltInPrototypeMethod('Array', 'entries');
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/es/array/virtual/every.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/es/array/virtual/every.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../../../modules/es.array.every */ "./node_modules/core-js-pure/modules/es.array.every.js");
+var getBuiltInPrototypeMethod = __webpack_require__(/*! ../../../internals/get-built-in-prototype-method */ "./node_modules/core-js-pure/internals/get-built-in-prototype-method.js");
+
+module.exports = getBuiltInPrototypeMethod('Array', 'every');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/es/array/virtual/filter.js":
 /*!**************************************************************!*\
   !*** ./node_modules/core-js-pure/es/array/virtual/filter.js ***!
@@ -4876,6 +4912,27 @@ module.exports = function (it) {
   var own = it.endsWith;
   return typeof it == 'string' || it === StringPrototype
     || (isPrototypeOf(StringPrototype, it) && own === StringPrototype.endsWith) ? method : own;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/instance/every.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js-pure/es/instance/every.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPrototypeOf = __webpack_require__(/*! ../../internals/object-is-prototype-of */ "./node_modules/core-js-pure/internals/object-is-prototype-of.js");
+var method = __webpack_require__(/*! ../array/virtual/every */ "./node_modules/core-js-pure/es/array/virtual/every.js");
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.every;
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.every) ? method : own;
 };
 
 
@@ -5419,6 +5476,22 @@ __webpack_require__(/*! ../../modules/es.object.values */ "./node_modules/core-j
 var path = __webpack_require__(/*! ../../internals/path */ "./node_modules/core-js-pure/internals/path.js");
 
 module.exports = path.Object.values;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/es/parse-float.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js-pure/es/parse-float.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+__webpack_require__(/*! ../modules/es.parse-float */ "./node_modules/core-js-pure/modules/es.parse-float.js");
+var path = __webpack_require__(/*! ../internals/path */ "./node_modules/core-js-pure/internals/path.js");
+
+module.exports = path.parseFloat;
 
 
 /***/ }),
@@ -9643,6 +9716,40 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/internals/number-parse-float.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js-pure/internals/number-parse-float.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js-pure/internals/global-this.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js-pure/internals/fails.js");
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js-pure/internals/function-uncurry-this.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js-pure/internals/to-string.js");
+var trim = (__webpack_require__(/*! ../internals/string-trim */ "./node_modules/core-js-pure/internals/string-trim.js").trim);
+var whitespaces = __webpack_require__(/*! ../internals/whitespaces */ "./node_modules/core-js-pure/internals/whitespaces.js");
+
+var charAt = uncurryThis(''.charAt);
+var $parseFloat = globalThis.parseFloat;
+var Symbol = globalThis.Symbol;
+var ITERATOR = Symbol && Symbol.iterator;
+var FORCED = 1 / $parseFloat(whitespaces + '-0') !== -Infinity
+  // MS Edge 18- broken with boxed symbols
+  || (ITERATOR && !fails(function () { $parseFloat(Object(ITERATOR)); }));
+
+// `parseFloat` method
+// https://tc39.es/ecma262/#sec-parsefloat-string
+module.exports = FORCED ? function parseFloat(string) {
+  var trimmedString = trim(toString(string));
+  var result = $parseFloat(trimmedString);
+  return result === 0 && charAt(trimmedString, 0) === '-' ? -0 : result;
+} : $parseFloat;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/internals/object-assign.js":
 /*!**************************************************************!*\
   !*** ./node_modules/core-js-pure/internals/object-assign.js ***!
@@ -12425,6 +12532,31 @@ addToUnscopables('copyWithin');
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/modules/es.array.every.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.array.every.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $every = (__webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js-pure/internals/array-iteration.js").every);
+var arrayMethodIsStrict = __webpack_require__(/*! ../internals/array-method-is-strict */ "./node_modules/core-js-pure/internals/array-method-is-strict.js");
+
+var STRICT_METHOD = arrayMethodIsStrict('every');
+
+// `Array.prototype.every` method
+// https://tc39.es/ecma262/#sec-array.prototype.every
+$({ target: 'Array', proto: true, forced: !STRICT_METHOD }, {
+  every: function every(callbackfn /* , thisArg */) {
+    return $every(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/modules/es.array.filter.js":
 /*!**************************************************************!*\
   !*** ./node_modules/core-js-pure/modules/es.array.filter.js ***!
@@ -13557,6 +13689,26 @@ $({ target: 'Object', stat: true }, {
   values: function values(O) {
     return $values(O);
   }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js-pure/modules/es.parse-float.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js-pure/modules/es.parse-float.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js-pure/internals/export.js");
+var $parseFloat = __webpack_require__(/*! ../internals/number-parse-float */ "./node_modules/core-js-pure/internals/number-parse-float.js");
+
+// `parseFloat` method
+// https://tc39.es/ecma262/#sec-parsefloat-string
+$({ global: true, forced: parseFloat !== $parseFloat }, {
+  parseFloat: $parseFloat
 });
 
 
@@ -17692,6 +17844,21 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/instance/every.js":
+/*!************************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/instance/every.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../../es/instance/every */ "./node_modules/core-js-pure/es/instance/every.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/instance/filter.js":
 /*!*************************************************************!*\
   !*** ./node_modules/core-js-pure/stable/instance/filter.js ***!
@@ -18158,6 +18325,21 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ "./node_modules/core-js-pure/stable/parse-float.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js-pure/stable/parse-float.js ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var parent = __webpack_require__(/*! ../es/parse-float */ "./node_modules/core-js-pure/es/parse-float.js");
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js-pure/stable/promise/index.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js-pure/stable/promise/index.js ***!
@@ -18363,6 +18545,28 @@ function _arrayWithHoles(r) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithoutHoles.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithoutHoles.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayWithoutHoles)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/array/is-array.js */ "./node_modules/core-js-pure/full/array/is-array.js");
+/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayLikeToArray.js");
+
+
+function _arrayWithoutHoles(r) {
+  if (core_js_pure_features_array_is_array_js__WEBPACK_IMPORTED_MODULE_1__(r)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js ***!
@@ -18480,6 +18684,30 @@ function _defineProperty(e, r, t) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArray.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArray.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _iterableToArray)
+/* harmony export */ });
+/* harmony import */ var core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js-pure/features/symbol/index.js */ "./node_modules/core-js-pure/full/symbol/index.js");
+/* harmony import */ var core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js-pure/features/get-iterator-method.js */ "./node_modules/core-js-pure/full/get-iterator-method.js");
+/* harmony import */ var core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js-pure/features/array/from.js */ "./node_modules/core-js-pure/full/array/from.js");
+
+
+
+function _iterableToArray(r) {
+  if ("undefined" != typeof core_js_pure_features_symbol_index_js__WEBPACK_IMPORTED_MODULE_0__ && null != core_js_pure_features_get_iterator_method_js__WEBPACK_IMPORTED_MODULE_1__(r) || null != r["@@iterator"]) return core_js_pure_features_array_from_js__WEBPACK_IMPORTED_MODULE_2__(r);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js":
 /*!*********************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArrayLimit.js ***!
@@ -18546,6 +18774,24 @@ function _nonIterableRest() {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableSpread.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableSpread.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _nonIterableSpread)
+/* harmony export */ });
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js ***!
@@ -18567,6 +18813,32 @@ __webpack_require__.r(__webpack_exports__);
 
 function _slicedToArray(r, e) {
   return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs3/helpers/esm/toConsumableArray.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs3/helpers/esm/toConsumableArray.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _toConsumableArray)
+/* harmony export */ });
+/* harmony import */ var _arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithoutHoles.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/arrayWithoutHoles.js");
+/* harmony import */ var _iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/iterableToArray.js");
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/unsupportedIterableToArray.js");
+/* harmony import */ var _nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableSpread.js */ "./node_modules/@babel/runtime-corejs3/helpers/esm/nonIterableSpread.js");
+
+
+
+
+function _toConsumableArray(r) {
+  return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
 }
 
 
@@ -60915,32 +61187,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/is-array */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/is-array.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/keys */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
-/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-properties */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/object/define-property */ "./node_modules/@babel/runtime-corejs3/core-js-stable/object/define-property.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs3/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs3_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/toConsumableArray.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs3/helpers/esm/slicedToArray.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs3/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/map.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
-/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
+/* harmony import */ var _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/promise */ "./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/json/stringify */ "./node_modules/@babel/runtime-corejs3/core-js-stable/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/bind */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/bind.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/concat */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/concat.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/date/now */ "./node_modules/@babel/runtime-corejs3/core-js-stable/date/now.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/includes */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/includes.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-timeout */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-timeout.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/set-interval */ "./node_modules/@babel/runtime-corejs3/core-js-stable/set-interval.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/trim */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/trim.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/slice */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/slice.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/every */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/every.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/array/from */ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/some */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/some.js");
 
 
 
@@ -60956,11 +61231,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_3__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_5__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context22, _context23; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context22 = ownKeys(Object(t), !0)).call(_context22, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_10__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_8__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_7__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context23 = ownKeys(Object(t))).call(_context23, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_9__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_6__(t, r)); }); } return e; }
+function ownKeys(e, r) { var t = _babel_runtime_corejs3_core_js_stable_object_keys__WEBPACK_IMPORTED_MODULE_3__(e); if (_babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__) { var o = _babel_runtime_corejs3_core_js_stable_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4__(e); r && (o = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_15__(o).call(o, function (r) { return _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_5__(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var _context31, _context32; var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context31 = ownKeys(Object(t), !0)).call(_context31, function (r) { (0,_babel_runtime_corejs3_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_9__["default"])(e, r, t[r]); }) : _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_6__ ? _babel_runtime_corejs3_core_js_stable_object_define_properties__WEBPACK_IMPORTED_MODULE_7__(e, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_6__(t)) : _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context32 = ownKeys(Object(t))).call(_context32, function (r) { _babel_runtime_corejs3_core_js_stable_object_define_property__WEBPACK_IMPORTED_MODULE_8__(e, r, _babel_runtime_corejs3_core_js_stable_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_5__(t, r)); }); } return e; }
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof _babel_runtime_corejs3_core_js_stable_symbol__WEBPACK_IMPORTED_MODULE_0__ && _babel_runtime_corejs3_core_js_get_iterator_method__WEBPACK_IMPORTED_MODULE_1__(r) || r["@@iterator"]; if (!t) { if (_babel_runtime_corejs3_core_js_stable_array_is_array__WEBPACK_IMPORTED_MODULE_2__(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { var _context21; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__(_context21 = {}.toString.call(r)).call(_context21, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _unsupportedIterableToArray(r, a) { if (r) { var _context30; if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(_context30 = {}.toString.call(r)).call(_context30, 8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_18__(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
+
 
 
 
@@ -60983,7 +61261,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     (0,_babel_runtime_corejs3_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_13__["default"])(this, SignLanguageHandler);
     // Core system state
     this.isActive = false;
-    this.serverUrl = 'https://acknowledged-shared-card-stages.trycloudflare.com';
+    this.serverUrl = 'https://astrology-mel-lo-happens.trycloudflare.com';
     this.peerConnection = null;
     this.dataChannel = null;
     this.stream = null;
@@ -60994,14 +61272,14 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     this.monitoringContainer = null; // Container for MediaPipe monitoring
 
     // MAIN FEATURE: Webpage video caption system
-    this.webpageVideos = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__(); // Track all videos found on the current webpage
-    this.videoCaptionContainers = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_19__(); // Caption containers for each video
+    this.webpageVideos = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_20__(); // Track all videos found on the current webpage
+    this.videoCaptionContainers = new _babel_runtime_corejs3_core_js_stable_map__WEBPACK_IMPORTED_MODULE_20__(); // Caption containers for each video
     this.videoObserver = null; // Observer to detect new videos added to page
     this.activeVideoTarget = null; // Currently targeted video for captions
 
     // Caption management
     this.captionIdCounter = 0; // Unique identifier for each caption
-    this.activeCaptions = new _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_20__(); // Track all active caption elements
+    this.activeCaptions = new _babel_runtime_corejs3_core_js_stable_set__WEBPACK_IMPORTED_MODULE_21__(); // Track all active caption elements
 
     // Caption appearance and behavior settings - optimized for webpage integration
     this.captionSettings = {
@@ -61046,6 +61324,23 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     // Translation data management
     this.lastTranslation = null;
     this.translationHistory = [];
+    this.deduplicationSystem = {
+      lastDisplayedText: null,
+      // The actual text of the last caption shown
+      lastDisplayedTime: 0,
+      // When the last caption was displayed (timestamp)
+      lastConfidence: 0,
+      // Confidence of the last displayed translation
+      repetitionThreshold: 7000,
+      // Minimum time (ms) before showing same word again
+      confidenceThreshold: 0.1,
+      // Minimum confidence improvement to override repetition
+      similarityThreshold: 0.8,
+      // How similar words need to be to be considered "same"
+      recentTranslations: [],
+      // Buffer of recent translations for context analysis
+      maxRecentBuffer: 5 // How many recent translations to remember
+    };
 
     // System preferences
     this.showDetailedInfo = false;
@@ -61060,10 +61355,10 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   return (0,_babel_runtime_corejs3_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_14__["default"])(SignLanguageHandler, [{
     key: "activate",
     value: (function () {
-      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.mark(function _callee() {
+      var _activate = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_19__.mark(function _callee() {
         var _this = this;
         var _context, serverAvailable, offer, response, answer;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.wrap(function _callee$(_context2) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_19__.wrap(function _callee$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               if (!this.isActive) {
@@ -61164,7 +61459,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
               };
 
               // Step 9: Send video stream to MediaPipe
-              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context = this.stream.getTracks()).call(_context, function (track) {
+              _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context = this.stream.getTracks()).call(_context, function (track) {
                 _this.peerConnection.addTrack(track, _this.stream);
               });
 
@@ -61177,7 +61472,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
               return this.peerConnection.setLocalDescription(offer);
             case 35:
               _context2.next = 37;
-              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_21__(function (resolve) {
+              return new _babel_runtime_corejs3_core_js_stable_promise__WEBPACK_IMPORTED_MODULE_22__(function (resolve) {
                 if (_this.peerConnection.iceGatheringState === 'complete') {
                   resolve();
                 } else {
@@ -61195,7 +61490,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_22__({
+                body: _babel_runtime_corejs3_core_js_stable_json_stringify__WEBPACK_IMPORTED_MODULE_23__({
                   sdp: {
                     type: this.peerConnection.localDescription.type,
                     sdp: this.peerConnection.localDescription.sdp
@@ -61259,10 +61554,10 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       this.setupVideoObserver();
 
       // Set up window resize handler to adjust caption positioning
-      window.addEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context3 = this.handleWindowResize).call(_context3, this));
+      window.addEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_24__(_context3 = this.handleWindowResize).call(_context3, this));
 
       // Set up scroll handler to update caption positions
-      window.addEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context4 = this.handlePageScroll).call(_context4, this), {
+      window.addEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_24__(_context4 = this.handlePageScroll).call(_context4, this), {
         passive: true
       });
       console.log("[SignLanguageHandler] Video detection initialized - found ".concat(this.webpageVideos.size, " videos"));
@@ -61278,29 +61573,29 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       var _this2 = this;
       // Find HTML5 video elements
       var html5Videos = document.querySelectorAll('video');
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(html5Videos).call(html5Videos, function (video) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(html5Videos).call(html5Videos, function (video) {
         return _this2.registerVideo(video, 'html5');
       });
 
       // Find YouTube players (both iframe and div containers)
       var youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(youtubeIframes).call(youtubeIframes, function (iframe) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(youtubeIframes).call(youtubeIframes, function (iframe) {
         return _this2.registerVideo(iframe, 'youtube-iframe');
       });
       var youtubeContainers = document.querySelectorAll('#movie_player, .html5-video-container');
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(youtubeContainers).call(youtubeContainers, function (container) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(youtubeContainers).call(youtubeContainers, function (container) {
         return _this2.registerVideo(container, 'youtube-container');
       });
 
       // Find Vimeo players
       var vimeoIframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(vimeoIframes).call(vimeoIframes, function (iframe) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(vimeoIframes).call(vimeoIframes, function (iframe) {
         return _this2.registerVideo(iframe, 'vimeo');
       });
 
       // Find other common video containers
       var videoContainers = document.querySelectorAll('.video-player, .player, .video-container, .video-wrapper, ' + '[class*="video"], [class*="player"], [data-video], [data-player]');
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(videoContainers).call(videoContainers, function (container) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(videoContainers).call(videoContainers, function (container) {
         // Only register if it doesn't contain a video we've already found
         if (!container.querySelector('video, iframe[src*="youtube"], iframe[src*="vimeo"]')) {
           _this2.registerVideo(container, 'generic-container');
@@ -61325,7 +61620,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       var videoInfo = {
         element: videoElement,
         type: type,
-        id: _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context5 = "video-".concat(_babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(), "-")).call(_context5, Math.random().toString(36).substr(2, 9)),
+        id: _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context5 = "video-".concat(_babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__(), "-")).call(_context5, Math.random().toString(36).substr(2, 9)),
         captionContainer: null,
         isVisible: this.isVideoVisible(videoElement),
         lastKnownBounds: null
@@ -61430,29 +61725,29 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     value: function setupVideoObserver() {
       var _this3 = this;
       this.videoObserver = new MutationObserver(function (mutations) {
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(mutations).call(mutations, function (mutation) {
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(mutations).call(mutations, function (mutation) {
           var _context6;
-          _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context6 = mutation.addedNodes).call(_context6, function (node) {
+          _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context6 = mutation.addedNodes).call(_context6, function (node) {
             if (node.nodeType === Node.ELEMENT_NODE) {
               // Check if the added node is a video
               if (node.tagName === 'VIDEO') {
                 _this3.registerVideo(node, 'html5');
               } else if (node.tagName === 'IFRAME') {
                 var _context7, _context8;
-                if (node.src && (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context7 = node.src).call(_context7, 'youtube') || _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context8 = node.src).call(_context8, 'vimeo'))) {
+                if (node.src && (_babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_27__(_context7 = node.src).call(_context7, 'youtube') || _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_27__(_context8 = node.src).call(_context8, 'vimeo'))) {
                   var _context9;
-                  _this3.registerVideo(node, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context9 = node.src).call(_context9, 'youtube') ? 'youtube-iframe' : 'vimeo');
+                  _this3.registerVideo(node, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_27__(_context9 = node.src).call(_context9, 'youtube') ? 'youtube-iframe' : 'vimeo');
                 }
               } else {
                 // Check for videos within the added node
                 var videos = node.querySelectorAll('video');
-                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(videos).call(videos, function (video) {
+                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(videos).call(videos, function (video) {
                   return _this3.registerVideo(video, 'html5');
                 });
                 var iframes = node.querySelectorAll('iframe[src*="youtube"], iframe[src*="vimeo"]');
-                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(iframes).call(iframes, function (iframe) {
+                _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(iframes).call(iframes, function (iframe) {
                   var _context10;
-                  _this3.registerVideo(iframe, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_26__(_context10 = iframe.src).call(_context10, 'youtube') ? 'youtube-iframe' : 'vimeo');
+                  _this3.registerVideo(iframe, _babel_runtime_corejs3_core_js_stable_instance_includes__WEBPACK_IMPORTED_MODULE_27__(_context10 = iframe.src).call(_context10, 'youtube') ? 'youtube-iframe' : 'vimeo');
                 });
               }
             }
@@ -61492,7 +61787,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     value: function observeVideoVisibility(videoInfo) {
       var _this4 = this;
       var observer = new IntersectionObserver(function (entries) {
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(entries).call(entries, function (entry) {
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(entries).call(entries, function (entry) {
           var wasVisible = videoInfo.isVisible;
           videoInfo.isVisible = entry.isIntersecting && entry.intersectionRatio > 0.1;
           if (videoInfo.isVisible && !wasVisible) {
@@ -61533,7 +61828,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
 
     /**
      * Find the next best video to target for captions when current target becomes unavailable
-     */
+    */
   }, {
     key: "findNextActiveVideo",
     value: function findNextActiveVideo() {
@@ -61578,7 +61873,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       var _this5 = this;
       // Debounce resize events
       clearTimeout(this.resizeTimeout);
-      this.resizeTimeout = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+      this.resizeTimeout = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__(function () {
         _this5.updateAllCaptionContainerPositions();
       }, 100);
     }
@@ -61635,13 +61930,13 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         console.log("[SignLanguageHandler] Translation data channel opened");
         _this7.updateConnectionStatus('connected');
         _this7.showStatus('Ready for Sign Language Detection on Webpage Videos', 'success');
-        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+        _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__(function () {
           if (_this7.dataChannel.readyState === 'open') {
             _this7.dataChannel.send('get_landmarks');
             _this7.dataChannel.send('get_performance');
           }
         }, 1000);
-        _this7.landmarkInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_28__(function () {
+        _this7.landmarkInterval = _babel_runtime_corejs3_core_js_stable_set_interval__WEBPACK_IMPORTED_MODULE_29__(function () {
           if (_this7.dataChannel.readyState === 'open') {
             _this7.dataChannel.send('get_translation');
           }
@@ -61682,40 +61977,429 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "processTranslationForWebpageVideo",
     value: function processTranslationForWebpageVideo(data) {
+      var _context11, _context12;
       var translatedText = data.text;
-      var confidence = data.confidence || null;
-      var timestamp = _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__();
-      console.log("[SignLanguageHandler] Processing translation for webpage video: \"".concat(translatedText, "\""));
+      var confidence = data.confidence || 0.8; // Default confidence if not provided
+      var timestamp = _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__();
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context11 = "[SignLanguageHandler] Raw translation received: \"".concat(translatedText, "\" (confidence: ")).call(_context11, confidence, ")"));
 
-      // Store translation data
+      // STEP 1: Apply intelligent deduplication filter
+      var shouldDisplay = this.shouldDisplayTranslation(translatedText, confidence, timestamp);
+      if (!shouldDisplay.display) {
+        console.log("[SignLanguageHandler] Translation filtered out: ".concat(shouldDisplay.reason));
+        // Still store the translation for history, but don't display it
+        this.updateTranslationHistory(translatedText, confidence, timestamp, false);
+        return; // Early return - don't display this caption
+      }
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context12 = "[SignLanguageHandler] Translation approved for display: \"".concat(translatedText, "\" (")).call(_context12, shouldDisplay.reason, ")"));
+
+      // STEP 2: Store translation data (now includes deduplication metadata)
       this.lastTranslation = {
         text: translatedText,
         timestamp: timestamp,
         confidence: confidence,
         words: data.words || null,
-        displayMethod: 'webpage-video-overlay'
+        displayMethod: 'webpage-video-overlay',
+        wasDisplayed: true,
+        deduplicationReason: shouldDisplay.reason
       };
 
-      // Add to history
-      this.translationHistory.push(this.lastTranslation);
-      if (this.translationHistory.length > 20) {
-        this.translationHistory.shift();
-      }
+      // STEP 3: Update deduplication tracking
+      this.updateDeduplicationTracking(translatedText, confidence, timestamp);
 
-      // Display translation on the active webpage video
+      // STEP 4: Add to history
+      this.updateTranslationHistory(translatedText, confidence, timestamp, true);
+
+      // STEP 5: Display translation on the active webpage video
       if (this.activeVideoTarget && this.activeVideoTarget.captionContainer) {
         this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
       } else {
         console.warn("[SignLanguageHandler] No active video target available for caption display");
-        // Try to find a video target
         this.findNextActiveVideo();
         if (this.activeVideoTarget) {
           this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
         }
       }
 
-      // Update status
-      this.showStatus("Translated on webpage: \"".concat(translatedText, "\""), 'translation');
+      // STEP 6: Update status with deduplication info
+      this.showStatus("Displayed: \"".concat(translatedText, "\" (filtered duplicates)"), 'translation');
+    }
+
+    /**
+        * NEW: Intelligent deduplication decision engine
+        * This method implements sophisticated logic to determine whether a translation should be displayed
+        * It considers exact matches, timing, confidence improvements, and contextual factors
+        */
+  }, {
+    key: "shouldDisplayTranslation",
+    value: function shouldDisplayTranslation(newText, newConfidence, currentTime) {
+      var _context14;
+      var dedup = this.deduplicationSystem;
+
+      // RULE 1: Always show the first translation
+      if (!dedup.lastDisplayedText) {
+        return {
+          display: true,
+          reason: "First translation of session"
+        };
+      }
+
+      // RULE 2: Always show if text is completely different
+      if (!this.areTranslationsSimilar(newText, dedup.lastDisplayedText)) {
+        return {
+          display: true,
+          reason: "New word/phrase detected"
+        };
+      }
+
+      // RULE 3: Check if enough time has passed for legitimate repetition
+      var timeSinceLastDisplay = currentTime - dedup.lastDisplayedTime;
+      if (timeSinceLastDisplay >= dedup.repetitionThreshold) {
+        var _context13;
+        return {
+          display: true,
+          reason: _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context13 = "Sufficient time elapsed (".concat(timeSinceLastDisplay, "ms > ")).call(_context13, dedup.repetitionThreshold, "ms)")
+        };
+      }
+
+      // RULE 4: Show if confidence has improved significantly
+      var confidenceImprovement = newConfidence - dedup.lastConfidence;
+      if (confidenceImprovement >= dedup.confidenceThreshold) {
+        return {
+          display: Fals,
+          reason: "Significant confidence improvement (+".concat((confidenceImprovement * 100).toFixed(1), "%)")
+        };
+      }
+
+      // RULE 5: Context-based filtering - check if this fits a pattern
+      var contextualDecision = this.analyzeTranslationContext(newText, newConfidence);
+      if (contextualDecision.display) {
+        return contextualDecision;
+      }
+
+      // DEFAULT: Filter out as duplicate
+      return {
+        display: false,
+        reason: _babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context14 = "Duplicate filtered - same as \"".concat(dedup.lastDisplayedText, "\" from ")).call(_context14, timeSinceLastDisplay, "ms ago")
+      };
+    }
+
+    /**
+     * NEW: Determine if two translations are similar enough to be considered duplicates
+     * This method handles exact matches, case differences, and minor variations
+     */
+  }, {
+    key: "areTranslationsSimilar",
+    value: function areTranslationsSimilar(text1, text2) {
+      if (!text1 || !text2) return false;
+
+      // Normalize both texts for comparison
+      var normalized1 = this.normalizeTextForComparison(text1);
+      var normalized2 = this.normalizeTextForComparison(text2);
+
+      // Exact match after normalization
+      if (normalized1 === normalized2) {
+        return true;
+      }
+
+      // Calculate similarity ratio for fuzzy matching
+      var similarity = this.calculateTextSimilarity(normalized1, normalized2);
+      return similarity >= this.deduplicationSystem.similarityThreshold;
+    }
+
+    /**
+     * NEW: Normalize text for consistent comparison
+     * This handles common variations that should be treated as the same word
+     */
+  }, {
+    key: "normalizeTextForComparison",
+    value: function normalizeTextForComparison(text) {
+      var _context15;
+      return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_30__(_context15 = text.toLowerCase() // Handle case differences
+      ).call(_context15) // Remove leading/trailing whitespace
+      .replace(/[^\w\s]/g, '') // Remove punctuation
+      .replace(/\s+/g, ' ') // Normalize whitespace
+      .replace(/\b(a|an|the)\b/g, ''); // Remove common articles that might vary
+    }
+
+    /**
+     * NEW: Calculate similarity between two text strings
+     * Uses a combination of techniques to handle minor variations in recognition
+     */
+  }, {
+    key: "calculateTextSimilarity",
+    value: function calculateTextSimilarity(text1, text2) {
+      // Handle identical strings
+      if (text1 === text2) return 1.0;
+
+      // Handle empty strings
+      if (!text1 || !text2) return 0.0;
+
+      // Use Levenshtein distance for similarity calculation
+      var maxLength = Math.max(text1.length, text2.length);
+      var distance = this.calculateLevenshteinDistance(text1, text2);
+      return 1.0 - distance / maxLength;
+    }
+
+    /**
+     * NEW: Calculate Levenshtein distance between two strings
+     * This measures the minimum number of single-character edits needed to transform one string into another
+     */
+  }, {
+    key: "calculateLevenshteinDistance",
+    value: function calculateLevenshteinDistance(str1, str2) {
+      var matrix = [];
+
+      // Initialize the matrix
+      for (var i = 0; i <= str2.length; i++) {
+        matrix[i] = [i];
+      }
+      for (var j = 0; j <= str1.length; j++) {
+        matrix[0][j] = j;
+      }
+
+      // Fill the matrix
+      for (var _i = 1; _i <= str2.length; _i++) {
+        for (var _j = 1; _j <= str1.length; _j++) {
+          if (str2.charAt(_i - 1) === str1.charAt(_j - 1)) {
+            matrix[_i][_j] = matrix[_i - 1][_j - 1]; // No operation needed
+          } else {
+            matrix[_i][_j] = Math.min(matrix[_i - 1][_j - 1] + 1,
+            // Substitution
+            matrix[_i][_j - 1] + 1,
+            // Insertion
+            matrix[_i - 1][_j] + 1 // Deletion
+            );
+          }
+        }
+      }
+      return matrix[str2.length][str1.length];
+    }
+
+    /**
+     * NEW: Analyze translation context to make smarter filtering decisions
+     * This method looks at patterns in recent translations to make contextual decisions
+     */
+  }, {
+    key: "analyzeTranslationContext",
+    value: function analyzeTranslationContext(newText, newConfidence) {
+      var recent = this.deduplicationSystem.recentTranslations;
+
+      // PATTERN 1: Alternating words (A-B-A-B pattern)
+      if (recent.length >= 3) {
+        var isAlternatingPattern = this.detectAlternatingPattern(newText, recent);
+        if (isAlternatingPattern) {
+          return {
+            display: true,
+            reason: "Alternating word pattern detected (legitimate repetition)"
+          };
+        }
+      }
+
+      // PATTERN 2: Progressive confidence improvement
+      if (recent.length >= 2) {
+        var isProgressiveImprovement = this.detectProgressiveImprovement(newConfidence, recent);
+        if (isProgressiveImprovement) {
+          return {
+            display: true,
+            reason: "Progressive confidence improvement pattern"
+          };
+        }
+      }
+
+      // PATTERN 3: Phrase completion (word is part of a longer phrase)
+      var isPhraseCompletion = this.detectPhraseCompletion(newText, recent);
+      if (isPhraseCompletion) {
+        return {
+          display: true,
+          reason: "Word completes a phrase pattern"
+        };
+      }
+
+      // No special contextual pattern detected
+      return {
+        display: false,
+        reason: "No contextual pattern justifies display"
+      };
+    }
+
+    /**
+     * NEW: Detect alternating word patterns (legitimate back-and-forth)
+     */
+  }, {
+    key: "detectAlternatingPattern",
+    value: function detectAlternatingPattern(newText, recentTranslations) {
+      if (recentTranslations.length < 3) return false;
+      var lastText = recentTranslations[recentTranslations.length - 1].text;
+      var beforeLastText = recentTranslations[recentTranslations.length - 2].text;
+      var beforeBeforeLastText = recentTranslations[recentTranslations.length - 3].text;
+
+      // Check if we have an A-B-A pattern and new text would continue it
+      return this.areTranslationsSimilar(newText, beforeLastText) && !this.areTranslationsSimilar(lastText, beforeLastText) && this.areTranslationsSimilar(beforeLastText, beforeBeforeLastText);
+    }
+
+    /**
+     * NEW: Detect progressive confidence improvement
+     */
+  }, {
+    key: "detectProgressiveImprovement",
+    value: function detectProgressiveImprovement(newConfidence, recentTranslations) {
+      var _context16;
+      if (recentTranslations.length < 2) return false;
+
+      // Check if confidence has been steadily improving
+      var recentConfidences = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_31__(_context16 = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(recentTranslations).call(recentTranslations, -2)).call(_context16, function (t) {
+        return t.confidence;
+      });
+      var isImproving = _babel_runtime_corejs3_core_js_stable_instance_every__WEBPACK_IMPORTED_MODULE_32__(recentConfidences).call(recentConfidences, function (conf, index) {
+        return index === 0 || conf >= recentConfidences[index - 1];
+      });
+      return isImproving && newConfidence > recentConfidences[recentConfidences.length - 1];
+    }
+
+    /**
+     * NEW: Detect phrase completion patterns
+     */
+  }, {
+    key: "detectPhraseCompletion",
+    value: function detectPhraseCompletion(newText, recentTranslations) {
+      var _context17;
+      if (recentTranslations.length < 2) return false;
+
+      // Look for patterns where words build into common phrases
+      var recentWords = _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_31__(_context17 = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(recentTranslations).call(recentTranslations, -2)).call(_context17, function (t) {
+        return t.text.toLowerCase();
+      });
+      var newWord = newText.toLowerCase();
+
+      // Check for common phrase patterns
+      var commonPhrases = [['thank', 'you'], ['good', 'morning'], ['good', 'evening'], ['how', 'are', 'you'], ['nice', 'to', 'meet', 'you']];
+      for (var _i2 = 0, _commonPhrases = commonPhrases; _i2 < _commonPhrases.length; _i2++) {
+        var _context18;
+        var phrase = _commonPhrases[_i2];
+        if (this.matchesPhrasePattern(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context18 = []).call(_context18, (0,_babel_runtime_corejs3_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_10__["default"])(recentWords), [newWord]), phrase)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * NEW: Check if recent words match a known phrase pattern
+     */
+  }, {
+    key: "matchesPhrasePattern",
+    value: function matchesPhrasePattern(recentWords, phrasePattern) {
+      if (recentWords.length > phrasePattern.length) return false;
+
+      // Check if recent words match the beginning of the phrase pattern
+      for (var i = 0; i < recentWords.length; i++) {
+        if (recentWords[i] !== phrasePattern[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /**
+     * NEW: Update deduplication tracking after displaying a caption
+     */
+  }, {
+    key: "updateDeduplicationTracking",
+    value: function updateDeduplicationTracking(displayedText, confidence, timestamp) {
+      var dedup = this.deduplicationSystem;
+
+      // Update last displayed information
+      dedup.lastDisplayedText = displayedText;
+      dedup.lastDisplayedTime = timestamp;
+      dedup.lastConfidence = confidence;
+
+      // Add to recent translations buffer
+      dedup.recentTranslations.push({
+        text: displayedText,
+        confidence: confidence,
+        timestamp: timestamp
+      });
+
+      // Maintain buffer size
+      if (dedup.recentTranslations.length > dedup.maxRecentBuffer) {
+        dedup.recentTranslations.shift(); // Remove oldest entry
+      }
+      console.log("[SignLanguageHandler] Deduplication tracking updated. Recent buffer size: ".concat(dedup.recentTranslations.length));
+    }
+
+    /**
+     * NEW: Update translation history with display status
+     */
+  }, {
+    key: "updateTranslationHistory",
+    value: function updateTranslationHistory(text, confidence, timestamp, wasDisplayed) {
+      var historyEntry = {
+        text: text,
+        confidence: confidence,
+        timestamp: timestamp,
+        wasDisplayed: wasDisplayed,
+        displayMethod: wasDisplayed ? 'webpage-video-overlay' : 'filtered-duplicate'
+      };
+      this.translationHistory.push(historyEntry);
+
+      // Keep history manageable (store more entries since some are filtered)
+      if (this.translationHistory.length > 50) {
+        this.translationHistory.shift();
+      }
+    }
+
+    /**
+     * NEW: Configure deduplication settings
+     * This method allows fine-tuning of the deduplication behavior
+     */
+  }, {
+    key: "updateDeduplicationSettings",
+    value: function updateDeduplicationSettings(newSettings) {
+      this.deduplicationSystem = _objectSpread(_objectSpread({}, this.deduplicationSystem), newSettings);
+      console.log("[SignLanguageHandler] Deduplication settings updated:", this.deduplicationSystem);
+    }
+
+    /**
+     * NEW: Get deduplication statistics for monitoring and debugging
+     */
+  }, {
+    key: "getDeduplicationStats",
+    value: function getDeduplicationStats() {
+      var _context19;
+      var totalTranslations = this.translationHistory.length;
+      var displayedTranslations = _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_15__(_context19 = this.translationHistory).call(_context19, function (t) {
+        return t.wasDisplayed;
+      }).length;
+      var filteredTranslations = totalTranslations - displayedTranslations;
+      var filteringRate = totalTranslations > 0 ? filteredTranslations / totalTranslations * 100 : 0;
+      return {
+        totalReceived: totalTranslations,
+        displayed: displayedTranslations,
+        filtered: filteredTranslations,
+        filteringRate: filteringRate.toFixed(1) + '%',
+        lastDisplayedText: this.deduplicationSystem.lastDisplayedText,
+        timeSinceLastDisplay: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__() - this.deduplicationSystem.lastDisplayedTime,
+        recentBufferSize: this.deduplicationSystem.recentTranslations.length
+      };
+    }
+
+    /**
+     * Enhanced: Clear translation history and reset deduplication system
+     */
+  }, {
+    key: "clearTranslationHistory",
+    value: function clearTranslationHistory() {
+      this.translationHistory = [];
+      this.lastTranslation = null;
+
+      // Reset deduplication tracking
+      this.deduplicationSystem.lastDisplayedText = null;
+      this.deduplicationSystem.lastDisplayedTime = 0;
+      this.deduplicationSystem.lastConfidence = 0;
+      this.deduplicationSystem.recentTranslations = [];
+      this.clearAllWebpageVideoCaptions();
+      console.log("[SignLanguageHandler] Translation history and deduplication system reset");
     }
 
     /**
@@ -61725,10 +62409,10 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "displayCaptionOnWebpageVideo",
     value: function displayCaptionOnWebpageVideo(videoInfo, text) {
-      var _context11;
+      var _context20;
       var confidence = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-      var timestamp = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__();
-      if (!videoInfo.captionContainer || !text || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__(text).call(text) === '') {
+      var timestamp = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__();
+      if (!videoInfo.captionContainer || !text || _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_30__(text).call(text) === '') {
         console.warn("[SignLanguageHandler] Cannot display webpage caption - missing container or text");
         return;
       }
@@ -61736,7 +62420,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       // Update caption container position before adding new caption
       this.positionCaptionContainer(videoInfo, videoInfo.captionContainer);
       var captionId = "webpage-caption-".concat(this.captionIdCounter++);
-      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context11 = "[SignLanguageHandler] Creating webpage video caption: \"".concat(text, "\" (ID: ")).call(_context11, captionId, ")"));
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context20 = "[SignLanguageHandler] Creating webpage video caption: \"".concat(text, "\" (ID: ")).call(_context20, captionId, ")"));
 
       // Create caption element
       var captionElement = document.createElement('div');
@@ -61744,7 +62428,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       captionElement.id = captionId;
 
       // Prepare display text with confidence indicator
-      var displayText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_29__(text).call(text);
+      var displayText = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_30__(text).call(text);
       if (confidence !== null && confidence < 0.85) {
         var confidencePercent = Math.round(confidence * 100);
         displayText += " [".concat(confidencePercent, "% confidence]");
@@ -61838,7 +62522,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
     key: "scheduleCaptionRemoval",
     value: function scheduleCaptionRemoval(captionElement, captionId, videoInfo) {
       var _this8 = this;
-      var removalTimer = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+      var removalTimer = _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__(function () {
         _this8.removeCaptionWithAnimation(captionElement, captionId);
       }, this.captionSettings.displayDuration);
       captionElement.dataset.removalTimer = removalTimer;
@@ -61865,7 +62549,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       captionElement.style.transform = 'translateY(-15px) scale(0.9)';
 
       // Remove from DOM
-      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+      _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__(function () {
         if (captionElement.parentNode) {
           captionElement.parentNode.removeChild(captionElement);
         }
@@ -61883,11 +62567,11 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       var captions = videoInfo.captionContainer.querySelectorAll('.sign-language-webpage-caption');
       var maxVisible = this.captionSettings.maxCaptionsVisible;
       if (captions.length > maxVisible) {
-        var _context12;
+        var _context21;
         var excessCount = captions.length - maxVisible;
-        var captionsToRemove = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_16__(_context12 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(captions)).call(_context12, 0, excessCount);
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(captionsToRemove).call(captionsToRemove, function (caption, index) {
-          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_27__(function () {
+        var captionsToRemove = _babel_runtime_corejs3_core_js_stable_instance_slice__WEBPACK_IMPORTED_MODULE_17__(_context21 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_18__(captions)).call(_context21, 0, excessCount);
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(captionsToRemove).call(captionsToRemove, function (caption, index) {
+          _babel_runtime_corejs3_core_js_stable_set_timeout__WEBPACK_IMPORTED_MODULE_28__(function () {
             _this9.removeCaptionWithAnimation(caption, caption.id);
           }, index * 150);
         });
@@ -61900,9 +62584,9 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "clearAllWebpageVideoCaptions",
     value: function clearAllWebpageVideoCaptions() {
-      var _context13;
+      var _context22;
       console.log("[SignLanguageHandler] Clearing all webpage video captions");
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context13 = this.activeCaptions).call(_context13, function (caption) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context22 = this.activeCaptions).call(_context22, function (caption) {
         if (caption.dataset.removalTimer) {
           clearTimeout(caption.dataset.removalTimer);
         }
@@ -62085,7 +62769,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       this.leftHandLandmarks = data.has_left_hand ? {} : null;
       this.rightHandLandmarks = data.has_right_hand ? {} : null;
       this.lastLandmarkUpdate = {
-        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(),
+        timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__(),
         frame_id: data.frame_id,
         quality_score: data.quality_score,
         processing_scale: data.processing_scale
@@ -62100,7 +62784,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
           face: this.faceLandmarks,
           pose: this.poseLandmarks,
           fps: this.fps,
-          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_25__(),
+          timestamp: _babel_runtime_corejs3_core_js_stable_date_now__WEBPACK_IMPORTED_MODULE_26__(),
           frameId: data.frame_id,
           qualityScore: data.quality_score
         }
@@ -62131,9 +62815,9 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "showStatus",
     value: function showStatus(message) {
-      var _context14;
+      var _context23;
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'info';
-      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_24__(_context14 = "[SignLanguageHandler] Status (".concat(type, "): ")).call(_context14, message));
+      console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_25__(_context23 = "[SignLanguageHandler] Status (".concat(type, "): ")).call(_context23, message));
     }
 
     /**
@@ -62224,12 +62908,12 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "updateCaptionSettings",
     value: function updateCaptionSettings(newSettings) {
-      var _context15;
+      var _context24;
       this.captionSettings = _objectSpread(_objectSpread({}, this.captionSettings), newSettings);
       console.log("[SignLanguageHandler] Caption settings updated:", this.captionSettings);
 
       // Apply to existing captions
-      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context15 = this.activeCaptions).call(_context15, function (caption) {
+      _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context24 = this.activeCaptions).call(_context24, function (caption) {
         if (newSettings.fontSize) caption.style.fontSize = newSettings.fontSize;
         if (newSettings.fontFamily) caption.style.fontFamily = newSettings.fontFamily;
         if (newSettings.backgroundColor) caption.style.backgroundColor = newSettings.backgroundColor;
@@ -62243,7 +62927,7 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "deactivate",
     value: function deactivate() {
-      var _context16, _context17;
+      var _context25, _context26;
       if (!this.isActive) {
         console.log("[SignLanguageHandler] Already inactive");
         return;
@@ -62307,8 +62991,8 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       this.activeVideoTarget = null;
 
       // Remove event listeners
-      window.removeEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context16 = this.handleWindowResize).call(_context16, this));
-      window.removeEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_23__(_context17 = this.handlePageScroll).call(_context17, this));
+      window.removeEventListener('resize', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_24__(_context25 = this.handleWindowResize).call(_context25, this));
+      window.removeEventListener('scroll', _babel_runtime_corejs3_core_js_stable_instance_bind__WEBPACK_IMPORTED_MODULE_24__(_context26 = this.handlePageScroll).call(_context26, this));
 
       // Clear intervals
       if (this.landmarkInterval) {
@@ -62333,8 +63017,8 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         this.peerConnection = null;
       }
       if (this.stream) {
-        var _context18;
-        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(_context18 = this.stream.getTracks()).call(_context18, function (track) {
+        var _context27;
+        _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_16__(_context27 = this.stream.getTracks()).call(_context27, function (track) {
           return track.stop();
         });
         this.stream = null;
@@ -62363,36 +63047,36 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "pingServer",
     value: (function () {
-      var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.mark(function _callee2() {
+      var _pingServer = (0,_babel_runtime_corejs3_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_12__["default"])(/*#__PURE__*/_babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_19__.mark(function _callee2() {
         var response, data;
-        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_18__.wrap(function _callee2$(_context19) {
-          while (1) switch (_context19.prev = _context19.next) {
+        return _babel_runtime_corejs3_regenerator__WEBPACK_IMPORTED_MODULE_19__.wrap(function _callee2$(_context28) {
+          while (1) switch (_context28.prev = _context28.next) {
             case 0:
-              _context19.prev = 0;
-              _context19.next = 3;
+              _context28.prev = 0;
+              _context28.next = 3;
               return fetch("".concat(this.serverUrl, "/ping"));
             case 3:
-              response = _context19.sent;
+              response = _context28.sent;
               if (!response.ok) {
-                _context19.next = 10;
+                _context28.next = 10;
                 break;
               }
-              _context19.next = 7;
+              _context28.next = 7;
               return response.json();
             case 7:
-              data = _context19.sent;
+              data = _context28.sent;
               console.log("[SignLanguageHandler] Server available: ".concat(data.message));
-              return _context19.abrupt("return", true);
+              return _context28.abrupt("return", true);
             case 10:
-              return _context19.abrupt("return", false);
+              return _context28.abrupt("return", false);
             case 13:
-              _context19.prev = 13;
-              _context19.t0 = _context19["catch"](0);
-              console.error("[SignLanguageHandler] Server connectivity failed: ".concat(_context19.t0.message));
-              return _context19.abrupt("return", false);
+              _context28.prev = 13;
+              _context28.t0 = _context28["catch"](0);
+              console.error("[SignLanguageHandler] Server connectivity failed: ".concat(_context28.t0.message));
+              return _context28.abrupt("return", false);
             case 17:
             case "end":
-              return _context19.stop();
+              return _context28.stop();
           }
         }, _callee2, this, [[0, 13]]);
       }));
@@ -62413,14 +63097,6 @@ var SignLanguageHandler = /*#__PURE__*/function () {
       return this.translationHistory;
     }
   }, {
-    key: "clearTranslationHistory",
-    value: function clearTranslationHistory() {
-      this.translationHistory = [];
-      this.lastTranslation = null;
-      this.clearAllWebpageVideoCaptions();
-      console.log("[SignLanguageHandler] Translation history and captions cleared");
-    }
-  }, {
     key: "toggleMonitoringWindow",
     value: function toggleMonitoringWindow() {
       this.showMonitoringWindow = !this.showMonitoringWindow;
@@ -62432,12 +63108,13 @@ var SignLanguageHandler = /*#__PURE__*/function () {
   }, {
     key: "getDebugInfo",
     value: function getDebugInfo() {
-      var _context20;
+      var _context29;
+      var deduplicationStats = this.getDeduplicationStats();
       return {
         isActive: this.isActive,
         connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
         dataChannelState: this.dataChannel ? this.dataChannel.readyState : 'none',
-        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_30__(_context20 = this.stream.getVideoTracks()).call(_context20, function (track) {
+        streamActive: this.stream !== null && _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_33__(_context29 = this.stream.getVideoTracks()).call(_context29, function (track) {
           return track.readyState === 'live';
         }),
         fps: this.fps,
@@ -62452,7 +63129,11 @@ var SignLanguageHandler = /*#__PURE__*/function () {
         activeVideoTarget: this.activeVideoTarget ? this.activeVideoTarget.type : 'none',
         translationHistoryCount: this.translationHistory.length,
         lastTranslation: this.lastTranslation,
-        showMonitoringWindow: this.showMonitoringWindow
+        showMonitoringWindow: this.showMonitoringWindow,
+        deduplication: {
+          settings: this.deduplicationSystem,
+          statistics: deduplicationStats
+        }
       };
     }
   }]);
@@ -70017,14 +70698,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_filter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/filter */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_map__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/map */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/map.js");
 /* harmony import */ var _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/instance/for-each */ "./node_modules/@babel/runtime-corejs3/core-js-stable/instance/for-each.js");
-/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
-/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
-/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
-/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
-/* harmony import */ var _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ../2-features/TTS/InteractionHandler.js */ "./2-features/TTS/InteractionHandler.js");
-/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
-/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
-/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
+/* harmony import */ var _babel_runtime_corejs3_core_js_stable_parse_float__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @babel/runtime-corejs3/core-js-stable/parse-float */ "./node_modules/@babel/runtime-corejs3/core-js-stable/parse-float.js");
+/* harmony import */ var _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../2-features/TTS/HighlightBox.js */ "./2-features/TTS/HighlightBox.js");
+/* harmony import */ var _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ../2-features/TTS/TextExtractor.js */ "./2-features/TTS/TextExtractor.js");
+/* harmony import */ var _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ../2-features/TTS/SpeechHandler.js */ "./2-features/TTS/SpeechHandler.js");
+/* harmony import */ var _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ../2-features/TTS/LinkHandler.js */ "./2-features/TTS/LinkHandler.js");
+/* harmony import */ var _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ../2-features/TTS/InteractionHandler.js */ "./2-features/TTS/InteractionHandler.js");
+/* harmony import */ var _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ../2-features/ImageCaptioning/ImageCaptionHandler.js */ "./2-features/ImageCaptioning/ImageCaptionHandler.js");
+/* harmony import */ var _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ../2-features/STT/VideoOverlayManager.js */ "./2-features/STT/VideoOverlayManager.js");
+/* harmony import */ var _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ../2-features/SignLanguage/SignLanguageHandler.js */ "./2-features/SignLanguage/SignLanguageHandler.js");
 
 
 
@@ -70057,6 +70739,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 
 
 
+
 // content.js - Complete implementation for webpage video overlay captions
 
 
@@ -70076,20 +70759,20 @@ var ContentHandler = /*#__PURE__*/function () {
     this.pastBackgroundStyle = "";
 
     // Initialize core accessibility functionality
-    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_27__["default"]();
-    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"]();
-    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_29__["default"]();
-    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_30__["default"]();
+    this.highlightBox = new _2_features_TTS_HighlightBox_js__WEBPACK_IMPORTED_MODULE_28__["default"]();
+    this.textExtractor = new _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"]();
+    this.speechHandler = new _2_features_TTS_SpeechHandler_js__WEBPACK_IMPORTED_MODULE_30__["default"]();
+    this.linkHandler = new _2_features_TTS_LinkHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"]();
 
     // Initialize image captioning functionality
-    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
+    this.imageCaptionHandler = new _2_features_ImageCaptioning_ImageCaptionHandler_js__WEBPACK_IMPORTED_MODULE_33__["default"](chrome.runtime.getURL('Florence-2-base-ft'));
 
     // Initialize STT video overlay manager (for speech recognition overlays on videos)
-    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_33__["default"]();
+    this.videoOverlayManager = new _2_features_STT_VideoOverlayManager_js__WEBPACK_IMPORTED_MODULE_34__["default"]();
 
     // Initialize ENHANCED sign language handler with webpage video caption capability
     // This is the core component that detects videos on the current page and overlays translations
-    this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_34__["default"]();
+    this.signLanguageHandler = new _2_features_SignLanguage_SignLanguageHandler_js__WEBPACK_IMPORTED_MODULE_35__["default"]();
     console.log('VideoOverlayManager initialized in content script:', this.videoOverlayManager);
     console.log('Enhanced Sign Language handler initialized for webpage video overlay display:', this.signLanguageHandler);
 
@@ -70192,15 +70875,14 @@ var ContentHandler = /*#__PURE__*/function () {
           confidence = _event$detail2.confidence,
           words = _event$detail2.words,
           translationHistory = _event$detail2.translationHistory;
-        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context5 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] Sign Language Translation for Webpage Video: \"")).call(_context5, translatedText, "\""));
+        console.log(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context5 = "[".concat(new Date(timestamp).toLocaleTimeString(), "] Sign Language Translation: \"")).call(_context5, translatedText, "\""));
 
-        // The translation is automatically displayed on webpage videos by the SignLanguageHandler
-        // We log this for monitoring and can optionally send statistics to sidebar
+        // The translation is automatically processed through the deduplication system
+        // in the SignLanguageHandler, so duplicates are already filtered out by the time we see this event
 
-        console.log("[CONTENT] Translation displayed on webpage video - no sidebar forwarding needed");
+        console.log("[CONTENT] Translation processed by deduplication system and displayed on webpage video");
 
-        // Optional: Send statistics to sidebar for monitoring (not for display)
-        // This provides system health information without duplicating the caption display
+        // Send enhanced statistics to sidebar including deduplication info
         chrome.runtime.sendMessage({
           action: "signLanguageStatistics",
           translatedText: translatedText,
@@ -70208,7 +70890,8 @@ var ContentHandler = /*#__PURE__*/function () {
           confidence: confidence,
           displayMethod: 'webpage-video-overlay',
           activeVideoType: ((_this$signLanguageHan = _this.signLanguageHandler.activeVideoTarget) === null || _this$signLanguageHan === void 0 ? void 0 : _this$signLanguageHan.type) || 'unknown',
-          isStatisticsOnly: true // Flag to indicate this is not for display
+          deduplicationStats: _this.signLanguageHandler.getDeduplicationStats(),
+          isStatisticsOnly: true
         });
       });
 
@@ -70343,11 +71026,11 @@ var ContentHandler = /*#__PURE__*/function () {
       var text = [];
       while (this.walker.nextNode()) {
         var element = this.walker.currentNode;
-        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.has(element)) continue;
+        if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.has(element)) continue;
         if (this.isElementVisible(element)) {
           var _context7, _element$tagName;
           var hasInteractiveChildren = _babel_runtime_corejs3_core_js_stable_instance_some__WEBPACK_IMPORTED_MODULE_23__(_context7 = _babel_runtime_corejs3_core_js_stable_array_from__WEBPACK_IMPORTED_MODULE_17__(element.querySelectorAll('*'))).call(_context7, function (child) {
-            return _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(child) && _this3.isElementVisible(child);
+            return _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(child) && _this3.isElementVisible(child);
           });
           if (hasInteractiveChildren) {
             continue;
@@ -70359,9 +71042,9 @@ var ContentHandler = /*#__PURE__*/function () {
             text.push(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context8 = element.textContent).call(_context8) ? "Link text: ".concat(_babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context9 = element.textContent).call(_context9)) : "Link to ".concat(domain));
             elementsToReturn.push(element);
             this.currentLink = element;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processAllDescendants(element);
-          } else if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(element)) {
-            var stateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].getElementState(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processAllDescendants(element);
+          } else if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(element)) {
+            var stateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].getElementState(element);
             var isRadio = element.getAttribute('role') === 'radio' || element.type === 'radio';
             var isCheckbox = element.getAttribute('role') === 'checkbox' || element.type === 'checkbox';
             var isTreeItem = element.getAttribute('role') === 'treeitem';
@@ -70383,15 +71066,15 @@ var ContentHandler = /*#__PURE__*/function () {
               this.currentLink = element;
             } else {
               var radioOrCheckboxChild = element.querySelector('[role="radio"], [role="checkbox"], [type="radio"], [type="checkbox"]');
-              if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && !_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.has(radioOrCheckboxChild)) {
+              if (radioOrCheckboxChild && this.isElementVisible(radioOrCheckboxChild) && !_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.has(radioOrCheckboxChild)) {
                 var _context13;
                 console.log('container with radio/checkbox child found');
-                var childStateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].getElementState(radioOrCheckboxChild);
+                var childStateText = _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].getElementState(radioOrCheckboxChild);
                 var childLabelText = this.getInputLabelText(radioOrCheckboxChild);
                 text.push(_babel_runtime_corejs3_core_js_stable_instance_concat__WEBPACK_IMPORTED_MODULE_20__(_context13 = "".concat(childStateText, ". ")).call(_context13, childLabelText));
                 elementsToReturn.push(radioOrCheckboxChild);
                 this.currentLink = radioOrCheckboxChild;
-                _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(radioOrCheckboxChild);
+                _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(radioOrCheckboxChild);
               } else {
                 var _context14, _context15;
                 console.log('non-radio/checkbox text discovery');
@@ -70400,7 +71083,7 @@ var ContentHandler = /*#__PURE__*/function () {
                 elementsToReturn.push(element);
               }
             }
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processAllDescendants(element);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processAllDescendants(element);
             this.currentLink = element;
           } else {
             var _iterator2 = _createForOfIteratorHelper(element.childNodes),
@@ -70422,7 +71105,7 @@ var ContentHandler = /*#__PURE__*/function () {
                     text.push(textRes);
                     elementsToReturn.push(child);
                   }
-                  if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(child)) {
+                  if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(child)) {
                     this.currentLink = child;
                   } else this.currentLink = null;
                 }
@@ -70433,7 +71116,7 @@ var ContentHandler = /*#__PURE__*/function () {
               _iterator2.f();
             }
           }
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(element);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(element);
         }
         if (text.length > 0) {
           return {
@@ -70466,7 +71149,7 @@ var ContentHandler = /*#__PURE__*/function () {
               var textRes = '';
               if (child.nodeType === Node.TEXT_NODE) {
                 var _context17;
-                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.has(element)) continue;
+                if (_2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.has(element)) continue;
                 textRes = _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context17 = child.textContent).call(_context17);
                 if (textRes !== '') {
                   text.push(textRes);
@@ -70478,7 +71161,7 @@ var ContentHandler = /*#__PURE__*/function () {
                   text.push(textRes);
                   elementsToReturn.push(child);
                 }
-                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(child)) {
+                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(child)) {
                   this.currentLink = child;
                 } else this.currentLink = null;
               }
@@ -70586,7 +71269,7 @@ var ContentHandler = /*#__PURE__*/function () {
                                 console.error('Caption generation failed:', _context18.t0);
                                 text[i] = "Image description unavailable";
                               case 15:
-                                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(elementsToReturn[i]) || ((_elementsToReturn$i$t2 = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t2 === void 0 ? void 0 : _elementsToReturn$i$t2.toLowerCase()) === 'a') {
+                                if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(elementsToReturn[i]) || ((_elementsToReturn$i$t2 = elementsToReturn[i].tagName) === null || _elementsToReturn$i$t2 === void 0 ? void 0 : _elementsToReturn$i$t2.toLowerCase()) === 'a') {
                                   _this4.isProgrammaticFocus = true;
                                   elementsToReturn[i].focus();
                                   _this4.isProgrammaticFocus = false;
@@ -70666,7 +71349,7 @@ var ContentHandler = /*#__PURE__*/function () {
           var labelEl = document.getElementById(id);
           if (labelEl) {
             var _context22;
-            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(labelEl);
+            _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(labelEl);
             return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context22 = labelEl.textContent).call(_context22);
           }
           return null;
@@ -70681,14 +71364,14 @@ var ContentHandler = /*#__PURE__*/function () {
         var forLabel = document.querySelector("label[for=\"".concat(element.id, "\"]"));
         if (forLabel) {
           var _context24;
-          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(forLabel);
+          _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(forLabel);
           return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context24 = forLabel.textContent).call(_context24);
         }
       }
       var wrappingLabel = element.closest('label');
       if (wrappingLabel) {
         var _context25;
-        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(wrappingLabel);
+        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(wrappingLabel);
         return _babel_runtime_corejs3_core_js_stable_instance_trim__WEBPACK_IMPORTED_MODULE_22__(_context25 = wrappingLabel.textContent).call(_context25);
       }
       var elementType = element.type || element.getAttribute('role');
@@ -70702,16 +71385,16 @@ var ContentHandler = /*#__PURE__*/function () {
         var ids = inputElement.getAttribute('aria-labelledby').split(' ');
         _babel_runtime_corejs3_core_js_stable_instance_for_each__WEBPACK_IMPORTED_MODULE_15__(ids).call(ids, function (id) {
           var labelEl = document.getElementById(id);
-          if (labelEl) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(labelEl);
+          if (labelEl) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(labelEl);
         });
       }
       var label = inputElement.closest('label');
       if (label) {
-        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(label);
+        _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(label);
       }
       if (inputElement.id) {
         var forLabel = document.querySelector("label[for=\"".concat(inputElement.id, "\"]"));
-        if (forLabel) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_28__["default"].processedElements.add(forLabel);
+        if (forLabel) _2_features_TTS_TextExtractor_js__WEBPACK_IMPORTED_MODULE_29__["default"].processedElements.add(forLabel);
       }
     }
   }, {
@@ -70749,13 +71432,20 @@ var ContentHandler = /*#__PURE__*/function () {
     key: "updateSignLanguageCaptionSettings",
     value: function updateSignLanguageCaptionSettings(settings) {
       if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
-        this.signLanguageHandler.updateCaptionSettings(settings);
-        console.log('[CONTENT] Updated webpage video caption settings:', settings);
+        // Update visual caption settings
+        if (settings.captionSettings) {
+          this.signLanguageHandler.updateCaptionSettings(settings.captionSettings);
+        }
+
+        // NEW: Update deduplication settings
+        if (settings.deduplicationSettings) {
+          this.signLanguageHandler.updateDeduplicationSettings(settings.deduplicationSettings);
+        }
+        console.log('[CONTENT] Updated caption and deduplication settings:', settings);
       } else {
-        console.warn('[CONTENT] Cannot update caption settings - sign language handler not active');
+        console.warn('[CONTENT] Cannot update settings - sign language handler not active');
       }
     }
-
     /**
      * ENHANCED: Clear all sign language captions from webpage videos
      */
@@ -70776,6 +71466,7 @@ var ContentHandler = /*#__PURE__*/function () {
   }, {
     key: "getSignLanguageStatus",
     value: function getSignLanguageStatus() {
+      var _debugInfo$deduplicat;
       if (!this.signLanguageHandler) {
         return {
           status: 'Not Available',
@@ -70790,8 +71481,94 @@ var ContentHandler = /*#__PURE__*/function () {
         webpageVideosDetected: debugInfo.webpageVideosCount,
         activeVideoTarget: debugInfo.activeVideoTarget,
         activeCaptionsCount: debugInfo.activeCaptionsCount,
-        monitoringWindowVisible: debugInfo.showMonitoringWindow
+        monitoringWindowVisible: debugInfo.showMonitoringWindow,
+        deduplicationEnabled: true,
+        deduplicationStats: ((_debugInfo$deduplicat = debugInfo.deduplication) === null || _debugInfo$deduplicat === void 0 ? void 0 : _debugInfo$deduplicat.statistics) || null
       }, debugInfo);
+    }
+
+    /**
+     * NEW: Configure deduplication system parameters
+     */
+  }, {
+    key: "configureDeduplication",
+    value: function configureDeduplication(config) {
+      if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+        this.signLanguageHandler.updateDeduplicationSettings(config);
+        var stats = this.signLanguageHandler.getDeduplicationStats();
+        console.log('[CONTENT] Deduplication configured:', config);
+        console.log('[CONTENT] Current deduplication stats:', stats);
+        return {
+          success: true,
+          newSettings: config,
+          currentStats: stats
+        };
+      }
+      return {
+        success: false,
+        error: 'Sign language handler not active'
+      };
+    }
+
+    /**
+     * NEW: Get detailed deduplication statistics for monitoring
+     */
+  }, {
+    key: "getDeduplicationAnalytics",
+    value: function getDeduplicationAnalytics() {
+      if (this.signLanguageHandler) {
+        var stats = this.signLanguageHandler.getDeduplicationStats();
+        var settings = this.signLanguageHandler.deduplicationSystem;
+        return {
+          available: true,
+          statistics: stats,
+          settings: settings,
+          recommendations: this.generateDeduplicationRecommendations(stats)
+        };
+      }
+      return {
+        available: false,
+        error: 'Handler not initialized'
+      };
+    }
+
+    /**
+     * NEW: Generate recommendations for optimizing deduplication settings
+     */
+  }, {
+    key: "generateDeduplicationRecommendations",
+    value: function generateDeduplicationRecommendations(stats) {
+      var recommendations = [];
+
+      // Analyze filtering rate
+      var filteringRate = _babel_runtime_corejs3_core_js_stable_parse_float__WEBPACK_IMPORTED_MODULE_27__(stats.filteringRate);
+      if (filteringRate > 80) {
+        recommendations.push({
+          type: 'warning',
+          message: 'High filtering rate detected. Consider reducing repetitionThreshold if legitimate repetitions are being filtered.',
+          suggestedAction: 'Reduce repetitionThreshold to 1500ms'
+        });
+      } else if (filteringRate < 30) {
+        recommendations.push({
+          type: 'info',
+          message: 'Low filtering rate. You might see some duplicate captions. Consider increasing similarity threshold.',
+          suggestedAction: 'Increase similarityThreshold to 0.9'
+        });
+      } else {
+        recommendations.push({
+          type: 'success',
+          message: 'Deduplication is working optimally with good balance between filtering and responsiveness.'
+        });
+      }
+
+      // Analyze recent activity
+      if (stats.timeSinceLastDisplay > 10000) {
+        recommendations.push({
+          type: 'info',
+          message: 'No recent translations detected. System is ready for new input.'
+        });
+      }
+      return recommendations;
     }
 
     /**
@@ -70932,8 +71709,29 @@ var ContentHandler = /*#__PURE__*/function () {
 
       // ENHANCED: Webpage video caption management handlers
       else if (request.action === "updateSignLanguageCaptionSettings") {
-        console.log('[CONTENT] Updating webpage video caption settings:', request.settings);
+        console.log('[CONTENT] Updating caption and deduplication settings:', request.settings);
         this.updateSignLanguageCaptionSettings(request.settings);
+      } else if (request.action === "configureDeduplication") {
+        console.log('[CONTENT] Configuring deduplication system:', request.config);
+        var result = this.configureDeduplication(request.config);
+        chrome.runtime.sendMessage(_objectSpread({
+          action: "deduplicationConfigured"
+        }, result));
+      } else if (request.action === "getDeduplicationAnalytics") {
+        console.log('[CONTENT] Getting deduplication analytics');
+        var analytics = this.getDeduplicationAnalytics();
+        chrome.runtime.sendMessage(_objectSpread({
+          action: "deduplicationAnalyticsResponse"
+        }, analytics));
+      } else if (request.action === "resetDeduplicationSystem") {
+        console.log('[CONTENT] Resetting deduplication system');
+        if (this.signLanguageHandler) {
+          this.signLanguageHandler.clearTranslationHistory(); // This also resets deduplication
+          chrome.runtime.sendMessage({
+            action: "deduplicationSystemReset",
+            success: true
+          });
+        }
       } else if (request.action === "clearSignLanguageCaptions") {
         console.log('[CONTENT] Clearing webpage video captions');
         this.clearSignLanguageWebpageCaptions();
@@ -70954,10 +71752,10 @@ var ContentHandler = /*#__PURE__*/function () {
         });
       } else if (request.action === "redetectWebpageVideos") {
         console.log('[CONTENT] Re-detecting webpage videos');
-        var result = this.redetectWebpageVideos();
+        var _result = this.redetectWebpageVideos();
         chrome.runtime.sendMessage(_objectSpread({
           action: "videoRedetectionResult"
-        }, result));
+        }, _result));
       }
 
       // Translation history handlers (now for webpage video overlay system)
@@ -71135,15 +71933,15 @@ var ContentHandler = /*#__PURE__*/function () {
               this.currentLink.setAttribute('aria-expanded', !_isExpanded);
               this.currentLink.offsetHeight;
             } else {
-              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isCustomDropdown(this.currentLink)) {
+              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isCustomDropdown(this.currentLink)) {
                 this.saveNextElementAfterListbox(this.currentLink);
               }
-              _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].handleInteraction(this.currentLink);
+              _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].handleInteraction(this.currentLink);
               if (role === 'option' || tagName === 'option') {
                 this.restoreNextElementAfterListbox();
               }
-              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isCustomDropdown(this.currentLink)) {
-                _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].handleCustomDropdown(this.currentLink);
+              if (_2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isCustomDropdown(this.currentLink)) {
+                _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].handleCustomDropdown(this.currentLink);
               }
             }
           }
@@ -71221,7 +72019,7 @@ var ContentHandler = /*#__PURE__*/function () {
             case 0:
               _context26.prev = 0;
               _context26.next = 3;
-              return fetch('https://acknowledged-shared-card-stages.trycloudflare.com/ping');
+              return fetch('https://astrology-mel-lo-happens.trycloudflare.com/ping');
             case 3:
               response = _context26.sent;
               if (!response.ok) {
@@ -71317,7 +72115,7 @@ var ContentHandler = /*#__PURE__*/function () {
       }
       var style = window.getComputedStyle(element);
       var isNotHidden = style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0' && style.height !== '0px' && style.width !== '0px';
-      var isInteractive = _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_31__["default"].isInteractiveElement(element);
+      var isInteractive = _2_features_TTS_InteractionHandler_js__WEBPACK_IMPORTED_MODULE_32__["default"].isInteractiveElement(element);
       var isTreeItem = element.getAttribute('role') === 'treeitem';
       if (element.disabled || element.getAttribute('aria-disabled') === 'true') return false;
       return isNotHidden || isInteractive || isTreeItem;
@@ -73318,7 +74116,7 @@ long/index.js:
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("a3d3b28c521a8a025c29")
+/******/ 		__webpack_require__.h = () => ("330c37ff4dd22a40a0ac")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

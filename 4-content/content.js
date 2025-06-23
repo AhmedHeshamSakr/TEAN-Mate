@@ -117,15 +117,14 @@ class ContentHandler {
         window.addEventListener('signLanguageTranslation', (event) => {
             const { translatedText, timestamp, confidence, words, translationHistory } = event.detail;
             
-            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation for Webpage Video: "${translatedText}"`);
+            console.log(`[${new Date(timestamp).toLocaleTimeString()}] Sign Language Translation: "${translatedText}"`);
             
-            // The translation is automatically displayed on webpage videos by the SignLanguageHandler
-            // We log this for monitoring and can optionally send statistics to sidebar
+            // The translation is automatically processed through the deduplication system
+            // in the SignLanguageHandler, so duplicates are already filtered out by the time we see this event
             
-            console.log(`[CONTENT] Translation displayed on webpage video - no sidebar forwarding needed`);
+            console.log(`[CONTENT] Translation processed by deduplication system and displayed on webpage video`);
             
-            // Optional: Send statistics to sidebar for monitoring (not for display)
-            // This provides system health information without duplicating the caption display
+            // Send enhanced statistics to sidebar including deduplication info
             chrome.runtime.sendMessage({
                 action: "signLanguageStatistics",
                 translatedText: translatedText,
@@ -133,7 +132,8 @@ class ContentHandler {
                 confidence: confidence,
                 displayMethod: 'webpage-video-overlay',
                 activeVideoType: this.signLanguageHandler.activeVideoTarget?.type || 'unknown',
-                isStatisticsOnly: true // Flag to indicate this is not for display
+                deduplicationStats: this.signLanguageHandler.getDeduplicationStats(),
+                isStatisticsOnly: true
             });
         });
         
@@ -544,13 +544,21 @@ class ContentHandler {
      */
     updateSignLanguageCaptionSettings(settings) {
         if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
-            this.signLanguageHandler.updateCaptionSettings(settings);
-            console.log('[CONTENT] Updated webpage video caption settings:', settings);
+            // Update visual caption settings
+            if (settings.captionSettings) {
+                this.signLanguageHandler.updateCaptionSettings(settings.captionSettings);
+            }
+            
+            // NEW: Update deduplication settings
+            if (settings.deduplicationSettings) {
+                this.signLanguageHandler.updateDeduplicationSettings(settings.deduplicationSettings);
+            }
+            
+            console.log('[CONTENT] Updated caption and deduplication settings:', settings);
         } else {
-            console.warn('[CONTENT] Cannot update caption settings - sign language handler not active');
+            console.warn('[CONTENT] Cannot update settings - sign language handler not active');
         }
     }
-
     /**
      * ENHANCED: Clear all sign language captions from webpage videos
      */
@@ -566,7 +574,7 @@ class ContentHandler {
     /**
      * ENHANCED: Get comprehensive sign language status including webpage video information
      */
-    getSignLanguageStatus() {
+   getSignLanguageStatus() {
         if (!this.signLanguageHandler) {
             return { 
                 status: 'Not Available', 
@@ -576,6 +584,7 @@ class ContentHandler {
         }
         
         const debugInfo = this.signLanguageHandler.getDebugInfo();
+        
         return {
             status: this.signLanguageHandler.isActive ? 'Active' : 'Inactive',
             displayMethod: 'webpage-video-overlay',
@@ -583,8 +592,89 @@ class ContentHandler {
             activeVideoTarget: debugInfo.activeVideoTarget,
             activeCaptionsCount: debugInfo.activeCaptionsCount,
             monitoringWindowVisible: debugInfo.showMonitoringWindow,
+            deduplicationEnabled: true,
+            deduplicationStats: debugInfo.deduplication?.statistics || null,
             ...debugInfo
         };
+    }
+
+    /**
+     * NEW: Configure deduplication system parameters
+     */
+    configureDeduplication(config) {
+        if (this.signLanguageHandler && this.signLanguageHandler.isActive) {
+            this.signLanguageHandler.updateDeduplicationSettings(config);
+            
+            const stats = this.signLanguageHandler.getDeduplicationStats();
+            console.log('[CONTENT] Deduplication configured:', config);
+            console.log('[CONTENT] Current deduplication stats:', stats);
+            
+            return {
+                success: true,
+                newSettings: config,
+                currentStats: stats
+            };
+        }
+        
+        return { success: false, error: 'Sign language handler not active' };
+    }
+
+    /**
+     * NEW: Get detailed deduplication statistics for monitoring
+     */
+    getDeduplicationAnalytics() {
+        if (this.signLanguageHandler) {
+            const stats = this.signLanguageHandler.getDeduplicationStats();
+            const settings = this.signLanguageHandler.deduplicationSystem;
+            
+            return {
+                available: true,
+                statistics: stats,
+                settings: settings,
+                recommendations: this.generateDeduplicationRecommendations(stats)
+            };
+        }
+        
+        return { available: false, error: 'Handler not initialized' };
+    }
+
+    /**
+     * NEW: Generate recommendations for optimizing deduplication settings
+     */
+    generateDeduplicationRecommendations(stats) {
+        const recommendations = [];
+        
+        // Analyze filtering rate
+        const filteringRate = parseFloat(stats.filteringRate);
+        
+        if (filteringRate > 80) {
+            recommendations.push({
+                type: 'warning',
+                message: 'High filtering rate detected. Consider reducing repetitionThreshold if legitimate repetitions are being filtered.',
+                suggestedAction: 'Reduce repetitionThreshold to 1500ms'
+            });
+        } else if (filteringRate < 30) {
+            recommendations.push({
+                type: 'info',
+                message: 'Low filtering rate. You might see some duplicate captions. Consider increasing similarity threshold.',
+                suggestedAction: 'Increase similarityThreshold to 0.9'
+            });
+        } else {
+            recommendations.push({
+                type: 'success',
+                message: 'Deduplication is working optimally with good balance between filtering and responsiveness.'
+            });
+        }
+        
+        // Analyze recent activity
+        if (stats.timeSinceLastDisplay > 10000) {
+            recommendations.push({
+                type: 'info',
+                message: 'No recent translations detected. System is ready for new input.'
+            });
+        }
+        
+        return recommendations;
     }
 
     /**
@@ -726,8 +816,31 @@ class ContentHandler {
         
         // ENHANCED: Webpage video caption management handlers
         else if (request.action === "updateSignLanguageCaptionSettings") {
-            console.log('[CONTENT] Updating webpage video caption settings:', request.settings);
+            console.log('[CONTENT] Updating caption and deduplication settings:', request.settings);
             this.updateSignLanguageCaptionSettings(request.settings);
+        } else if (request.action === "configureDeduplication") {
+            console.log('[CONTENT] Configuring deduplication system:', request.config);
+            const result = this.configureDeduplication(request.config);
+            chrome.runtime.sendMessage({
+                action: "deduplicationConfigured",
+                ...result
+            });
+        } else if (request.action === "getDeduplicationAnalytics") {
+            console.log('[CONTENT] Getting deduplication analytics');
+            const analytics = this.getDeduplicationAnalytics();
+            chrome.runtime.sendMessage({
+                action: "deduplicationAnalyticsResponse",
+                ...analytics
+            });
+        } else if (request.action === "resetDeduplicationSystem") {
+            console.log('[CONTENT] Resetting deduplication system');
+            if (this.signLanguageHandler) {
+                this.signLanguageHandler.clearTranslationHistory(); // This also resets deduplication
+                chrome.runtime.sendMessage({
+                    action: "deduplicationSystemReset",
+                    success: true
+                });
+            }
         } else if (request.action === "clearSignLanguageCaptions") {
             console.log('[CONTENT] Clearing webpage video captions');
             this.clearSignLanguageWebpageCaptions();
@@ -946,7 +1059,7 @@ class ContentHandler {
     // MediaPipe server connectivity check (unchanged)
     async checkServerConnectivity() {
         try {
-            const response = await fetch('https://acknowledged-shared-card-stages.trycloudflare.com/ping');
+            const response = await fetch('https://astrology-mel-lo-happens.trycloudflare.com/ping');
             
             if (response.ok) {
                 return true;

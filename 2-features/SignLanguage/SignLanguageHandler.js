@@ -3,7 +3,7 @@ export default class SignLanguageHandler {
     constructor() {
         // Core system state
         this.isActive = false;
-        this.serverUrl = 'https://acknowledged-shared-card-stages.trycloudflare.com';
+        this.serverUrl = 'https://astrology-mel-lo-happens.trycloudflare.com';
         this.peerConnection = null;
         this.dataChannel = null;
         this.stream = null;
@@ -54,6 +54,16 @@ export default class SignLanguageHandler {
         // Translation data management
         this.lastTranslation = null;
         this.translationHistory = [];
+        this.deduplicationSystem = {
+            lastDisplayedText: null,           // The actual text of the last caption shown
+            lastDisplayedTime: 0,              // When the last caption was displayed (timestamp)
+            lastConfidence: 0,                 // Confidence of the last displayed translation
+            repetitionThreshold: 7000,         // Minimum time (ms) before showing same word again
+            confidenceThreshold: 0.1,          // Minimum confidence improvement to override repetition
+            similarityThreshold: 0.8,          // How similar words need to be to be considered "same"
+            recentTranslations: [],            // Buffer of recent translations for context analysis
+            maxRecentBuffer: 5                 // How many recent translations to remember
+        };
         
         // System preferences
         this.showDetailedInfo = false;
@@ -466,7 +476,7 @@ export default class SignLanguageHandler {
     
     /**
      * Find the next best video to target for captions when current target becomes unavailable
-     */
+    */
     findNextActiveVideo() {
         // Find the largest visible video as the new target
         let bestVideo = null;
@@ -586,44 +596,415 @@ export default class SignLanguageHandler {
      * CORE METHOD: Process translation and display on active webpage video
      * This is the main method that creates captions on the user's video content
      */
-    processTranslationForWebpageVideo(data) {
+   processTranslationForWebpageVideo(data) {
         const translatedText = data.text;
-        const confidence = data.confidence || null;
+        const confidence = data.confidence || 0.8; // Default confidence if not provided
         const timestamp = Date.now();
         
-        console.log(`[SignLanguageHandler] Processing translation for webpage video: "${translatedText}"`);
+        console.log(`[SignLanguageHandler] Raw translation received: "${translatedText}" (confidence: ${confidence})`);
         
-        // Store translation data
+        // STEP 1: Apply intelligent deduplication filter
+        const shouldDisplay = this.shouldDisplayTranslation(translatedText, confidence, timestamp);
+        
+        if (!shouldDisplay.display) {
+            console.log(`[SignLanguageHandler] Translation filtered out: ${shouldDisplay.reason}`);
+            // Still store the translation for history, but don't display it
+            this.updateTranslationHistory(translatedText, confidence, timestamp, false);
+            return; // Early return - don't display this caption
+        }
+        
+        console.log(`[SignLanguageHandler] Translation approved for display: "${translatedText}" (${shouldDisplay.reason})`);
+        
+        // STEP 2: Store translation data (now includes deduplication metadata)
         this.lastTranslation = {
             text: translatedText,
             timestamp: timestamp,
             confidence: confidence,
             words: data.words || null,
-            displayMethod: 'webpage-video-overlay'
+            displayMethod: 'webpage-video-overlay',
+            wasDisplayed: true,
+            deduplicationReason: shouldDisplay.reason
         };
         
-        // Add to history
-        this.translationHistory.push(this.lastTranslation);
-        if (this.translationHistory.length > 20) {
-            this.translationHistory.shift();
-        }
+        // STEP 3: Update deduplication tracking
+        this.updateDeduplicationTracking(translatedText, confidence, timestamp);
         
-        // Display translation on the active webpage video
+        // STEP 4: Add to history
+        this.updateTranslationHistory(translatedText, confidence, timestamp, true);
+        
+        // STEP 5: Display translation on the active webpage video
         if (this.activeVideoTarget && this.activeVideoTarget.captionContainer) {
             this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
         } else {
             console.warn("[SignLanguageHandler] No active video target available for caption display");
-            // Try to find a video target
             this.findNextActiveVideo();
             if (this.activeVideoTarget) {
                 this.displayCaptionOnWebpageVideo(this.activeVideoTarget, translatedText, confidence, timestamp);
             }
         }
         
-        // Update status
-        this.showStatus(`Translated on webpage: "${translatedText}"`, 'translation');
+        // STEP 6: Update status with deduplication info
+        this.showStatus(`Displayed: "${translatedText}" (filtered duplicates)`, 'translation');
     }
     
+ /**
+     * NEW: Intelligent deduplication decision engine
+     * This method implements sophisticated logic to determine whether a translation should be displayed
+     * It considers exact matches, timing, confidence improvements, and contextual factors
+     */
+    shouldDisplayTranslation(newText, newConfidence, currentTime) {
+        const dedup = this.deduplicationSystem;
+        
+        // RULE 1: Always show the first translation
+        if (!dedup.lastDisplayedText) {
+            return {
+                display: true,
+                reason: "First translation of session"
+            };
+        }
+        
+        // RULE 2: Always show if text is completely different
+        if (!this.areTranslationsSimilar(newText, dedup.lastDisplayedText)) {
+            return {
+                display: true,
+                reason: "New word/phrase detected"
+            };
+        }
+        
+        // RULE 3: Check if enough time has passed for legitimate repetition
+        const timeSinceLastDisplay = currentTime - dedup.lastDisplayedTime;
+        if (timeSinceLastDisplay >= dedup.repetitionThreshold) {
+            return {
+                display: true,
+                reason: `Sufficient time elapsed (${timeSinceLastDisplay}ms > ${dedup.repetitionThreshold}ms)`
+            };
+        }
+        
+        // RULE 4: Show if confidence has improved significantly
+        const confidenceImprovement = newConfidence - dedup.lastConfidence;
+        if (confidenceImprovement >= dedup.confidenceThreshold) {
+            return {
+                display: Fals,
+                reason: `Significant confidence improvement (+${(confidenceImprovement * 100).toFixed(1)}%)`
+            };
+        }
+        
+        // RULE 5: Context-based filtering - check if this fits a pattern
+        const contextualDecision = this.analyzeTranslationContext(newText, newConfidence);
+        if (contextualDecision.display) {
+            return contextualDecision;
+        }
+        
+        // DEFAULT: Filter out as duplicate
+        return {
+            display: false,
+            reason: `Duplicate filtered - same as "${dedup.lastDisplayedText}" from ${timeSinceLastDisplay}ms ago`
+        };
+    }
+    
+    /**
+     * NEW: Determine if two translations are similar enough to be considered duplicates
+     * This method handles exact matches, case differences, and minor variations
+     */
+    areTranslationsSimilar(text1, text2) {
+        if (!text1 || !text2) return false;
+        
+        // Normalize both texts for comparison
+        const normalized1 = this.normalizeTextForComparison(text1);
+        const normalized2 = this.normalizeTextForComparison(text2);
+        
+        // Exact match after normalization
+        if (normalized1 === normalized2) {
+            return true;
+        }
+        
+        // Calculate similarity ratio for fuzzy matching
+        const similarity = this.calculateTextSimilarity(normalized1, normalized2);
+        return similarity >= this.deduplicationSystem.similarityThreshold;
+    }
+    
+    /**
+     * NEW: Normalize text for consistent comparison
+     * This handles common variations that should be treated as the same word
+     */
+    normalizeTextForComparison(text) {
+        return text
+            .toLowerCase()                    // Handle case differences
+            .trim()                          // Remove leading/trailing whitespace
+            .replace(/[^\w\s]/g, '')         // Remove punctuation
+            .replace(/\s+/g, ' ')            // Normalize whitespace
+            .replace(/\b(a|an|the)\b/g, ''); // Remove common articles that might vary
+    }
+    
+    /**
+     * NEW: Calculate similarity between two text strings
+     * Uses a combination of techniques to handle minor variations in recognition
+     */
+    calculateTextSimilarity(text1, text2) {
+        // Handle identical strings
+        if (text1 === text2) return 1.0;
+        
+        // Handle empty strings
+        if (!text1 || !text2) return 0.0;
+        
+        // Use Levenshtein distance for similarity calculation
+        const maxLength = Math.max(text1.length, text2.length);
+        const distance = this.calculateLevenshteinDistance(text1, text2);
+        return 1.0 - (distance / maxLength);
+    }
+    
+    /**
+     * NEW: Calculate Levenshtein distance between two strings
+     * This measures the minimum number of single-character edits needed to transform one string into another
+     */
+    calculateLevenshteinDistance(str1, str2) {
+        const matrix = [];
+        
+        // Initialize the matrix
+        for (let i = 0; i <= str2.length; i++) {
+            matrix[i] = [i];
+        }
+        for (let j = 0; j <= str1.length; j++) {
+            matrix[0][j] = j;
+        }
+        
+        // Fill the matrix
+        for (let i = 1; i <= str2.length; i++) {
+            for (let j = 1; j <= str1.length; j++) {
+                if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1]; // No operation needed
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1, // Substitution
+                        matrix[i][j - 1] + 1,     // Insertion
+                        matrix[i - 1][j] + 1      // Deletion
+                    );
+                }
+            }
+        }
+        
+        return matrix[str2.length][str1.length];
+    }
+    
+    /**
+     * NEW: Analyze translation context to make smarter filtering decisions
+     * This method looks at patterns in recent translations to make contextual decisions
+     */
+    analyzeTranslationContext(newText, newConfidence) {
+        const recent = this.deduplicationSystem.recentTranslations;
+        
+        // PATTERN 1: Alternating words (A-B-A-B pattern)
+        if (recent.length >= 3) {
+            const isAlternatingPattern = this.detectAlternatingPattern(newText, recent);
+            if (isAlternatingPattern) {
+                return {
+                    display: true,
+                    reason: "Alternating word pattern detected (legitimate repetition)"
+                };
+            }
+        }
+        
+        // PATTERN 2: Progressive confidence improvement
+        if (recent.length >= 2) {
+            const isProgressiveImprovement = this.detectProgressiveImprovement(newConfidence, recent);
+            if (isProgressiveImprovement) {
+                return {
+                    display: true,
+                    reason: "Progressive confidence improvement pattern"
+                };
+            }
+        }
+        
+        // PATTERN 3: Phrase completion (word is part of a longer phrase)
+        const isPhraseCompletion = this.detectPhraseCompletion(newText, recent);
+        if (isPhraseCompletion) {
+            return {
+                display: true,
+                reason: "Word completes a phrase pattern"
+            };
+        }
+        
+        // No special contextual pattern detected
+        return {
+            display: false,
+            reason: "No contextual pattern justifies display"
+        };
+    }
+    
+    /**
+     * NEW: Detect alternating word patterns (legitimate back-and-forth)
+     */
+    detectAlternatingPattern(newText, recentTranslations) {
+        if (recentTranslations.length < 3) return false;
+        
+        const lastText = recentTranslations[recentTranslations.length - 1].text;
+        const beforeLastText = recentTranslations[recentTranslations.length - 2].text;
+        const beforeBeforeLastText = recentTranslations[recentTranslations.length - 3].text;
+        
+        // Check if we have an A-B-A pattern and new text would continue it
+        return (
+            this.areTranslationsSimilar(newText, beforeLastText) &&
+            !this.areTranslationsSimilar(lastText, beforeLastText) &&
+            this.areTranslationsSimilar(beforeLastText, beforeBeforeLastText)
+        );
+    }
+    
+    /**
+     * NEW: Detect progressive confidence improvement
+     */
+    detectProgressiveImprovement(newConfidence, recentTranslations) {
+        if (recentTranslations.length < 2) return false;
+        
+        // Check if confidence has been steadily improving
+        const recentConfidences = recentTranslations.slice(-2).map(t => t.confidence);
+        const isImproving = recentConfidences.every((conf, index) => {
+            return index === 0 || conf >= recentConfidences[index - 1];
+        });
+        
+        return isImproving && newConfidence > recentConfidences[recentConfidences.length - 1];
+    }
+    
+    /**
+     * NEW: Detect phrase completion patterns
+     */
+    detectPhraseCompletion(newText, recentTranslations) {
+        if (recentTranslations.length < 2) return false;
+        
+        // Look for patterns where words build into common phrases
+        const recentWords = recentTranslations.slice(-2).map(t => t.text.toLowerCase());
+        const newWord = newText.toLowerCase();
+        
+        // Check for common phrase patterns
+        const commonPhrases = [
+            ['thank', 'you'],
+            ['good', 'morning'],
+            ['good', 'evening'],
+            ['how', 'are', 'you'],
+            ['nice', 'to', 'meet', 'you']
+        ];
+        
+        for (const phrase of commonPhrases) {
+            if (this.matchesPhrasePattern([...recentWords, newWord], phrase)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * NEW: Check if recent words match a known phrase pattern
+     */
+    matchesPhrasePattern(recentWords, phrasePattern) {
+        if (recentWords.length > phrasePattern.length) return false;
+        
+        // Check if recent words match the beginning of the phrase pattern
+        for (let i = 0; i < recentWords.length; i++) {
+            if (recentWords[i] !== phrasePattern[i]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * NEW: Update deduplication tracking after displaying a caption
+     */
+    updateDeduplicationTracking(displayedText, confidence, timestamp) {
+        const dedup = this.deduplicationSystem;
+        
+        // Update last displayed information
+        dedup.lastDisplayedText = displayedText;
+        dedup.lastDisplayedTime = timestamp;
+        dedup.lastConfidence = confidence;
+        
+        // Add to recent translations buffer
+        dedup.recentTranslations.push({
+            text: displayedText,
+            confidence: confidence,
+            timestamp: timestamp
+        });
+        
+        // Maintain buffer size
+        if (dedup.recentTranslations.length > dedup.maxRecentBuffer) {
+            dedup.recentTranslations.shift(); // Remove oldest entry
+        }
+        
+        console.log(`[SignLanguageHandler] Deduplication tracking updated. Recent buffer size: ${dedup.recentTranslations.length}`);
+    }
+    
+    /**
+     * NEW: Update translation history with display status
+     */
+    updateTranslationHistory(text, confidence, timestamp, wasDisplayed) {
+        const historyEntry = {
+            text: text,
+            confidence: confidence,
+            timestamp: timestamp,
+            wasDisplayed: wasDisplayed,
+            displayMethod: wasDisplayed ? 'webpage-video-overlay' : 'filtered-duplicate'
+        };
+        
+        this.translationHistory.push(historyEntry);
+        
+        // Keep history manageable (store more entries since some are filtered)
+        if (this.translationHistory.length > 50) {
+            this.translationHistory.shift();
+        }
+    }
+    
+    /**
+     * NEW: Configure deduplication settings
+     * This method allows fine-tuning of the deduplication behavior
+     */
+    updateDeduplicationSettings(newSettings) {
+        this.deduplicationSystem = { 
+            ...this.deduplicationSystem, 
+            ...newSettings 
+        };
+        
+        console.log("[SignLanguageHandler] Deduplication settings updated:", this.deduplicationSystem);
+    }
+    
+    /**
+     * NEW: Get deduplication statistics for monitoring and debugging
+     */
+    getDeduplicationStats() {
+        const totalTranslations = this.translationHistory.length;
+        const displayedTranslations = this.translationHistory.filter(t => t.wasDisplayed).length;
+        const filteredTranslations = totalTranslations - displayedTranslations;
+        const filteringRate = totalTranslations > 0 ? (filteredTranslations / totalTranslations) * 100 : 0;
+        
+        return {
+            totalReceived: totalTranslations,
+            displayed: displayedTranslations,
+            filtered: filteredTranslations,
+            filteringRate: filteringRate.toFixed(1) + '%',
+            lastDisplayedText: this.deduplicationSystem.lastDisplayedText,
+            timeSinceLastDisplay: Date.now() - this.deduplicationSystem.lastDisplayedTime,
+            recentBufferSize: this.deduplicationSystem.recentTranslations.length
+        };
+    }
+    
+    /**
+     * Enhanced: Clear translation history and reset deduplication system
+     */
+    clearTranslationHistory() {
+        this.translationHistory = [];
+        this.lastTranslation = null;
+        
+        // Reset deduplication tracking
+        this.deduplicationSystem.lastDisplayedText = null;
+        this.deduplicationSystem.lastDisplayedTime = 0;
+        this.deduplicationSystem.lastConfidence = 0;
+        this.deduplicationSystem.recentTranslations = [];
+        
+        this.clearAllWebpageVideoCaptions();
+        console.log("[SignLanguageHandler] Translation history and deduplication system reset");
+    }
+    
+
     /**
      * CORE METHOD: Display caption on a specific webpage video
      * Creates and animates caption overlays on the actual video content the user is watching
@@ -1248,12 +1629,7 @@ export default class SignLanguageHandler {
         return this.translationHistory;
     }
     
-    clearTranslationHistory() {
-        this.translationHistory = [];
-        this.lastTranslation = null;
-        this.clearAllWebpageVideoCaptions();
-        console.log("[SignLanguageHandler] Translation history and captions cleared");
-    }
+   
     
     toggleMonitoringWindow() {
         this.showMonitoringWindow = !this.showMonitoringWindow;
@@ -1264,6 +1640,9 @@ export default class SignLanguageHandler {
     }
     
     getDebugInfo() {
+
+        const deduplicationStats = this.getDeduplicationStats();
+        
         return {
             isActive: this.isActive,
             connectionState: this.peerConnection ? this.peerConnection.connectionState : 'none',
@@ -1282,7 +1661,13 @@ export default class SignLanguageHandler {
             activeVideoTarget: this.activeVideoTarget ? this.activeVideoTarget.type : 'none',
             translationHistoryCount: this.translationHistory.length,
             lastTranslation: this.lastTranslation,
-            showMonitoringWindow: this.showMonitoringWindow
+            showMonitoringWindow: this.showMonitoringWindow,
+            deduplication: {
+                settings: this.deduplicationSystem,
+                statistics: deduplicationStats
+            }
         };
+
+
     }
 }
