@@ -172,8 +172,11 @@ Currently, TEAN Mate is designed for Microsoft Edge with Manifest V3 support.
 
 ## Contributors
 
-- [Add contributor information here]
-
+- [Mohammed Yasser](https://github.com/MohdYasser1)
+- [farah-salama](https://github.com/farah-salama)
+- [Rawan Abdulhayy](https://github.com/rawanabdulhayy)
+- [ranaamr22](https://github.com/ranaamr22)
+- [MightyMaya](https://github.com/MightyMaya)
 ## License
 
 [Add license information here]
